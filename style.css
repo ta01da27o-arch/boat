@@ -1,24 +1,84 @@
-/* レース番号ボタン（1〜12Rを2段表示） */
-.race-grid {
-  display: none;
-  grid-template-columns: repeat(6, 1fr); /* 6列 × 2行 */
-  gap: 10px;
-  padding: 15px;
+/* --- 全体 --- */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 10px;
+  background-color: #e8f2ff; /* 青背景 */
 }
 
-.race-button {
-  padding: 15px;               /* 大きめに */
-  font-size: 16px;             /* 競艇場ボタンと同じ文字サイズ */
-  background: #28a745;
+/* --- ヘッダー --- */
+header {
+  text-align: center;
+  background: #0055cc;
   color: white;
+  padding: 15px;
+  font-size: 1.8em;
+  font-weight: bold;
+}
+
+/* --- 競艇場一覧（24場） --- */
+.stadium-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 横4列 */
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.stadium-card {
+  background: #ffffff;
+  border: 2px solid #0077cc;
+  border-radius: 12px;
+  padding: 15px;
+  text-align: center;
+  font-size: 1.4em;
+  font-weight: bold;
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+}
+
+.stadium-card h3 {
+  margin-bottom: 12px;
+  font-size: 1.5em;
+}
+
+/* --- ボタン共通 --- */
+button {
+  display: block;
+  width: 100%;
+  padding: 18px;
+  font-size: 1.3em;
   border: none;
   border-radius: 10px;
   cursor: pointer;
-  min-width: 70px;             /* 幅を確保 */
-  min-height: 70px;            /* 高さを確保 */
+  transition: 0.2s;
 }
 
-.race-button:disabled {
+.stadium-card button {
+  background: #0077cc;
+  color: white;
+}
+
+.stadium-card button:disabled {
   background: #cccccc;
   cursor: not-allowed;
+}
+
+.stadium-card button:hover:enabled {
+  background: #005fa3;
+}
+
+/* --- レース番号エリア --- */
+.race-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 横4つ → 3段 */
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.race-grid button {
+  background: #ff8800;
+  color: #fff;
+}
+
+.race-grid button:hover {
+  background: #cc6e00;
 }

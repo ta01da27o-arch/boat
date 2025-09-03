@@ -9,7 +9,7 @@ const STADIUMS = [
 // --- data.json 読み込み ---
 async function loadData() {
   try {
-    const response = await fetch("data.json?t=" + new Date().getTime());
+    const response = await fetch("data.json?t=" + new Date().getTime()); // キャッシュ回避
     const data = await response.json();
     renderStadiums(data);
   } catch (error) {
@@ -17,7 +17,7 @@ async function loadData() {
   }
 }
 
-// --- 競艇場ボタンの表示 ---
+// --- 競艇場ボタン表示 ---
 function renderStadiums(data) {
   const stadiumList = document.getElementById("stadium-list");
   stadiumList.innerHTML = "";
@@ -33,7 +33,7 @@ function renderStadiums(data) {
       btn.textContent = "レース一覧";
       btn.onclick = () => showRaces(stadium, data[stadium]);
     } else {
-      btn.textContent = "－"; // 将来：外部APIから開催なしを判定
+      btn.textContent = "－"; // 開催なし
       btn.disabled = true;
     }
 
@@ -42,7 +42,7 @@ function renderStadiums(data) {
   });
 }
 
-// --- レース一覧の表示 ---
+// --- レース一覧表示 ---
 function showRaces(stadium, races) {
   const raceArea = document.getElementById("race-area");
   raceArea.innerHTML = `<h2>${stadium} のレース</h2>`;
@@ -66,7 +66,7 @@ function showRaces(stadium, races) {
   raceArea.appendChild(raceGrid);
 }
 
-// --- レース詳細の表示 ---
+// --- レース詳細表示 ---
 function showRaceDetail(stadium, raceNo, detail) {
   const raceArea = document.getElementById("race-area");
   raceArea.innerHTML = `
