@@ -1,41 +1,4 @@
-body {
-  font-family: "Helvetica Neue", Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  background: #f5f7fa;
-  color: #333;
-}
-
-header {
-  background: #0077b6;
-  color: #fff;
-  padding: 15px;
-  text-align: center;
-}
-
-main {
-  padding: 20px;
-}
-
-#races {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 20px;
-}
-
-.race-card {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  padding: 15px;
-}
-
-.race-card h3 {
-  margin: 0 0 10px;
-  font-size: 1.2em;
-  color: #0077b6;
-}
-
-.race-card p {
-  margin: 5px 0;
-}
+body { font-family: Arial, sans-serif; margin: 20px; }
+ul { list-style-type: none; padding: 0; margin-bottom: 20px; }
+li { margin-bottom: 10px; }
+strong { color: blue; }
