@@ -1,57 +1,61 @@
-// データをキャッシュせず常に最新を取得
-fetch('data.json?time=' + new Date().getTime())
-  .then(response => response.json())
-  .then(data => {
-    renderRaces(data);
-  })
-  .catch(error => {
-    console.error("データ取得エラー:", error);
-  });
+async function loadData() {
+  try {
+    const response = await fetch("data.json?nocache=" + new Date().getTime());
+    const data = await response.json();
+    renderVenues(data.venues);
+  } catch (err) {
+    console.error("データ取得エラー:", err);
+  }
+}
 
-function renderRaces(data) {
-  const container = document.getElementById("race-tables");
+function renderVenues(venues) {
+  const container = document.getElementById("venue-container");
   container.innerHTML = "";
-
-  data.forEach(venue => {
-    const venueSection = document.createElement("section");
-    const venueTitle = document.createElement("h3");
-    venueTitle.textContent = `🏟 ${venue.venue}`;
-    venueSection.appendChild(venueTitle);
-
-    venue.races.forEach(race => {
-      const table = document.createElement("table");
-
-      // 見出し行
-      const thead = document.createElement("thead");
-      thead.innerHTML = `
-        <tr>
-          <th>レース</th>
-          <th>出走表</th>
-          <th>平均ST</th>
-          <th>AI予想ST</th>
-          <th>予想買い目</th>
-          <th>AIコメント</th>
-        </tr>
-      `;
-      table.appendChild(thead);
-
-      // データ行
-      const tbody = document.createElement("tbody");
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td data-label="レース">${race.race_no}</td>
-        <td data-label="出走表">${race.entries.join(" / ")}</td>
-        <td data-label="平均ST">${race.avg_st.join(" / ")}</td>
-        <td data-label="AI予想ST">${race.ai_st.join(" / ")}</td>
-        <td data-label="予想買い目">${race.predictions.join(", ")}</td>
-        <td data-label="AIコメント">${race.comment}</td>
-      `;
-      tbody.appendChild(row);
-      table.appendChild(tbody);
-
-      venueSection.appendChild(table);
-    });
-
-    container.appendChild(venueSection);
+  venues.forEach(venue => {
+    const btn = document.createElement("button");
+    btn.textContent = venue.name;
+    btn.className = "venue-button";
+    btn.disabled = !venue.open; // 開催中でなければ無効
+    if (venue.open) {
+      btn.onclick = () => renderRaces(venue);
+    }
+    container.appendChild(btn);
   });
 }
+
+function renderRaces(venue) {
+  const raceContainer = document.getElementById("race-container");
+  raceContainer.style.display = "grid";
+  raceContainer.innerHTML = "";
+  
+  for (let i = 1; i <= 12; i++) {
+    const btn = document.createElement("button");
+    btn.textContent = `${i}R`;
+    btn.className = "race-button";
+    btn.onclick = () => renderResult(venue, i);
+    raceContainer.appendChild(btn);
+  }
+}
+
+function renderResult(venue, raceNum) {
+  const resultContainer = document.getElementById("result-container");
+  const race = venue.races.find(r => r.number === raceNum);
+  
+  if (!race) {
+    resultContainer.innerHTML = `<p>${venue.name} ${raceNum}R のデータがありません</p>`;
+    return;
+  }
+
+  resultContainer.innerHTML = `
+    <h2>${venue.name} ${raceNum}R</h2>
+    <table border="1" style="margin:auto; border-collapse: collapse;">
+      <tr><th>選手</th><th>平均ST</th><th>AI予想ST</th></tr>
+      ${race.entries.map(e => `<tr><td>${e.name}</td><td>${e.avgST}</td><td>${e.aiST}</td></tr>`).join("")}
+    </table>
+    <p><b>AI予想:</b> ${race.aiPrediction}</p>
+    <p><b>的中率:</b> ${race.aiAccuracy}%</p>
+    <p><b>展開予想:</b> ${race.comment}</p>
+  `;
+}
+
+loadData();

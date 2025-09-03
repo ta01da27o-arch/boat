@@ -2,51 +2,14 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>競艇AI予想アプリ</title>
+  <title>🚨キュイン🚨</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>競艇AI予想</h1>
-  <table class="venue-table">
-    <tbody id="venueTable"></tbody>
-  </table>
-
-  <script>
-    const venues = [
-      "桐生","戸田","江戸川","平和島","多摩川","浜名湖",
-      "蒲郡","常滑","津","三国","びわこ","住之江",
-      "尼崎","鳴門","丸亀","児島","宮島","徳山",
-      "下関","若松","芦屋","福岡","唐津","大村"
-    ];
-
-    // 開催中の場（仮に固定。実際はdata.jsonから判定）
-    const activeVenues = ["福岡", "戸田", "びわこ"];
-
-    const tbody = document.getElementById("venueTable");
-    let row;
-    venues.forEach((venue, index) => {
-      if (index % 4 === 0) {
-        row = document.createElement("tr");
-        tbody.appendChild(row);
-      }
-
-      const cell = document.createElement("td");
-      const name = document.createElement("div");
-      name.textContent = venue;
-      cell.appendChild(name);
-
-      const button = document.createElement("button");
-      button.textContent = "レース一覧";
-      if (activeVenues.includes(venue)) {
-        button.onclick = () => {
-          window.location.href = `races.html?venue=${encodeURIComponent(venue)}`;
-        };
-      } else {
-        button.disabled = true;
-      }
-      cell.appendChild(button);
-      row.appendChild(cell);
-    });
-  </script>
+  <h1>🚨キュイン🚨</h1>
+  <div id="venue-container" class="venue-grid"></div>
+  <div id="race-container" class="race-grid"></div>
+  <div id="result-container"></div>
+  <script src="script.js"></script>
 </body>
 </html>

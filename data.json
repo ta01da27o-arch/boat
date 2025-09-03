@@ -1,12 +1,41 @@
 {
-  "福岡": {
-    "1": { "prediction": "1-2-3", "start_timing": "0.15", "comment": "イン有利" },
-    "2": { "prediction": "2-1-4", "start_timing": "0.14", "comment": "差し有利" }
-  },
-  "戸田": {
-    "1": { "prediction": "3-1-2", "start_timing": "0.17", "comment": "スタート巧者有利" }
-  },
-  "びわこ": {
-    "1": { "prediction": "1-3-5", "start_timing": "0.16", "comment": "センター伸び" }
-  }
+  "venues": [
+    {
+      "name": "福岡",
+      "open": true,
+      "races": [
+        {
+          "number": 1,
+          "entries": [
+            { "name": "A選手", "avgST": 0.15, "aiST": 0.13 },
+            { "name": "B選手", "avgST": 0.18, "aiST": 0.17 }
+          ],
+          "aiPrediction": "3-1-4, 1-3-5",
+          "aiAccuracy": 62,
+          "comment": "スタート巧者が捲って展開を作る可能性が高い。"
+        }
+      ]
+    },
+    {
+      "name": "戸田",
+      "open": false,
+      "races": []
+    },
+    {
+      "name": "びわこ",
+      "open": true,
+      "races": [
+        {
+          "number": 1,
+          "entries": [
+            { "name": "C選手", "avgST": 0.16, "aiST": 0.14 },
+            { "name": "D選手", "avgST": 0.19, "aiST": 0.18 }
+          ],
+          "aiPrediction": "1-2-3, 2-1-4",
+          "aiAccuracy": 57,
+          "comment": "イン有利も差しが入る可能性を警戒。"
+        }
+      ]
+    }
+  ]
 }

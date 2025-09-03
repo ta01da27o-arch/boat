@@ -1,41 +1,64 @@
 body {
-  font-family: sans-serif;
+  font-family: Arial, sans-serif;
+  background-color: #e6f0ff;
   text-align: center;
+  margin: 0;
+  padding: 0;
 }
 
-.venue-table {
-  margin: auto;
-  border-collapse: collapse;
-}
-
-.venue-table td {
-  border: 1px solid #ccc;
+h1 {
+  background: #0044cc;
+  color: white;
   padding: 15px;
-  text-align: center;
-  vertical-align: top;
-  width: 120px;
+  margin: 0;
 }
 
-button {
-  margin-top: 8px;
-  padding: 8px 12px;
-  border: none;
-  border-radius: 6px;
+/* 競艇場一覧 (横4 × 縦6) */
+.venue-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  padding: 15px;
+}
+
+.venue-button {
+  padding: 15px;
+  font-size: 16px;
   background: #007bff;
   color: white;
+  border: none;
+  border-radius: 10px;
   cursor: pointer;
 }
 
-button:disabled {
-  background: #ccc;
+.venue-button:disabled {
+  background: #cccccc;
   cursor: not-allowed;
 }
 
-#raceList {
-  margin-top: 20px;
+/* レース番号ボタン（1〜12） */
+.race-grid {
+  display: none;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+  padding: 15px;
 }
 
-#raceList button {
-  margin: 5px;
-  padding: 10px 16px;
+.race-button {
+  padding: 12px;
+  font-size: 14px;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.race-button:disabled {
+  background: #cccccc;
+  cursor: not-allowed;
+}
+
+#result-container {
+  padding: 15px;
 }
