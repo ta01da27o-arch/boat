@@ -3,7 +3,7 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 10px;
-  background-color: #e8f2ff; /* 青背景 */
+  background: #eef6ff;
 }
 
 /* --- ヘッダー --- */
@@ -11,74 +11,101 @@ header {
   text-align: center;
   background: #0055cc;
   color: white;
-  padding: 15px;
-  font-size: 1.8em;
-  font-weight: bold;
+  padding: 12px;
+}
+header h1 {
+  margin: 0;
+  font-size: 1.6em;
+}
+#today-date {
+  font-size: 1.1em;
+  margin-top: 5px;
+}
+
+/* --- 共通 --- */
+.hidden {
+  display: none;
 }
 
 /* --- 競艇場一覧（24場） --- */
 .stadium-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 横4列 */
-  gap: 15px;
-  margin: 20px 0;
+  grid-template-columns: repeat(2, 1fr); /* 横長2列 */
+  gap: 12px;
+  margin: 15px 0;
 }
 
 .stadium-card {
-  background: #ffffff;
+  background: #fff;
   border: 2px solid #0077cc;
-  border-radius: 12px;
+  border-radius: 10px;
   padding: 15px;
   text-align: center;
-  font-size: 1.4em;
+  font-size: 1.2em; /* 小さく調整 */
   font-weight: bold;
   box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
-}
-
-.stadium-card h3 {
-  margin-bottom: 12px;
-  font-size: 1.5em;
-}
-
-/* --- ボタン共通 --- */
-button {
-  display: block;
-  width: 100%;
-  padding: 18px;
-  font-size: 1.3em;
-  border: none;
-  border-radius: 10px;
   cursor: pointer;
   transition: 0.2s;
 }
 
-.stadium-card button {
-  background: #0077cc;
-  color: white;
+.stadium-card:hover {
+  background: #f0f8ff;
 }
 
-.stadium-card button:disabled {
-  background: #cccccc;
-  cursor: not-allowed;
-}
-
-.stadium-card button:hover:enabled {
-  background: #005fa3;
-}
-
-/* --- レース番号エリア --- */
+/* --- レース番号一覧 --- */
 .race-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 横4つ → 3段 */
-  gap: 15px;
-  margin-top: 20px;
+  grid-template-columns: repeat(4, 1fr); /* 横4列 */
+  gap: 10px;
+  margin: 15px;
 }
 
 .race-grid button {
+  padding: 18px;
+  font-size: 1.2em;
+  border: none;
+  border-radius: 10px;
   background: #ff8800;
   color: #fff;
+  cursor: pointer;
+  transition: 0.2s;
 }
 
 .race-grid button:hover {
   background: #cc6e00;
+}
+
+.race-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 15px;
+}
+
+.race-header h2 {
+  margin: 0;
+  font-size: 1.4em;
+}
+
+.back-btn {
+  padding: 8px 15px;
+  font-size: 1em;
+  border: none;
+  border-radius: 8px;
+  background: #0077cc;
+  color: white;
+  cursor: pointer;
+}
+
+.back-btn:hover {
+  background: #005fa3;
+}
+
+/* --- 出走表詳細 --- */
+.detail-box {
+  background: white;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  padding: 15px;
+  margin: 15px;
 }

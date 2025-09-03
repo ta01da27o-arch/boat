@@ -3,22 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🚨キュイン🚨</title>
+  <title>🚤 競艇AI予想</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
-    <h1>🚨キュイン🚨</h1>
+    <h1>競艇AI予想</h1>
+    <p id="today-date"></p>
   </header>
 
   <main>
-    <section id="stadium-list" class="stadium-grid">
-      <!-- ここに競艇場一覧が生成される -->
-    </section>
+    <!-- 競艇場一覧 -->
+    <section id="stadium-list" class="stadium-grid"></section>
 
-    <section id="race-area">
-      <!-- レース情報を表示 -->
-    </section>
+    <!-- レース番号一覧 -->
+    <section id="race-area" class="hidden"></section>
+
+    <!-- 出走表表示 -->
+    <section id="detail-area" class="hidden"></section>
   </main>
 
   <script src="script.js"></script>
