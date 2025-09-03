@@ -1,30 +1,57 @@
-document.getElementById("stadium").addEventListener("change", function () {
-  const stadium = this.value;
-  if (!stadium) return;
+// データをキャッシュせず常に最新を取得
+fetch('data.json?time=' + new Date().getTime())
+  .then(response => response.json())
+  .then(data => {
+    renderRaces(data);
+  })
+  .catch(error => {
+    console.error("データ取得エラー:", error);
+  });
 
-  fetch(`data/${stadium}.json`)
-    .then((res) => res.json())
-    .then((data) => {
-      const raceSelect = document.getElementById("race");
-      raceSelect.innerHTML = "";
+function renderRaces(data) {
+  const container = document.getElementById("race-tables");
+  container.innerHTML = "";
 
-      data.races.forEach((race, index) => {
-        const opt = document.createElement("option");
-        opt.value = index;
-        opt.textContent = race.title;
-        raceSelect.appendChild(opt);
-      });
+  data.forEach(venue => {
+    const venueSection = document.createElement("section");
+    const venueTitle = document.createElement("h3");
+    venueTitle.textContent = `🏟 ${venue.venue}`;
+    venueSection.appendChild(venueTitle);
 
-      document.getElementById("race-select").style.display = "block";
-      document.getElementById("result").style.display = "none";
+    venue.races.forEach(race => {
+      const table = document.createElement("table");
 
-      raceSelect.onchange = () => {
-        const race = data.races[raceSelect.value];
-        document.getElementById("race-title").textContent = race.title;
-        document.getElementById("ai-prediction").textContent = race.ai_prediction;
-        document.getElementById("avg-start").textContent = race.avg_start;
-        document.getElementById("ai-comment").textContent = race.ai_comment;
-        document.getElementById("result").style.display = "block";
-      };
+      // 見出し行
+      const thead = document.createElement("thead");
+      thead.innerHTML = `
+        <tr>
+          <th>レース</th>
+          <th>出走表</th>
+          <th>平均ST</th>
+          <th>AI予想ST</th>
+          <th>予想買い目</th>
+          <th>AIコメント</th>
+        </tr>
+      `;
+      table.appendChild(thead);
+
+      // データ行
+      const tbody = document.createElement("tbody");
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td data-label="レース">${race.race_no}</td>
+        <td data-label="出走表">${race.entries.join(" / ")}</td>
+        <td data-label="平均ST">${race.avg_st.join(" / ")}</td>
+        <td data-label="AI予想ST">${race.ai_st.join(" / ")}</td>
+        <td data-label="予想買い目">${race.predictions.join(", ")}</td>
+        <td data-label="AIコメント">${race.comment}</td>
+      `;
+      tbody.appendChild(row);
+      table.appendChild(tbody);
+
+      venueSection.appendChild(table);
     });
-});
+
+    container.appendChild(venueSection);
+  });
+}
