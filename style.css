@@ -1,24 +1,25 @@
-/* --- 出走表テーブル --- */
-.race-table {
-  width: 95%;
-  margin: 15px auto;
-  border-collapse: collapse;
-  font-size: 1em;
-  background: #fff;
+/* --- 競艇場グリッド --- */
+.stadium-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 横4列 */
+  gap: 12px;
+  margin: 15px;
 }
 
-.race-table th, .race-table td {
-  border: 1px solid #ccc;
-  padding: 8px;
-  text-align: center;
-}
-
-.race-table th {
+/* --- 競艇場ボタン --- */
+.stadium-card button {
+  width: 100%;
+  height: 60px; /* ← 高さを縮める */
+  font-size: 1.1em; /* ← 少し大きめ文字 */
+  border: none;
+  border-radius: 8px;
   background: #0077cc;
-  color: #fff;
+  color: white;
+  cursor: pointer;
 }
 
-.race-table td small {
-  color: #555;
-  font-size: 0.8em;
+.stadium-card button:disabled {
+  background: #ccc;
+  color: #666;
+  cursor: not-allowed;
 }
