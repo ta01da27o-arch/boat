@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🚤 競艇AI予想</title>
+  <title>競艇AI予想アプリ</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,15 +12,26 @@
     <p id="today-date"></p>
   </header>
 
-  <main>
-    <!-- 競艇場一覧 -->
-    <section id="stadium-list" class="stadium-grid"></section>
+  <!-- 競艇場一覧画面 -->
+  <main id="stadium-screen">
+    <h2>競艇場一覧</h2>
+    <div id="stadium-list" class="stadium-grid"></div>
+  </main>
 
-    <!-- レース番号一覧 -->
-    <section id="race-area" class="hidden"></section>
+  <!-- レース番号画面 -->
+  <main id="race-screen" style="display:none;">
+    <button class="back-button" onclick="goBackToStadiums()">← 戻る</button>
+    <h2 id="race-title"></h2>
+    <div id="race-list" class="race-grid"></div>
+  </main>
 
-    <!-- 出走表表示 -->
-    <section id="detail-area" class="hidden"></section>
+  <!-- 出走表画面 -->
+  <main id="entry-screen" style="display:none;">
+    <button class="back-button" onclick="goBackToRaces()">← 戻る</button>
+    <h2 id="entry-title"></h2>
+    <div id="entry-table"></div>
+    <div id="ai-prediction"></div>
+    <div id="ai-comment"></div>
   </main>
 
   <script src="script.js"></script>
