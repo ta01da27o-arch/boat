@@ -1,61 +1,47 @@
+// JSONデータの読み込み
 async function loadData() {
-  try {
-    const response = await fetch("data.json?nocache=" + new Date().getTime());
-    const data = await response.json();
-    renderVenues(data.venues);
-  } catch (err) {
-    console.error("データ取得エラー:", err);
-  }
+  const response = await fetch("data.json?nocache=" + new Date().getTime());
+  return await response.json();
 }
 
-function renderVenues(venues) {
-  const container = document.getElementById("venue-container");
-  container.innerHTML = "";
-  venues.forEach(venue => {
+// 初期化
+loadData().then(data => {
+  const stadiumList = document.getElementById("stadium-list");
+  const raceList = document.getElementById("race-list");
+  const raceDetail = document.getElementById("race-detail");
+
+  // 競艇場ボタンを作成
+  Object.keys(data).forEach(stadium => {
+    const div = document.createElement("div");
+    div.className = "stadium-card";
+    div.innerHTML = `<h3>${stadium}</h3>`;
     const btn = document.createElement("button");
-    btn.textContent = venue.name;
-    btn.className = "venue-button";
-    btn.disabled = !venue.open; // 開催中でなければ無効
-    if (venue.open) {
-      btn.onclick = () => renderRaces(venue);
-    }
-    container.appendChild(btn);
+    btn.textContent = "レース一覧";
+    btn.onclick = () => showRaces(stadium, data[stadium]);
+    div.appendChild(btn);
+    stadiumList.appendChild(div);
   });
-}
 
-function renderRaces(venue) {
-  const raceContainer = document.getElementById("race-container");
-  raceContainer.style.display = "grid";
-  raceContainer.innerHTML = "";
-  
-  for (let i = 1; i <= 12; i++) {
-    const btn = document.createElement("button");
-    btn.textContent = `${i}R`;
-    btn.className = "race-button";
-    btn.onclick = () => renderResult(venue, i);
-    raceContainer.appendChild(btn);
-  }
-}
+  // レース番号を表示
+  function showRaces(stadium, races) {
+    raceList.innerHTML = "";
+    raceDetail.innerHTML = "";
 
-function renderResult(venue, raceNum) {
-  const resultContainer = document.getElementById("result-container");
-  const race = venue.races.find(r => r.number === raceNum);
-  
-  if (!race) {
-    resultContainer.innerHTML = `<p>${venue.name} ${raceNum}R のデータがありません</p>`;
-    return;
+    for (let i = 1; i <= 12; i++) {
+      const btn = document.createElement("button");
+      btn.textContent = i + "R";
+      btn.onclick = () => showDetail(stadium, i, races[i]);
+      raceList.appendChild(btn);
+    }
   }
 
-  resultContainer.innerHTML = `
-    <h2>${venue.name} ${raceNum}R</h2>
-    <table border="1" style="margin:auto; border-collapse: collapse;">
-      <tr><th>選手</th><th>平均ST</th><th>AI予想ST</th></tr>
-      ${race.entries.map(e => `<tr><td>${e.name}</td><td>${e.avgST}</td><td>${e.aiST}</td></tr>`).join("")}
-    </table>
-    <p><b>AI予想:</b> ${race.aiPrediction}</p>
-    <p><b>的中率:</b> ${race.aiAccuracy}%</p>
-    <p><b>展開予想:</b> ${race.comment}</p>
-  `;
-}
-
-loadData();
+  // 出走表やAI予想を表示
+  function showDetail(stadium, raceNo, raceData) {
+    raceDetail.innerHTML = `
+      <h2>${stadium} ${raceNo}R</h2>
+      <p><strong>AI予想:</strong> ${raceData.ai}</p>
+      <p><strong>平均ST:</strong> ${raceData.avgST}</p>
+      <p><strong>コメント:</strong> ${raceData.comment}</p>
+    `;
+  }
+});
