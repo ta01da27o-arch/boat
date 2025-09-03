@@ -8,19 +8,35 @@
 </head>
 <body>
   <header>
-    <h1>競艇AI予想</h1>
+    <h1>競艇AI予想アプリ</h1>
   </header>
 
   <main>
-    <section id="race-list">
-      <h2>AI予想一覧</h2>
-      <div id="races"></div>
+    <!-- 場選択 -->
+    <section>
+      <label for="stadium">場を選択:</label>
+      <select id="stadium">
+        <option value="">-- 選択してください --</option>
+        <option value="fukuoka">福岡</option>
+        <option value="toda">戸田</option>
+        <option value="biwako">琵琶湖</option>
+      </select>
+    </section>
+
+    <!-- レース選択 -->
+    <section id="race-select" style="display:none;">
+      <label for="race">レースを選択:</label>
+      <select id="race"></select>
+    </section>
+
+    <!-- 予想表示 -->
+    <section id="result" style="display:none;">
+      <h2 id="race-title"></h2>
+      <p><strong>AI予想:</strong> <span id="ai-prediction"></span></p>
+      <p><strong>平均スタートタイミング:</strong> <span id="avg-start"></span></p>
+      <p><strong>AIコメント:</strong> <span id="ai-comment"></span></p>
     </section>
   </main>
-
-  <footer>
-    <p>© 2025 競艇AI</p>
-  </footer>
 
   <script src="script.js"></script>
 </body>

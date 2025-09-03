@@ -1,0 +1,17 @@
+{
+  "stadium": "福岡",
+  "races": [
+    {
+      "title": "福岡1R",
+      "ai_prediction": "1-2-3",
+      "avg_start": "0.15",
+      "ai_comment": "イン逃げ有利、地元選手が堅実。"
+    },
+    {
+      "title": "福岡2R",
+      "ai_prediction": "3-1-4",
+      "avg_start": "0.18",
+      "ai_comment": "3コースのまくりに注意。"
+    }
+  ]
+}

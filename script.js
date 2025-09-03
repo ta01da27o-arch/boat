@@ -1,31 +1,30 @@
-// JSONデータを読み込んで表示
-async function loadRaces() {
-  try {
-    const response = await fetch("data.json");
-    const data = await response.json();
+document.getElementById("stadium").addEventListener("change", function () {
+  const stadium = this.value;
+  if (!stadium) return;
 
-    const racesContainer = document.getElementById("races");
-    racesContainer.innerHTML = "";
+  fetch(`data/${stadium}.json`)
+    .then((res) => res.json())
+    .then((data) => {
+      const raceSelect = document.getElementById("race");
+      raceSelect.innerHTML = "";
 
-    data.races.forEach(race => {
-      const card = document.createElement("div");
-      card.className = "race-card";
+      data.races.forEach((race, index) => {
+        const opt = document.createElement("option");
+        opt.value = index;
+        opt.textContent = race.title;
+        raceSelect.appendChild(opt);
+      });
 
-      card.innerHTML = `
-        <h3>${race.place} ${race.date} 第${race.race_number}R</h3>
-        <p><strong>AI予想:</strong> ${race.ai_prediction}</p>
-        <p><strong>平均ST:</strong> 
-          ${Object.entries(race.average_start).map(([k, v]) => `${k}号艇 ${v}`).join(" / ")}
-        </p>
-        <p><strong>AIコメント:</strong> ${race.ai_comment}</p>
-      `;
+      document.getElementById("race-select").style.display = "block";
+      document.getElementById("result").style.display = "none";
 
-      racesContainer.appendChild(card);
+      raceSelect.onchange = () => {
+        const race = data.races[raceSelect.value];
+        document.getElementById("race-title").textContent = race.title;
+        document.getElementById("ai-prediction").textContent = race.ai_prediction;
+        document.getElementById("avg-start").textContent = race.avg_start;
+        document.getElementById("ai-comment").textContent = race.ai_comment;
+        document.getElementById("result").style.display = "block";
+      };
     });
-  } catch (error) {
-    console.error("データ読み込みエラー:", error);
-  }
-}
-
-// ページ読み込み時に実行
-document.addEventListener("DOMContentLoaded", loadRaces);
+});
