@@ -1,7 +1,7 @@
 {
   "venues": [
     {
-      "name": "福岡",
+      "name": "桐生",
       "open": true,
       "races": [
         {
@@ -10,14 +10,54 @@
             { "name": "A選手", "avgST": 0.15, "aiST": 0.13 },
             { "name": "B選手", "avgST": 0.18, "aiST": 0.17 }
           ],
-          "aiPrediction": "3-1-4, 1-3-5",
+          "aiPrediction": "1-3-4, 3-1-5",
           "aiAccuracy": 62,
-          "comment": "スタート巧者が捲って展開を作る可能性が高い。"
+          "comment": "イン速攻が濃厚も、差しの展開に注意。"
         }
       ]
     },
     {
       "name": "戸田",
+      "open": false,
+      "races": []
+    },
+    {
+      "name": "江戸川",
+      "open": false,
+      "races": []
+    },
+    {
+      "name": "平和島",
+      "open": false,
+      "races": []
+    },
+    {
+      "name": "多摩川",
+      "open": false,
+      "races": []
+    },
+    {
+      "name": "浜名湖",
+      "open": false,
+      "races": []
+    },
+    {
+      "name": "蒲郡",
+      "open": false,
+      "races": []
+    },
+    {
+      "name": "常滑",
+      "open": false,
+      "races": []
+    },
+    {
+      "name": "津",
+      "open": false,
+      "races": []
+    },
+    {
+      "name": "三国",
       "open": false,
       "races": []
     },
@@ -33,9 +73,85 @@
           ],
           "aiPrediction": "1-2-3, 2-1-4",
           "aiAccuracy": 57,
-          "comment": "イン有利も差しが入る可能性を警戒。"
+          "comment": "イン有利だが2コース差しが決まる可能性も。"
         }
       ]
+    },
+    {
+      "name": "住之江",
+      "open": false,
+      "races": []
+    },
+    {
+      "name": "尼崎",
+      "open": false,
+      "races": []
+    },
+    {
+      "name": "鳴門",
+      "open": false,
+      "races": []
+    },
+    {
+      "name": "丸亀",
+      "open": false,
+      "races": []
+    },
+    {
+      "name": "児島",
+      "open": false,
+      "races": []
+    },
+    {
+      "name": "宮島",
+      "open": false,
+      "races": []
+    },
+    {
+      "name": "徳山",
+      "open": false,
+      "races": []
+    },
+    {
+      "name": "下関",
+      "open": false,
+      "races": []
+    },
+    {
+      "name": "若松",
+      "open": false,
+      "races": []
+    },
+    {
+      "name": "芦屋",
+      "open": false,
+      "races": []
+    },
+    {
+      "name": "福岡",
+      "open": true,
+      "races": [
+        {
+          "number": 1,
+          "entries": [
+            { "name": "E選手", "avgST": 0.14, "aiST": 0.12 },
+            { "name": "F選手", "avgST": 0.20, "aiST": 0.18 }
+          ],
+          "aiPrediction": "1-4-2, 4-1-3",
+          "aiAccuracy": 65,
+          "comment": "センター勢の仕掛けに乗じて差し有力。"
+        }
+      ]
+    },
+    {
+      "name": "唐津",
+      "open": false,
+      "races": []
+    },
+    {
+      "name": "大村",
+      "open": false,
+      "races": []
     }
   ]
 }
