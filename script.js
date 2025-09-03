@@ -1,47 +1,81 @@
-// JSONデータの読み込み
+// --- 競艇場一覧（24場固定） ---
+const STADIUMS = [
+  "桐生","戸田","江戸川","平和島","多摩川","浜名湖",
+  "蒲郡","常滑","津","三国","びわこ","住之江",
+  "尼崎","鳴門","丸亀","児島","宮島","徳山",
+  "下関","若松","芦屋","福岡","唐津","大村"
+];
+
+// --- data.json 読み込み ---
 async function loadData() {
-  const response = await fetch("data.json?nocache=" + new Date().getTime());
-  return await response.json();
+  try {
+    const response = await fetch("data.json?t=" + new Date().getTime());
+    const data = await response.json();
+    renderStadiums(data);
+  } catch (error) {
+    console.error("データ取得エラー:", error);
+  }
 }
 
-// 初期化
-loadData().then(data => {
+// --- 競艇場ボタンの表示 ---
+function renderStadiums(data) {
   const stadiumList = document.getElementById("stadium-list");
-  const raceList = document.getElementById("race-list");
-  const raceDetail = document.getElementById("race-detail");
+  stadiumList.innerHTML = "";
 
-  // 競艇場ボタンを作成
-  Object.keys(data).forEach(stadium => {
+  STADIUMS.forEach(stadium => {
     const div = document.createElement("div");
     div.className = "stadium-card";
     div.innerHTML = `<h3>${stadium}</h3>`;
+
     const btn = document.createElement("button");
-    btn.textContent = "レース一覧";
-    btn.onclick = () => showRaces(stadium, data[stadium]);
+
+    if (data[stadium]) {
+      btn.textContent = "レース一覧";
+      btn.onclick = () => showRaces(stadium, data[stadium]);
+    } else {
+      btn.textContent = "－"; // 将来：外部APIから開催なしを判定
+      btn.disabled = true;
+    }
+
     div.appendChild(btn);
     stadiumList.appendChild(div);
   });
+}
 
-  // レース番号を表示
-  function showRaces(stadium, races) {
-    raceList.innerHTML = "";
-    raceDetail.innerHTML = "";
+// --- レース一覧の表示 ---
+function showRaces(stadium, races) {
+  const raceArea = document.getElementById("race-area");
+  raceArea.innerHTML = `<h2>${stadium} のレース</h2>`;
 
-    for (let i = 1; i <= 12; i++) {
-      const btn = document.createElement("button");
-      btn.textContent = i + "R";
-      btn.onclick = () => showDetail(stadium, i, races[i]);
-      raceList.appendChild(btn);
+  const raceGrid = document.createElement("div");
+  raceGrid.className = "race-grid";
+
+  for (let i = 1; i <= 12; i++) {
+    const btn = document.createElement("button");
+    btn.textContent = `${i}R`;
+
+    if (races && races[i]) {
+      btn.onclick = () => showRaceDetail(stadium, i, races[i]);
+    } else {
+      btn.disabled = true;
     }
+
+    raceGrid.appendChild(btn);
   }
 
-  // 出走表やAI予想を表示
-  function showDetail(stadium, raceNo, raceData) {
-    raceDetail.innerHTML = `
-      <h2>${stadium} ${raceNo}R</h2>
-      <p><strong>AI予想:</strong> ${raceData.ai}</p>
-      <p><strong>平均ST:</strong> ${raceData.avgST}</p>
-      <p><strong>コメント:</strong> ${raceData.comment}</p>
-    `;
-  }
-});
+  raceArea.appendChild(raceGrid);
+}
+
+// --- レース詳細の表示 ---
+function showRaceDetail(stadium, raceNo, detail) {
+  const raceArea = document.getElementById("race-area");
+  raceArea.innerHTML = `
+    <h2>${stadium} ${raceNo}R</h2>
+    <p><strong>AI予想:</strong> ${detail.ai || "データなし"}</p>
+    <p><strong>平均ST:</strong> ${detail.avgST || "データなし"}</p>
+    <p><strong>AIコメント:</strong> ${detail.comment || "データなし"}</p>
+  `;
+}
+
+// --- ページ読み込み時に実行 ---
+loadData();
