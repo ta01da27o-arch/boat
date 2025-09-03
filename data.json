@@ -1,9 +1,22 @@
 {
   "福岡": {
-    "1": { "ai": "3-1-2", "avgST": "0.15", "comment": "イン逃げ以外有力。カド差し警戒。" },
-    "2": { "ai": "4-2-1", "avgST": "0.16", "comment": "外枠が伸びる展開。" }
-  },
-  "戸田": {
-    "1": { "ai": "1-3-4", "avgST": "0.14", "comment": "スタート互角、イン有利。" }
+    "1": {
+      "entries": [
+        { "waku": 1, "name": "山田 太郎", "grade": "A1", "rank": "B1", "avgST": "0.14",
+          "motorNo": 12, "motor2": 45, "motor3": 62 },
+        { "waku": 2, "name": "佐藤 次郎", "grade": "B2", "rank": "B2", "avgST": "0.19",
+          "motorNo": 25, "motor2": 30, "motor3": 50 },
+        { "waku": 3, "name": "鈴木 一郎", "grade": "A2", "rank": "A2", "avgST": "0.12",
+          "motorNo": 40, "motor2": 55, "motor3": 70 },
+        { "waku": 4, "name": "田中 健", "grade": "A1", "rank": "A1", "avgST": "0.16",
+          "motorNo": 8, "motor2": 60, "motor3": 75 },
+        { "waku": 5, "name": "高橋 誠", "grade": "B1", "rank": "B1", "avgST": "0.17",
+          "motorNo": 19, "motor2": 42, "motor3": 65 },
+        { "waku": 6, "name": "加藤 勇", "grade": "B1", "rank": "B2", "avgST": "0.20",
+          "motorNo": 33, "motor2": 28, "motor3": 48 }
+      ],
+      "ai": ["3-1-4", "3-1-5", "3-4-1", "3-4-5", "3-5-1"],
+      "comment": "今節は、3号艇の舟足、スタートタイミングともに良く、2号艇(B2)選手のスタートは良くない。3号艇の捲り差し濃厚。4、5号艇も着いてくる。1号艇の連対率も良い"
+    }
   }
 }
