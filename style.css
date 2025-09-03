@@ -1,0 +1,88 @@
+body {
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f0f8ff;
+  color: #333;
+  text-align: center;
+}
+
+header {
+  background: #007bff;
+  color: white;
+  padding: 10px;
+}
+
+h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+#current-date {
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+/* 競艇場リスト */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  padding: 10px;
+}
+
+.grid button {
+  width: 100%;
+  padding: 15px 0;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  background: #e0e0e0;
+  cursor: pointer;
+}
+
+.grid button.active {
+  background: #007bff;
+  color: white;
+}
+
+/* レース番号リスト */
+.race-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  padding: 10px;
+}
+
+.race-grid button {
+  padding: 15px 0;
+  font-size: 16px;
+  border-radius: 6px;
+  border: none;
+  background: #ffc107;
+  cursor: pointer;
+}
+
+/* 出走表 */
+table {
+  width: 95%;
+  margin: 10px auto;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px;
+  text-align: center;
+}
+
+.back-button {
+  margin: 15px;
+  padding: 10px 20px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
