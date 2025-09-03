@@ -1,64 +1,24 @@
-body {
-  font-family: Arial, sans-serif;
-  background-color: #e6f0ff;
-  text-align: center;
-  margin: 0;
-  padding: 0;
-}
-
-h1 {
-  background: #0044cc;
-  color: white;
-  padding: 15px;
-  margin: 0;
-}
-
-/* 競艇場一覧 (横4 × 縦6) */
-.venue-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  padding: 15px;
-}
-
-.venue-button {
-  padding: 15px;
-  font-size: 16px;
-  background: #007bff;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-}
-
-.venue-button:disabled {
-  background: #cccccc;
-  cursor: not-allowed;
-}
-
-/* レース番号ボタン（1〜12） */
+/* レース番号ボタン（1〜12Rを2段表示） */
 .race-grid {
   display: none;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(6, 1fr); /* 6列 × 2行 */
   gap: 10px;
   padding: 15px;
 }
 
 .race-button {
-  padding: 12px;
-  font-size: 14px;
+  padding: 15px;               /* 大きめに */
+  font-size: 16px;             /* 競艇場ボタンと同じ文字サイズ */
   background: #28a745;
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
+  min-width: 70px;             /* 幅を確保 */
+  min-height: 70px;            /* 高さを確保 */
 }
 
 .race-button:disabled {
   background: #cccccc;
   cursor: not-allowed;
-}
-
-#result-container {
-  padding: 15px;
 }
