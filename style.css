@@ -1,86 +1,41 @@
-/* 全体レイアウト */
 body {
-  font-family: "Helvetica Neue", Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  background: #f0f4f8;
-  color: #333;
+  font-family: sans-serif;
+  text-align: center;
 }
 
-/* ヘッダー */
-header {
-  background: #007bff;
-  color: white;
+.venue-table {
+  margin: auto;
+  border-collapse: collapse;
+}
+
+.venue-table td {
+  border: 1px solid #ccc;
   padding: 15px;
   text-align: center;
+  vertical-align: top;
+  width: 120px;
 }
 
-header h1 {
-  margin: 0;
-  font-size: 1.5em;
-}
-
-/* セクション */
-main {
-  padding: 20px;
-}
-
-h2, h3 {
-  margin-top: 20px;
-  color: #007bff;
-}
-
-/* テーブル */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 20px;
-  background: #fff;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-th, td {
-  border: 1px solid #ddd;
-  padding: 10px;
-  text-align: center;
-  font-size: 0.9em;
-}
-
-th {
+button {
+  margin-top: 8px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
   background: #007bff;
   color: white;
-  font-weight: bold;
+  cursor: pointer;
 }
 
-tr:nth-child(even) {
-  background: #f9f9f9;
+button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
 }
 
-/* スマホ対応 */
-@media (max-width: 600px) {
-  table, thead, tbody, th, td, tr {
-    display: block;
-  }
-  thead tr {
-    display: none;
-  }
-  tr {
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    padding: 10px;
-    background: white;
-  }
-  td {
-    border: none;
-    padding: 5px 10px;
-    text-align: left;
-    position: relative;
-  }
-  td::before {
-    content: attr(data-label);
-    font-weight: bold;
-    color: #007bff;
-    display: block;
-    margin-bottom: 5px;
-  }
+#raceList {
+  margin-top: 20px;
+}
+
+#raceList button {
+  margin: 5px;
+  padding: 10px 16px;
 }

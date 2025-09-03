@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>レース一覧</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1 id="venueTitle"></h1>
+  <div id="raceList"></div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const venue = params.get("venue");
+
+    document.getElementById("venueTitle").textContent = venue + " レース一覧";
+
+    const raceList = document.getElementById("raceList");
+
+    for (let i = 1; i <= 12; i++) {
+      const button = document.createElement("button");
+      button.textContent = i + "R";
+      button.onclick = () => {
+        window.location.href = `details.html?venue=${encodeURIComponent(venue)}&race=${i}`;
+      };
+      raceList.appendChild(button);
+    }
+  </script>
+</body>
+</html>
