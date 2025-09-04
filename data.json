@@ -1,0 +1,38 @@
+{
+  "venues": [
+    {
+      "name": "福岡",
+      "is_open": true,
+      "hit_rate": 62,
+      "races": {
+        "1": {
+          "entries": [
+            { "waku": 1, "class": "A1", "name": "山田 太郎", "st": 0.15, "motor": { "no": 21, "rate2": 40, "rate3": 55 } },
+            { "waku": 2, "class": "B2", "name": "佐藤 次郎", "st": 0.21, "motor": { "no": 33, "rate2": 28, "rate3": 39 } }
+          ],
+          "predictions": [
+            { "buy": "3-1-4", "rate": 28 },
+            { "buy": "3-1-5", "rate": 22 },
+            { "buy": "3-4-1", "rate": 20 }
+          ],
+          "comments": [
+            { "course": "1コース", "text": "今節はスタート不安、捲られる傾向" },
+            { "course": "3コース", "text": "スタート、足ともに良い。捲り差し濃厚" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "戸田",
+      "is_open": false,
+      "hit_rate": null,
+      "races": {}
+    },
+    {
+      "name": "琵琶湖",
+      "is_open": true,
+      "hit_rate": 54,
+      "races": {}
+    }
+  ]
+}

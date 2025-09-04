@@ -1,108 +1,108 @@
 body {
-  font-family: sans-serif;
+  font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background: #f0f8ff;
-  color: #333;
   text-align: center;
+  background: #f4f7fa;
 }
 
 header {
-  background: #007bff;
-  color: white;
-  padding: 10px;
+  background: #0044cc;
+  color: #fff;
+  padding: 15px;
 }
 
 h1 {
+  font-size: 22px;
   margin: 0;
-  font-size: 24px;
 }
 
 #current-date {
   font-size: 14px;
-  margin-top: 4px;
+  margin-top: 5px;
 }
 
-/* 競艇場リスト */
-.grid {
+.hidden {
+  display: none;
+}
+
+#venues-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-  padding: 10px;
+  gap: 12px;
+  padding: 15px;
 }
 
-.grid button {
-  width: 100%;
-  padding: 15px 0;
-  font-size: 16px;
+.venue-btn {
+  padding: 20px;
+  background: #0077ff;
+  color: #fff;
   border: none;
   border-radius: 8px;
-  background: #e0e0e0;
+  font-size: 14px;
   cursor: pointer;
 }
 
-.grid button.active {
-  background: #007bff;
+.venue-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.back-btn {
+  margin: 10px;
+  padding: 10px 15px;
+  font-size: 14px;
+  background: #444;
   color: white;
-}
-
-.total-rate {
-  font-size: 14px;
-  margin-top: 4px;
-  color: #007bff;
-}
-
-/* レース番号リスト */
-.race-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-  padding: 10px;
-}
-
-.race-grid button {
-  padding: 15px 0;
-  font-size: 16px;
-  border-radius: 6px;
   border: none;
-  background: #ffc107;
+  border-radius: 6px;
   cursor: pointer;
 }
 
-/* 出走表 */
-table {
-  width: 95%;
-  margin: 10px auto;
-  border-collapse: collapse;
-  font-size: 14px;
+#race-buttons {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+  padding: 15px;
 }
 
-table th, table td {
-  border: 1px solid #ccc;
-  padding: 6px;
+.race-btn {
+  padding: 15px;
+  font-size: 14px;
+  background: #ff6600;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#race-table, #ai-comments {
+  margin: 15px auto;
+  border-collapse: collapse;
+  width: 95%;
+  background: white;
+}
+
+#race-table th, #race-table td,
+#ai-comments th, #ai-comments td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  font-size: 12px;
   text-align: center;
 }
 
-.back-button {
-  margin: 15px;
-  padding: 10px 20px;
-  background: #007bff;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
+#race-table th, #ai-comments th {
+  background: #f0f0f0;
 }
 
-/* AIコメント表 */
-.ai-comment-table {
-  width: 95%;
-  margin: 10px auto;
-  border-collapse: collapse;
-  font-size: 13px;
+#ai-predictions {
+  list-style: none;
+  padding: 0;
+  margin: 15px auto;
+  width: 80%;
 }
 
-.ai-comment-table th, .ai-comment-table td {
-  border: 1px solid #aaa;
-  padding: 6px;
-  text-align: left;
+#ai-predictions li {
+  font-size: 14px;
+  padding: 5px;
 }

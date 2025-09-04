@@ -3,18 +3,62 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🚨キュイン🚨</title>
+  <title>競艇AI予想</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
-    <h1>🚨キュイン🚨</h1>
+    <h1>競艇AI予想</h1>
     <p id="current-date"></p>
   </header>
 
-  <main id="app">
-    <!-- JSで画面を切り替え -->
+  <!-- 競艇場一覧 -->
+  <main id="main-view">
+    <h2>競艇場一覧</h2>
+    <div id="venues-grid"></div>
   </main>
+
+  <!-- レース番号一覧 -->
+  <section id="race-view" class="hidden">
+    <button id="back-to-venues" class="back-btn">戻る</button>
+    <h2 id="venue-title"></h2>
+    <p id="venue-total-rate"></p>
+    <div id="race-buttons"></div>
+  </section>
+
+  <!-- 出走表とAI予想 -->
+  <section id="details-view" class="hidden">
+    <button id="back-to-races" class="back-btn">戻る</button>
+    <h2 id="race-title"></h2>
+
+    <h3>出走表</h3>
+    <table id="race-table">
+      <thead>
+        <tr>
+          <th>枠</th>
+          <th>階級</th>
+          <th>選手名</th>
+          <th>平均ST</th>
+          <th>モーター</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <h3>AI予想買い目</h3>
+    <ul id="ai-predictions"></ul>
+
+    <h3>AIコメント</h3>
+    <table id="ai-comments">
+      <thead>
+        <tr>
+          <th>コース</th>
+          <th>コメント</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </section>
 
   <script src="script.js"></script>
 </body>
