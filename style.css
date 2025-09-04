@@ -1,108 +1,101 @@
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  text-align: center;
-  background: #f4f7fa;
+:root{
+  --bg:#f5f7fb;
+  --card:#ffffff;
+  --ink:#0b1020;
+  --muted:#6b7280;
+  --primary:#0ea5e9;
+  --primary-ink:#fff;
+  --accent:#eef6ff;
+  --danger:#ef4444;
+  --ok:#10b981;
+  --ring: rgba(14,165,233,.25);
 }
-
-header {
-  background: #0044cc;
-  color: #fff;
-  padding: 15px;
+*{ box-sizing:border-box; }
+html,body{ margin:0; padding:0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans JP", sans-serif; color:var(--ink); background:var(--bg);}
+.app-header{
+  position:sticky; top:0; z-index:20;
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  padding:10px 12px; background:linear-gradient(#fff, #ffffffcc);
+  backdrop-filter: blur(8px); border-bottom:1px solid #e5e7eb;
 }
+.title-wrap{ display:flex; align-items:baseline; gap:14px; }
+.app-title{ margin:0; font-size:22px; font-weight:800; letter-spacing:.02em; }
+.today{ font-size:14px; color:var(--muted); }
+.header-right{ display:flex; align-items:center; gap:12px; }
+.accuracy{ font-size:14px; color:#111827; background:var(--accent); padding:6px 10px; border-radius:10px; }
 
-h1 {
-  font-size: 22px;
-  margin: 0;
+.view{ max-width:1100px; margin:12px auto; padding:0 12px 80px; }
+
+/* Buttons */
+.btn{ padding:12px 16px; border-radius:14px; border:0; background:var(--primary); color:var(--primary-ink); font-weight:700; font-size:16px; }
+.btn:active{ transform: scale(.98); }
+.btn.ghost{ background:#eef2f7; color:#0b1020; }
+.btn.back{ position:fixed; right:12px; bottom:14px; z-index:50; }
+.btn.block{ width:100%; }
+
+/* Cards */
+.card{ background:var(--card); border-radius:18px; padding:14px; box-shadow: 0 6px 24px rgba(12,27,62,.08); }
+.card + .card{ margin-top:12px; }
+
+/* Venues grid 4x6（横長/大きめタップ） */
+.venue-grid{
+  display:grid; gap:12px;
+  grid-template-columns: repeat(4, minmax(0,1fr));
 }
-
-#current-date {
-  font-size: 14px;
-  margin-top: 5px;
+.venue{
+  display:flex; align-items:center; justify-content:center; flex-direction:column;
+  gap:10px; padding:18px 10px; min-height:90px; border-radius:18px; background:var(--card);
+  box-shadow: 0 4px 18px rgba(0,0,0,.06);
 }
+.venue-name{ font-size:18px; font-weight:800; }
+.venue .state{ font-size:12px; color:var(--muted); }
+.venue.disabled{ opacity:.5; pointer-events:none; }
 
-.hidden {
-  display: none;
-}
-
-#venues-grid {
-  display: grid;
+/* Race buttons (1-12) → 3段表示 */
+.race-grid{
+  display:grid; gap:10px;
   grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
-  padding: 15px;
 }
-
-.venue-btn {
-  padding: 20px;
-  background: #0077ff;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-size: 14px;
-  cursor: pointer;
+.race-btn{
+  display:flex; align-items:center; justify-content:center;
+  padding:14px 8px; border-radius:14px; background:#eaf3ff; font-weight:800; font-size:18px;
+  box-shadow: inset 0 0 0 2px #dbeafe;
 }
+.race-btn.off{ opacity:.35; pointer-events:none; }
 
-.venue-btn:disabled {
-  background: #ccc;
-  cursor: not-allowed;
+/* Tables */
+.table{ width:100%; border-collapse:separate; border-spacing:0; }
+.table th, .table td{ padding:8px 10px; vertical-align:middle; }
+.table thead th{ font-size:12px; color:var(--muted); text-align:left; border-bottom:1px solid #e5e7eb; }
+.table tbody td{ font-size:14px; border-bottom:1px solid #f1f5f9; }
+.mono{ font-variant-numeric: tabular-nums; }
+
+/* Pills & chips */
+.pill{ font-size:12px; padding:4px 8px; border-radius:999px; background:#f3f4f6; margin-right:6px; display:inline-flex; align-items:center; gap:6px; }
+.pill.ok{ background:#ecfdf5; color:#065f46; }
+.pill.warn{ background:#fff7ed; color:#7c2d12; }
+
+/* Section titles */
+.h2{ font-size:18px; font-weight:800; margin:10px 0; }
+
+/* Comment table */
+.comment-grid{
+  display:grid; gap:10px;
+  grid-template-columns: repeat(2, minmax(0,1fr));
 }
-
-.back-btn {
-  margin: 10px;
-  padding: 10px 15px;
-  font-size: 14px;
-  background: #444;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
+.comment-box{
+  background:#fafafa; border:1px solid #eee; border-radius:14px; padding:10px 12px; font-size:14px;
 }
+.comment-box .lane{ font-weight:800; margin-bottom:6px; }
 
-#race-buttons {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 10px;
-  padding: 15px;
+/* Responsive */
+@media (max-width: 860px){
+  .venue-grid{ grid-template-columns: repeat(3, minmax(0,1fr)); }
+  .race-grid{ grid-template-columns: repeat(3, 1fr); }
 }
-
-.race-btn {
-  padding: 15px;
-  font-size: 14px;
-  background: #ff6600;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-#race-table, #ai-comments {
-  margin: 15px auto;
-  border-collapse: collapse;
-  width: 95%;
-  background: white;
-}
-
-#race-table th, #race-table td,
-#ai-comments th, #ai-comments td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  font-size: 12px;
-  text-align: center;
-}
-
-#race-table th, #ai-comments th {
-  background: #f0f0f0;
-}
-
-#ai-predictions {
-  list-style: none;
-  padding: 0;
-  margin: 15px auto;
-  width: 80%;
-}
-
-#ai-predictions li {
-  font-size: 14px;
-  padding: 5px;
+@media (max-width: 520px){
+  .venue-grid{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .race-grid{ grid-template-columns: repeat(2, 1fr); }
+  .app-title{ font-size:20px; }
+  .venue-name{ font-size:16px; }
 }
