@@ -1,45 +1,38 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>BOAT AI 予想 PWA</title>
-  <meta name="theme-color" content="#0ea5e9" />
-  <link rel="manifest" href="./manifest.webmanifest" />
-  <link rel="icon" href="./icon-192.png" />
-  <link rel="stylesheet" href="./style.css" />
+  <meta charset="UTF-8">
+  <title>競艇AI予想アプリ</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.webmanifest">
 </head>
 <body>
-  <header class="app-header">
-    <div class="title-wrap">
-      <h1 class="app-title">BOAT AI 予想</h1>
-      <div class="today" id="todayLabel">--/--/--</div>
-    </div>
-    <div class="header-right">
-      <div class="accuracy">
-        総合AI的中率：<span id="globalHit">--%</span>
-      </div>
-      <button id="refreshBtn" class="btn ghost">更新</button>
-    </div>
+  <header>
+    <h1>🚤 競艇AI予想アプリ</h1>
+    <p id="today"></p>
+    <p id="aiRate">総合AI的中率: --%</p>
+    <button onclick="updateData()">🔄 更新</button>
   </header>
 
-  <main id="view" class="view"></main>
+  <main id="mainView">
+    <!-- ここに競艇場リストを表示 -->
+    <div id="stadiumList" class="grid"></div>
+  </main>
 
-  <footer class="app-footer">
-    <div>© 2025 BOAT AI PWA</div>
-    <div>ホーム画面に追加でアプリ化 / オフライン対応</div>
-  </footer>
+  <main id="raceView" style="display:none;">
+    <h2 id="selectedStadium"></h2>
+    <div id="raceButtons"></div>
+    <button onclick="backToMain()">⬅ 戻る</button>
+  </main>
 
-  <template id="tpl-back-btn">
-    <button class="btn back" id="backBtn">← 戻る</button>
-  </template>
+  <main id="detailView" style="display:none;">
+    <h2 id="raceTitle"></h2>
+    <div id="raceTable"></div>
+    <div id="aiPrediction"></div>
+    <div id="aiComments"></div>
+    <button onclick="backToRace()">⬅ 戻る</button>
+  </main>
 
-  <script src="./script.js" type="module"></script>
-  <script>
-    // PWA: Service Worker
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./sw.js');
-    }
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>

@@ -1,212 +1,148 @@
 // script.js
-const VIEW = document.getElementById('view');
-const todayLabel = document.getElementById('todayLabel');
-const globalHit = document.getElementById('globalHit');
-const refreshBtn = document.getElementById('refreshBtn');
 
-const STATE = {
-  data: null,
-  screen: 'venues', // 'venues' | 'races' | 'race'
-  currentVenueId: null,
-  currentRaceId: null,
-};
+// ====== 初期データ ======
+const kyoteiJoList = [
+  "桐生", "戸田", "江戸川", "平和島", "多摩川", "浜名湖",
+  "蒲郡", "常滑", "津", "三国", "琵琶湖", "住之江",
+  "尼崎", "鳴門", "丸亀", "児島", "宮島", "徳山",
+  "下関", "若松", "芦屋", "福岡", "唐津", "大村"
+];
 
-function fmtDate(dstr){
-  const d = new Date(dstr + 'T00:00:00+09:00');
-  return d.toLocaleDateString('ja-JP', {year:'numeric', month:'2-digit', day:'2-digit', weekday:'short'});
+// ====== 日付表示 ======
+function updateDate() {
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, "0");
+  const dd = String(today.getDate()).padStart(2, "0");
+  document.getElementById("today").textContent = `${yyyy}/${mm}/${dd}`;
 }
 
-async function loadData(force=false){
-  // キャッシュ回避
-  const url = `./data.json${force ? `?t=${Date.now()}` : ''}`;
-  const res = await fetch(url, { cache:'no-store' });
-  if(!res.ok) throw new Error('データ取得エラー');
-  STATE.data = await res.json();
-  todayLabel.textContent = fmtDate(STATE.data.date);
-  globalHit.textContent = `${STATE.data.ai_accuracy ?? 0}%`;
+// ====== トータルAI的中率（仮データ） ======
+function getTotalAccuracy() {
+  // 本来は結果データと予想を比較して計算
+  return "AI的中率：65.2%";
 }
 
-function mountBack(){
-  const tpl = document.getElementById('tpl-back-btn');
-  const node = tpl.content.firstElementChild.cloneNode(true);
-  document.body.appendChild(node);
-  node.addEventListener('click', ()=>{
-    if(STATE.screen === 'race'){ STATE.screen = 'races'; render(); return; }
-    if(STATE.screen === 'races'){ STATE.screen = 'venues'; render(); return; }
-  });
-}
-function unmountBack(){
-  const btn = document.getElementById('backBtn');
-  if(btn) btn.remove();
-}
-
-/* ---------- Renderers ---------- */
-
-function renderVenues(){
-  unmountBack();
-  const v24 = STATE.data.venues; // 24場固定
-  const html = `
-    <section class="card">
-      <div class="h2">競艇場</div>
-      <div class="venue-grid">
-        ${v24.map(v=>{
-          const active = v.hasRacesToday;
-          return `
-          <button class="venue ${active ? '' : 'disabled'}" data-venue="${v.id}">
-            <div class="venue-name">${v.name}</div>
-            <div class="state">${active ? '開催中' : '本日開催なし'}</div>
-          </button>`;
-        }).join('')}
-      </div>
-    </section>
+// ====== メイン画面：競艇場一覧 ======
+function renderMainScreen() {
+  const app = document.getElementById("app");
+  app.innerHTML = `
+    <h1>競艇AI予想</h1>
+    <div id="today"></div>
+    <div id="accuracy">${getTotalAccuracy()}</div>
+    <button onclick="renderMainScreen()">更新</button>
+    <div class="grid-container" id="kyotei-list"></div>
   `;
-  VIEW.innerHTML = html;
+  updateDate();
 
-  document.querySelectorAll('[data-venue]').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      const id = btn.getAttribute('data-venue');
-      STATE.currentVenueId = id;
-      STATE.screen = 'races';
-      render();
-    });
+  const listDiv = document.getElementById("kyotei-list");
+  kyoteiJoList.forEach((name, index) => {
+    const btn = document.createElement("button");
+    btn.textContent = name;
+    btn.onclick = () => renderRaceList(name);
+    listDiv.appendChild(btn);
   });
 }
 
-function renderRaces(){
-  unmountBack();
-  mountBack();
-
-  const venue = STATE.data.venues.find(v=> String(v.id) === String(STATE.currentVenueId));
-  const races = (STATE.data.races[venue.id] || []).slice(0,12);
-
-  const html = `
-    <section class="card">
-      <div class="h2">${venue.name}（1〜12R）</div>
-      <div class="race-grid">
-        ${races.map(r=>{
-          const off = r.status==='finished' ? 'off' : '';
-          return `<button class="race-btn ${off}" data-race="${r.raceId}">${r.number}R</button>`;
-        }).join('')}
-      </div>
-    </section>
+// ====== レース番号画面 ======
+function renderRaceList(kyoteiJo) {
+  const app = document.getElementById("app");
+  app.innerHTML = `
+    <h2>${kyoteiJo} - レース一覧</h2>
+    <button onclick="renderMainScreen()" class="back-btn">戻る</button>
+    <div class="grid-container" id="race-list"></div>
   `;
-  VIEW.innerHTML = html;
 
-  document.querySelectorAll('[data-race]').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      STATE.currentRaceId = btn.getAttribute('data-race');
-      STATE.screen = 'race';
-      render();
-    });
-  });
-}
-
-function renderRace(){
-  unmountBack();
-  mountBack();
-
-  // raceデータ取得
-  const venue = STATE.data.venues.find(v=> String(v.id) === String(STATE.currentVenueId));
-  const race = (STATE.data.races[venue.id] || []).find(r=> String(r.raceId) === String(STATE.currentRaceId));
-  if(!race){ VIEW.innerHTML = `<section class="card">レースデータなし</section>`; return; }
-
-  // 出走表テーブル
-  const tRows = race.entries.map(e=>`
-    <tr>
-      <td class="mono">${e.lane}</td>
-      <td>${e.class}</td>
-      <td>${e.name}</td>
-      <td class="mono">${e.avgST.toFixed(2)}</td>
-      <td>
-        <div class="motor">
-          <div class="mono">No.${e.motor.no}</div>
-          <div class="mono" style="font-size:12px;color:#374151;">2連率: ${e.motor.rate2}%</div>
-          <div class="mono" style="font-size:12px;color:#374151;">3連率: ${e.motor.rate3}%</div>
-        </div>
-      </td>
-    </tr>
-  `).join('');
-
-  // 予想（確率付き）
-  const predRows = race.predictions.map(p=>`
-    <tr>
-      <td>${p.buy}</td>
-      <td class="mono">${(p.probability||0)}%</td>
-      <td class="mono">${p.odds ? `${p.odds}倍` : '-'}</td>
-    </tr>
-  `).join('');
-
-  // コース別コメント
-  const cx = race.comments || {};
-  const cBlocks = [1,2,3,4,5,6].map(l => `
-    <div class="comment-box">
-      <div class="lane">${l}コース</div>
-      <div>${cx[String(l)] || 'データ準備中'}</div>
-    </div>
-  `).join('');
-
-  const env = race.env || {};
-  const result = race.result;
-
-  VIEW.innerHTML = `
-    <section class="card">
-      <div class="h2">${venue.name} ${race.number}R　<span class="pill">発走 ${race.startTime || '-'}</span></div>
-      <div style="display:flex; gap:12px; flex-wrap:wrap; margin:8px 0 6px;">
-        <div class="pill">風向 ${env.windDir ?? '-'}</div>
-        <div class="pill">風速 ${env.windSpeed ?? '-'} m/s</div>
-        <div class="pill">波高 ${env.wave ?? '-'} cm</div>
-        ${result ? `<div class="pill ok">結果 ${result.kind} ${result.numbers.join('-')}</div>` : `<div class="pill warn">結果 未確定</div>`}
-      </div>
-
-      <div class="h2">出走表</div>
-      <div class="card" style="padding:0;">
-        <table class="table">
-          <thead>
-            <tr><th>枠</th><th>級</th><th>選手</th><th>平均ST</th><th>モーター</th></tr>
-          </thead>
-          <tbody>${tRows}</tbody>
-        </table>
-      </div>
-
-      <div class="h2">AI予想買い目（確率付き・5点）</div>
-      <div class="card" style="padding:0;">
-        <table class="table">
-          <thead>
-            <tr><th>買い目</th><th>確率</th><th>参考オッズ</th></tr>
-          </thead>
-          <tbody>${predRows}</tbody>
-        </table>
-      </div>
-
-      <div class="h2">展開予想 AIコメント（コース別）</div>
-      <div class="comment-grid">${cBlocks}</div>
-    </section>
-  `;
-}
-
-function render(){
-  if(!STATE.data) return;
-  if(STATE.screen==='venues') renderVenues();
-  else if(STATE.screen==='races') renderRaces();
-  else renderRace();
-}
-
-/* ---------- Boot ---------- */
-refreshBtn.addEventListener('click', async()=>{
-  try{
-    await loadData(true);
-    render();
-  }catch(e){
-    alert('データ取得エラー。data.json を確認してください。');
+  const listDiv = document.getElementById("race-list");
+  for (let i = 1; i <= 12; i++) {
+    const btn = document.createElement("button");
+    btn.textContent = `${i}R`;
+    btn.onclick = () => renderRaceDetail(kyoteiJo, i);
+    listDiv.appendChild(btn);
   }
-});
+}
 
-(async()=>{
-  try{
-    await loadData(false);
-    render();
-  }catch(e){
-    // 初回エラー時もUIだけ描画
-    VIEW.innerHTML = `<section class="card">データ取得エラー。<br/>data.json を配置してください。</section>`;
-  }
-})();
+// ====== 出走表 + AI予想画面 ======
+function renderRaceDetail(kyoteiJo, raceNo) {
+  const app = document.getElementById("app");
+  app.innerHTML = `
+    <h2>${kyoteiJo} ${raceNo}R 出走表</h2>
+    <button onclick="renderRaceList('${kyoteiJo}')" class="back-btn">戻る</button>
+
+    <table class="race-table">
+      <thead>
+        <tr>
+          <th>枠番</th><th>級別</th><th>選手名</th>
+          <th>平均ST</th><th>モーター</th>
+        </tr>
+      </thead>
+      <tbody id="race-data"></tbody>
+    </table>
+
+    <h3>AI予想買い目</h3>
+    <ul id="ai-bets"></ul>
+
+    <h3>AIコメント</h3>
+    <table class="comment-table">
+      <thead><tr><th>コース</th><th>コメント</th></tr></thead>
+      <tbody id="ai-comments"></tbody>
+    </table>
+  `;
+
+  // 出走表（仮データ）
+  const raceData = [
+    { waku: 1, grade: "A1", name: "田中太郎", st: "0.15", motor: "12(36/55)" },
+    { waku: 2, grade: "B2", name: "佐藤次郎", st: "0.20", motor: "34(22/40)" },
+    { waku: 3, grade: "A2", name: "鈴木花子", st: "0.14", motor: "56(44/60)" },
+    { waku: 4, grade: "B1", name: "山本健", st: "0.18", motor: "78(30/50)" },
+    { waku: 5, grade: "A1", name: "中村光", st: "0.16", motor: "90(50/70)" },
+    { waku: 6, grade: "B1", name: "小林大", st: "0.22", motor: "11(18/38)" },
+  ];
+
+  const tbody = document.getElementById("race-data");
+  raceData.forEach(row => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${row.waku}</td>
+      <td>${row.grade}</td>
+      <td>${row.name}</td>
+      <td>${row.st}</td>
+      <td>${row.motor}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  // AI予想（仮データ）
+  const bets = [
+    { bet: "3-1-4", prob: 32 },
+    { bet: "3-1-5", prob: 28 },
+    { bet: "3-4-1", prob: 20 },
+    { bet: "3-4-5", prob: 12 },
+    { bet: "3-5-1", prob: 8 },
+  ];
+  const betList = document.getElementById("ai-bets");
+  bets.forEach(b => {
+    const li = document.createElement("li");
+    li.textContent = `${b.bet} (${b.prob}%)`;
+    betList.appendChild(li);
+  });
+
+  // AIコメント（コース別、仮データ）
+  const comments = [
+    { course: "1コース", text: "今節はスタートに不安あり。捲られる傾向。" },
+    { course: "2コース", text: "ターンが甘く、2着までか。" },
+    { course: "3コース", text: "スタート決まっており、捲り差し有力。" },
+    { course: "4コース", text: "展開つけば浮上可能。" },
+    { course: "5コース", text: "差しに回れば上位狙える。" },
+    { course: "6コース", text: "展開待ち。大外で厳しい。" },
+  ];
+  const cbody = document.getElementById("ai-comments");
+  comments.forEach(c => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td>${c.course}</td><td>${c.text}</td>`;
+    cbody.appendChild(tr);
+  });
+}
+
+// ====== 起動 ======
+document.addEventListener("DOMContentLoaded", renderMainScreen);
