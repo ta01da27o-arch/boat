@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>競艇AI予想アプリ</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.webmanifest">
+</head>
+<body>
+  <header>
+    <h1>競艇AI予想アプリ</h1>
+    <p id="date"></p>
+    <p id="overall-accuracy">総合AI的中率: --%</p>
+    <button id="refresh-btn">更新</button>
+  </header>
+
+  <main id="main-screen">
+    <h2>競艇場一覧</h2>
+    <div id="stadium-list" class="grid"></div>
+  </main>
+
+  <section id="race-screen" class="hidden">
+    <button class="back-btn" onclick="goBack('main')">← 戻る</button>
+    <h2 id="stadium-title"></h2>
+    <div id="race-list" class="race-grid"></div>
+  </section>
+
+  <section id="detail-screen" class="hidden">
+    <button class="back-btn" onclick="goBack('race')">← 戻る</button>
+    <h2 id="race-title"></h2>
+    <div id="race-detail"></div>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>

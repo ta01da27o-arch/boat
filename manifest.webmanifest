@@ -1,0 +1,9 @@
+{
+  "name": "競艇AI予想アプリ",
+  "short_name": "競艇AI",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#005BAC",
+  "theme_color": "#005BAC",
+  "icons": []
+}
