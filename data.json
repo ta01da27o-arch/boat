@@ -1,0 +1,28 @@
+{
+  "venues": [
+    {"name":"桐生","aiRate":60,"races":[]},
+    {"name":"戸田","aiRate":62,"races":[]},
+    {"name":"江戸川","aiRate":58,"races":[]},
+    {"name":"平和島","aiRate":61,"races":[]},
+    {"name":"多摩川","aiRate":59,"races":[]},
+    {"name":"浜名湖","aiRate":63,"races":[]},
+    {"name":"蒲郡","aiRate":64,"races":[]},
+    {"name":"常滑","aiRate":57,"races":[]},
+    {"name":"津","aiRate":60,"races":[]},
+    {"name":"三国","aiRate":56,"races":[]},
+    {"name":"琵琶湖","aiRate":58,"races":[]},
+    {"name":"住之江","aiRate":62,"races":[]},
+    {"name":"尼崎","aiRate":61,"races":[]},
+    {"name":"鳴門","aiRate":59,"races":[]},
+    {"name":"丸亀","aiRate":60,"races":[]},
+    {"name":"児島","aiRate":57,"races":[]},
+    {"name":"宮島","aiRate":62,"races":[]},
+    {"name":"徳山","aiRate":60,"races":[]},
+    {"name":"下関","aiRate":58,"races":[]},
+    {"name":"若松","aiRate":61,"races":[]},
+    {"name":"芦屋","aiRate":59,"races":[]},
+    {"name":"福岡","aiRate":65,"races":[]},
+    {"name":"唐津","aiRate":57,"races":[]},
+    {"name":"大村","aiRate":60,"races":[]}
+  ]
+}
