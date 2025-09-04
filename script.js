@@ -12,7 +12,7 @@ const kyoteiJoList = [
   "下関","若松","芦屋","福岡","唐津","大村"
 ];
 
-// 仮のデータ
+// 仮のデータ（モック）
 const sampleRaceData = {
   "1R": {
     racers: [
@@ -20,8 +20,22 @@ const sampleRaceData = {
       { waku: 2, grade: "B2", name: "佐藤次郎", st: "0.23", motor: "33 (2連15% / 3連25%)" },
       { waku: 3, grade: "A2", name: "鈴木三郎", st: "0.14", motor: "45 (2連40% / 3連55%)" },
     ],
-    aiPrediction: ["3-1-4", "3-1-5", "3-4-1", "3-4-5", "3-5-1"],
-    aiComment: "今節は3号艇のスタート決まっており舟足良好。2号艇は伸び欠くため3号艇の捲り差し有力。"
+    aiPrediction: [
+      { bet: "3-1-4", prob: 32 },
+      { bet: "3-1-5", prob: 25 },
+      { bet: "3-4-1", prob: 20 },
+      { bet: "3-4-5", prob: 15 },
+      { bet: "3-5-1", prob: 8 }
+    ],
+    aiComment: [
+      { course: "1コース", text: "スタートに不安あり。捲られる傾向が多い。" },
+      { course: "2コース", text: "伸びに欠ける。序盤で遅れる可能性あり。" },
+      { course: "3コース", text: "スタート決まっており舟足良好。捲り差し濃厚。" },
+      { course: "4コース", text: "展開を突く動き。連下候補。" },
+      { course: "5コース", text: "差し足伸び良く、上位食い込み可能。" },
+      { course: "6コース", text: "展開次第で3着狙い。" }
+    ],
+    totalRate: 58 // トータル的中率（モック）
   }
 };
 
@@ -29,7 +43,13 @@ const sampleRaceData = {
 function showKyoteiJoList() {
   let html = `<div class="grid">`;
   kyoteiJoList.forEach(name => {
-    html += `<button class="active" onclick="showRaceList('${name}')">${name}</button>`;
+    // モック的中率（50〜70%の範囲でランダム生成）
+    const rate = Math.floor(Math.random() * 20) + 50;
+    html += `
+      <div>
+        <button class="active" onclick="showRaceList('${name}')">${name}</button>
+        <div class="total-rate">的中率: ${rate}%</div>
+      </div>`;
   });
   html += `</div>`;
   app.innerHTML = html;
@@ -55,13 +75,23 @@ function showRaceDetail(joName, raceNo) {
     return;
   }
 
+  // 出走表
   let table = `<table><tr><th>枠</th><th>級</th><th>選手名</th><th>平均ST</th><th>モーター</th></tr>`;
   race.racers.forEach(r =>
     table += `<tr><td>${r.waku}</td><td>${r.grade}</td><td>${r.name}</td><td>${r.st}</td><td>${r.motor}</td></tr>`
   );
   table += `</table>`;
 
-  let buys = race.aiPrediction.map(b => `<li>${b}</li>`).join("");
+  // AI予想買い目 + 確率
+  let buys = race.aiPrediction.map(b => `<li>${b.bet} (${b.prob}%)</li>`).join("");
+
+  // AIコメント（表形式）
+  let commentTable = `<table class="ai-comment-table"><tr><th>コース</th><th>コメント</th></tr>`;
+  race.aiComment.forEach(c =>
+    commentTable += `<tr><td>${c.course}</td><td>${c.text}</td></tr>`
+  );
+  commentTable += `</table>`;
+
   let html = `
     <h2>${joName} ${raceNo}</h2>
     <h3>出走表</h3>
@@ -69,7 +99,7 @@ function showRaceDetail(joName, raceNo) {
     <h3>AI予想買い目</h3>
     <ul>${buys}</ul>
     <h3>AIコメント</h3>
-    <p>${race.aiComment}</p>
+    ${commentTable}
     <button class="back-button" onclick="showRaceList('${joName}')">戻る</button>
   `;
 

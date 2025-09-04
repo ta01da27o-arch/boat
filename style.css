@@ -46,6 +46,12 @@ h1 {
   color: white;
 }
 
+.total-rate {
+  font-size: 14px;
+  margin-top: 4px;
+  color: #007bff;
+}
+
 /* レース番号リスト */
 .race-grid {
   display: grid;
@@ -85,4 +91,18 @@ table th, table td {
   border: none;
   border-radius: 6px;
   cursor: pointer;
+}
+
+/* AIコメント表 */
+.ai-comment-table {
+  width: 95%;
+  margin: 10px auto;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.ai-comment-table th, .ai-comment-table td {
+  border: 1px solid #aaa;
+  padding: 6px;
+  text-align: left;
 }
