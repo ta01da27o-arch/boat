@@ -1,57 +1,155 @@
 {
+  "date": "2025-09-04",
+  "ai_accuracy": 67,
   "venues": [
-    {
-      "id": "fukuoka",
-      "name": "福岡",
-      "races": [
-        {
-          "no": 1,
-          "entries": [
-            {"waku":1,"class":"A1","name":"山田太郎","st":0.15,"f":"F1","local":[45,40,30,20,5,7],"motor":[50,40,30,20,10,5],"course":[60,40,20,10,5,2]},
-            {"waku":2,"class":"A2","name":"田中一郎","st":0.18,"f":"","local":[30,25,20,15,5,3],"motor":[40,35,30,15,10,5],"course":[45,35,25,15,5,2]},
-            {"waku":3,"class":"B1","name":"佐藤次郎","st":0.20,"f":"","local":[20,18,15,10,5,2],"motor":[30,25,20,15,10,5],"course":[35,28,20,10,5,2]},
-            {"waku":4,"class":"B1","name":"鈴木三郎","st":0.21,"f":"F2","local":[15,12,10,8,5,1],"motor":[25,20,15,10,5,2],"course":[30,22,15,10,5,1]},
-            {"waku":5,"class":"B2","name":"高橋四郎","st":0.23,"f":"","local":[10,8,6,5,3,1],"motor":[20,15,10,8,5,2],"course":[25,18,12,8,5,2]},
-            {"waku":6,"class":"B2","name":"伊藤五郎","st":0.25,"f":"","local":[8,6,5,3,2,1],"motor":[18,12,8,5,3,1],"course":[20,15,10,5,3,1]}
+    { "id": 1, "name": "桐生", "hasRacesToday": false, "aiRate": 48 },
+    { "id": 2, "name": "戸田", "hasRacesToday": true, "aiRate": 50 },
+    { "id": 3, "name": "江戸川", "hasRacesToday": false, "aiRate": 46 },
+    { "id": 4, "name": "平和島", "hasRacesToday": false, "aiRate": 55 },
+    { "id": 5, "name": "多摩川", "hasRacesToday": false, "aiRate": 54 },
+    { "id": 6, "name": "浜名湖", "hasRacesToday": false, "aiRate": 53 },
+    { "id": 7, "name": "蒲郡", "hasRacesToday": false, "aiRate": 49 },
+    { "id": 8, "name": "常滑", "hasRacesToday": false, "aiRate": 51 },
+    { "id": 9, "name": "津", "hasRacesToday": false, "aiRate": 47 },
+    { "id": 10, "name": "三国", "hasRacesToday": false, "aiRate": 52 },
+    { "id": 11, "name": "琵琶湖", "hasRacesToday": true, "aiRate": 58 },
+    { "id": 12, "name": "住之江", "hasRacesToday": false, "aiRate": 56 },
+    { "id": 13, "name": "尼崎", "hasRacesToday": false, "aiRate": 53 },
+    { "id": 14, "name": "鳴門", "hasRacesToday": false, "aiRate": 48 },
+    { "id": 15, "name": "丸亀", "hasRacesToday": false, "aiRate": 55 },
+    { "id": 16, "name": "児島", "hasRacesToday": false, "aiRate": 52 },
+    { "id": 17, "name": "宮島", "hasRacesToday": false, "aiRate": 50 },
+    { "id": 18, "name": "徳山", "hasRacesToday": false, "aiRate": 49 },
+    { "id": 19, "name": "下関", "hasRacesToday": false, "aiRate": 54 },
+    { "id": 20, "name": "若松", "hasRacesToday": false, "aiRate": 53 },
+    { "id": 21, "name": "芦屋", "hasRacesToday": false, "aiRate": 52 },
+    { "id": 22, "name": "福岡", "hasRacesToday": true, "aiRate": 51 },
+    { "id": 23, "name": "唐津", "hasRacesToday": false, "aiRate": 50 },
+    { "id": 24, "name": "大村", "hasRacesToday": false, "aiRate": 57 }
+  ],
+  "races": {
+    "2": [
+      {
+        "raceId": "toda-01",
+        "number": 1,
+        "startTime": "10:40",
+        "status": "open",
+        "env": { "weather": "晴", "windDir": "向かい", "windSpeed": 5.8, "wave": 20 },
+        "entries": [
+          { "lane": 1, "class": "A1", "name": "戸田 一郎", "avgST": 0.13, "f": null, "local2": "41%", "local3": "58%", "motor": { "no": 11, "rate2": "41%", "rate3": "58%" }, "courseRate": "1コース 76%" },
+          { "lane": 2, "class": "A2", "name": "戸田 二郎", "avgST": 0.14, "f": null, "local2": "36%", "local3": "49%", "motor": { "no": 34, "rate2": "36%", "rate3": "49%" }, "courseRate": "2コース 64%" },
+          { "lane": 3, "class": "B1", "name": "戸田 三郎", "avgST": 0.16, "f": null, "local2": "28%", "local3": "40%", "motor": { "no": 50, "rate2": "28%", "rate3": "40%" }, "courseRate": "3コース 50%" },
+          { "lane": 4, "class": "A1", "name": "戸田 四郎", "avgST": 0.12, "f": "F1", "local2": "46%", "local3": "62%", "motor": { "no": 63, "rate2": "46%", "rate3": "62%" }, "courseRate": "4コース 55%" },
+          { "lane": 5, "class": "B1", "name": "戸田 五郎", "avgST": 0.17, "f": null, "local2": "25%", "local3": "39%", "motor": { "no": 28, "rate2": "25%", "rate3": "39%" }, "courseRate": "5コース 38%" },
+          { "lane": 6, "class": "B2", "name": "戸田 六郎", "avgST": 0.19, "f": null, "local2": "18%", "local3": "30%", "motor": { "no": 9, "rate2": "18%", "rate3": "30%" }, "courseRate": "6コース 25%" }
+        ],
+        "predictions": {
+          "main": [
+            { "buy": "1-4-2", "probability": 26, "odds": 9.8 },
+            { "buy": "4-1-2", "probability": 22, "odds": 12.3 },
+            { "buy": "1-2-4", "probability": 19, "odds": 10.6 },
+            { "buy": "4-2-1", "probability": 17, "odds": 14.9 },
+            { "buy": "1-4-3", "probability": 16, "odds": 13.1 }
           ],
-          "ai": {
-            "main":[{"bet":"1-2-3","rate":56},{"bet":"1-3-2","rate":20},{"bet":"2-1-3","rate":10},{"bet":"1-4-2","rate":8},{"bet":"3-1-4","rate":6}],
-            "sub":[{"bet":"3-1-4","rate":18},{"bet":"4-1-2","rate":15},{"bet":"2-3-1","rate":12},{"bet":"5-1-2","rate":10},{"bet":"6-1-2","rate":8}]
-          },
-          "comments":[
-            {"no":1,"text":"インから強力。地元水面も得意。"},
-            {"no":2,"text":"差しが決まれば上位。"},
-            {"no":3,"text":"スタートにムラあり。"},
-            {"no":4,"text":"モーター力不足。"},
-            {"no":5,"text":"展開待ち。"},
-            {"no":6,"text":"-"}
+          "ana": [
+            { "buy": "3-1-4", "probability": 12, "odds": 21.4 },
+            { "buy": "1-3-2", "probability": 10, "odds": 18.3 },
+            { "buy": "2-4-1", "probability": 9, "odds": 24.7 },
+            { "buy": "5-1-4", "probability": 8, "odds": 28.0 },
+            { "buy": "1-5-3", "probability": 7, "odds": 32.1 }
           ]
+        },
+        "comments": {
+          "1": "1号艇はスタート堅実で先手を取れば逃げ切り有力。展示の伸びも良好。",
+          "2": "2号艇は差しを狙うがスタートのばらつきあり。外からの圧力に注意。",
+          "3": "3号艇は伸びに欠ける節があり一発狙い。差し場面で浮上の可能性。",
+          "4": "4号艇は先行力はあるがF明けでやや慎重の可能性（過去にF1）。",
+          "5": "5号艇は展示での回りが鈍く展開頼み。3着中心。",
+          "6": "-"
         }
-      ]
-    },
-    {
-      "id": "toda",
-      "name": "戸田",
-      "races": [
-        {
-          "no": 1,
-          "entries": [ /* 上と同形式でモック選手データ */ ],
-          "ai": { "main":[{"bet":"1-2-3","rate":55}], "sub":[{"bet":"3-1-2","rate":15}] },
-          "comments":[{"no":1,"text":"-"}]
+      }
+    ],
+    "11": [
+      {
+        "raceId": "biwako-01",
+        "number": 1,
+        "startTime": "10:45",
+        "status": "open",
+        "env": { "weather": "曇", "windDir": "左横", "windSpeed": 3.2, "wave": 10 },
+        "entries": [
+          { "lane": 1, "class": "A2", "name": "大津 一郎", "avgST": 0.15, "f": null, "local2": "37%", "local3": "51%", "motor": { "no": 22, "rate2": "37%", "rate3": "51%" }, "courseRate": "1コース 72%" },
+          { "lane": 2, "class": "B1", "name": "草津 二郎", "avgST": 0.16, "f": null, "local2": "32%", "local3": "45%", "motor": { "no": 44, "rate2": "32%", "rate3": "45%" }, "courseRate": "2コース 60%" },
+          { "lane": 3, "class": "A1", "name": "長浜 三郎", "avgST": 0.12, "f": null, "local2": "49%", "local3": "63%", "motor": { "no": 71, "rate2": "49%", "rate3": "63%" }, "courseRate": "3コース 58%" },
+          { "lane": 4, "class": "A2", "name": "米原 四郎", "avgST": 0.13, "f": null, "local2": "35%", "local3": "50%", "motor": { "no": 18, "rate2": "35%", "rate3": "50%" }, "courseRate": "4コース 46%" },
+          { "lane": 5, "class": "B1", "name": "甲良 五郎", "avgST": 0.17, "f": null, "local2": "30%", "local3": "42%", "motor": { "no": 39, "rate2": "30%", "rate3": "42%" }, "courseRate": "5コース 35%" },
+          { "lane": 6, "class": "B2", "name": "彦根 六郎", "avgST": 0.19, "f": null, "local2": "19%", "local3": "31%", "motor": { "no": 6, "rate2": "19%", "rate3": "31%" }, "courseRate": "6コース 22%" }
+        ],
+        "predictions": {
+          "main": [
+            { "buy": "3-1-4", "probability": 25, "odds": 13.5 },
+            { "buy": "1-3-4", "probability": 22, "odds": 10.1 },
+            { "buy": "3-4-1", "probability": 20, "odds": 16.8 },
+            { "buy": "1-4-3", "probability": 17, "odds": 14.2 },
+            { "buy": "3-1-2", "probability": 16, "odds": 15.9 }
+          ],
+          "ana": [
+            { "buy": "2-3-1", "probability": 11, "odds": 19.2 },
+            { "buy": "1-3-5", "probability": 9, "odds": 21.1 },
+            { "buy": "4-1-3", "probability": 8, "odds": 24.8 },
+            { "buy": "3-2-4", "probability": 7, "odds": 28.3 },
+            { "buy": "5-3-1", "probability": 6, "odds": 30.4 }
+          ]
+        },
+        "comments": {
+          "1": "1号艇は安定して内を残せる。スタート堅実で逃げ中心。",
+          "2": "2号艇は差しにまわる場面だが本節は少し回転にムラあり。",
+          "3": "3号艇は伸び上位。捲り差しで浮上の確率高め。",
+          "4": "4号艇は安定しているがやや機力平凡で展開待ち。",
+          "5": "5号艇は外伸び傾向だが信頼度は低め。",
+          "6": "-"
         }
-      ]
-    },
-    {
-      "id": "biwako",
-      "name": "琵琶湖",
-      "races": [
-        {
-          "no": 1,
-          "entries": [ /* 上と同形式 */ ],
-          "ai": { "main":[{"bet":"1-2-3","rate":52}], "sub":[{"bet":"2-3-1","rate":14}] },
-          "comments":[{"no":1,"text":"-"}]
+      }
+    ],
+    "22": [
+      {
+        "raceId": "fukuoka-01",
+        "number": 1,
+        "startTime": "10:35",
+        "status": "open",
+        "env": { "weather": "晴", "windDir": "追い", "windSpeed": 4.5, "wave": 15 },
+        "entries": [
+          { "lane": 1, "class": "A2", "name": "福岡 太郎", "avgST": 0.14, "f": null, "local2": "34%", "local3": "48%", "motor": { "no": 36, "rate2": "34%", "rate3": "48%" }, "courseRate": "1コース 68%" },
+          { "lane": 2, "class": "B1", "name": "春吉 次郎", "avgST": 0.17, "f": null, "local2": "29%", "local3": "41%", "motor": { "no": 12, "rate2": "29%", "rate3": "41%" }, "courseRate": "2コース 55%" },
+          { "lane": 3, "class": "A1", "name": "博多 三郎", "avgST": 0.12, "f": null, "local2": "48%", "local3": "61%", "motor": { "no": 68, "rate2": "48%", "rate3": "61%" }, "courseRate": "3コース 60%" },
+          { "lane": 4, "class": "A2", "name": "中洲 四郎", "avgST": 0.13, "f": null, "local2": "36%", "local3": "52%", "motor": { "no": 22, "rate2": "36%", "rate3": "52%" }, "courseRate": "4コース 50%" },
+          { "lane": 5, "class": "B1", "name": "百道 五郎", "avgST": 0.16, "f": null, "local2": "31%", "local3": "44%", "motor": { "no": 45, "rate2": "31%", "rate3": "44%" }, "courseRate": "5コース 40%" },
+          { "lane": 6, "class": "B2", "name": "天神 六郎", "avgST": 0.18, "f": null, "local2": "21%", "local3": "33%", "motor": { "no": 5, "rate2": "21%", "rate3": "33%" }, "courseRate": "6コース 30%" }
+        ],
+        "predictions": {
+          "main": [
+            { "buy": "3-1-4", "probability": 27, "odds": 12.4 },
+            { "buy": "3-4-1", "probability": 23, "odds": 15.2 },
+            { "buy": "4-3-1", "probability": 19, "odds": 18.1 },
+            { "buy": "3-5-1", "probability": 16, "odds": 21.7 },
+            { "buy": "4-1-3", "probability": 15, "odds": 24.3 }
+          ],
+          "ana": [
+            { "buy": "1-3-4", "probability": 11, "odds": 20.5 },
+            { "buy": "3-1-5", "probability": 9, "odds": 25.6 },
+            { "buy": "2-4-1", "probability": 8, "odds": 28.0 },
+            { "buy": "5-3-1", "probability": 6, "odds": 33.2 },
+            { "buy": "4-5-1", "probability": 5, "odds": 40.8 }
+          ]
+        },
+        "comments": {
+          "1": "インの1号艇は今節動き良し。スタート確保できれば残す展開。",
+          "2": "2号艇は展示で踏み込み弱め。差しで絡めるか微妙。",
+          "3": "3号艇は伸びと回転が良く捲り差し警戒。主軸推奨。",
+          "4": "4号艇は堅実だが本節やや疲れ見え。連は可能性あり。",
+          "5": "5号艇は展開次第で絡むが信頼度は低め。",
+          "6": "-"
         }
-      ]
-    }
-  ]
+      }
+    ]
+  }
 }
