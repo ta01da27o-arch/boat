@@ -2,65 +2,32 @@
   "date": "2025-09-04",
   "ai_accuracy": 67,
   "venues": [
-    { "id": 1, "name": "桐生", "hasRacesToday": false },
-    { "id": 2, "name": "戸田", "hasRacesToday": true },
-    { "id": 3, "name": "江戸川", "hasRacesToday": false },
-    { "id": 4, "name": "平和島", "hasRacesToday": false },
-    { "id": 5, "name": "多摩川", "hasRacesToday": false },
-    { "id": 6, "name": "浜名湖", "hasRacesToday": false },
-    { "id": 7, "name": "蒲郡", "hasRacesToday": false },
-    { "id": 8, "name": "常滑", "hasRacesToday": false },
-    { "id": 9, "name": "津", "hasRacesToday": false },
-    { "id": 10, "name": "三国", "hasRacesToday": false },
-    { "id": 11, "name": "琵琶湖", "hasRacesToday": true },
-    { "id": 12, "name": "住之江", "hasRacesToday": false },
-    { "id": 13, "name": "尼崎", "hasRacesToday": false },
-    { "id": 14, "name": "鳴門", "hasRacesToday": false },
-    { "id": 15, "name": "丸亀", "hasRacesToday": false },
-    { "id": 16, "name": "児島", "hasRacesToday": false },
-    { "id": 17, "name": "宮島", "hasRacesToday": false },
-    { "id": 18, "name": "徳山", "hasRacesToday": false },
-    { "id": 19, "name": "下関", "hasRacesToday": false },
-    { "id": 20, "name": "若松", "hasRacesToday": false },
-    { "id": 21, "name": "芦屋", "hasRacesToday": false },
-    { "id": 22, "name": "福岡", "hasRacesToday": true },
-    { "id": 23, "name": "唐津", "hasRacesToday": false },
-    { "id": 24, "name": "大村", "hasRacesToday": false }
+    { "id": 1, "name": "桐生", "hasRacesToday": false, "aiRate": 48 },
+    { "id": 2, "name": "戸田", "hasRacesToday": true, "aiRate": 50 },
+    { "id": 3, "name": "江戸川", "hasRacesToday": false, "aiRate": 46 },
+    { "id": 4, "name": "平和島", "hasRacesToday": false, "aiRate": 55 },
+    { "id": 5, "name": "多摩川", "hasRacesToday": false, "aiRate": 54 },
+    { "id": 6, "name": "浜名湖", "hasRacesToday": false, "aiRate": 53 },
+    { "id": 7, "name": "蒲郡", "hasRacesToday": false, "aiRate": 49 },
+    { "id": 8, "name": "常滑", "hasRacesToday": false, "aiRate": 51 },
+    { "id": 9, "name": "津", "hasRacesToday": false, "aiRate": 47 },
+    { "id": 10, "name": "三国", "hasRacesToday": false, "aiRate": 52 },
+    { "id": 11, "name": "琵琶湖", "hasRacesToday": true, "aiRate": 58 },
+    { "id": 12, "name": "住之江", "hasRacesToday": false, "aiRate": 56 },
+    { "id": 13, "name": "尼崎", "hasRacesToday": false, "aiRate": 53 },
+    { "id": 14, "name": "鳴門", "hasRacesToday": false, "aiRate": 48 },
+    { "id": 15, "name": "丸亀", "hasRacesToday": false, "aiRate": 55 },
+    { "id": 16, "name": "児島", "hasRacesToday": false, "aiRate": 52 },
+    { "id": 17, "name": "宮島", "hasRacesToday": false, "aiRate": 50 },
+    { "id": 18, "name": "徳山", "hasRacesToday": false, "aiRate": 49 },
+    { "id": 19, "name": "下関", "hasRacesToday": false, "aiRate": 54 },
+    { "id": 20, "name": "若松", "hasRacesToday": false, "aiRate": 53 },
+    { "id": 21, "name": "芦屋", "hasRacesToday": false, "aiRate": 52 },
+    { "id": 22, "name": "福岡", "hasRacesToday": true, "aiRate": 51 },
+    { "id": 23, "name": "唐津", "hasRacesToday": false, "aiRate": 50 },
+    { "id": 24, "name": "大村", "hasRacesToday": false, "aiRate": 57 }
   ],
   "races": {
-    "22": [
-      {
-        "raceId": "fukuoka-01",
-        "number": 1,
-        "startTime": "10:35",
-        "status": "open",
-        "env": { "windDir": "追い", "windSpeed": 4.5, "wave": 15 },
-        "entries": [
-          { "lane": 1, "class": "A2", "name": "福岡 太郎", "avgST": 0.14, "motor": { "no": 36, "rate2": 34, "rate3": 48 } },
-          { "lane": 2, "class": "B1", "name": "春吉 次郎", "avgST": 0.17, "motor": { "no": 12, "rate2": 29, "rate3": 41 } },
-          { "lane": 3, "class": "A1", "name": "博多 三郎", "avgST": 0.12, "motor": { "no": 68, "rate2": 48, "rate3": 61 } },
-          { "lane": 4, "class": "A2", "name": "中洲 四郎", "avgST": 0.13, "motor": { "no": 22, "rate2": 36, "rate3": 52 } },
-          { "lane": 5, "class": "B1", "name": "百道 五郎", "avgST": 0.16, "motor": { "no": 45, "rate2": 31, "rate3": 44 } },
-          { "lane": 6, "class": "B2", "name": "天神 六郎", "avgST": 0.18, "motor": { "no": 5, "rate2": 21, "rate3": 33 } }
-        ],
-        "predictions": [
-          { "buy": "3-1-4", "probability": 27, "odds": 12.4 },
-          { "buy": "3-4-1", "probability": 23, "odds": 15.2 },
-          { "buy": "4-3-1", "probability": 19, "odds": 18.1 },
-          { "buy": "3-5-1", "probability": 16, "odds": 21.7 },
-          { "buy": "4-1-3", "probability": 15, "odds": 24.3 }
-        ],
-        "comments": {
-          "1": "スタート甘く外から圧力。残すなら2、3着まで。",
-          "2": "機力平凡で踏み込み弱い。展開待ち。",
-          "3": "今節の伸び◎。捲り差し本命で首位争い。",
-          "4": "行き足良く差し届く。連対濃厚。",
-          "5": "展開が向けば外伸びで絡む。3着候補。",
-          "6": "出足不足で前半は厳しい。我慢のレース。"
-        }
-      }
-      /* 2R〜12R も同形式で増やせます */
-    ],
     "2": [
       {
         "raceId": "toda-01",
@@ -84,14 +51,45 @@
           { "buy": "1-4-3", "probability": 16, "odds": 13.1 }
         ],
         "comments": {
-          "1": "内有利の水面で先手濃厚。差されても粘る足。",
-          "2": "スタート安定。差し気味に内残し有力。",
-          "3": "踏み込み甘く展開待ち。3着拾い中心。",
-          "4": "足色上位。まくり差し抜け出し対抗。",
-          "5": "外枠でも伸び弱く3着穴まで。",
+          "1": "内有利の水面で先手濃厚。差されても粘る足。今節は内の伸びがしっかりしている印象で、1号艇中心の組み立てが有効。",
+          "2": "スタート安定。差し気味に内残し有力。過去3節は出足安定している。",
+          "3": "踏み込み甘く展開待ち。3着拾い中心。逃げに弱い傾向が見られる。",
+          "4": "足色上位。まくり差し抜け出し対抗。展示の回転が良く伸びも見せている。",
+          "5": "外枠でも伸び弱く3着穴まで。展開がハマれば浮上可能。",
           "6": "足気配薄く苦戦。展開の助け必要。"
         }
+      },
+      {
+        "raceId": "toda-02",
+        "number": 2,
+        "startTime": "11:10",
+        "status": "open",
+        "env": { "windDir": "追い", "windSpeed": 3.5, "wave": 12 },
+        "entries": [
+          { "lane": 1, "class": "A2", "name": "戸田 七郎", "avgST": 0.15, "motor": { "no": 21, "rate2": 38, "rate3": 54 } },
+          { "lane": 2, "class": "B1", "name": "戸田 八郎", "avgST": 0.16, "motor": { "no": 31, "rate2": 34, "rate3": 46 } },
+          { "lane": 3, "class": "A1", "name": "戸田 九郎", "avgST": 0.13, "motor": { "no": 41, "rate2": 45, "rate3": 60 } },
+          { "lane": 4, "class": "B1", "name": "戸田 十郎", "avgST": 0.18, "motor": { "no": 55, "rate2": 30, "rate3": 44 } },
+          { "lane": 5, "class": "B2", "name": "戸田 百郎", "avgST": 0.17, "motor": { "no": 26, "rate2": 29, "rate3": 41 } },
+          { "lane": 6, "class": "B1", "name": "戸田 千郎", "avgST": 0.20, "motor": { "no": 14, "rate2": 22, "rate3": 35 } }
+        ],
+        "predictions": [
+          { "buy": "3-1-4", "probability": 24, "odds": 11.2 },
+          { "buy": "1-3-4", "probability": 21, "odds": 9.7 },
+          { "buy": "3-4-1", "probability": 19, "odds": 14.0 },
+          { "buy": "1-4-3", "probability": 18, "odds": 12.5 },
+          { "buy": "4-1-3", "probability": 18, "odds": 13.9 }
+        ],
+        "comments": {
+          "1": "1号艇はスタート堅実で残しやすい。安定感あり。",
+          "2": "2号艇は差しに回る場面が多いが今節は伸びが目立つ。",
+          "3": "3号艇は伸び上位で捲り差し警戒。",
+          "4": "4号艇は展開次第で浮上。中堅評価。",
+          "5": "外枠は波の影響を受けやすく拾いにくい。",
+          "6": "大外は展開待ち。着順安定感は低い。"
+        }
       }
+      /* 以下 3R〜12R は同形式でモック追加できます。 */
     ],
     "11": [
       {
@@ -123,7 +121,70 @@
           "5": "展開着拾い。舟券は押さえ評価。",
           "6": "序盤の機力不足。展開頼みの構図。"
         }
+      },
+      {
+        "raceId": "biwako-02",
+        "number": 2,
+        "startTime": "11:15",
+        "status": "open",
+        "env": { "windDir": "右追い", "windSpeed": 2.8, "wave": 8 },
+        "entries": [
+          { "lane": 1, "class": "B1", "name": "草津 七郎", "avgST": 0.16, "motor": { "no": 12, "rate2": 33, "rate3": 48 } },
+          { "lane": 2, "class": "A2", "name": "長浜 八郎", "avgST": 0.15, "motor": { "no": 32, "rate2": 36, "rate3": 53 } },
+          { "lane": 3, "class": "A1", "name": "米原 九郎", "avgST": 0.12, "motor": { "no": 58, "rate2": 51, "rate3": 65 } },
+          { "lane": 4, "class": "B1", "name": "彦根 十郎", "avgST": 0.18, "motor": { "no": 21, "rate2": 29, "rate3": 44 } },
+          { "lane": 5, "class": "A1", "name": "長浜 百郎", "avgST": 0.14, "motor": { "no": 43, "rate2": 40, "rate3": 55 } },
+          { "lane": 6, "class": "B2", "name": "大津 千郎", "avgST": 0.20, "motor": { "no": 7, "rate2": 20, "rate3": 33 } }
+        ],
+        "predictions": [
+          { "buy": "1-3-2", "probability": 26, "odds": 12.2 },
+          { "buy": "3-1-2", "probability": 23, "odds": 10.8 },
+          { "buy": "1-2-3", "probability": 20, "odds": 9.5 },
+          { "buy": "3-2-1", "probability": 16, "odds": 15.3 },
+          { "buy": "2-1-3", "probability": 15, "odds": 14.1 }
+        ],
+        "comments": {
+          "1": "内枠の出足が目立つ。残しの力あり。",
+          "2": "差し主体だが今節は伸びあり。",
+          "3": "展示の伸び良好。捲り差し狙い。",
+          "4": "中位の足で連は拾いにくい。",
+          "5": "外は波の影響を受けやすい。",
+          "6": "大外は展開待ちで厳しい。"
+        }
       }
+    ],
+    "22": [
+      {
+        "raceId": "fukuoka-01",
+        "number": 1,
+        "startTime": "10:35",
+        "status": "open",
+        "env": { "windDir": "追い", "windSpeed": 4.5, "wave": 15 },
+        "entries": [
+          { "lane": 1, "class": "A2", "name": "福岡 太郎", "avgST": 0.14, "motor": { "no": 36, "rate2": 34, "rate3": 48 } },
+          { "lane": 2, "class": "B1", "name": "春吉 次郎", "avgST": 0.17, "motor": { "no": 12, "rate2": 29, "rate3": 41 } },
+          { "lane": 3, "class": "A1", "name": "博多 三郎", "avgST": 0.12, "motor": { "no": 68, "rate2": 48, "rate3": 61 } },
+          { "lane": 4, "class": "A2", "name": "中洲 四郎", "avgST": 0.13, "motor": { "no": 22, "rate2": 36, "rate3": 52 } },
+          { "lane": 5, "class": "B1", "name": "百道 五郎", "avgST": 0.16, "motor": { "no": 45, "rate2": 31, "rate3": 44 } },
+          { "lane": 6, "class": "B2", "name": "天神 六郎", "avgST": 0.18, "motor": { "no": 5, "rate2": 21, "rate3": 33 } }
+        ],
+        "predictions": [
+          { "buy": "3-1-4", "probability": 27, "odds": 12.4 },
+          { "buy": "3-4-1", "probability": 23, "odds": 15.2 },
+          { "buy": "4-3-1", "probability": 19, "odds": 18.1 },
+          { "buy": "3-5-1", "probability": 16, "odds": 21.7 },
+          { "buy": "4-1-3", "probability": 15, "odds": 24.3 }
+        ],
+        "comments": {
+          "1": "スタート甘く外から圧力。残すなら2、3着まで。今節は向かい風時に内が不利になりやすい。",
+          "2": "機力平凡で踏み込み弱い。展開待ち。展示での出足が課題。",
+          "3": "今節の伸び◎。捲り差し本命で首位争い。回転良好で伸びに期待。",
+          "4": "行き足良く差し届く。連対濃厚。内でタメが作れる。",
+          "5": "展開が向けば外伸びで絡む。3着候補。波の向き次第で台頭。",
+          "6": "出足不足で前半は厳しい。我慢のレース。"
+        }
+      }
+      /* 2R〜12R は同形式で追記可能 */
     ]
   }
 }
