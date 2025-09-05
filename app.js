@@ -1,147 +1,237 @@
-const app = document.getElementById("app");
+// app.js (ES module style)
+const VIEW = document.getElementById('view');
+const dateLabel = document.getElementById('dateLabel');
+const globalHit = document.getElementById('globalHit');
+const refreshBtn = document.getElementById('refreshBtn');
+const tplBack = document.getElementById('tpl-back');
 
-// モックデータ（3場）
-const data = {
-  venues: [
-    {
-      id: "fukuoka",
-      name: "福岡",
-      races: [
-        {
-          no: 1,
-          entries: [
-            {waku:1, class:"A1", name:"山田太郎", st:0.15, f:"F1", local:[45,40,30,20,5,7], motor:[50,40,30,20,10,5], course:[60,40,20,10,5,2]},
-            {waku:2, class:"A2", name:"田中一郎", st:0.18, f:"", local:[30,25,20,15,5,3], motor:[40,35,30,15,10,5], course:[45,35,25,15,5,2]},
-            {waku:3, class:"B1", name:"佐藤次郎", st:0.20, f:"", local:[20,18,15,10,5,2], motor:[30,25,20,15,10,5], course:[35,28,20,10,5,2]},
-            {waku:4, class:"B1", name:"鈴木三郎", st:0.21, f:"F2", local:[15,12,10,8,5,1], motor:[25,20,15,10,5,2], course:[30,22,15,10,5,1]},
-            {waku:5, class:"B2", name:"高橋四郎", st:0.23, f:"", local:[10,8,6,5,3,1], motor:[20,15,10,8,5,2], course:[25,18,12,8,5,2]},
-            {waku:6, class:"B2", name:"伊藤五郎", st:0.25, f:"", local:[8,6,5,3,2,1], motor:[18,12,8,5,3,1], course:[20,15,10,5,3,1]}
-          ],
-          ai: {
-            main:[{bet:"1-2-3",rate:56},{bet:"1-3-2",rate:20},{bet:"2-1-3",rate:10},{bet:"1-4-2",rate:8},{bet:"3-1-4",rate:6}],
-            sub:[{bet:"3-1-4",rate:18},{bet:"4-1-2",rate:15},{bet:"2-3-1",rate:12},{bet:"5-1-2",rate:10},{bet:"6-1-2",rate:8}]
-          },
-          comments:[
-            {no:1,text:"インから強力。地元水面も得意。"},
-            {no:2,text:"差しが決まれば上位。"},
-            {no:3,text:"スタートにムラあり。"},
-            {no:4,text:"モーター力不足。"},
-            {no:5,text:"展開待ち。"},
-            {no:6,text:"-"}
-          ]
-        }
-      ]
-    },
-    {
-      id: "toda",
-      name: "戸田",
-      races: [
-        {
-          no: 1,
-          entries: [
-            {waku:1, class:"A1", name:"川口誠", st:0.16, f:"", local:[40,35,25,20,10,5], motor:[45,38,28,18,8,3], course:[55,32,22,12,6,2]},
-            {waku:2, class:"A2", name:"村上翔", st:0.17, f:"", local:[32,28,20,15,8,4], motor:[38,33,25,15,10,5], course:[42,30,20,15,8,3]}
-          ],
-          ai: {
-            main:[{bet:"1-2-3",rate:55},{bet:"1-3-2",rate:25}],
-            sub:[{bet:"3-1-2",rate:15},{bet:"2-3-1",rate:10}]
-          },
-          comments:[
-            {no:1,text:"地元巧者で安定感。"},
-            {no:2,text:"展開次第で浮上。"}
-          ]
-        }
-      ]
-    },
-    {
-      id: "biwako",
-      name: "琵琶湖",
-      races: [
-        {
-          no: 1,
-          entries: [
-            {waku:1, class:"A1", name:"吉田健", st:0.14, f:"", local:[50,42,35,28,20,10], motor:[52,40,32,20,15,8], course:[60,38,25,15,10,5]}
-          ],
-          ai: {
-            main:[{bet:"1-2-3",rate:52}],
-            sub:[{bet:"2-3-1",rate:14}]
-          },
-          comments:[
-            {no:1,text:"スピード戦に期待。"}
-          ]
-        }
-      ]
-    }
-  ]
-};
+let DATA = null;
+let STATE = { screen: 'venues', venueId: null, raceNo: null };
 
-// 勝率記号を付ける関数
-function getSymbols(values) {
-  const ranked = [...values].map((v,i)=>({v,i})).sort((a,b)=>b.v-a.v);
-  const symbols = ["◎","○","△","✕","ー","ー"];
-  const result = Array(values.length).fill("ー");
-  ranked.forEach((r,idx)=>{
-    result[r.i] = symbols[idx];
+// helper: format date
+function fmtDateIso(iso){
+  const d = iso ? new Date(iso) : new Date();
+  return d.toLocaleDateString('ja-JP', {year:'numeric', month:'2-digit', day:'2-digit', weekday:'short'});
+}
+
+// helper: fetch JSON with cache-bust option
+async function loadData(force=false){
+  try{
+    const url = './data.json' + (force ? `?t=${Date.now()}` : '');
+    const res = await fetch(url, {cache:'no-store'});
+    if(!res.ok) throw new Error('fetch failed');
+    DATA = await res.json();
+    dateLabel.textContent = fmtDateIso(DATA.date || (new Date()).toISOString());
+    globalHit.textContent = (DATA.ai_accuracy != null ? `${DATA.ai_accuracy}%` : '--%');
+    return true;
+  }catch(e){
+    DATA = null;
+    VIEW.innerHTML = `<div class="card">データ取得エラー：${e.message || e}.<br>data.json を確認してください。</div>`;
+    return false;
+  }
+}
+
+// init
+(async ()=>{
+  await loadData(false);
+  render();
+})();
+
+// refresh button
+refreshBtn.addEventListener('click', async ()=>{
+  await loadData(true);
+  render();
+});
+
+// ranking -> symbols function (values array) returns symbols array
+function rankSymbols(values){
+  // values: array of numbers (length 6)
+  const indexed = values.map((v,i)=>({v,i}));
+  // sort desc
+  indexed.sort((a,b)=>b.v - a.v);
+  const marks = ["◎","○","△","✕","ー","ー"];
+  const out = Array(values.length).fill("ー");
+  indexed.forEach((it, idx)=>{
+    out[it.i] = marks[idx] || 'ー';
   });
-  return result;
+  return out;
 }
 
-// 競艇場一覧
-function showVenues() {
-  app.innerHTML = `<h2>競艇場一覧</h2>
-    <div class="grid venues">
-      ${data.venues.map(v=>`<div class="card" onclick="showRaces('${v.id}')">${v.name}</div>`).join("")}
-    </div>`;
+// render entry table row building
+function renderEntryRows(entries){
+  const localVals = entries.map(e=>Number(e.local?.[0]??0));
+  const motorVals = entries.map(e=>Number(e.motor?.[0]??0));
+  const courseVals = entries.map(e=>Number(e.course?.[0]??0));
+  const localSym = rankSymbols(localVals);
+  const motorSym = rankSymbols(motorVals);
+  const courseSym = rankSymbols(courseVals);
+
+  return entries.map((e,i)=>`
+    <tr>
+      <td>${e.waku}</td>
+      <td>${e.class ?? '-'}</td>
+      <td>${e.name}${e.f ? ' ('+e.f+')' : ''}</td>
+      <td class="mono">${(typeof e.st==='number')? e.st.toFixed(2) : '-'}</td>
+      <td>${e.f || '-'}</td>
+      <td><span class="${localSym[i]==='◎' ? 'symbol-top' : 'symbol'}">${localSym[i]}</span>${(e.local?.[0] ?? '-')}%</td>
+      <td><span class="${motorSym[i]==='◎' ? 'symbol-top' : 'symbol'}">${motorSym[i]}</span>${(e.motor?.[0] ?? '-')}%</td>
+      <td><span class="${courseSym[i]==='◎' ? 'symbol-top' : 'symbol'}">${courseSym[i]}</span>${(e.course?.[0] ?? '-')}%</td>
+    </tr>
+  `).join('');
 }
 
-// レース番号一覧
-function showRaces(venueId) {
-  const venue = data.venues.find(v=>v.id===venueId);
-  app.innerHTML = `<h2>${venue.name} レース選択</h2>
-    <div class="back-btn" onclick="showVenues()">戻る</div>
-    <div class="grid races">
-      ${venue.races.map(r=>`<div class="card" onclick="showEntries('${venueId}',${r.no})">${r.no}R</div>`).join("")}
-    </div>`;
+// render venues grid (4x6)
+function renderVenues(){
+  if(!DATA){ VIEW.innerHTML = '<div class="card">データがありません</div>'; return; }
+  const venues = DATA.venues;
+  const html = `<section class="card">
+    <h2>競艇場一覧</h2>
+    <div class="venues-grid">
+      ${venues.map(v=>`
+        <div class="venue" data-vid="${v.id}">
+          <div class="venue-name">${v.name}</div>
+          <div class="venue-hit">的中率: ${(v.hitRate!=null)? v.hitRate+'%':'--'}</div>
+          <div class="venue-actions">
+            <button class="btn-venue ${v.hasRacesToday ? '' : 'disabled'}" data-vid="${v.id}" ${v.hasRacesToday ? '' : 'disabled'}>${v.hasRacesToday ? '開催中' : '本日無し'}</button>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  </section>`;
+  VIEW.innerHTML = html;
+
+  // bind venue buttons
+  VIEW.querySelectorAll('.btn-venue').forEach(b=>{
+    b.addEventListener('click', (ev)=>{
+      const vid = b.dataset.vid;
+      STATE.screen='races'; STATE.venueId=vid; render();
+    });
+  });
 }
 
-// 出走表
-function showEntries(venueId, raceNo) {
-  const venue = data.venues.find(v=>v.id===venueId);
-  const race = venue.races.find(r=>r.no===raceNo);
-
-  // 勝率記号を計算
-  const localSymbols = getSymbols(race.entries.map(e=>e.local[0]));
-  const motorSymbols = getSymbols(race.entries.map(e=>e.motor[0]));
-  const courseSymbols = getSymbols(race.entries.map(e=>e.course[0]));
-
-  app.innerHTML = `<h2>${venue.name} ${raceNo}R 出走表</h2>
-    <div class="back-btn" onclick="showRaces('${venueId}')">戻る</div>
-
-    <table class="table">
-      <tr><th>枠</th><th>級</th><th>選手名</th><th>ST</th><th>F</th><th>当地</th><th>モーター</th><th>コース</th></tr>
-      ${race.entries.map((e,i)=>`
-        <tr>
-          <td>${e.waku}</td>
-          <td>${e.class}</td>
-          <td>${e.name}</td>
-          <td>${e.st}</td>
-          <td>${e.f}</td>
-          <td><span class="${localSymbols[i]==="◎"?"symbol-red":""}">${localSymbols[i]}</span>${e.local[0]}%</td>
-          <td><span class="${motorSymbols[i]==="◎"?"symbol-red":""}">${motorSymbols[i]}</span>${e.motor[0]}%</td>
-          <td><span class="${courseSymbols[i]==="◎"?"symbol-red":""}">${courseSymbols[i]}</span>${e.course[0]}%</td>
-        </tr>
-      `).join("")}
-    </table>
-
-    <h3>AI予想</h3>
-    <p>本命: ${race.ai.main.map(a=>`${a.bet}(${a.rate}%)`).join(", ")}</p>
-    <p>穴: ${race.ai.sub.map(a=>`${a.bet}(${a.rate}%)`).join(", ")}</p>
-
-    <h3>コメント</h3>
-    <ul>
-      ${race.comments.map(c=>`<li>${c.no}号艇: ${c.text}</li>`).join("")}
-    </ul>
-  `;
+// render races (1..12)
+function renderRaces(){
+  const venue = (DATA.venues||[]).find(v=>v.id === STATE.venueId);
+  if(!venue){ renderVenues(); return; }
+  const html = `<section class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <h2>${venue.name} - レース選択</h2>
+      <div><button class="btn" id="backToVenues">戻る</button></div>
+    </div>
+    <div class="race-grid">
+      ${Array.from({length:12}, (_,i)=>i+1).map(no=>{
+        // enabled if race data exists in DATA.races[venue.id] or in venue.races array
+        const has = (DATA.races && DATA.races[venue.id] && DATA.races[venue.id].some(r=>r.number===no))
+                  || (venue.races && venue.races.some(r=>r.no===no));
+        return `<button class="race-btn ${has? '' : 'off'}" data-rno="${no}" ${has? '' : 'disabled'}>${no}R</button>`;
+      }).join('')}
+    </div>
+  </section>`;
+  VIEW.innerHTML = html;
+  document.getElementById('backToVenues').addEventListener('click', ()=>{
+    STATE.screen='venues'; STATE.venueId=null; render();
+  });
+  VIEW.querySelectorAll('.race-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const rno = Number(btn.dataset.rno);
+      STATE.screen='race'; STATE.raceNo=rno; render();
+    });
+  });
 }
 
-showVenues();
+// render specific race detail (出走表)
+function renderRace(){
+  const venue = (DATA.venues||[]).find(v=>v.id === STATE.venueId);
+  if(!venue){ renderVenues(); return; }
+
+  // find race data: prefer DATA.races[vid], else venue.races
+  let race = null;
+  if(DATA.races && DATA.races[venue.id]){
+    race = DATA.races[venue.id].find(r=>r.number===STATE.raceNo);
+  }
+  if(!race && venue.races){
+    race = venue.races.find(r=>r.no===STATE.raceNo);
+  }
+
+  if(!race){
+    VIEW.innerHTML = `<section class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <h2>${venue.name} ${STATE.raceNo}R</h2>
+        <div><button class="btn" id="backToRaces">戻る</button></div>
+      </div>
+      <div class="card">レースデータがありません（data.json に該当レースを追加してください）</div>
+    </section>`;
+    document.getElementById('backToRaces').addEventListener('click', ()=>{ STATE.screen='races'; render(); });
+    return;
+  }
+
+  const env = race.env || {};
+  const entries = race.entries || [];
+  const entryRows = renderEntryRows(entries);
+
+  // AI predictions (main 5, sub 5)
+  const main = (race.predictions && race.predictions.slice(0,5)) || (race.ai && race.ai.main) || [];
+  const sub = (race.ai && race.ai.sub) || [];
+
+  VIEW.innerHTML = `<section class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <h2>${venue.name} ${STATE.raceNo}R</h2>
+      <div><button class="btn" id="backToRaces">戻る</button></div>
+    </div>
+
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
+      <div class="pill">風向: ${env.windDir ?? '-'}</div>
+      <div class="pill">風速: ${env.windSpeed ?? '-' } m/s</div>
+      <div class="pill">波高: ${env.wave ?? '-' } cm</div>
+    </div>
+
+    <h3 style="margin-top:12px">出走表</h3>
+    <div class="card">
+      <table class="table">
+        <thead><tr><th>枠</th><th>級</th><th>選手名</th><th>平均ST</th><th>F</th><th>当地</th><th>モーター</th><th>コース</th></tr></thead>
+        <tbody>${entryRows}</tbody>
+      </table>
+    </div>
+
+    <h3 style="margin-top:12px">AI予想（本命 5点）</h3>
+    <div class="card">
+      <table class="table">
+        <thead><tr><th>買い目</th><th>確率</th><th>参考オッズ</th></tr></thead>
+        <tbody>
+          ${main.map(m=>`<tr><td>${m.buy ?? m.bet}</td><td>${m.probability ?? m.rate ?? '-'}%</td><td>${m.odds ? m.odds+'倍' : '-'}</td></tr>`).join('')}
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="margin-top:12px">AI穴予想（5点）</h3>
+    <div class="card">
+      <table class="table">
+        <thead><tr><th>買い目</th><th>確率</th></tr></thead>
+        <tbody>
+          ${sub.map(s=>`<tr><td>${s.buy ?? s.bet}</td><td>${s.probability ?? s.rate ?? '-'}%</td></tr>`).join('')}
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="margin-top:12px">展開予想 AIコメント（コース別）</h3>
+    <div class="card">
+      <table class="table">
+        <thead><tr><th>コース</th><th>コメント</th></tr></thead>
+        <tbody>
+          ${ (race.comments || []).map(c=>`<tr><td>${c.no}コース</td><td>${c.text || '-'}</td></tr>`).join('') }
+        </tbody>
+      </table>
+    </div>
+
+  </section>`;
+
+  document.getElementById('backToRaces').addEventListener('click', ()=>{ STATE.screen='races'; render(); });
+}
+
+// main render
+function render(){
+  if(!DATA){ VIEW.innerHTML = `<div class="card">データなし（data.json を配置してください）</div>`; return; }
+  if(STATE.screen==='venues') renderVenues();
+  else if(STATE.screen==='races') renderRaces();
+  else if(STATE.screen==='race') renderRace();
+}
