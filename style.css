@@ -1,0 +1,12 @@
+body { font-family: sans-serif; margin: 0; padding: 0; }
+h1,h2,h3 { margin: 0.5em; }
+button { margin: 0.5em; padding: 0.5em; }
+
+.screen { padding: 10px; }
+
+.grid-4x6 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
+.grid-3x4 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; }
+
+.venue-btn, .race-btn { padding: 10px; border: 1px solid #333; cursor: pointer; text-align: center; }
+.◎ { color: red; }
+.○, .△, .✕, .ー { color: black; }
