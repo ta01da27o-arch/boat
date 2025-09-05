@@ -1,0 +1,143 @@
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background: #f3f4f6;
+  color: #111827;
+}
+
+.app-header {
+  background: #0ea5e9;
+  color: white;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.app-title {
+  margin: 0;
+  font-size: 20px;
+}
+
+.today {
+  font-size: 14px;
+}
+
+.header-right {
+  text-align: right;
+}
+
+.btn {
+  cursor: pointer;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+}
+
+.btn.ghost {
+  background: white;
+  color: #0ea5e9;
+  font-weight: bold;
+}
+
+.app-footer {
+  text-align: center;
+  font-size: 12px;
+  padding: 12px;
+  color: #6b7280;
+}
+
+/* 競艇場一覧をグリッドで4列×6列 */
+.stadium-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin: 16px;
+}
+
+.stadium-card {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.3s ease;
+}
+
+.stadium-card:hover {
+  background: #e0f2fe;
+  transform: scale(1.03);
+}
+
+.stadium-name {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.stadium-hit {
+  font-size: 13px;
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+.btn-live {
+  display: inline-block;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #fff;
+  background: #0ea5e9;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btn-live:hover {
+  background: #0284c7;
+}
+
+/* レース番号・出走表画面 */
+.race-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 16px;
+}
+
+.race-card {
+  background: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  padding: 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.race-card:hover {
+  background: #f0f9ff;
+}
+
+.entry-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0;
+}
+
+.entry-table th, .entry-table td {
+  border: 1px solid #d1d5db;
+  padding: 6px;
+  font-size: 13px;
+  text-align: center;
+}
+
+.comment {
+  font-size: 14px;
+  margin-top: 10px;
+  padding: 8px;
+  background: #fef9c3;
+  border: 1px solid #fde68a;
+  border-radius: 8px;
+}

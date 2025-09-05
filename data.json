@@ -1,0 +1,29 @@
+{
+  "global_hit": 65,
+  "stadiums": [
+    { "name": "桐生", "hit_rate": 64, "entries": {}, "predictions": {}, "comments": {} },
+    { "name": "戸田", "hit_rate": 61, "entries": {}, "predictions": {}, "comments": {} },
+    { "name": "江戸川", "hit_rate": 59, "entries": {}, "predictions": {}, "comments": {} },
+    { "name": "平和島", "hit_rate": 66, "entries": {}, "predictions": {}, "comments": {} },
+    { "name": "多摩川", "hit_rate": 62, "entries": {}, "predictions": {}, "comments": {} },
+    { "name": "浜名湖", "hit_rate": 63, "entries": {}, "predictions": {}, "comments": {} },
+    { "name": "蒲郡", "hit_rate": 60, "entries": {}, "predictions": {}, "comments": {} },
+    { "name": "常滑", "hit_rate": 65, "entries": {}, "predictions": {}, "comments": {} },
+    { "name": "津", "hit_rate": 58, "entries": {}, "predictions": {}, "comments": {} },
+    { "name": "三国", "hit_rate": 64, "entries": {}, "predictions": {}, "comments": {} },
+    { "name": "琵琶湖", "hit_rate": 61, "entries": {}, "predictions": {}, "comments": {} },
+    { "name": "住之江", "hit_rate": 67, "entries": {}, "predictions": {}, "comments": {} },
+    { "name": "尼崎", "hit_rate": 60, "entries": {}, "predictions": {}, "comments": {} },
+    { "name": "鳴門", "hit_rate": 62, "entries": {}, "predictions": {}, "comments": {} },
+    { "name": "丸亀", "hit_rate": 63, "entries": {}, "predictions": {}, "comments": {} },
+    { "name": "児島", "hit_rate": 59, "entries": {}, "predictions": {}, "comments": {} },
+    { "name": "宮島", "hit_rate": 61, "entries": {}, "predictions": {}, "comments": {} },
+    { "name": "徳山", "hit_rate": 62, "entries": {}, "predictions": {}, "comments": {} },
+    { "name": "下関", "hit_rate": 60, "entries": {}, "predictions": {}, "comments": {} },
+    { "name": "若松", "hit_rate": 64, "entries": {}, "predictions": {}, "comments": {} },
+    { "name": "芦屋", "hit_rate": 65, "entries": {}, "predictions": {}, "comments": {} },
+    { "name": "福岡", "hit_rate": 63, "entries": {}, "predictions": {}, "comments": {} },
+    { "name": "唐津", "hit_rate": 61, "entries": {}, "predictions": {}, "comments": {} },
+    { "name": "大村", "hit_rate": 66, "entries": {}, "predictions": {}, "comments": {} }
+  ]
+}
