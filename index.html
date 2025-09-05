@@ -3,43 +3,42 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>競艇AI予想</title>
+<title>競艇AI予想モック</title>
 <link rel="stylesheet" href="style.css">
-<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="icon" href="favicon.ico">
 </head>
 <body>
-  <div id="app">
-    <div id="venue-screen" class="screen">
-      <h1>競艇場一覧</h1>
-      <div id="venue-list" class="grid-4x6"></div>
-    </div>
+  <!-- 競艇場一覧 -->
+  <div id="venue-screen">
+    <h1>競艇場一覧</h1>
+    <div id="venue-list" class="grid-4x6"></div>
+  </div>
 
-    <div id="race-screen" class="screen" style="display:none;">
-      <button id="back-venue">戻る</button>
-      <h2 id="race-title">レース番号</h2>
-      <div id="race-list" class="grid-3x4"></div>
-    </div>
+  <!-- レース一覧 -->
+  <div id="race-screen" style="display:none">
+    <h1 id="race-title">レース一覧</h1>
+    <div id="race-list" class="grid-3x4"></div>
+    <button id="back-venue">戻る</button>
+  </div>
 
-    <div id="entry-screen" class="screen" style="display:none;">
-      <button id="back-race">戻る</button>
-      <h2 id="entry-title">出走表</h2>
-      <div id="race-info"></div>
-      <table id="entry-table">
-        <thead>
-          <tr>
-            <th>枠番</th><th>階級</th><th>選手名</th><th>ST</th><th>フラ</th>
-            <th>当地勝率</th><th>モーター勝率</th><th>コース勝率</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-      <h3>AI買い目予想</h3>
-      <ul id="ai-main"></ul>
-      <h3>AI穴予想</h3>
-      <ul id="ai-sub"></ul>
-      <h3>コメント</h3>
-      <ul id="comments"></ul>
-    </div>
+  <!-- 出走表画面 -->
+  <div id="entry-screen" style="display:none">
+    <h1>出走表</h1>
+    <table id="entry-table">
+      <thead>
+        <tr>
+          <th>枠番</th><th>階級</th><th>選手名</th><th>ST</th><th>F</th>
+          <th>当地勝率</th><th>モーター勝率</th><th>コース勝率</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <h2>AI予想</h2>
+    <ul id="ai-main"></ul>
+    <ul id="ai-sub"></ul>
+    <h2>コメント</h2>
+    <ul id="comments"></ul>
+    <button id="back-race">戻る</button>
   </div>
 
 <script src="app.js"></script>
