@@ -16,9 +16,7 @@
       <div class="today" id="todayLabel">--/--/--</div>
     </div>
     <div class="header-right">
-      <div class="accuracy">
-        総合AI的中率：<span id="globalHit">--%</span>
-      </div>
+      <div class="accuracy">総合AI的中率：<span id="globalHit">--%</span></div>
       <button id="refreshBtn" class="btn ghost">更新</button>
     </div>
   </header>
@@ -36,7 +34,6 @@
 
   <script src="./script.js" type="module"></script>
   <script>
-    // PWA: Service Worker
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('./sw.js');
     }

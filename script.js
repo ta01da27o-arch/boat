@@ -1,152 +1,112 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const todayLabel = document.getElementById("todayLabel");
-  const globalHit = document.getElementById("globalHit");
-  const refreshBtn = document.getElementById("refreshBtn");
-  const view = document.getElementById("view");
+const view = document.getElementById("view");
+const todayLabel = document.getElementById("todayLabel");
+const globalHit = document.getElementById("globalHit");
+const refreshBtn = document.getElementById("refreshBtn");
 
-  // 今日の日付表示
-  const today = new Date();
-  todayLabel.textContent = today.toLocaleDateString("ja-JP");
+let appData = null;
 
-  // データロード
-  async function loadData() {
-    try {
-      const res = await fetch("./data.json");
-      const data = await res.json();
-      renderStadiums(data);
-      globalHit.textContent = data.global_hit + "%";
-    } catch (e) {
-      view.innerHTML = "<p>データ取得エラー。</p>";
-    }
+// 今日の日付を表示
+function updateToday() {
+  const d = new Date();
+  todayLabel.textContent = `${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()}`;
+}
+
+// データ取得
+async function loadData() {
+  try {
+    const res = await fetch("./data.json?_=" + Date.now());
+    appData = await res.json();
+    globalHit.textContent = appData.globalHit || "--%";
+    showVenues();
+  } catch (e) {
+    view.innerHTML = "<p>データ取得エラー。data.jsonを確認して下さい。</p>";
   }
+}
 
-  refreshBtn.addEventListener("click", loadData);
+// 競艇場一覧
+function showVenues() {
+  view.innerHTML = "";
+  const grid = document.createElement("div");
+  grid.className = "grid-venues";
 
-  // 競艇場一覧表示
-  function renderStadiums(data) {
-    view.innerHTML = "";
+  appData.venues.forEach((v, i) => {
+    const card = document.createElement("div");
+    card.className = "venue-card";
+    card.innerHTML = `<div>${v.name}</div><button class="btn ghost">開催中</button>`;
+    card.querySelector("button").addEventListener("click", () => showRaces(v));
+    grid.appendChild(card);
+  });
 
-    const grid = document.createElement("div");
-    grid.className = "stadium-grid";
+  view.appendChild(grid);
+}
 
-    data.stadiums.forEach(stadium => {
-      const card = document.createElement("div");
-      card.className = "stadium-card";
+// レース一覧
+function showRaces(venue) {
+  view.innerHTML = "";
+  const back = document.getElementById("tpl-back-btn").content.cloneNode(true);
+  back.querySelector("#backBtn").addEventListener("click", showVenues);
+  view.appendChild(back);
 
-      const name = document.createElement("div");
-      name.className = "stadium-name";
-      name.textContent = stadium.name;
+  const ul = document.createElement("ul");
+  venue.races.forEach(r => {
+    const li = document.createElement("li");
+    const btn = document.createElement("button");
+    btn.className = "btn ghost";
+    btn.textContent = `${r.no}R`;
+    btn.addEventListener("click", () => showRaceDetail(venue, r));
+    li.appendChild(btn);
+    ul.appendChild(li);
+  });
+  view.appendChild(ul);
+}
 
-      const hit = document.createElement("div");
-      hit.className = "stadium-hit";
-      hit.textContent = `的中率: ${stadium.hit_rate}%`;
+// 出走表詳細
+function showRaceDetail(venue, race) {
+  view.innerHTML = "";
+  const back = document.getElementById("tpl-back-btn").content.cloneNode(true);
+  back.querySelector("#backBtn").addEventListener("click", () => showRaces(venue));
+  view.appendChild(back);
 
-      const liveBtn = document.createElement("button");
-      liveBtn.className = "btn-live";
-      liveBtn.textContent = "開催中";
-      liveBtn.addEventListener("click", () => renderRaces(stadium));
-
-      card.appendChild(name);
-      card.appendChild(hit);
-      card.appendChild(liveBtn);
-      grid.appendChild(card);
-    });
-
-    view.appendChild(grid);
-  }
-
-  // レース番号一覧表示
-  function renderRaces(stadium) {
-    view.innerHTML = "";
-
-    const backBtn = document.getElementById("tpl-back-btn").content.cloneNode(true);
-    backBtn.querySelector("#backBtn").addEventListener("click", loadData);
-    view.appendChild(backBtn);
-
-    const grid = document.createElement("div");
-    grid.className = "race-grid";
-
-    for (let i = 1; i <= 12; i++) {
-      const card = document.createElement("div");
-      card.className = "race-card";
-      card.textContent = `${i}R`;
-      card.addEventListener("click", () => renderRaceDetail(stadium, i));
-      grid.appendChild(card);
-    }
-
-    view.appendChild(grid);
-  }
-
-  // 出走表 & 予想詳細表示
-  function renderRaceDetail(stadium, raceNo) {
-    view.innerHTML = "";
-
-    const backBtn = document.getElementById("tpl-back-btn").content.cloneNode(true);
-    backBtn.querySelector("#backBtn").addEventListener("click", () => renderRaces(stadium));
-    view.appendChild(backBtn);
-
-    const title = document.createElement("h2");
-    title.textContent = `${stadium.name} ${raceNo}R 出走表`;
-    view.appendChild(title);
-
-    // 出走表テーブル
-    const table = document.createElement("table");
-    table.className = "entry-table";
-
-    const header = document.createElement("tr");
-    header.innerHTML = `
-      <th>枠番</th><th>階級</th><th>選手名</th>
-      <th>平均ST</th>
-      <th>当地勝率</th>
-      <th>モーター勝率</th>
-      <th>コース勝率</th>
+  // 出走表
+  const table = document.createElement("table");
+  table.className = "entry-table";
+  table.innerHTML = `
+    <tr>
+      <th>枠番</th><th>階級</th><th>選手名</th><th>平均ST</th>
+      <th>当地勝率</th><th>モーター</th><th>コース勝率</th>
+    </tr>
+  `;
+  race.entries.forEach(e => {
+    table.innerHTML += `
+      <tr>
+        <td>${e.no}</td>
+        <td>${e.rank}</td>
+        <td>${e.name}</td>
+        <td>${e.st}</td>
+        <td>${e.local}</td>
+        <td>${e.motor}</td>
+        <td>${e.course}</td>
+      </tr>
     `;
-    table.appendChild(header);
+  });
+  view.appendChild(table);
 
-    (stadium.entries?.[raceNo] || []).forEach(entry => {
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td>${entry.lane}</td>
-        <td>${entry.rank}</td>
-        <td>${entry.name}</td>
-        <td>${entry.st}</td>
-        <td>${entry.local_rate}</td>
-        <td>${entry.motor_no} (${entry.motor_rate})</td>
-        <td>${entry.course_rate}</td>
-      `;
-      table.appendChild(row);
-    });
+  // AI予想
+  const picks = document.createElement("div");
+  picks.className = "ai-picks";
+  picks.innerHTML = "<h3>AI買い目予想</h3><ul>" +
+    race.ai.picks.map(p => `<li>${p.no} (${p.rate})</li>`).join("") +
+    "</ul>";
+  view.appendChild(picks);
 
-    view.appendChild(table);
+  // AIコメント
+  const comments = document.createElement("table");
+  comments.className = "ai-comments";
+  comments.innerHTML = "<tr><th>コース</th><th>コメント</th></tr>" +
+    race.ai.comments.map(c => `<tr><td>${c.course}</td><td>${c.text}</td></tr>`).join("");
+  view.appendChild(comments);
+}
 
-    // AI予想買い目
-    const predWrap = document.createElement("div");
-    predWrap.className = "comment";
-    const preds = stadium.predictions?.[raceNo] || [];
-    if (preds.length > 0) {
-      predWrap.innerHTML = "<strong>AI予想買い目:</strong><br>" +
-        preds.map(p => `${p.combo} (${p.prob}%)`).join("<br>");
-    } else {
-      predWrap.textContent = "AI予想買い目: データなし";
-    }
-    view.appendChild(predWrap);
-
-    // AIコメント
-    const comWrap = document.createElement("div");
-    comWrap.className = "comment";
-    const comments = stadium.comments?.[raceNo] || {};
-    if (Object.keys(comments).length > 0) {
-      let html = "<strong>AIコメント:</strong><table class='entry-table'><tr><th>コース</th><th>コメント</th></tr>";
-      for (let lane in comments) {
-        html += `<tr><td>${lane}</td><td>${comments[lane]}</td></tr>`;
-      }
-      html += "</table>";
-      comWrap.innerHTML = html;
-    } else {
-      comWrap.textContent = "AIコメント: データなし";
-    }
-    view.appendChild(comWrap);
-  }
-
-  loadData();
-});
+refreshBtn.addEventListener("click", loadData);
+updateToday();
+loadData();
