@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>BOAT AI 予想 PWA</title>
+  <meta name="theme-color" content="#0ea5e9" />
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="icon" href="./icon-192.png" />
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div class="title-wrap">
+      <h1 class="app-title">BOAT AI 予想</h1>
+      <div class="today" id="todayLabel">--/--/--</div>
+    </div>
+    <div class="header-right">
+      <div class="accuracy">総合AI的中率：<span id="globalHit">--%</span></div>
+      <button id="refreshBtn" class="btn ghost">更新</button>
+    </div>
+  </header>
+
+  <main id="view" class="view"></main>
+
+  <footer class="app-footer">
+    <div>© 2025 BOAT AI PWA</div>
+    <div>ホーム画面に追加でアプリ化 / オフライン対応</div>
+  </footer>
+
+  <template id="tpl-back-btn">
+    <button class="btn back" id="backBtn">← 戻る</button>
+  </template>
+
+  <script src="./script.js" type="module"></script>
+  <script>
+    // PWA: Service Worker 登録（存在すれば）
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js').catch(e => console.warn('SW register failed', e));
+    }
+  </script>
+</body>
+</html>
