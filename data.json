@@ -1,29 +1,38 @@
 {
   "global_hit": 65,
   "stadiums": [
-    { "name": "桐生", "hit_rate": 64, "entries": {}, "predictions": {}, "comments": {} },
-    { "name": "戸田", "hit_rate": 61, "entries": {}, "predictions": {}, "comments": {} },
-    { "name": "江戸川", "hit_rate": 59, "entries": {}, "predictions": {}, "comments": {} },
-    { "name": "平和島", "hit_rate": 66, "entries": {}, "predictions": {}, "comments": {} },
-    { "name": "多摩川", "hit_rate": 62, "entries": {}, "predictions": {}, "comments": {} },
-    { "name": "浜名湖", "hit_rate": 63, "entries": {}, "predictions": {}, "comments": {} },
-    { "name": "蒲郡", "hit_rate": 60, "entries": {}, "predictions": {}, "comments": {} },
-    { "name": "常滑", "hit_rate": 65, "entries": {}, "predictions": {}, "comments": {} },
-    { "name": "津", "hit_rate": 58, "entries": {}, "predictions": {}, "comments": {} },
-    { "name": "三国", "hit_rate": 64, "entries": {}, "predictions": {}, "comments": {} },
-    { "name": "琵琶湖", "hit_rate": 61, "entries": {}, "predictions": {}, "comments": {} },
-    { "name": "住之江", "hit_rate": 67, "entries": {}, "predictions": {}, "comments": {} },
-    { "name": "尼崎", "hit_rate": 60, "entries": {}, "predictions": {}, "comments": {} },
-    { "name": "鳴門", "hit_rate": 62, "entries": {}, "predictions": {}, "comments": {} },
-    { "name": "丸亀", "hit_rate": 63, "entries": {}, "predictions": {}, "comments": {} },
-    { "name": "児島", "hit_rate": 59, "entries": {}, "predictions": {}, "comments": {} },
-    { "name": "宮島", "hit_rate": 61, "entries": {}, "predictions": {}, "comments": {} },
-    { "name": "徳山", "hit_rate": 62, "entries": {}, "predictions": {}, "comments": {} },
-    { "name": "下関", "hit_rate": 60, "entries": {}, "predictions": {}, "comments": {} },
-    { "name": "若松", "hit_rate": 64, "entries": {}, "predictions": {}, "comments": {} },
-    { "name": "芦屋", "hit_rate": 65, "entries": {}, "predictions": {}, "comments": {} },
-    { "name": "福岡", "hit_rate": 63, "entries": {}, "predictions": {}, "comments": {} },
-    { "name": "唐津", "hit_rate": 61, "entries": {}, "predictions": {}, "comments": {} },
-    { "name": "大村", "hit_rate": 66, "entries": {}, "predictions": {}, "comments": {} }
+    {
+      "name": "桐生",
+      "hit_rate": 64,
+      "entries": {
+        "1": [
+          { "lane": 1, "rank": "A1", "name": "山田太郎", "st": "0.14", "local_rate": "7.20 (50%,70%)", "motor_no": 23, "motor_rate": "45%,60%", "course_rate": "1コース 80%" },
+          { "lane": 2, "rank": "A2", "name": "佐藤花子", "st": "0.16", "local_rate": "6.80 (40%,65%)", "motor_no": 12, "motor_rate": "42%,58%", "course_rate": "2コース 65%" },
+          { "lane": 3, "rank": "B1", "name": "鈴木一郎", "st": "0.18", "local_rate": "5.90 (35%,55%)", "motor_no": 45, "motor_rate": "39%,55%", "course_rate": "3コース 52%" },
+          { "lane": 4, "rank": "A2", "name": "田中健", "st": "0.17", "local_rate": "6.50 (38%,60%)", "motor_no": 8, "motor_rate": "41%,59%", "course_rate": "4コース 50%" },
+          { "lane": 5, "rank": "B1", "name": "中村真", "st": "0.20", "local_rate": "5.50 (30%,48%)", "motor_no": 19, "motor_rate": "37%,50%", "course_rate": "5コース 42%" },
+          { "lane": 6, "rank": "B2", "name": "松本光", "st": "0.22", "local_rate": "4.80 (20%,35%)", "motor_no": 33, "motor_rate": "30%,45%", "course_rate": "6コース 28%" }
+        ]
+      },
+      "predictions": {
+        "1": [
+          { "combo": "1-3-4", "prob": 28 },
+          { "combo": "3-1-4", "prob": 22 },
+          { "combo": "1-2-3", "prob": 18 },
+          { "combo": "1-4-2", "prob": 16 },
+          { "combo": "2-1-3", "prob": 12 }
+        ]
+      },
+      "comments": {
+        "1": {
+          "1コース": "スタート安定、逃げ有力",
+          "2コース": "差し展開ならチャンス",
+          "3コース": "捲り気配あり",
+          "4コース": "展開待ち、連下まで",
+          "5コース": "展開不利、穴なら",
+          "6コース": "展開待ちで3着候補"
+        }
+      }
+    }
   ]
 }

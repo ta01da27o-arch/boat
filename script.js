@@ -89,30 +89,63 @@ document.addEventListener("DOMContentLoaded", () => {
     title.textContent = `${stadium.name} ${raceNo}R 出走表`;
     view.appendChild(title);
 
+    // 出走表テーブル
     const table = document.createElement("table");
     table.className = "entry-table";
 
     const header = document.createElement("tr");
-    header.innerHTML = "<th>枠番</th><th>選手名</th>";
+    header.innerHTML = `
+      <th>枠番</th><th>階級</th><th>選手名</th>
+      <th>平均ST</th>
+      <th>当地勝率</th>
+      <th>モーター勝率</th>
+      <th>コース勝率</th>
+    `;
     table.appendChild(header);
 
     (stadium.entries?.[raceNo] || []).forEach(entry => {
       const row = document.createElement("tr");
-      row.innerHTML = `<td>${entry.lane}</td><td>${entry.name}</td>`;
+      row.innerHTML = `
+        <td>${entry.lane}</td>
+        <td>${entry.rank}</td>
+        <td>${entry.name}</td>
+        <td>${entry.st}</td>
+        <td>${entry.local_rate}</td>
+        <td>${entry.motor_no} (${entry.motor_rate})</td>
+        <td>${entry.course_rate}</td>
+      `;
       table.appendChild(row);
     });
 
     view.appendChild(table);
 
-    const buy = document.createElement("div");
-    buy.className = "comment";
-    buy.textContent = `AI予想買い目: ${stadium.predictions?.[raceNo] || "データなし"}`;
-    view.appendChild(buy);
+    // AI予想買い目
+    const predWrap = document.createElement("div");
+    predWrap.className = "comment";
+    const preds = stadium.predictions?.[raceNo] || [];
+    if (preds.length > 0) {
+      predWrap.innerHTML = "<strong>AI予想買い目:</strong><br>" +
+        preds.map(p => `${p.combo} (${p.prob}%)`).join("<br>");
+    } else {
+      predWrap.textContent = "AI予想買い目: データなし";
+    }
+    view.appendChild(predWrap);
 
-    const comment = document.createElement("div");
-    comment.className = "comment";
-    comment.textContent = stadium.comments?.[raceNo] || "コメントなし";
-    view.appendChild(comment);
+    // AIコメント
+    const comWrap = document.createElement("div");
+    comWrap.className = "comment";
+    const comments = stadium.comments?.[raceNo] || {};
+    if (Object.keys(comments).length > 0) {
+      let html = "<strong>AIコメント:</strong><table class='entry-table'><tr><th>コース</th><th>コメント</th></tr>";
+      for (let lane in comments) {
+        html += `<tr><td>${lane}</td><td>${comments[lane]}</td></tr>`;
+      }
+      html += "</table>";
+      comWrap.innerHTML = html;
+    } else {
+      comWrap.textContent = "AIコメント: データなし";
+    }
+    view.appendChild(comWrap);
   }
 
   loadData();
