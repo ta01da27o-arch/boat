@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>競艇AI予想アプリ</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- メイン画面 -->
+    <div id="mainScreen" class="screen">
+      <h1>競艇AI予想</h1>
+      <p id="date"></p>
+      <p>総合的中率: <span id="aiAccuracy"></span>%</p>
+      <button onclick="loadData()">更新</button>
+      <div id="venues" class="grid"></div>
+    </div>
+
+    <!-- レース番号画面 -->
+    <div id="raceScreen" class="screen hidden">
+      <h2 id="venueTitle"></h2>
+      <div id="raceNumbers" class="grid"></div>
+      <button onclick="goBackToVenues()">戻る</button>
+    </div>
+
+    <!-- 出走表画面 -->
+    <div id="entryScreen" class="screen hidden">
+      <h2 id="raceTitle"></h2>
+      <table id="entriesTable">
+        <thead>
+          <tr>
+            <th>枠番</th>
+            <th>階級</th>
+            <th>選手名</th>
+            <th>ST</th>
+            <th>F</th>
+            <th>当地勝率</th>
+            <th>モーター勝率</th>
+            <th>コース勝率</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+      <h3>AI買い目予想</h3>
+      <div id="aiBets"></div>
+
+      <h3>コメント</h3>
+      <ul id="comments"></ul>
+
+      <button onclick="goBackToRaces()">戻る</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
