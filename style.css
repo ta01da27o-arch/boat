@@ -1,124 +1,68 @@
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  background: #f8f9fa;
+:root{
+  --blue:#0ea5e9;
+  --bg:#f3f6fb;
+  --card:#ffffff;
+  --text:#0b1220;
+  --muted:#6b7280;
 }
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans JP",sans-serif}
+.app-header{display:flex;align-items:center;justify-content:space-between;padding:10px;background:var(--blue);color:#fff;position:sticky;top:0;z-index:20}
+.title-wrap{display:flex;flex-direction:column}
+.app-title{margin:0;font-weight:800}
+.today{font-size:13px;opacity:.95}
+.header-right{display:flex;gap:8px;align-items:center}
+.accuracy{background:rgba(255,255,255,0.15);padding:6px 10px;border-radius:10px;font-weight:700}
+.btn{background:#fff;color:var(--blue);border:0;padding:8px 10px;border-radius:8px;font-weight:800;cursor:pointer}
+.btn.back{background:#fff;color:var(--text)}
+.view{max-width:1100px;margin:12px auto;padding:0 12px}
 
-header {
-  text-align: center;
-  background: #007bff;
-  color: white;
-  padding: 10px;
-}
+/* screen */
+.screen{display:none;padding:12px}
+.screen.active{display:block}
 
-button {
-  padding: 8px 12px;
-  margin: 5px;
-  cursor: pointer;
-}
+/* card */
+.card{background:var(--card);border-radius:12px;padding:12px;margin-bottom:12px;box-shadow:0 6px 18px rgba(2,6,23,.06)}
 
-.back {
-  display: block;
-  margin: 15px auto;
-}
+/* venues grid 4x6 */
+.venues-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.venue{background:var(--blue);color:#fff;padding:12px;border-radius:10px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:84px}
+.venue .name{font-weight:900;font-size:16px}
+.venue .hit{font-size:13px;margin-top:6px}
+.venue button.venue-btn{margin-top:8px;padding:8px 10px;border-radius:8px;border:0;font-weight:800;cursor:pointer}
+.venue.disabled{opacity:.45;pointer-events:none}
 
-.screen {
-  padding: 10px;
-}
+/* race grid 3x4 (vertical 4 rows x 3 cols) */
+.race-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.race-grid .race-btn{background:#eef6ff;border:1px solid #dbeafe;padding:14px;border-radius:10px;font-weight:900;cursor:pointer}
+.race-grid .race-btn.off{opacity:.4;pointer-events:none}
 
-.hidden {
-  display: none;
-}
+/* table */
+.table{width:100%;border-collapse:collapse;margin-top:8px}
+.table thead th{background:#f1f5f9;color:var(--muted);font-size:13px;padding:8px}
+.table td, .table th{padding:8px;border-bottom:1px solid #eef2f7;text-align:center;vertical-align:middle;font-size:14px}
+.mono{font-variant-numeric:tabular-nums}
 
-/* 競艇場一覧（4列×6行） */
-#venue-list {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 6px;
-  margin: 10px;
-}
-#venue-list button {
-  background: #007bff; /* 青色背景 */
-  color: white;
-  border: none;
-  border-radius: 5px;
-  padding: 15px 5px;
-  font-size: 14px;
-}
-#venue-list button:disabled {
-  background: #cccccc;
-}
+/* entry table: ensure each row for 1..6 displayed as single row */
+.entry-left{display:flex;flex-direction:column;gap:4px}
+.entry-left .klass{font-size:12px;color:var(--muted)}
+.entry-left .name{font-weight:800}
+.entry-left .st{font-size:12px;color:#374151}
 
-/* レース番号画面（3列×4行） */
-.grid12 {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 6px;
-}
-.grid12 button {
-  background: #28a745;
-  color: white;
-  border: none;
-  padding: 15px;
-  font-size: 16px;
-}
+/* rate symbols */
+.symbol-top{color:red;font-weight:900;margin-right:6px}
+.symbol{color:#111;font-weight:800;margin-right:6px}
 
-/* 出走表 */
-#entry-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 10px 0;
-}
-#entry-table td, #entry-table th {
-  border: 1px solid #ddd;
-  padding: 6px;
-  text-align: center;
-}
-#entry-table th {
-  background: #007bff;
-  color: white;
-}
-.waku {
-  width: 16%;
-  vertical-align: top;
-}
-.waku div {
-  margin: 2px 0;
-}
-.waku .class {
-  font-size: 12px;
-}
-.waku .name {
-  font-size: 14px;
-  font-weight: bold;
-}
-.waku .st {
-  font-size: 12px;
-}
+/* AI block two columns */
+.ai-block{display:flex;gap:12px;flex-wrap:wrap}
+.ai-col{flex:1;min-width:160px}
 
-/* 勝率記号 */
-.rate-mark.red {
-  color: red;
-  font-weight: bold;
+/* comment table small */
+@media (max-width:860px){
+  .venues-grid{grid-template-columns:repeat(3,1fr)}
 }
-.rate-mark.black {
-  color: black;
-}
-
-/* AI予想 */
-#ai-section {
-  margin: 10px 0;
-  padding: 10px;
-  background: #eef;
-}
-#ai-section h3 {
-  margin: 5px 0;
-}
-
-/* コメント */
-#comment-section {
-  margin: 10px 0;
-}
-#comment-section div {
-  margin: 4px 0;
+@media (max-width:520px){
+  .venues-grid{grid-template-columns:repeat(2,1fr)}
+  .race-grid{grid-template-columns:repeat(2,1fr)}
+  .ai-block{flex-direction:column}
 }
