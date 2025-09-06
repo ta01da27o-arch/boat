@@ -1,0 +1,57 @@
+{
+  "date": "2025-09-06",
+  "ai_accuracy": 65,
+  "venues": [
+    {"id":"kiryu","name":"桐生","hasRacesToday":true,"hitRate":50},
+    {"id":"toda","name":"戸田","hasRacesToday":false,"hitRate":52},
+    {"id":"edogawa","name":"江戸川","hasRacesToday":false,"hitRate":40},
+    {"id":"heiwajima","name":"平和島","hasRacesToday":false,"hitRate":41},
+    {"id":"tamagawa","name":"多摩川","hasRacesToday":false,"hitRate":44},
+    {"id":"hamanako","name":"浜名湖","hasRacesToday":false,"hitRate":39},
+    {"id":"gamagori","name":"蒲郡","hasRacesToday":false,"hitRate":42},
+    {"id":"tokoname","name":"常滑","hasRacesToday":false,"hitRate":38},
+    {"id":"tsu","name":"津","hasRacesToday":false,"hitRate":37},
+    {"id":"mikuni","name":"三国","hasRacesToday":false,"hitRate":36},
+    {"id":"biwako","name":"琵琶湖","hasRacesToday":false,"hitRate":54},
+    {"id":"suminoe","name":"住之江","hasRacesToday":false,"hitRate":35},
+    {"id":"amagasaki","name":"尼崎","hasRacesToday":false,"hitRate":34},
+    {"id":"naruto","name":"鳴門","hasRacesToday":false,"hitRate":33},
+    {"id":"marugame","name":"丸亀","hasRacesToday":false,"hitRate":32},
+    {"id":"kojima","name":"児島","hasRacesToday":false,"hitRate":31},
+    {"id":"miyajima","name":"宮島","hasRacesToday":false,"hitRate":30},
+    {"id":"tokuyama","name":"徳山","hasRacesToday":false,"hitRate":29},
+    {"id":"shimonoseki","name":"下関","hasRacesToday":false,"hitRate":28},
+    {"id":"wakamatsu","name":"若松","hasRacesToday":false,"hitRate":27},
+    {"id":"ashiya","name":"芦屋","hasRacesToday":false,"hitRate":26},
+    {"id":"fukuoka","name":"福岡","hasRacesToday":false,"hitRate":53},
+    {"id":"karatsu","name":"唐津","hasRacesToday":false,"hitRate":25},
+    {"id":"omura","name":"大村","hasRacesToday":false,"hitRate":24}
+  ],
+  "races": {
+    "kiryu": [
+      {
+        "number": 1,
+        "entries": [
+          {"waku":1,"class":"A1","name":"桐生 一郎","st":0.13,"f":"","local":[45,40,30,20,10,5],"motor":[50,40,30,20,15,10],"course":[55,42,33,22,15,10]},
+          {"waku":2,"class":"A2","name":"桐生 二郎","st":0.14,"f":"F1","local":[38,32,26,18,10,6],"motor":[42,34,26,18,12,6],"course":[46,36,26,18,12,8]},
+          {"waku":3,"class":"B1","name":"桐生 三郎","st":0.16,"f":"","local":[28,24,20,16,12,8],"motor":[34,28,22,18,12,8],"course":[36,28,22,16,12,8]},
+          {"waku":4,"class":"A1","name":"桐生 四郎","st":0.12,"f":"","local":[48,42,34,26,18,10],"motor":[60,48,36,24,18,10],"course":[58,44,32,22,14,8]},
+          {"waku":5,"class":"B1","name":"桐生 五郎","st":0.17,"f":"","local":[25,20,16,12,8,4],"motor":[30,24,20,16,12,6],"course":[28,22,18,12,8,6]},
+          {"waku":6,"class":"B2","name":"桐生 六郎","st":0.19,"f":"","local":[18,14,10,8,6,4],"motor":[20,16,12,8,6,4],"course":[18,14,10,8,6,4]}
+        ],
+        "ai": {
+          "main":[{"bet":"1-4-2","rate":25},{"bet":"4-1-2","rate":22},{"bet":"1-2-4","rate":20},{"bet":"4-2-1","rate":18},{"bet":"1-4-3","rate":15}],
+          "sub":[{"bet":"2-1-4","rate":10},{"bet":"3-1-2","rate":8},{"bet":"5-1-2","rate":6},{"bet":"4-3-1","rate":5},{"bet":"6-1-2","rate":3}]
+        },
+        "comments": [
+          {"no":1,"text":"内枠有利、逃げ切り本命。"},
+          {"no":2,"text":"フライング持ちで注意。"},
+          {"no":3,"text":"安定感不足、展開次第。"},
+          {"no":4,"text":"スタート早く対抗候補。"},
+          {"no":5,"text":"外枠で伸び課題。"},
+          {"no":6,"text":"実績乏しく苦戦。"}
+        ]
+      }
+    ]
+  }
+}

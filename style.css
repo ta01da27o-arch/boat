@@ -1,0 +1,124 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #f8f9fa;
+}
+
+header {
+  text-align: center;
+  background: #007bff;
+  color: white;
+  padding: 10px;
+}
+
+button {
+  padding: 8px 12px;
+  margin: 5px;
+  cursor: pointer;
+}
+
+.back {
+  display: block;
+  margin: 15px auto;
+}
+
+.screen {
+  padding: 10px;
+}
+
+.hidden {
+  display: none;
+}
+
+/* 競艇場一覧（4列×6行） */
+#venue-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  margin: 10px;
+}
+#venue-list button {
+  background: #007bff; /* 青色背景 */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 15px 5px;
+  font-size: 14px;
+}
+#venue-list button:disabled {
+  background: #cccccc;
+}
+
+/* レース番号画面（3列×4行） */
+.grid12 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+.grid12 button {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 15px;
+  font-size: 16px;
+}
+
+/* 出走表 */
+#entry-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 10px 0;
+}
+#entry-table td, #entry-table th {
+  border: 1px solid #ddd;
+  padding: 6px;
+  text-align: center;
+}
+#entry-table th {
+  background: #007bff;
+  color: white;
+}
+.waku {
+  width: 16%;
+  vertical-align: top;
+}
+.waku div {
+  margin: 2px 0;
+}
+.waku .class {
+  font-size: 12px;
+}
+.waku .name {
+  font-size: 14px;
+  font-weight: bold;
+}
+.waku .st {
+  font-size: 12px;
+}
+
+/* 勝率記号 */
+.rate-mark.red {
+  color: red;
+  font-weight: bold;
+}
+.rate-mark.black {
+  color: black;
+}
+
+/* AI予想 */
+#ai-section {
+  margin: 10px 0;
+  padding: 10px;
+  background: #eef;
+}
+#ai-section h3 {
+  margin: 5px 0;
+}
+
+/* コメント */
+#comment-section {
+  margin: 10px 0;
+}
+#comment-section div {
+  margin: 4px 0;
+}

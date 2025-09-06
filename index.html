@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>競艇AI予想アプリ</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>競艇AI予想アプリ</h1>
+    <div id="date"></div>
+    <div id="accuracy"></div>
+    <button id="reload">更新</button>
+  </header>
+
+  <!-- メイン画面：競艇場一覧 -->
+  <main id="venue-list" class="screen"></main>
+
+  <!-- レース番号画面 -->
+  <main id="race-list" class="screen hidden">
+    <h2 id="venue-title"></h2>
+    <div id="race-buttons" class="grid12"></div>
+    <button class="back" onclick="showVenues()">戻る</button>
+  </main>
+
+  <!-- 出走表画面 -->
+  <main id="race-detail" class="screen hidden">
+    <h2 id="race-title"></h2>
+    <table id="entry-table"></table>
+    <div id="ai-section"></div>
+    <div id="comment-section"></div>
+    <button class="back" onclick="showRaces()">戻る</button>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
