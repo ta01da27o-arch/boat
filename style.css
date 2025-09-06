@@ -1,0 +1,113 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+h1, h2, h3 {
+  margin: 10px 0;
+}
+
+button {
+  padding: 10px;
+  margin: 5px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* メイン画面 競艇場 */
+.venues-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin: 20px;
+}
+
+.venue {
+  background-color: #007BFF;
+  color: #fff;
+  padding: 15px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.venue p {
+  margin: 5px 0 0 0;
+  font-size: 14px;
+  color: #fff;
+}
+
+/* レース番号 */
+.races-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin: 20px;
+}
+
+.race-btn {
+  background-color: #28a745;
+  color: #fff;
+  font-size: 20px;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+/* 戻るボタン */
+.back-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #dc3545;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 6px;
+}
+
+/* 出走表 */
+table {
+  width: 95%;
+  margin: 20px auto;
+  border-collapse: collapse;
+}
+
+th {
+  background-color: #0056b3;
+  color: white;
+  padding: 8px;
+}
+
+td {
+  background-color: #e6f2ff;
+  border: 1px solid #ccc;
+  padding: 6px;
+  text-align: center;
+}
+
+/* 勝率記号 */
+.rank-top {
+  color: red;
+  font-weight: bold;
+}
+.rank-mid {
+  color: black;
+}
+
+/* 買い目表 */
+.prediction-table {
+  display: flex;
+  justify-content: space-around;
+  margin: 20px;
+}
+.prediction-table table {
+  width: 45%;
+}
+
+/* コメント表 */
+.comment-table {
+  width: 90%;
+  margin: 20px auto;
+}
