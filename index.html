@@ -4,11 +4,45 @@
   <meta charset="UTF-8">
   <title>競艇AI予想アプリ</title>
   <link rel="stylesheet" href="style.css">
-  <script defer src="app.js"></script>
 </head>
 <body>
-  <div id="app">
-    <!-- 画面切替領域 -->
-  </div>
+  <header>
+    <h1>競艇AI予想アプリ</h1>
+    <div id="header-info">
+      <span id="today"></span>
+      <span id="accuracy">総合的中率: 72%</span>
+      <button id="update-btn">更新</button>
+    </div>
+  </header>
+
+  <main id="app">
+    <!-- 競艇場一覧 -->
+    <section id="venues-screen" class="screen active">
+      <h2>競艇場一覧</h2>
+      <div id="venues-grid" class="grid"></div>
+    </section>
+
+    <!-- レース番号 -->
+    <section id="races-screen" class="screen">
+      <div class="screen-header">
+        <h2 id="venue-title"></h2>
+        <button class="back-btn" onclick="goBack('venues-screen')">戻る</button>
+      </div>
+      <div id="races-grid" class="grid races-grid"></div>
+    </section>
+
+    <!-- 出走表 -->
+    <section id="entries-screen" class="screen">
+      <div class="screen-header">
+        <h2 id="race-title"></h2>
+        <button class="back-btn" onclick="goBack('races-screen')">戻る</button>
+      </div>
+      <div id="entries-table"></div>
+      <div id="ai-predictions"></div>
+      <div id="comments"></div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
 </body>
 </html>
