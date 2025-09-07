@@ -1,9 +1,0 @@
-{
-  "name": "競艇AI予想",
-  "short_name": "競艇AI",
-  "start_url": "./index.html",
-  "display": "standalone",
-  "background_color": "#4da6ff",
-  "theme_color": "#4da6ff",
-  "icons": []
-}
