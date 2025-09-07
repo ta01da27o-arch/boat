@@ -1,190 +1,114 @@
-// app.js (モック版フロントロジック)
-// チェックリストに沿った表示・遷移を実装しています。
+// 固定24場データ（4列×6行）
+const venues = [
+  { id: 1, name: "桐生", rate: 75, status: "開催中" },
+  { id: 2, name: "戸田", rate: 62, status: "開催中" },
+  { id: 3, name: "江戸川", rate: 48, status: "終了" },
+  { id: 4, name: "平和島", rate: 55, status: "開催中" },
+  { id: 5, name: "多摩川", rate: 50, status: "終了" },
+  { id: 6, name: "浜名湖", rate: 65, status: "開催中" },
+  { id: 7, name: "蒲郡", rate: 72, status: "開催中" },
+  { id: 8, name: "常滑", rate: 58, status: "終了" },
+  { id: 9, name: "津", rate: 63, status: "開催中" },
+  { id:10, name: "三国", rate: 60, status: "終了" },
+  { id:11, name: "びわこ", rate: 70, status: "開催中" },
+  { id:12, name: "住之江", rate: 66, status: "開催中" },
+  { id:13, name: "尼崎", rate: 52, status: "終了" },
+  { id:14, name: "鳴門", rate: 64, status: "開催中" },
+  { id:15, name: "丸亀", rate: 59, status: "終了" },
+  { id:16, name: "児島", rate: 68, status: "開催中" },
+  { id:17, name: "宮島", rate: 57, status: "終了" },
+  { id:18, name: "徳山", rate: 61, status: "開催中" },
+  { id:19, name: "下関", rate: 53, status: "終了" },
+  { id:20, name: "若松", rate: 67, status: "開催中" },
+  { id:21, name: "芦屋", rate: 54, status: "終了" },
+  { id:22, name: "福岡", rate: 69, status: "開催中" },
+  { id:23, name: "唐津", rate: 56, status: "終了" },
+  { id:24, name: "大村", rate: 65, status: "開催中" }
+];
 
-const STATE = { data: null, screen: 'venues', venueId: null, raceNo: null };
+// 初期表示
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("date").innerText = new Date().toLocaleDateString();
+  renderVenues();
+});
 
-const $ = s => document.querySelector(s);
-const $$ = s => Array.from(document.querySelectorAll(s));
+function renderVenues() {
+  const grid = document.getElementById("venuesGrid");
+  grid.innerHTML = "";
 
-const todayLabel = $('#todayLabel');
-const globalHit = $('#globalHit');
-const refreshBtn = $('#refreshBtn');
+  venues.forEach(venue => {
+    const card = document.createElement("div");
+    card.className = "venue-card";
 
-refreshBtn.addEventListener('click', async ()=>{ await loadData(true); render(); });
-
-async function loadData(force=false){
-  try{
-    const url = './data.json' + (force ? `?t=${Date.now()}` : '');
-    const res = await fetch(url, { cache: 'no-store' });
-    if(!res.ok) throw new Error('HTTP ' + res.status);
-    const txt = await res.text();
-    if(txt.trim().startsWith('<')) throw new Error('data.json が見つかりません（HTMLが返却）');
-    STATE.data = JSON.parse(txt);
-    todayLabel.textContent = STATE.data.date ? new Date(STATE.data.date).toLocaleDateString('ja-JP') : new Date().toLocaleDateString();
-    globalHit.textContent = STATE.data.ai_accuracy != null ? `${STATE.data.ai_accuracy}%` : '--%';
-    return true;
-  }catch(e){
-    STATE.data = null;
-    alert('データ取得エラー: ' + e.message);
-    console.error(e);
-    return false;
-  }
-}
-
-function showScreen(name){
-  STATE.screen = name;
-  $$('.screen').forEach(s=> s.classList.remove('active'));
-  $(`#screen-${name}`).classList.add('active');
-}
-
-/* renderers */
-function render(){
-  if(!STATE.data){
-    $('#screen-venues').innerHTML = '<div class="card">データがありません (data.json を配置してください)</div>';
-    return;
-  }
-  if(STATE.screen === 'venues') renderVenues();
-  else if(STATE.screen === 'races') renderRaces();
-  else if(STATE.screen === 'race') renderRace();
-}
-
-/* --- venues (24) --- */
-function renderVenues(){
-  showScreen('venues');
-  const grid = $('#venuesGrid'); grid.innerHTML = '';
-  // ensure 24 fixed order by using data.venues and fill placeholders if missing
-  const base = STATE.data.venues || [];
-  // If fewer than 24, pad with placeholders preserving order
-  for(let i=0;i<24;i++){
-    const v = base[i] || { id: `pad${i+1}`, name: `場${i+1}`, hasRacesToday:false, hitRate:0 };
-    const div = document.createElement('div'); div.className = 'venue';
-    div.innerHTML = `<div class="name">${v.name}</div>
-      <div class="status">${v.hasRacesToday ? '開催中' : '本日なし'}</div>
-      <div class="hit">${(v.hitRate!=null)? v.hitRate+'%' : '--%'}</div>`;
-    const btn = document.createElement('button');
-    btn.className = `venue-btn ${v.hasRacesToday? '' : 'disabled'}`;
-    btn.textContent = v.hasRacesToday ? '開催中' : '本日なし';
-    if(v.hasRacesToday){
-      btn.addEventListener('click', ()=>{ STATE.venueId = v.id; STATE.screen='races'; render(); });
-    } else {
-      btn.disabled = true;
+    if(venue.status === "開催中"){
+      card.addEventListener("click", () => openRaces(venue));
     }
-    div.appendChild(btn);
-    div.style.background = 'var(--light-blue)';
-    grid.appendChild(div);
-  }
+
+    card.innerHTML = `
+      <div class="venue-name">${venue.name}</div>
+      <div class="venue-rate">${venue.rate}%</div>
+      <div class="venue-status">${venue.status}</div>
+    `;
+    grid.appendChild(card);
+  });
 }
 
-/* --- races (1..12 grid 3x4) --- */
-function renderRaces(){
-  showScreen('races');
-  const venue = (STATE.data.venues || []).find(x => String(x.id) === String(STATE.venueId));
-  if(!venue){ alert('場データがありません'); STATE.screen='venues'; render(); return; }
-  $('#venueName').textContent = venue.name;
-  const grid = $('#racesGrid'); grid.innerHTML = '';
-  const racesForVenue = STATE.data.races && STATE.data.races[venue.id] ? STATE.data.races[venue.id] : (venue.races || []);
-  for(let no=1; no<=12; no++){
-    const btn = document.createElement('button');
-    btn.className = 'race-btn';
-    btn.textContent = `${no}R`;
-    const found = racesForVenue.find(r=> (r.number||r.no) === no);
-    if(found){
-      btn.addEventListener('click', ()=>{ STATE.raceNo = no; STATE.screen='race'; render(); });
-    } else {
-      btn.classList.add('off');
-      btn.disabled = true;
-    }
+// レース画面
+function openRaces(venue){
+  document.getElementById("mainScreen").style.display = "none";
+  document.getElementById("raceScreen").style.display = "block";
+  document.getElementById("raceTitle").innerText = `${venue.name} レース一覧`;
+
+  const grid = document.getElementById("racesGrid");
+  grid.innerHTML = "";
+  for(let i=1;i<=12;i++){
+    const btn = document.createElement("div");
+    btn.className="venue-card";
+    btn.innerText = `${i}R`;
+    btn.addEventListener("click", ()=> openEntry(venue,i));
     grid.appendChild(btn);
   }
-  $('#backToVenues').onclick = ()=>{ STATE.venueId = null; STATE.screen='venues'; render(); };
 }
 
-/* helper: ranking marks for 6 values */
-function produceSymbols(values){
-  const arr = values.map((v,i)=>({v: Number(v)||0, i}));
-  arr.sort((a,b)=> b.v - a.v);
-  const marks = ['◎','○','△','✕','ー','ー'];
-  const out = Array(6).fill('ー');
-  arr.forEach((it, idx)=> out[it.i] = marks[idx] || 'ー');
-  return out;
+function goBackMain(){
+  document.getElementById("raceScreen").style.display = "none";
+  document.getElementById("mainScreen").style.display = "block";
 }
 
-/* --- race detail --- */
-function renderRace(){
-  showScreen('race');
-  const venue = (STATE.data.venues || []).find(x => String(x.id) === String(STATE.venueId));
-  const racesForVenue = STATE.data.races && STATE.data.races[venue.id] ? STATE.data.races[venue.id] : (venue.races || []);
-  const race = racesForVenue.find(r => (r.number||r.no) === STATE.raceNo);
-  if(!race){ alert('レースデータなし'); STATE.screen='races'; render(); return; }
-  $('#raceTitle').textContent = `${venue.name} ${STATE.raceNo}R`;
+function goBackRace(){
+  document.getElementById("entryScreen").style.display = "none";
+  document.getElementById("raceScreen").style.display = "block";
+}
 
-  const env = race.env || {};
-  $('#envPills').innerHTML = `<span class="pill">風向 ${env.windDir || '-'}</span> <span class="pill">風速 ${env.windSpeed ?? '-'} m/s</span> <span class="pill">波高 ${env.wave ?? '-'} cm</span>`;
+// 出走表表示サンプル
+function openEntry(venue, raceNo){
+  document.getElementById("raceScreen").style.display = "none";
+  document.getElementById("entryScreen").style.display = "block";
+  document.getElementById("entryTitle").innerText = `${venue.name} ${raceNo}R 出走表`;
 
-  const entries = race.entries || [];
-  const localVals = entries.map(e => Array.isArray(e.local) ? Number(e.local[0]) : Number(e.local) || 0);
-  const motorVals = entries.map(e => Array.isArray(e.motor) ? Number(e.motor[0]) : Number(e.motor) || 0);
-  const courseVals = entries.map(e => Array.isArray(e.course) ? Number(e.course[0]) : Number(e.course) || 0);
-  const localSym = produceSymbols(localVals);
-  const motorSym = produceSymbols(motorVals);
-  const courseSym = produceSymbols(courseVals);
+  // サンプルデータ埋め込み（後で JSON 取得可）
+  const entries = [
+    {waku:1, class:"A1", name:"佐藤太郎", st:0.12, f:"", local:50, motor:45, course:60},
+    {waku:2, class:"A2", name:"鈴木次郎", st:0.15, f:"F1", local:48, motor:42, course:55},
+    {waku:3, class:"B1", name:"田中三郎", st:0.13, f:"", local:46, motor:44, course:50},
+    {waku:4, class:"A1", name:"山本四郎", st:0.11, f:"", local:52, motor:47, course:62},
+    {waku:5, class:"B2", name:"中村五郎", st:0.16, f:"", local:45, motor:40, course:53},
+    {waku:6, class:"A2", name:"小林六郎", st:0.14, f:"", local:49, motor:43, course:56},
+  ];
 
-  const tbody = document.querySelector('#entryTable tbody'); tbody.innerHTML = '';
-  for(let i=0;i<6;i++){
-    const e = entries[i] || { waku:i+1, class:'-', name:'-', st:'-', f:'', local:[0], motor:[0], course:[0] };
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td class="mono">${e.waku}</td>
-      <td>
-        <div class="entry-left">
-          <div class="klass">${e.class || '-'}</div>
-          <div class="name">${e.name || '-'}</div>
-          <div class="st">ST: ${ (typeof e.st === 'number') ? e.st.toFixed(2) : e.st }</div>
-        </div>
-      </td>
-      <td>${e.f || '-'}</td>
-      <td><span class="${localSym[i]==='◎' ? 'symbol-top' : 'symbol'}">${localSym[i]}</span> ${localVals[i]}%</td>
-      <td><span class="${motorSym[i]==='◎' ? 'symbol-top' : 'symbol'}">${motorSym[i]}</span> ${motorVals[i]}%</td>
-      <td><span class="${courseSym[i]==='◎' ? 'symbol-top' : 'symbol'}">${courseSym[i]}</span> ${courseVals[i]}%</td>
-    `;
-    tbody.appendChild(tr);
-  }
-
-  // AI
-  const aiMain = race.ai && (race.ai.main || race.predictions) ? (race.ai.main || race.predictions).slice(0,5) : [];
-  const aiSub = race.ai && race.ai.sub ? race.ai.sub.slice(0,5) : [];
-  const mainBody = $('#aiMain tbody'); mainBody.innerHTML = '';
-  aiMain.forEach(item=>{
-    const bet = typeof item === 'string' ? item : (item.bet || item.buy || '-');
-    const prob = (item.rate ?? item.probability) != null ? `${item.rate ?? item.probability}%` : '-';
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${bet}</td><td class="mono">${prob}</td>`;
-    mainBody.appendChild(tr);
+  const tableDiv = document.getElementById("entryTable");
+  tableDiv.innerHTML = "<table><tr><th>枠</th><th>階級</th><th>選手名</th><th>ST</th><th>F</th><th>当地%</th><th>モーター%</th><th>コース%</th></tr>";
+  entries.forEach(e=>{
+    tableDiv.innerHTML += `<tr>
+      <td>${e.waku}</td>
+      <td>${e.class}</td>
+      <td>${e.name}</td>
+      <td>${e.st}</td>
+      <td>${e.f}</td>
+      <td>${e.local}</td>
+      <td>${e.motor}</td>
+      <td>${e.course}</td>
+    </tr>`;
   });
-  const subBody = $('#aiSub tbody'); subBody.innerHTML = '';
-  aiSub.forEach(item=>{
-    const bet = typeof item === 'string' ? item : (item.bet || item.buy || '-');
-    const prob = (item.rate ?? item.probability) != null ? `${item.rate ?? item.probability}%` : '-';
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${bet}</td><td class="mono">${prob}</td>`;
-    subBody.appendChild(tr);
-  });
-
-  // comments for 1..6
-  const commentTbody = $('#commentTable tbody'); commentTbody.innerHTML = '';
-  const comments = race.comments || [];
-  for(let i=1;i<=6;i++){
-    const c = (comments.find(x=>Number(x.no)===i) || {}).text || '-';
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${i}コース</td><td>${c}</td>`;
-    commentTbody.appendChild(tr);
-  }
-
-  $('#backToRaces').onclick = ()=>{ STATE.screen='races'; render(); };
+  tableDiv.innerHTML += "</table>";
 }
-
-/* init */
-(async ()=>{
-  await loadData(false);
-  render();
-})();
