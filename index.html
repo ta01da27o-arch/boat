@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
   <title>競艇AI予想</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.webmanifest" />
 </head>
 <body>
   <!-- タイトル -->
@@ -26,7 +27,7 @@
       <h2 id="venue-title"></h2>
       <button class="back-btn" data-target="main-screen">戻る</button>
     </header>
-    <div id="race-grid" class="grid"></div>
+    <div id="race-grid" class="grid races"></div>
   </section>
 
   <!-- 出走表画面 -->
@@ -35,18 +36,36 @@
       <h2 id="race-title"></h2>
       <button class="back-btn" data-target="race-screen">戻る</button>
     </header>
+
+    <!-- 出走表 -->
     <table id="race-table">
       <thead>
         <tr>
           <th>枠</th>
-          <th>選手名</th>
-          <th>勝率</th>
-          <th>ST</th>
+          <th>階級/選手名/ST</th>
           <th>F</th>
-          <th>AI予想</th>
-          <th>コメント</th>
+          <th>当地勝率</th>
+          <th>モーター勝率</th>
+          <th>コース勝率</th>
+          <th>評価</th>
         </tr>
       </thead>
+      <tbody></tbody>
+    </table>
+
+    <!-- AI買い目 -->
+    <h3>AI買い目予想</h3>
+    <table id="ai-table">
+      <thead>
+        <tr><th>メイン5点</th><th>穴5点</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <!-- コメント -->
+    <h3>コメント</h3>
+    <table id="comment-table">
+      <thead><tr><th>枠</th><th>コメント</th></tr></thead>
       <tbody></tbody>
     </table>
   </section>

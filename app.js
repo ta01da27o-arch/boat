@@ -17,10 +17,12 @@ function renderVenues() {
     card.className = 'card';
     card.innerHTML = `
       <h3>${venue.name}</h3>
-      <div class="rate">${venue.rate}%</div>
       <div class="status">${venue.status}</div>
+      <div class="rate">${venue.rate}%</div>
     `;
-    card.onclick = () => openVenue(venue);
+    if (venue.status === '開催中') {
+      card.onclick = () => openVenue(venue);
+    }
     grid.appendChild(card);
   });
 }
@@ -33,35 +35,59 @@ function openVenue(venue) {
 
   const grid = document.getElementById('race-grid');
   grid.innerHTML = '';
-  venue.races.forEach(race => {
+  for (let i = 1; i <= 12; i++) {
     const card = document.createElement('div');
     card.className = 'card';
-    card.innerHTML = `<h3>${race.id}R</h3>`;
-    card.onclick = () => openRace(venue, race);
+    card.innerHTML = `<h3>${i}R</h3>`;
+    card.onclick = () => openRace(venue, i);
     grid.appendChild(card);
-  });
+  }
 }
 
 // 出走表画面
-function openRace(venue, race) {
+function openRace(venue, raceNo) {
   document.getElementById('race-screen').classList.add('hidden');
   document.getElementById('race-detail-screen').classList.remove('hidden');
-  document.getElementById('race-title').innerText = `${venue.name} ${race.id}R`;
+  document.getElementById('race-title').innerText = `${venue.name} ${raceNo}R 出走表`;
 
+  const race = venue.races.find(r => r.no === raceNo) || { entries: [], ai: { main: [], sub: [] }, comments: [] };
+
+  // 出走表
   const tbody = document.querySelector('#race-table tbody');
   tbody.innerHTML = '';
   race.entries.forEach(e => {
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td>${e.枠}</td>
-      <td>${e.選手名}</td>
-      <td>${e.勝率}</td>
-      <td>${e.ST}</td>
-      <td>${e.F}</td>
-      <td class="${e.AI予想 === '◎' ? 'red' : ''}">${e.AI予想}</td>
-      <td>${e.コメント}</td>
+      <td>${e.waku}</td>
+      <td>${e.class}<br>${e.name}<br>ST:${e.st}</td>
+      <td>${e.f > 0 ? 'F' + e.f : '-'}</td>
+      <td>${e.local || '-'}</td>
+      <td>${e.motor || '-'}</td>
+      <td>${e.course || '-'}</td>
+      <td class="${e.mark === '◎' ? 'red' : ''}">${e.mark || '-'}</td>
     `;
     tbody.appendChild(tr);
+  });
+
+  // AI買い目
+  const aiBody = document.querySelector('#ai-table tbody');
+  aiBody.innerHTML = '';
+  for (let i = 0; i < 5; i++) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${race.ai.main[i] || '-'}</td>
+      <td>${race.ai.sub[i] || '-'}</td>
+    `;
+    aiBody.appendChild(tr);
+  }
+
+  // コメント
+  const cBody = document.querySelector('#comment-table tbody');
+  cBody.innerHTML = '';
+  race.comments.forEach(c => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${c.no}</td><td>${c.text || '-'}</td>`;
+    cBody.appendChild(tr);
   });
 }
 
