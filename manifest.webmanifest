@@ -1,15 +1,11 @@
 {
   "name": "競艇アプリ",
   "short_name": "BOAT",
-  "start_url": "index.html",
+  "start_url": ".",
   "display": "standalone",
-  "background_color": "#f0f8ff",
-  "theme_color": "#004080",
+  "background_color": "#ffffff",
+  "theme_color": "#0b79c1",
   "icons": [
-    {
-      "src": "favicon.ico",
-      "sizes": "64x64",
-      "type": "image/x-icon"
-    }
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" }
   ]
 }
