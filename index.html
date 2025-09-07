@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>競艇AI予想</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- タイトル -->
+  <header>
+    <h1>競艇AI予想</h1>
+    <div id="date"></div>
+    <div id="overall-rate">総合的中率: --%</div>
+    <button id="update-btn">更新</button>
+  </header>
+
+  <!-- メイン画面 -->
+  <main id="main-screen">
+    <div id="venue-grid" class="grid"></div>
+  </main>
+
+  <!-- レース番号画面 -->
+  <section id="race-screen" class="hidden">
+    <header>
+      <h2 id="venue-title"></h2>
+      <button class="back-btn" data-target="main-screen">戻る</button>
+    </header>
+    <div id="race-grid" class="grid"></div>
+  </section>
+
+  <!-- 出走表画面 -->
+  <section id="race-detail-screen" class="hidden">
+    <header>
+      <h2 id="race-title"></h2>
+      <button class="back-btn" data-target="race-screen">戻る</button>
+    </header>
+    <table id="race-table">
+      <thead>
+        <tr>
+          <th>枠</th>
+          <th>選手名</th>
+          <th>勝率</th>
+          <th>ST</th>
+          <th>F</th>
+          <th>AI予想</th>
+          <th>コメント</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+  <script src="app.js"></script>
+</body>
+</html>

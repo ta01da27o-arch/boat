@@ -1,0 +1,93 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f4f4f9;
+}
+
+header {
+  background: #4da6ff; /* 明るめの青色に変更 */
+  color: #fff;
+  padding: 12px;
+  text-align: center;
+  position: relative;
+}
+
+h1, h2 {
+  margin: 0;
+}
+
+#date, #overall-rate {
+  font-size: 0.9em;
+}
+
+#update-btn, .back-btn {
+  background: #fff;
+  color: #4da6ff;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4列表示 */
+  gap: 10px;
+  padding: 10px;
+}
+
+.card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  cursor: pointer;
+}
+
+.card h3 {
+  margin: 5px 0;
+  font-size: 1.1em;
+}
+
+.card .rate {
+  font-size: 1em;
+  font-weight: bold;
+  color: red;
+}
+
+.card .status {
+  font-size: 0.9em;
+  color: green;
+}
+
+.hidden {
+  display: none;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 10px;
+  background: #fff;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 6px;
+  text-align: center;
+}
+
+th {
+  background: #e6f2ff;
+}
+
+.red {
+  color: red;
+  font-weight: bold;
+}
