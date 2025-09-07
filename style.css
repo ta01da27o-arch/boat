@@ -1,75 +1,115 @@
-:root{
-  --blue:#0ea5e9;
-  --bg:#f3f6fb;
-  --card:#ffffff;
-  --text:#0b1220;
-  --muted:#6b7280;
-  --water:#e6f7ff;
-  --black-table:#0b0b0b;
+body {
+  font-family: sans-serif;
+  margin: 0;
+  background: #f5faff;
 }
-*{box-sizing:border-box}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans JP",sans-serif}
-.app-header{display:flex;align-items:center;justify-content:space-between;padding:10px;background:var(--blue);color:#fff;position:sticky;top:0;z-index:20}
-.title-wrap{display:flex;flex-direction:column}
-.app-title{margin:0;font-weight:800}
-.today{font-size:13px;opacity:.95}
-.header-right{display:flex;gap:8px;align-items:center}
-.accuracy{background:rgba(255,255,255,0.15);padding:6px 10px;border-radius:10px;font-weight:700}
-.btn{background:#fff;color:var(--blue);border:0;padding:8px 10px;border-radius:8px;font-weight:800;cursor:pointer}
-.btn.back{background:#fff;color:var(--text)}
-.view{max-width:1100px;margin:12px auto;padding:0 12px}
 
-/* screen */
-.screen{display:none;padding:12px}
-.screen.active{display:block}
-
-/* card */
-.card{background:var(--card);border-radius:12px;padding:12px;margin-bottom:12px;box-shadow:0 6px 18px rgba(2,6,23,.06)}
-
-/* venues grid 4x6 */
-.venues-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-.venue{background:var(--water);color:var(--text);padding:12px;border-radius:10px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:84px}
-.venue .name{font-weight:900;font-size:16px}
-.venue .hit{font-size:13px;margin-top:6px}
-.venue button.venue-btn{margin-top:8px;padding:8px 10px;border-radius:8px;border:0;font-weight:800;cursor:pointer}
-.venue.disabled{opacity:.45;pointer-events:none}
-
-/* race grid 3x4 */
-.race-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px;background:var(--water);padding:10px;border-radius:8px}
-.race-grid .race-btn{background:#fff;border:1px solid #dbeafe;padding:18px;border-radius:10px;font-weight:900;cursor:pointer;font-size:20px}
-.race-grid .race-btn.off{opacity:.4;pointer-events:none}
-
-/* table */
-.table{width:100%;border-collapse:collapse;margin-top:8px}
-.table thead th{background:var(--black-table);color:#fff;font-size:13px;padding:8px}
-.table td, .table th{padding:8px;border-bottom:1px solid #eef2f7;text-align:center;vertical-align:middle;font-size:14px}
-.mono{font-variant-numeric:tabular-nums}
-
-/* entry table: stacked class/name/ST in one cell */
-.entry-left{display:flex;flex-direction:column;gap:4px}
-.entry-left .klass{font-size:13px;color:var(--muted)}
-.entry-left .name{font-weight:800}
-.entry-left .st{font-size:13px;color:#374151}
-
-/* rate symbols */
-.symbol-top{color:red;font-weight:900;margin-right:6px}
-.symbol{color:#111;font-weight:800;margin-right:6px}
-
-/* AI block two columns */
-.ai-block{display:flex;gap:12px;flex-wrap:wrap}
-.ai-col{flex:1;min-width:160px}
-
-/* comment table small */
-.comment-table td{background:transparent}
-.entry-card .table td{background:var(--water)}
-
-/* responsive */
-@media (max-width:860px){
-  .venues-grid{grid-template-columns:repeat(3,1fr)}
-  .race-grid{grid-template-columns:repeat(3,1fr)}
+header {
+  text-align: center;
+  background: #0073e6;
+  color: white;
+  padding: 8px;
 }
-@media (max-width:520px){
-  .venues-grid{grid-template-columns:repeat(2,1fr)}
-  .race-grid{grid-template-columns:repeat(2,1fr)}
-  .ai-block{flex-direction:column}
+
+button {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+#refresh {
+  background: white;
+  color: #0073e6;
+  margin-top: 5px;
+}
+
+.back-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: white;
+  color: #0073e6;
+}
+
+.grid-venues {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  padding: 8px;
+}
+
+.venue-card {
+  background: #e0f7ff;
+  border-radius: 10px;
+  padding: 6px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.venue-card.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.grid-races {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  padding: 8px;
+  background: #ccf0ff;
+}
+
+.race-card {
+  background: white;
+  border: 1px solid black;
+  border-radius: 10px;
+  text-align: center;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+#entries-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+#entries-table th {
+  background: #0073e6;
+  color: white;
+  padding: 5px;
+}
+
+#entries-table td {
+  border: 1px solid #ccc;
+  background: #e8f8ff;
+  text-align: center;
+  padding: 4px;
+  font-size: 14px;
+}
+
+#ai-section {
+  margin: 12px;
+  background: #eef6ff;
+  padding: 8px;
+  border-radius: 10px;
+}
+
+.ai-box {
+  display: flex;
+  justify-content: space-around;
+}
+
+#comments-section {
+  margin: 12px;
+  background: #eef6ff;
+  padding: 8px;
+  border-radius: 10px;
+}
+
+.hidden {
+  display: none;
 }
