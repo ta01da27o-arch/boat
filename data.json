@@ -1,0 +1,28 @@
+{
+  "venues": [
+    {"id": "kiryu", "name": "桐生", "rate": 0, "status": "開催中", "races": []},
+    {"id": "toda", "name": "戸田", "rate": 0, "status": "開催中", "races": []},
+    {"id": "edogawa", "name": "江戸川", "rate": 0, "status": "開催中", "races": []},
+    {"id": "heiwajima", "name": "平和島", "rate": 0, "status": "開催中", "races": []},
+    {"id": "tamagawa", "name": "多摩川", "rate": 0, "status": "開催中", "races": []},
+    {"id": "hamanako", "name": "浜名湖", "rate": 0, "status": "開催中", "races": []},
+    {"id": "gamagori", "name": "蒲郡", "rate": 0, "status": "開催中", "races": []},
+    {"id": "tokoname", "name": "常滑", "rate": 0, "status": "開催中", "races": []},
+    {"id": "tsu", "name": "津", "rate": 0, "status": "開催中", "races": []},
+    {"id": "mikuni", "name": "三国", "rate": 0, "status": "開催中", "races": []},
+    {"id": "biwako", "name": "びわこ", "rate": 0, "status": "開催中", "races": []},
+    {"id": "suminoe", "name": "住之江", "rate": 0, "status": "開催中", "races": []},
+    {"id": "amagasaki", "name": "尼崎", "rate": 0, "status": "開催中", "races": []},
+    {"id": "naruto", "name": "鳴門", "rate": 0, "status": "開催中", "races": []},
+    {"id": "marugame", "name": "丸亀", "rate": 0, "status": "開催中", "races": []},
+    {"id": "kojima", "name": "児島", "rate": 0, "status": "開催中", "races": []},
+    {"id": "miyajima", "name": "宮島", "rate": 0, "status": "開催中", "races": []},
+    {"id": "tokuyama", "name": "徳山", "rate": 0, "status": "開催中", "races": []},
+    {"id": "shimonoseki", "name": "下関", "rate": 0, "status": "開催中", "races": []},
+    {"id": "wakamatsu", "name": "若松", "rate": 0, "status": "開催中", "races": []},
+    {"id": "ashiya", "name": "芦屋", "rate": 0, "status": "開催中", "races": []},
+    {"id": "fukuoka", "name": "福岡", "rate": 0, "status": "開催中", "races": []},
+    {"id": "karatsu", "name": "唐津", "rate": 0, "status": "開催中", "races": []},
+    {"id": "omura", "name": "大村", "rate": 0, "status": "開催中", "races": []}
+  ]
+}
