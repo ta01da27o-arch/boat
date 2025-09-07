@@ -1,11 +1,18 @@
 self.addEventListener('install', e => {
-  console.log('Service Worker: Installed');
-});
-
-self.addEventListener('activate', e => {
-  console.log('Service Worker: Activated');
+  e.waitUntil(
+    caches.open('boatrace-cache').then(cache => cache.addAll([
+      '/',
+      '/index.html',
+      '/style.css',
+      '/app.js',
+      '/data.json',
+      '/manifest.webmanifest'
+    ]))
+  );
 });
 
 self.addEventListener('fetch', e => {
-  console.log('Service Worker: Fetching', e.request.url);
+  e.respondWith(
+    caches.match(e.request).then(r => r || fetch(e.request))
+  );
 });

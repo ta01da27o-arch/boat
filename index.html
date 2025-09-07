@@ -2,34 +2,31 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>競艇AIアプリ</title>
+<meta name="viewport" content="width=420, initial-scale=1.0">
+<title>競艇アプリ</title>
 <link rel="stylesheet" href="style.css">
-<link rel="manifest" href="manifest.webmanifest">
 </head>
 <body>
+  <div id="main-screen">
+    <h1>競艇アプリ</h1>
+    <div id="date"></div>
+    <div id="overall-rate"></div>
+    <button id="update-btn">更新</button>
+    <div id="venues-grid"></div>
+  </div>
 
-<div id="mainScreen" class="screen">
-  <h1>競艇AIアプリ</h1>
-  <div id="date"></div>
-  <div id="totalRate"></div>
-  <button id="updateBtn">更新</button>
+  <div id="race-screen" class="hidden">
+    <button class="back-btn" id="back-to-venues">戻る</button>
+    <h2 id="race-venue-name"></h2>
+    <div id="races-grid"></div>
+  </div>
 
-  <div id="venuesGrid" class="grid-4x6"></div>
-</div>
+  <div id="entry-screen" class="hidden">
+    <button class="back-btn" id="back-to-races">戻る</button>
+    <h2 id="entry-venue-race"></h2>
+    <div id="entries-table"></div>
+  </div>
 
-<div id="raceScreen" class="screen" style="display:none;">
-  <button class="backBtn" onclick="goBackMain()">戻る</button>
-  <h2 id="raceTitle"></h2>
-  <div id="racesGrid" class="grid-3x4"></div>
-</div>
-
-<div id="entryScreen" class="screen" style="display:none;">
-  <button class="backBtn" onclick="goBackRace()">戻る</button>
-  <h2 id="entryTitle"></h2>
-  <div id="entryTable"></div>
-</div>
-
-<script src="app.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>

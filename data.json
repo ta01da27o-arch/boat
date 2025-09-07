@@ -1,14 +1,46 @@
 {
-  "races": [
-    {
-      "venueId":1,
-      "raceNo":1,
-      "entries":[
-        {"waku":1,"class":"A1","name":"佐藤太郎","st":0.12,"f":"","local":50,"motor":45,"course":60},
-        {"waku":2,"class":"A2","name":"鈴木次郎","st":0.15,"f":"F1","local":48,"motor":42,"course":55}
+  "venues": [
+    {"id":1,"name":"桐生","rate":"50%","status":"開催中","races":[
+      {"no":1,"entries":[
+        {"waku":1,"class":"A1","name":"佐藤","st":0.12,"f":"F0","local":[70,65,68],"motor":[6,7,6],"course":[60,55,58]},
+        {"waku":2,"class":"A2","name":"鈴木","st":0.14,"f":"F0","local":[60,63,62],"motor":[5,6,5],"course":[50,52,53]},
+        {"waku":3,"class":"B1","name":"高橋","st":0.13,"f":"F0","local":[50,52,55],"motor":[4,5,4],"course":[40,42,43]},
+        {"waku":4,"class":"B2","name":"田中","st":0.15,"f":"F0","local":[45,48,50],"motor":[3,4,3],"course":[35,38,39]},
+        {"waku":5,"class":"A1","name":"伊藤","st":0.11,"f":"F0","local":[68,67,66],"motor":[7,6,7],"course":[65,64,63]},
+        {"waku":6,"class":"A2","name":"渡辺","st":0.16,"f":"F0","local":[55,57,56],"motor":[5,5,6],"course":[50,51,52]}
       ],
-      "ai":{"main":[1,3,4,5,6],"sub":[2,5,6,1,3]},
-      "comments":[{"no":1,"text":"スタート速い"}]
-    }
+      "ai":{"main":[1,5,2,6,3],"sub":[4,3,6,2,5]},
+      "comments":[
+        {"no":1,"text":"スタート速い"},
+        {"no":2,"text":"モーター安定"},
+        {"no":3,"text":"やや不安定"},
+        {"no":4,"text":"成績安定"},
+        {"no":5,"text":"穴候補"},
+        {"no":6,"text":"平均的"}
+      ]}
+    ]},
+    {"id":2,"name":"戸田","rate":"45%","status":"開催中","races":[]},
+    {"id":3,"name":"江戸川","rate":"55%","status":"開催中","races":[]},
+    {"id":4,"name":"平和島","rate":"52%","status":"開催中","races":[]},
+    {"id":5,"name":"多摩川","rate":"48%","status":"開催中","races":[]},
+    {"id":6,"name":"浜名湖","rate":"50%","status":"開催中","races":[]},
+    {"id":7,"name":"蒲郡","rate":"47%","status":"開催中","races":[]},
+    {"id":8,"name":"常滑","rate":"49%","status":"開催中","races":[]},
+    {"id":9,"name":"津","rate":"46%","status":"開催中","races":[]},
+    {"id":10,"name":"三国","rate":"50%","status":"開催中","races":[]},
+    {"id":11,"name":"琵琶湖","rate":"53%","status":"開催中","races":[]},
+    {"id":12,"name":"住之江","rate":"54%","status":"開催中","races":[]},
+    {"id":13,"name":"尼崎","rate":"51%","status":"開催中","races":[]},
+    {"id":14,"name":"鳴門","rate":"52%","status":"開催中","races":[]},
+    {"id":15,"name":"丸亀","rate":"50%","status":"開催中","races":[]},
+    {"id":16,"name":"児島","rate":"49%","status":"開催中","races":[]},
+    {"id":17,"name":"宮島","rate":"48%","status":"開催中","races":[]},
+    {"id":18,"name":"徳山","rate":"46%","status":"開催中","races":[]},
+    {"id":19,"name":"下関","rate":"47%","status":"開催中","races":[]},
+    {"id":20,"name":"若松","rate":"45%","status":"開催中","races":[]},
+    {"id":21,"name":"芦屋","rate":"48%","status":"開催中","races":[]},
+    {"id":22,"name":"福岡","rate":"49%","status":"開催中","races":[]},
+    {"id":23,"name":"唐津","rate":"46%","status":"開催中","races":[]},
+    {"id":24,"name":"大村","rate":"50%","status":"開催中","races":[]}
   ]
 }

@@ -1,10 +1,10 @@
 {
-  "name": "競艇AIアプリ",
-  "short_name": "競艇AI",
+  "name": "競艇アプリ",
+  "short_name": "BOAT",
   "start_url": "index.html",
   "display": "standalone",
   "background_color": "#f0f8ff",
-  "theme_color": "#0066cc",
+  "theme_color": "#004080",
   "icons": [
     {
       "src": "favicon.ico",
