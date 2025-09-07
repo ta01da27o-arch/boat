@@ -1,12 +1,20 @@
 {
-  "name": "競艇AI予想",
-  "short_name": "競艇AI",
-  "start_url": ".",
+  "name": "競艇AI予想PWA",
+  "short_name": "BoatAI",
+  "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#38bdf8",
-  "icons":[
-    {"src":"icon-192.png","sizes":"192x192","type":"image/png"},
-    {"src":"icon-512.png","sizes":"512x512","type":"image/png"}
+  "background_color": "#004aad",
+  "theme_color": "#004aad",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
   ]
 }
