@@ -1,0 +1,101 @@
+{
+  "date": "2025-09-06T00:00:00+09:00",
+  "ai_accuracy": 66,
+  "venues": [
+    {"id":"kiryu","name":"桐生","active":true,"rate":54,"races":[]},
+    {"id":"toda","name":"戸田","active":false,"rate":45,"races":[]},
+    {"id":"edogawa","name":"江戸川","active":false,"rate":40,"races":[]},
+    {"id":"heiwajima","name":"平和島","active":false,"rate":41,"races":[]},
+    {"id":"tamagawa","name":"多摩川","active":false,"rate":44,"races":[]},
+    {"id":"hamanako","name":"浜名湖","active":false,"rate":39,"races":[]},
+    {"id":"gamagori","name":"蒲郡","active":false,"rate":42,"races":[]},
+    {"id":"tokoname","name":"常滑","active":false,"rate":38,"races":[]},
+    {"id":"tsu","name":"津","active":false,"rate":37,"races":[]},
+    {"id":"mikuni","name":"三国","active":false,"rate":36,"races":[]},
+    {"id":"biwako","name":"びわこ","active":false,"rate":54,"races":[]},
+    {"id":"suminoe","name":"住之江","active":false,"rate":35,"races":[]},
+    {"id":"amagasaki","name":"尼崎","active":false,"rate":34,"races":[]},
+    {"id":"naruto","name":"鳴門","active":false,"rate":33,"races":[]},
+    {"id":"marugame","name":"丸亀","active":false,"rate":32,"races":[]},
+    {"id":"kojima","name":"児島","active":false,"rate":31,"races":[]},
+    {"id":"miyajima","name":"宮島","active":false,"rate":30,"races":[]},
+    {"id":"tokuyama","name":"徳山","active":false,"rate":29,"races":[]},
+    {"id":"shimonoseki","name":"下関","active":false,"rate":28,"races":[]},
+    {"id":"wakamatsu","name":"若松","active":false,"rate":27,"races":[]},
+    {"id":"ashiya","name":"芦屋","active":false,"rate":26,"races":[]},
+    {"id":"fukuoka","name":"福岡","active":false,"rate":53,"races":[]},
+    {"id":"karatsu","name":"唐津","active":false,"rate":25,"races":[]},
+    {"id":"omura","name":"大村","active":false,"rate":24,"races":[]}
+  ],
+  "races": {
+    "kiryu": [
+      {
+        "number": 1,
+        "startTime": "10:30",
+        "env": {"windDir":"追い","windSpeed":3.8,"wave":12},
+        "entries": [
+          {
+            "waku":1,"class":"A1","name":"田中 太郎","st":0.13,"f":"",
+            "local2":57,"local3":78,
+            "motor2":52,"motor3":70,
+            "course2":60,"course3":85
+          },
+          {
+            "waku":2,"class":"A2","name":"佐藤 花子","st":0.15,"f":"",
+            "local2":50,"local3":72,
+            "motor2":48,"motor3":65,
+            "course2":50,"course3":68
+          },
+          {
+            "waku":3,"class":"B1","name":"鈴木 一郎","st":0.16,"f":"",
+            "local2":45,"local3":60,
+            "motor2":42,"motor3":58,
+            "course2":48,"course3":60
+          },
+          {
+            "waku":4,"class":"A1","name":"高橋 次郎","st":0.12,"f":"",
+            "local2":52,"local3":74,
+            "motor2":60,"motor3":82,
+            "course2":54,"course3":72
+          },
+          {
+            "waku":5,"class":"B1","name":"伊藤 三郎","st":0.17,"f":"",
+            "local2":28,"local3":40,
+            "motor2":30,"motor3":45,
+            "course2":36,"course3":50
+          },
+          {
+            "waku":6,"class":"B2","name":"山田 四郎","st":0.19,"f":"",
+            "local2":20,"local3":34,
+            "motor2":18,"motor3":30,
+            "course2":22,"course3":36
+          }
+        ],
+        "ai": {
+          "main":[
+            {"combo":"3-1-5","rate":52},
+            {"combo":"3-1-4","rate":35},
+            {"combo":"3-4-1","rate":30},
+            {"combo":"1-3-5","rate":22},
+            {"combo":"1-3-4","rate":10}
+          ],
+          "sub":[
+            {"combo":"2-3-1","rate":20},
+            {"combo":"2-1-3","rate":18},
+            {"combo":"4-1-3","rate":15},
+            {"combo":"5-3-1","rate":12},
+            {"combo":"6-1-2","rate":8}
+          ]
+        },
+        "comments":[
+          {"no":1,"text":"インは出足良く逃げ本命。1マークを抑えに入る傾向あり。"},
+          {"no":2,"text":"スタート堅実。差しで着を拾う可能性あり。"},
+          {"no":3,"text":"伸びはあるが波に左右されやすい。"},
+          {"no":4,"text":"モーター良化。まくり差しの一手あり。"},
+          {"no":5,"text":"外でも伸び見せるが展開次第で。"},
+          {"no":6,"text":"前半の出足が弱い。展開待ち。"}
+        ]
+      }
+    ]
+  }
+}
