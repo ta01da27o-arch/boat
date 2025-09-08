@@ -1,154 +1,64 @@
-/* 全体 */
-body {
-  font-family: "Yu Gothic", "Hiragino Kaku Gothic ProN", sans-serif;
-  margin: 0;
-  padding: 0;
-  background: #f4f6f8;
-  color: #333;
+:root{
+  --blue:#0b79d0;
+  --light-blue:#eaf6ff;
+  --bg:#f6fbff;
+  --card:#ffffff;
+  --text:#0b1220;
+  --muted:#6b7280;
+  --accent:#dbeeff;
+  --symbol-red:#e11d48;
 }
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Noto Sans JP",sans-serif}
+.app-header{display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--blue);color:#fff;position:sticky;top:0;z-index:20}
+.app-title{margin:0;font-size:18px;font-weight:800}
+.today{font-size:13px;opacity:.95}
+.accuracy{background:rgba(255,255,255,0.12);padding:6px 10px;border-radius:10px;font-weight:700}
+.btn{background:#fff;color:var(--blue);border:0;padding:8px 10px;border-radius:8px;font-weight:800;cursor:pointer}
+.btn.back{background:#fff;color:var(--text)}
+.screen{display:none;padding:12px}
+.screen.active{display:block}
+.card{background:var(--card);border-radius:10px;padding:10px;margin-bottom:12px;box-shadow:0 6px 18px rgba(2,6,23,.06)}
+.section-title{font-size:16px;margin:6px 0 12px;color:var(--blue);font-weight:800}
 
-#app {
-  max-width: 420px; /* スマホ幅固定 */
-  margin: auto;
-  padding: 5px;
-}
+/* venues grid 4x6 */
+.venues-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.venue-card{background:var(--light-blue);padding:10px;border-radius:10px;text-align:center;min-height:84px;display:flex;flex-direction:column;justify-content:center;align-items:center}
+.venue-name{font-weight:900;font-size:15px}
+.venue-status{margin-top:6px;font-weight:800}
+.venue-rate{margin-top:6px;color:var(--text);font-weight:800}
+.venue-card.disabled{opacity:.45;pointer-events:none}
 
-/* ヘッダー */
-header {
-  text-align: center;
-  padding: 10px;
-  background: #0066cc;
-  color: #fff;
-}
+/* races grid 3x4 */
+.races-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.race-btn{background:#fff;border:1px solid var(--accent);padding:14px;border-radius:8px;font-weight:900;cursor:pointer}
+.race-btn.off{opacity:.35;pointer-events:none}
 
-header h1 {
-  margin: 0;
-  font-size: 18px;
-}
+/* table */
+.table{width:100%;border-collapse:collapse;margin-top:8px}
+.table thead th{background:var(--blue);color:#fff;font-size:13px;padding:8px}
+.table td, .table th{padding:8px;border-bottom:1px solid #eef6ff;text-align:center;vertical-align:middle;font-size:13px}
+.entry-left{display:flex;flex-direction:column;gap:4px}
+.entry-left .klass{font-size:12px;color:var(--muted)}
+.entry-left .name{font-weight:800}
+.entry-left .st{font-size:12px;color:#374151}
 
-.header-info {
-  display: flex;
-  justify-content: space-between;
-  margin: 5px 0;
-  font-size: 14px;
-}
+/* symbol styles */
+.symbol-top{color:var(--symbol-red);font-weight:900;display:block}
+.symbol{color:#111;font-weight:800;display:block}
 
-#refresh-btn {
-  background: #fff;
-  color: #0066cc;
-  border: none;
-  padding: 4px 8px;
-  border-radius: 4px;
-  cursor: pointer;
-}
+/* ai block */
+.ai-block{display:flex;gap:12px;flex-wrap:wrap}
+.ai-col{flex:1;min-width:140px}
+.ai-title{font-weight:800;margin-bottom:6px}
 
-#today-date {
-  font-size: 14px;
-}
+/* env pills */
+.env-pills{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.pill{background:var(--accent);padding:6px 8px;border-radius:10px;font-size:13px}
 
-/* 競艇場カード一覧 */
-.grid-venues {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 6px;
-  margin-top: 10px;
-}
-
-.venue-card {
-  border-radius: 6px;
-  padding: 6px;
-  text-align: center;
-  font-size: 13px;
-  min-height: 55px;
-}
-
-.venue-active {
-  background: #cce5ff;
-  color: #000;
-  cursor: pointer;
-}
-
-.venue-inactive {
-  background: #eee;
-  color: #aaa;
-}
-
-/* レース番号画面 */
-.grid-races {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 6px;
-  margin-top: 10px;
-}
-
-.race-btn {
-  background: #cce5ff;
-  border: 1px solid #0066cc;
-  border-radius: 5px;
-  padding: 10px;
-  text-align: center;
-  cursor: pointer;
-}
-
-.back-btn {
-  float: right;
-  background: #0066cc;
-  color: #fff;
-  padding: 4px 8px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 13px;
-}
-
-/* 出走表 */
-.race-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 10px;
-  font-size: 12px;
-}
-
-.race-table th, .race-table td {
-  border: 1px solid #ccc;
-  padding: 4px;
-  text-align: center;
-  background: #f9fcff;
-}
-
-/* 勝率記号 */
-.symbol {
-  font-weight: bold;
-}
-
-.symbol.red { color: red; }
-.symbol.black { color: black; }
-
-/* 買い目とコメント */
-.ai-section {
-  margin-top: 15px;
-}
-
-.ai-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 12px;
-}
-
-.ai-table th, .ai-table td {
-  border: 1px solid #ccc;
-  padding: 4px;
-  text-align: center;
-}
-
-.comment-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 10px;
-  font-size: 12px;
-}
-
-.comment-table th, .comment-table td {
-  border: 1px solid #ccc;
-  padding: 4px;
-  text-align: left;
+/* responsive adjustments (mobile-first) */
+@media (max-width:520px){
+  .venues-grid{grid-template-columns:repeat(2,1fr)}
+  .races-grid{grid-template-columns:repeat(2,1fr)}
+  .app-title{font-size:16px}
 }
