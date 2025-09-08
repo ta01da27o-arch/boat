@@ -1,12 +1,9 @@
 {
   "name": "競艇AI予想",
-  "short_name": "BoatAI",
+  "short_name": "競艇AI予想",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#0077d9",
   "theme_color": "#0077d9",
-  "icons":[
-    {"src":"icon-192.png","sizes":"192x192","type":"image/png"},
-    {"src":"icon-512.png","sizes":"512x512","type":"image/png"}
-  ]
+  "icons": []
 }
