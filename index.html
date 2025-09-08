@@ -1,103 +1,58 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>競艇AI予想</title>
-  <link rel="manifest" href="./manifest.webmanifest" />
-  <link rel="icon" href="./favicon.ico" />
-  <link rel="stylesheet" href="./style.css" />
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.webmanifest">
 </head>
 <body>
-  <header class="app-header">
-    <div class="left">
-      <h1 class="app-title">競艇AI予想</h1>
-      <div id="todayLabel" class="today">--/--/--</div>
+  <header>
+    <h1>競艇AI予想</h1>
+    <div class="header-info">
+      <span id="overall-rate">総合的中率: 52%</span>
+      <button id="refresh-btn">更新</button>
     </div>
-    <div class="right">
-      <div class="accuracy">総合的中率: <span id="globalHit">--%</span></div>
-      <button id="refreshBtn" class="btn">更新</button>
-    </div>
+    <div id="today-date"></div>
   </header>
 
-  <!-- メイン：24場一覧 -->
-  <main id="screen-venues" class="screen active">
-    <section class="card">
-      <h2 class="section-title">競艇場一覧（24場）</h2>
-      <div id="venuesGrid" class="venues-grid" aria-live="polite"></div>
+  <!-- 画面切り替え -->
+  <main>
+    <!-- 24場カード画面 -->
+    <section id="venues-screen" class="screen active">
+      <div id="venues-grid"></div>
+    </section>
+
+    <!-- レース番号画面 -->
+    <section id="races-screen" class="screen">
+      <div class="screen-header">
+        <span id="races-title"></span>
+        <button class="back-btn" onclick="goBack('venues')">戻る</button>
+      </div>
+      <div id="races-grid"></div>
+    </section>
+
+    <!-- 出走表画面 -->
+    <section id="entries-screen" class="screen">
+      <div class="screen-header">
+        <span id="entries-title"></span>
+        <button class="back-btn" onclick="goBack('races')">戻る</button>
+      </div>
+      <div id="entries-table"></div>
+
+      <h3>AI本命予想 / 穴予想</h3>
+      <div id="ai-predictions"></div>
+
+      <h3>AIコメント</h3>
+      <div id="ai-comments"></div>
     </section>
   </main>
 
-  <!-- レース番号画面 -->
-  <main id="screen-races" class="screen">
-    <section class="card">
-      <div class="nav">
-        <div></div>
-        <button id="backToVenues" class="btn back">戻る</button>
-      </div>
-      <h2 id="venueName" class="section-title" style="text-align:center;"></h2>
-      <div id="racesGrid" class="races-grid"></div>
-    </section>
-  </main>
-
-  <!-- 出走表画面 -->
-  <main id="screen-race" class="screen">
-    <section class="card">
-      <div class="nav">
-        <div></div>
-        <button id="backToRaces" class="btn back">戻る</button>
-      </div>
-      <h2 id="raceTitle" class="section-title" style="text-align:center;"></h2>
-
-      <div id="envPills" class="env-pills"></div>
-
-      <!-- 出走表 -->
-      <div class="card entry-card">
-        <table class="table" id="entryTable" aria-label="出走表">
-          <thead>
-            <tr>
-              <th>枠</th>
-              <th>選手 (級 / 名前 / ST)</th>
-              <th>F</th>
-              <th>当地勝率</th>
-              <th>モーター勝率</th>
-              <th>コース勝率</th>
-              <th>総合</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
-
-      <!-- AI 予想（左=本命5点、右=穴5点） -->
-      <div class="card ai-block">
-        <div class="ai-col">
-          <div class="ai-title">AI 本命（5点）</div>
-          <table class="table" id="aiMain"><thead><tr><th>買い目</th><th>確率</th></tr></thead><tbody></tbody></table>
-        </div>
-        <div class="ai-col">
-          <div class="ai-title">AI 穴（5点）</div>
-          <table class="table" id="aiSub"><thead><tr><th>買い目</th><th>確率</th></tr></thead><tbody></tbody></table>
-        </div>
-      </div>
-
-      <!-- コメント（コース別 表形式） -->
-      <div class="card">
-        <div class="ai-title">コース別コメント</div>
-        <table class="table" id="commentTable"><thead><tr><th>コース</th><th>コメント</th></tr></thead><tbody></tbody></table>
-      </div>
-    </section>
-  </main>
-
-  <footer class="app-footer">
-    <div>© 2025 競艇AI予想</div>
+  <footer>
+    <p>© 2025 Boat AI</p>
   </footer>
 
-  <script type="module" src="./app.js"></script>
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./sw.js').catch(()=>{/* ignore */});
-    }
-  </script>
+  <script src="app.js"></script>
 </body>
 </html>
