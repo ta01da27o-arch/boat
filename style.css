@@ -1,47 +1,182 @@
-/* 競艇場一覧グリッド */
-.venues-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr); /* ← 常に4列固定 */
-  grid-template-rows: repeat(6, auto);   /* ← 常に6行固定 */
-  gap: 6px;
-  width: 100%;
-  max-width: 420px;  /* スマホ幅に収める */
-  margin: 0 auto;
-}
-
-/* 各カード */
-.venue-card {
-  background: #e0f7fa;
-  border: 1px solid #90caf9;
-  border-radius: 10px;
-  padding: 6px;
+/* 全体レイアウト */
+body {
+  margin: 0;
+  font-family: "Arial", sans-serif;
+  background-color: #f0f2f5;
+  color: #333;
   text-align: center;
-  font-size: 12px;
-  font-weight: bold;
-  cursor: pointer;
 }
 
-.venue-card.inactive {
-  background: #f0f0f0;
-  color: #aaa;
+/* タイトル部分 */
+header {
+  padding: 10px;
+  background: #004aad;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header .title {
+  flex: 1;
+  text-align: center;
+}
+
+header button {
+  background: white;
+  border: none;
+  color: #004aad;
+  padding: 5px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+/* 日付 */
+.date {
+  margin: 8px 0;
+  font-size: 0.95rem;
+  color: #444;
+}
+
+/* 24場カード表示（縦4×6固定） */
+.stadium-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 縦画面4列固定 */
+  grid-template-rows: repeat(6, auto);  /* 6行固定 */
+  gap: 8px;
+  padding: 10px;
+}
+
+.stadium-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  padding: 6px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: 0.9rem;
+}
+
+.stadium-card.disabled {
+  background: #ddd;
+  color: #999;
   cursor: default;
 }
 
-/* 場名 */
-.venue-card .venue-name {
-  font-size: 14px;
-  font-weight: bold;
-}
-
-/* 開催中 or ー */
-.venue-card .venue-status {
-  margin: 3px 0;
-  font-size: 12px;
-  font-weight: bold;
+/* 開催状況 */
+.stadium-status {
+  font-size: 0.8rem;
+  margin: 4px 0;
 }
 
 /* 的中率 */
-.venue-card .venue-rate {
-  font-size: 12px;
-  color: #000;
+.stadium-rate {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+/* レース番号画面 (3×4固定) */
+.race-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  padding: 10px;
+}
+
+.race-card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  padding: 10px;
+  cursor: pointer;
+}
+
+.race-card.disabled {
+  background: #ddd;
+  color: #999;
+  cursor: default;
+}
+
+/* 出走表 */
+.table-container {
+  padding: 10px;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 12px;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 4px;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+th {
+  background: #eee;
+}
+
+/* 評価記号 */
+.evaluation {
+  font-weight: bold;
+}
+.evaluation.red {
+  color: red;
+}
+
+/* AI予想エリア */
+.prediction-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 10px;
+}
+
+.prediction-card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  padding: 10px;
+  font-size: 0.8rem;
+  text-align: left;
+}
+
+.prediction-card h3 {
+  margin-top: 0;
+  font-size: 0.9rem;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 4px;
+}
+
+/* コメント */
+.comment-box {
+  background: #f9f9f9;
+  padding: 8px;
+  margin: 10px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  text-align: left;
+}
+
+/* 戻るボタン */
+.back-button {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  background: #004aad;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 0.9rem;
 }
