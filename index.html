@@ -1,18 +1,110 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>競艇予想アプリ</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>競艇AI予想</title>
+  <meta name="theme-color" content="#1e90ff" />
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="icon" href="./favicon.ico" />
+  <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
-  <div id="app">
-    <header>
-      <h1>競艇予想アプリ</h1>
-    </header>
-    <main id="main-content"></main>
-  </div>
-  <script src="app.js"></script>
+  <header class="app-header">
+    <div class="title-wrap">
+      <h1 class="app-title">競艇AI予想</h1>
+      <div id="todayLabel" class="today">--/--/--</div>
+    </div>
+
+    <div class="header-right">
+      <div class="accuracy">総合AI的中率：<span id="globalHit">--%</span></div>
+      <button id="refreshBtn" class="btn">更新</button>
+    </div>
+  </header>
+
+  <main id="view" class="view">
+    <!-- venues screen -->
+    <section id="screen-venues" class="screen active">
+      <div class="card">
+        <div class="h2">競艇場一覧（24場）</div>
+        <div id="venuesGrid" class="venues-grid" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- races screen -->
+    <section id="screen-races" class="screen">
+      <div class="card">
+        <div class="screen-top">
+          <div class="screen-title" id="venueTitle">-</div>
+          <button id="backToVenues" class="btn back">← 戻る</button>
+        </div>
+        <div id="racesGrid" class="races-grid"></div>
+      </div>
+    </section>
+
+    <!-- race detail screen -->
+    <section id="screen-race" class="screen">
+      <div class="card">
+        <div class="screen-top">
+          <div class="screen-title" id="raceTitle">-</div>
+          <button id="backToRaces" class="btn back">← 戻る</button>
+        </div>
+
+        <div id="envPills" class="env-pills"></div>
+
+        <div class="card">
+          <table class="table" id="entryTable">
+            <thead>
+              <tr>
+                <th>枠</th>
+                <th>級 / 選手名 / ST</th>
+                <th>F</th>
+                <th>当地勝率</th>
+                <th>モーター勝率</th>
+                <th>コース勝率</th>
+                <th>総合評価</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <div class="card ai-block">
+          <div class="ai-col">
+            <div class="h3">AI 本命（5点）</div>
+            <table class="table prediction" id="aiMain">
+              <thead><tr><th>買い目</th><th>確率</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <div class="ai-col">
+            <div class="h3">AI 穴（5点）</div>
+            <table class="table prediction" id="aiSub">
+              <thead><tr><th>買い目</th><th>確率</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="h3">コース別コメント</div>
+          <table class="table" id="commentTable">
+            <thead><tr><th>コース</th><th>コメント</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <footer class="app-footer">© 2025 BOAT AI PWA</footer>
+
+  <script src="./app.js"></script>
+  <script>
+    if('serviceWorker' in navigator){
+      navigator.serviceWorker.register('./sw.js').catch(()=>{/* sw登録エラーは無視 */});
+    }
+  </script>
 </body>
 </html>
