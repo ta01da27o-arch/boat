@@ -1,6 +1,6 @@
 self.addEventListener("install", e => {
   e.waitUntil(
-    caches.open("boatrace-app").then(cache => {
+    caches.open("app-cache").then(cache => {
       return cache.addAll([
         "/",
         "/index.html",

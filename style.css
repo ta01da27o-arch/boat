@@ -1,80 +1,83 @@
 body {
-  font-family: sans-serif;
   margin: 0;
-  background: #f4f6f9;
-  color: #333;
+  font-family: Arial, sans-serif;
+  background: #f0f0f0;
 }
 
 header {
-  background: #1976d2;
-  color: white;
+  background: #0077cc;
+  color: #fff;
   text-align: center;
-  padding: 12px;
+  padding: 10px;
 }
 
 #main-content {
-  padding: 12px;
+  padding: 10px;
+}
+
+/* --- 24場カード表示 --- */
+.grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, 1fr); /* 常に4列固定 */
   gap: 10px;
 }
 
 .card {
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  padding: 10px;
-  text-align: center;
-  cursor: pointer;
-}
-
-.card h2 {
-  font-size: 1.1em;
-  margin: 6px 0;
-}
-
-.back-btn {
-  display: inline-block;
-  background: #e53935;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 6px;
-  cursor: pointer;
-  float: right;
-  margin-bottom: 10px;
-}
-
-.race {
-  margin-bottom: 18px;
-  padding: 10px;
   background: #fff;
+  border-radius: 8px;
+  padding: 15px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.card:hover {
+  transform: scale(1.05);
+}
+
+/* --- 戻るボタン（右上固定） --- */
+.back-button {
+  display: inline-block;
+  float: right;
+  margin: 10px;
+  padding: 6px 12px;
+  background-color: #0077cc;
+  color: #fff;
   border-radius: 6px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+}
+.back-button:hover {
+  background-color: #005fa3;
 }
 
-.race h3 {
-  margin: 0 0 8px;
-}
-
-.entry-table, .buy-table {
+/* --- 出走表 --- */
+.race-table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 10px;
+  margin-top: 10px;
 }
-
-.entry-table th, .entry-table td,
-.buy-table th, .buy-table td {
-  border: 1px solid #ccc;
-  padding: 4px;
+.race-table th, .race-table td {
+  border: 1px solid #ddd;
+  padding: 6px;
   text-align: center;
 }
-
 .mark {
   font-weight: bold;
 }
+.mark[data-type="◎"] {
+  color: red; /* ◎は赤色 */
+}
 
-.mark[data-type="◎"] { color: red; }
-.mark[data-type="○"] { color: blue; }
-.mark[data-type="▲"] { color: green; }
-.mark[data-type="△"] { color: orange; }
+/* --- 予想買い目 --- */
+.prediction-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+.prediction-table th, .prediction-table td {
+  border: 1px solid #ddd;
+  padding: 8px 12px;
+  text-align: center;
+}
