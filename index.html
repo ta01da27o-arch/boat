@@ -3,49 +3,43 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>競艇AI予想アプリ</title>
+  <title>競艇AI予想</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="manifest" href="manifest.webmanifest">
 </head>
 <body>
   <header class="app-header">
-    <h1 class="app-title">競艇AI予想アプリ</h1>
+    <h1 class="app-title">競艇AI予想</h1>
     <div class="right">
-      <button id="refresh-btn" class="btn">更新</button>
-      <div id="accuracy" class="btn">的中率 52%</div>
+      <div id="accuracy" class="accuracy">的中率: 65%</div>
+      <button id="refresh" class="btn">更新</button>
     </div>
   </header>
-  <div class="date-bar" id="today-date"></div>
 
-  <main id="app">
-    <!-- 画面切り替え -->
-    <section id="venues-screen" class="screen active">
-      <div id="venues" class="venues-grid"></div>
-    </section>
+  <div id="date-bar" class="date-bar"></div>
 
-    <section id="races-screen" class="screen">
-      <button class="btn back back-button">戻る</button>
-      <h2 class="h2" id="venue-title"></h2>
-      <div id="races" class="races-grid"></div>
-    </section>
+  <!-- 競艇場一覧 -->
+  <div id="venues-screen" class="screen active">
+    <div class="venues-grid" id="venues-grid"></div>
+  </div>
 
-    <section id="entries-screen" class="screen">
-      <button class="btn back back-button">戻る</button>
-      <h2 class="h2" id="race-title"></h2>
-      <div id="entries"></div>
-      <div class="ai-block">
-        <div class="ai-col">
-          <h3 class="h3">本命予想</h3>
-          <table class="table" id="ai-main"></table>
-        </div>
-        <div class="ai-col">
-          <h3 class="h3">穴予想</h3>
-          <table class="table" id="ai-anomaly"></table>
-        </div>
-      </div>
-      <div id="ai-comments"></div>
-    </section>
-  </main>
+  <!-- レース番号一覧 -->
+  <div id="races-screen" class="screen">
+    <div class="screen-top">
+      <h2 id="venue-title" class="screen-title"></h2>
+      <button id="back-to-venues" class="btn back">戻る</button>
+    </div>
+    <div class="races-grid" id="races-grid"></div>
+  </div>
+
+  <!-- 出走表 -->
+  <div id="entries-screen" class="screen">
+    <div class="screen-top">
+      <h2 id="race-title" class="screen-title"></h2>
+      <button id="back-to-races" class="btn back">戻る</button>
+    </div>
+    <div id="entries-container"></div>
+    <div id="ai-section"></div>
+  </div>
 
   <script src="app.js"></script>
 </body>
