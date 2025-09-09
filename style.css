@@ -1,78 +1,80 @@
-:root{
-  --blue: #1e90ff;
-  --light-blue:#eaf6ff;
-  --card:#ffffff;
-  --text:#0b1220;
-  --muted:#6b7280;
-  --accent:#cff0ff;
-  --red:#e11d48;
+body {
+  font-family: sans-serif;
+  margin: 0;
+  background: #f4f6f9;
+  color: #333;
 }
-*{box-sizing:border-box}
-html,body{margin:0;padding:0;height:100%;font-family:"Noto Sans JP",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--text);background:#f5f8fb}
-.app-header{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:linear-gradient(180deg,var(--blue),#1677cc);color:#fff;position:sticky;top:0;z-index:40}
-.app-title{margin:0;font-weight:900;font-size:18px}
-.right{display:flex;align-items:center;gap:10px}
-.btn{background:#fff;color:var(--blue);border:0;padding:8px 12px;border-radius:10px;font-weight:800;cursor:pointer}
-.btn.back{background:var(--blue);color:#fff;border-radius:20px;padding:6px 14px;box-shadow:0 2px 6px rgba(0,0,0,.2)}
-.date-bar{padding:6px 12px;color:var(--muted);font-size:14px;text-align:center;background:transparent}
 
-/* screen container */
-.screen{display:none;padding:10px}
-.screen.active{display:block}
-
-/* screen top（戻るボタン右寄せ） */
-.screen-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-.screen-title{font-weight:900;font-size:18px}
-
-/* venues grid: force 4×6 */
-.venues-grid{display:grid;grid-template-columns:repeat(4,1fr)!important;grid-auto-rows:minmax(84px,auto);gap:10px}
-.venue-card{background:var(--light-blue);border-radius:12px;padding:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;cursor:default;border:2px solid rgba(30,144,255,0.08)}
-.venue-card .v-name{font-weight:900;font-size:16px;margin-bottom:6px}
-.venue-card .v-status{font-weight:800;font-size:15px;margin-bottom:6px}
-.venue-card .v-rate{font-size:14px;color:var(--text)}
-.venue-card.clickable{cursor:pointer;border-color:rgba(30,144,255,0.22);box-shadow:0 6px 18px rgba(30,144,255,0.06)}
-.venue-card.disabled{opacity:.45;pointer-events:none}
-
-/* races grid */
-.races-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
-.race-btn{background:#eef8ff;padding:14px;border-radius:10px;font-weight:900;font-size:18px;cursor:pointer;border:1px solid #d2eeff;text-align:center}
-.race-btn.disabled{background:#f3f4f6;pointer-events:none;opacity:.6}
-
-/* 出走表 table */
-.table{width:100%;border-collapse:collapse;margin-top:8px}
-.table th{background:#dfeffd;color:var(--text);font-weight:800;padding:8px;border:1px solid #e6f3ff;text-align:center}
-.table td{padding:8px;border:1px solid #eef6ff;text-align:center;vertical-align:middle;font-size:14px}
-.entry-left{display:flex;flex-direction:column;gap:4px;align-items:center}
-.entry-left .klass{font-size:13px;color:var(--muted)}
-.entry-left .name{font-weight:900}
-.entry-left .st{font-size:13px;color:#374151}
-.metric-symbol{display:block;font-weight:900;font-size:16px}
-.metric-symbol.top{color:var(--red)}
-.metric-small{font-size:12px;color:#222}
-.eval-mark{font-weight:900;font-size:18px}
-
-/* コース背景 */
-.row-1 td{background:#fff}
-.row-2 td{background:#f7f7f9}
-.row-3 td{background:#fff6f6}
-.row-4 td{background:#eef8ff}
-.row-5 td{background:#fffdf0}
-.row-6 td{background:#f4fff7}
-
-/* AI 予想 */
-.ai-block{display:flex;gap:12px;margin-top:12px}
-.ai-col{flex:1;min-width:130px}
-.h2{font-size:16px;font-weight:900;margin-bottom:8px}
-.h3{font-size:14px;font-weight:900;margin-bottom:6px}
-
-/* AI コメント（表形式に変更） */
-.ai-comments-table{width:100%;border-collapse:collapse;margin-top:10px}
-.ai-comments-table th,.ai-comments-table td{border:1px solid #ddd;padding:6px;text-align:left;font-size:13px}
-.ai-comments-table th{background:#eef8ff;font-weight:800}
-
-/* responsive */
-@media(max-width:420px){
-  .venues-grid{grid-template-columns:repeat(4,1fr)!important;gap:6px}
-  .venue-card{padding:8px;min-height:74px}
-  .race-btn{font-size:16px;padding:12px}
+header {
+  background: #1976d2;
+  color: white;
+  text-align: center;
+  padding: 12px;
 }
+
+#main-content {
+  padding: 12px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.card {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.card h2 {
+  font-size: 1.1em;
+  margin: 6px 0;
+}
+
+.back-btn {
+  display: inline-block;
+  background: #e53935;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  float: right;
+  margin-bottom: 10px;
+}
+
+.race {
+  margin-bottom: 18px;
+  padding: 10px;
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+.race h3 {
+  margin: 0 0 8px;
+}
+
+.entry-table, .buy-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 10px;
+}
+
+.entry-table th, .entry-table td,
+.buy-table th, .buy-table td {
+  border: 1px solid #ccc;
+  padding: 4px;
+  text-align: center;
+}
+
+.mark {
+  font-weight: bold;
+}
+
+.mark[data-type="◎"] { color: red; }
+.mark[data-type="○"] { color: blue; }
+.mark[data-type="▲"] { color: green; }
+.mark[data-type="△"] { color: orange; }

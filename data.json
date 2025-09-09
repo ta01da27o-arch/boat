@@ -1,28 +1,69 @@
-{
-  "venues": [
-    {"name":"桐生","status":"開催中","rate":54},
-    {"name":"戸田","status":"ー","rate":45},
-    {"name":"江戸川","status":"ー","rate":38},
-    {"name":"平和島","status":"ー","rate":50},
-    {"name":"多摩川","status":"ー","rate":42},
-    {"name":"浜名湖","status":"ー","rate":47},
-    {"name":"蒲郡","status":"ー","rate":36},
-    {"name":"常滑","status":"ー","rate":40},
-    {"name":"津","status":"ー","rate":44},
-    {"name":"三国","status":"ー","rate":39},
-    {"name":"びわこ","status":"ー","rate":41},
-    {"name":"住之江","status":"ー","rate":48},
-    {"name":"尼崎","status":"ー","rate":46},
-    {"name":"鳴門","status":"ー","rate":37},
-    {"name":"丸亀","status":"ー","rate":43},
-    {"name":"児島","status":"ー","rate":35},
-    {"name":"宮島","status":"ー","rate":49},
-    {"name":"徳山","status":"ー","rate":38},
-    {"name":"下関","status":"ー","rate":42},
-    {"name":"若松","status":"ー","rate":44},
-    {"name":"芦屋","status":"ー","rate":40},
-    {"name":"福岡","status":"ー","rate":39},
-    {"name":"唐津","status":"ー","rate":37},
-    {"name":"大村","status":"ー","rate":52}
-  ]
-}
+[
+  {
+    "name": "桐生",
+    "status": "開催中",
+    "rate": 54,
+    "races": [
+      {
+        "no": 1,
+        "entries": [
+          {"name": "選手A", "mark": "◎"},
+          {"name": "選手B", "mark": "○"},
+          {"name": "選手C", "mark": "▲"},
+          {"name": "選手D", "mark": "△"},
+          {"name": "選手E", "mark": "△"},
+          {"name": "選手F", "mark": "△"}
+        ],
+        "predictions": [
+          {"bet": "1-2-3", "rate": 35},
+          {"bet": "1-3-2", "rate": 25},
+          {"bet": "2-1-3", "rate": 20}
+        ]
+      }
+    ]
+  },
+  {
+    "name": "戸田",
+    "status": "開催中",
+    "rate": 47,
+    "races": [
+      {
+        "no": 1,
+        "entries": [
+          {"name": "選手G", "mark": "◎"},
+          {"name": "選手H", "mark": "○"},
+          {"name": "選手I", "mark": "▲"},
+          {"name": "選手J", "mark": "△"},
+          {"name": "選手K", "mark": "△"},
+          {"name": "選手L", "mark": "△"}
+        ],
+        "predictions": [
+          {"bet": "2-1-4", "rate": 30},
+          {"bet": "1-4-2", "rate": 28}
+        ]
+      }
+    ]
+  },
+  { "name": "江戸川", "status": "ー", "rate": 40, "races": [] },
+  { "name": "平和島", "status": "ー", "rate": 42, "races": [] },
+  { "name": "多摩川", "status": "ー", "rate": 39, "races": [] },
+  { "name": "浜名湖", "status": "ー", "rate": 44, "races": [] },
+  { "name": "蒲郡", "status": "ー", "rate": 41, "races": [] },
+  { "name": "常滑", "status": "ー", "rate": 38, "races": [] },
+  { "name": "津", "status": "ー", "rate": 40, "races": [] },
+  { "name": "三国", "status": "ー", "rate": 43, "races": [] },
+  { "name": "琵琶湖", "status": "ー", "rate": 45, "races": [] },
+  { "name": "尼崎", "status": "ー", "rate": 46, "races": [] },
+  { "name": "住之江", "status": "ー", "rate": 42, "races": [] },
+  { "name": "鳴門", "status": "ー", "rate": 39, "races": [] },
+  { "name": "丸亀", "status": "ー", "rate": 44, "races": [] },
+  { "name": "児島", "status": "ー", "rate": 41, "races": [] },
+  { "name": "宮島", "status": "ー", "rate": 40, "races": [] },
+  { "name": "徳山", "status": "ー", "rate": 43, "races": [] },
+  { "name": "下関", "status": "ー", "rate": 42, "races": [] },
+  { "name": "若松", "status": "ー", "rate": 39, "races": [] },
+  { "name": "芦屋", "status": "ー", "rate": 40, "races": [] },
+  { "name": "福岡", "status": "ー", "rate": 44, "races": [] },
+  { "name": "唐津", "status": "ー", "rate": 41, "races": [] },
+  { "name": "大村", "status": "ー", "rate": 45, "races": [] }
+]
