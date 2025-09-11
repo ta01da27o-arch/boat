@@ -3,29 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ボートレースAIテストPWA</title>
+<title>競艇AI予想アプリ</title>
 <link rel="stylesheet" href="style.css">
 
-<!-- ✅ PWA用 -->
+<!-- ✅ PWA設定 -->
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#2196f3">
+<meta name="theme-color" content="#c62828">
 </head>
 <body>
-  <h1>ボートレース AI テスト環境 (PWA)</h1>
+  <h1>競艇AI予想アプリ (PWAテスト版)</h1>
   <p id="date"></p>
   <div id="venues"></div>
   <div id="races"></div>
 
-  <script src="script.js"></script>
+  <script src="app.js"></script>
   <script>
-    // ✅ 日付の表示（毎日変動）
-    document.getElementById('date').textContent = new Date().toLocaleDateString();
+    // ✅ 今日の日付を表示
+    document.getElementById('date').textContent =
+      new Date().toLocaleDateString();
 
-    // ✅ PWA: Service Worker 登録
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js')
-        .then(reg => console.log('Service Worker registered:', reg))
-        .catch(err => console.log('SW registration failed:', err));
+    // ✅ Service Worker 登録
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("./sw.js")
+        .then(() => console.log("Service Worker registered"));
     }
   </script>
 </body>

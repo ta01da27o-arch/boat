@@ -1,10 +1,10 @@
 {
-  "name": "ボートレースAIテストPWA",
-  "short_name": "AIボートPWA",
+  "name": "競艇AI予想アプリ",
+  "short_name": "競艇AI",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#2196f3",
+  "theme_color": "#c62828",
   "icons": [
     {
       "src": "icon-192.png",
