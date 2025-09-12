@@ -13,8 +13,8 @@ def fetch_today():
 def main():
     today_data = fetch_today()
 
-    os.makedirs("data", exist_ok=True)
-    output_file = "data/race_data.json"
+    # 出力先をリポジトリ直下の data.json に変更
+    output_file = "data.json"
 
     output = {
         "updated": datetime.datetime.now().isoformat(),
