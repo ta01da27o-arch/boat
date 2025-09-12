@@ -14,7 +14,7 @@ let mode = "today"; // "today" or "yesterday"
 
 async function loadRaceData() {
   try {
-    const res = await fetch("data/race_data.json?nocache=" + Date.now());
+    const res = await fetch("https://ta01da27o-arch.github.io/boat/data.json?nocache=" + Date.now());
     const json = await res.json();
     raceData = json.races;
     renderRaceList();
