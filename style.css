@@ -1,113 +1,61 @@
-:root{
-  --blue: #1e90ff;
-  --light-blue:#eaf6ff;
-  --card:#ffffff;
-  --text:#0b1220;
-  --muted:#6b7280;
-  --accent:#cff0ff;
-  --red:#e11d48;
-  --disabled:#d1d5db;
-}
-*{box-sizing:border-box}
-html,body{margin:0;padding:0;height:100%;font-family: "Noto Sans JP", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;color:var(--text);background:#f5f8fb}
-.app-header{
-  display:flex; align-items:center; justify-content:space-between;
-  padding:10px 12px; background:linear-gradient(180deg,var(--blue),#1677cc); color:#fff;
-  position:sticky; top:0; z-index:40;
-}
-.title-wrap{ display:flex; flex-direction:column; }
-.app-title{ margin:0; font-weight:900; font-size:18px; }
-.today{ font-size:13px; opacity:.95; color: #e6f7ff; margin-top:4px; }
-.header-right{ display:flex; align-items:center; gap:10px; }
-.accuracy{ background: rgba(255,255,255,0.12); padding:6px 10px; border-radius:10px; font-weight:700; color:#fff; }
-.btn{ background:#fff; color:var(--blue); border:0; padding:8px 12px; border-radius:10px; font-weight:800; cursor:pointer; }
-.btn.back{ background:#fff; color:var(--text); }
-.view{ padding:10px; max-width:980px; margin:0 auto; }
-
-/* screens */
-.screen{ display:none; padding:0; }
-.screen.active{ display:block; }
-
-/* card base */
-.card{ background:var(--card); border-radius:12px; padding:12px; box-shadow:0 8px 24px rgba(2,6,23,.06); margin-bottom:12px; }
-
-/* venues grid: 4 cols x 6 rows */
-.venues-grid{
-  display:grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-auto-rows: minmax(84px, auto);
-  gap:10px;
+body {
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f9f9f9;
 }
 
-/* venue card */
-.venue-card{
-  background:var(--light-blue);
-  border-radius:12px;
-  padding:12px;
-  display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;
-  cursor:default;
-  border:2px solid rgba(30,144,255,0.08);
-  transition: transform .08s ease, box-shadow .12s ease;
+header {
+  background: #003366;
+  color: white;
+  padding: 10px;
+  text-align: center;
 }
-.venue-card:hover{ transform: translateY(-2px); }
-.venue-card .v-name{ font-weight:900; font-size:16px; margin-bottom:6px; }
-.venue-card .v-status{ font-weight:800; font-size:15px; margin-bottom:6px; }
-.venue-card .v-rate{ font-size:14px; color:var(--text); }
 
-/* clickable */
-.venue-card.clickable{ cursor:pointer; border-color: rgba(30,144,255,0.22); box-shadow: 0 6px 18px rgba(30,144,255,0.06); }
-.venue-card.disabled{ background:var(--disabled); color:#9ca3af; pointer-events:none; opacity:0.8; }
-
-/* races grid (4 cols x up to 3 rows) */
-.races-grid{ display:grid; grid-template-columns: repeat(4, 1fr); gap:10px; margin-top:10px; }
-.race-btn{ background:#eef8ff; padding:14px; border-radius:10px; font-weight:900; font-size:18px; cursor:pointer; border:1px solid #d2eeff; text-align:center; }
-.race-btn.disabled{ background:#f3f4f6; pointer-events:none; opacity:.6; }
-
-/* table */
-.table{ width:100%; border-collapse:collapse; margin-top:8px; }
-.table thead th{ background:#dfeffd; color:var(--text); font-weight:800; padding:8px; border:1px solid #e6f3ff; text-align:center; }
-.table td{ padding:8px; border:1px solid #eef6ff; text-align:center; vertical-align:middle; font-size:14px; }
-
-/* entry left block */
-.entry-left{ display:flex; flex-direction:column; gap:4px; align-items:center; }
-.entry-left .klass{ font-size:13px; color:var(--muted); }
-.entry-left .name{ font-weight:900; }
-.entry-left .st{ font-size:13px; color:#374151; }
-
-/* metric cell: symbol top, 2連率, 3連率 */
-.metric-symbol{ display:block; font-weight:900; font-size:16px; }
-.metric-symbol.top{ color: var(--red); }  /* ◎は赤 */
-.metric-small{ font-size:12px; color:#222; }
-
-/* total evaluation */
-.eval-mark{ font-weight:900; font-size:18px; }
-
-/* course row colors */
-.row-1 td{ background: #ffffff; }
-.row-2 td{ background: #f7f7f9; }
-.row-3 td{ background: #fff6f6; }
-.row-4 td{ background: #eef8ff; }
-.row-5 td{ background: #fffdf0; }
-.row-6 td{ background: #f4fff7; }
-
-/* ai block */
-.ai-block{ display:flex; gap:12px; margin-top:8px; align-items:flex-start; }
-.ai-col{ flex:1; min-width:140px; }
-
-/* prediction table spacing */
-.prediction td{ padding:8px 20px; }
-
-/* small headings */
-.h2{ font-size:16px; font-weight:900; margin-bottom:8px; }
-.h3{ font-size:14px; font-weight:900; margin-bottom:6px; }
-
-/* back button alignment */
-.screen-top{ display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
-
-/* responsiveness */
-@media (max-width:420px){
-  .venues-grid{ grid-template-columns: repeat(4, 1fr); gap:6px; }
-  .venue-card{ padding:8px; min-height:76px; }
-  .race-btn{ font-size:16px; padding:12px; }
-  .prediction td{ padding:8px 12px; }
+nav button {
+  margin: 5px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
 }
+
+nav button.active {
+  background: #ffcc00;
+  color: #000;
+}
+
+.hidden {
+  display: none;
+}
+
+#raceList ul {
+  list-style: none;
+  padding: 0;
+}
+
+#raceList li {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
+}
+
+#entryTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 10px 0;
+}
+
+#entryTable th, #entryTable td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+/* 枠番カラー (公式ルール) */
+.lane-1 { background: #ffffff; }
+.lane-2 { background: #000000; color: #fff; }
+.lane-3 { background: #ff0000; color: #fff; }
+.lane-4 { background: #0000ff; color: #fff; }
+.lane-5 { background: #ffcc00; }
+.lane-6 { background: #00ff00; }
