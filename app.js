@@ -16,10 +16,18 @@ async function loadRaceData() {
   try {
     const res = await fetch("https://ta01da27o-arch.github.io/boat/data.json?nocache=" + Date.now());
     const json = await res.json();
-    raceData = json.races;
+
+    // races が配列か確認してセット
+    if (json && Array.isArray(json.races)) {
+      raceData = json.races;
+    } else {
+      throw new Error("JSON形式エラー: races が見つからないか配列でない");
+    }
+
     renderRaceList();
   } catch (e) {
     raceListContainer.innerHTML = `<li>データ取得失敗: ${e}</li>`;
+    console.error("データ読み込み失敗:", e);
   }
 }
 
