@@ -1,46 +1,50 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>競艇AI予想アプリ</title>
-  <link rel="manifest" href="manifest.json"/>
-  <link rel="stylesheet" href="style.css"/>
+  <meta charset="UTF-8">
+  <title>ボートレース出走表</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
-    <h1>競艇AI予想アプリ</h1>
-    <nav>
+    <h1>ボートレース出走表</h1>
+    <div class="tabs">
       <button id="todayBtn" class="active">当日</button>
       <button id="yesterdayBtn">前日</button>
-    </nav>
+    </div>
   </header>
 
-  <main>
-    <section id="raceList">
-      <h2>レース一覧</h2>
-      <ul id="raceListContainer"></ul>
-    </section>
+  <!-- 場一覧 -->
+  <section id="screen-venues">
+    <h2>開催場一覧</h2>
+    <ul id="venueList"></ul>
+  </section>
 
-    <section id="raceDetail" class="hidden">
-      <h2 id="raceTitle">レース詳細</h2>
-      <table id="entryTable">
-        <thead>
-          <tr>
-            <th>艇番</th>
-            <th>選手</th>
-            <th>勝率</th>
-            <th>スタート</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-      <div id="aiComment"></div>
-      <button id="backBtn">一覧に戻る</button>
-    </section>
-  </main>
+  <!-- レース一覧 -->
+  <section id="screen-races" class="hidden">
+    <h2 id="venueTitle"></h2>
+    <button id="backBtnRace" class="back-btn">← 場一覧へ戻る</button>
+    <ul id="raceList"></ul>
+  </section>
+
+  <!-- 出走表 -->
+  <section id="screen-detail" class="hidden">
+    <h2 id="raceTitle"></h2>
+    <button id="backBtnDetail" class="back-btn">← レース一覧へ戻る</button>
+    <table id="entryTable">
+      <thead>
+        <tr>
+          <th>枠</th>
+          <th>選手名</th>
+          <th>勝率</th>
+          <th>ST</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <div id="aiComment"></div>
+  </section>
 
   <script src="app.js"></script>
-  <script src="ai.js"></script>
 </body>
 </html>
