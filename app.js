@@ -32,11 +32,8 @@ async function loadRaceData() {
     const res = await fetch("https://ta01da27o-arch.github.io/boat/data.json?nocache=" + Date.now());
     const json = await res.json();
 
-    if (json && Array.isArray(json.races)) {
-      raceData = json.races;
-    } else {
-      throw new Error("JSON形式エラー: races が見つからないか配列でない");
-    }
+    // races 配列が存在しなければ空配列に
+    raceData = Array.isArray(json.races) ? json.races : [];
 
     // 初期は当日
     selectedDate = getToday();
@@ -60,9 +57,14 @@ function showVenueList() {
 
   venueList.innerHTML = "";
 
-  // 選択日付でフィルタ
-  const filtered = raceData.filter(r => r.date === selectedDate);
-  const venues = [...new Set(filtered.map(r => r.place))]; // 重複除去
+  // 選択日付でフィルタ、安全確認
+  const filtered = raceData.filter(r => r.date === selectedDate && r.place);
+  const venues = [...new Set(filtered.map(r => r.place))];
+
+  if (venues.length === 0) {
+    venueList.innerHTML = "<li>データがありません</li>";
+    return;
+  }
 
   venues.forEach(venue => {
     const li = document.createElement("li");
@@ -88,9 +90,14 @@ function showRaceList() {
 
   const filtered = raceData.filter(r => r.date === selectedDate && r.place === selectedVenue);
 
+  if (filtered.length === 0) {
+    raceList.innerHTML = "<li>レースデータがありません</li>";
+    return;
+  }
+
   filtered.forEach(race => {
     const li = document.createElement("li");
-    li.textContent = `${race.race_no}R (${race.start_time})`;
+    li.textContent = `${race.race_no ?? "-"}R (${race.start_time ?? "-"})`;
     li.addEventListener("click", () => showRaceDetail(race));
     raceList.appendChild(li);
   });
@@ -103,20 +110,27 @@ function showRaceDetail(race) {
   screenRaces.classList.add("hidden");
   screenDetail.classList.remove("hidden");
 
-  raceTitle.textContent = `${race.place} ${race.race_no}R 出走表`;
+  raceTitle.textContent = `${race.place ?? "-"} ${race.race_no ?? "-"}R 出走表`;
 
   entryTableBody.innerHTML = "";
-  race.entries.forEach(e => {
-    const tr = document.createElement("tr");
-    tr.classList.add(`lane-${e.lane}`);
-    tr.innerHTML = `
-      <td>${e.lane}</td>
-      <td>${e.name}</td>
-      <td>${e.win_rate?.toFixed(2) ?? "-"}</td>
-      <td>${e.start_avg ?? "-"}</td>
-    `;
-    entryTableBody.appendChild(tr);
-  });
+
+  const entries = Array.isArray(race.entries) ? race.entries : [];
+
+  if (entries.length === 0) {
+    entryTableBody.innerHTML = "<tr><td colspan='4'>出走データなし</td></tr>";
+  } else {
+    entries.forEach(e => {
+      const tr = document.createElement("tr");
+      tr.classList.add(`lane-${e.lane ?? 0}`);
+      tr.innerHTML = `
+        <td>${e.lane ?? "-"}</td>
+        <td>${e.name ?? "-"}</td>
+        <td>${e.win_rate != null ? e.win_rate.toFixed(2) : "-"}</td>
+        <td>${e.start_avg ?? "-"}</td>
+      `;
+      entryTableBody.appendChild(tr);
+    });
+  }
 
   aiCommentDiv.innerHTML = `<p>${generateComment(race)}</p>`;
 }
@@ -168,8 +182,10 @@ function getYesterday() {
 // AIコメント生成（仮）
 // ===============================
 function generateComment(race) {
-  if (!race.entries || race.entries.length === 0) return "データなし";
-  const fav = race.entries.reduce((a, b) => (a.win_rate > b.win_rate ? a : b));
+  const entries = Array.isArray(race.entries) ? race.entries : [];
+  if (entries.length === 0) return "データなし";
+
+  const fav = entries.reduce((a, b) => (a.win_rate > b.win_rate ? a : b));
   return `${fav.lane}号艇 ${fav.name} が有力候補と見られます。`;
 }
 
