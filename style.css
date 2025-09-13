@@ -1,171 +1,147 @@
-/* -----------------------
-   アプリ全体サイズ
-   ----------------------- */
-.app-frame {
-  width: 7cm;     /* 横幅固定 */
-  height: 12cm;   /* 縦幅固定 */
-  margin: 20px auto;
-  border: 2px solid #333;
-  border-radius: 12px;
-  background: #f8f8f8;
-  font-family: "Comic Sans MS", "Arial", sans-serif;
-  overflow-y: auto;   /* 縦スクロール許可 */
+/* 全体レイアウト：実機スマホ縦型（横7cm×縦12cmを意識） */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  max-width: 420px; /* 約7cm */
+  max-height: 720px; /* 約12cm */
+  margin-left: auto;
+  margin-right: auto;
+  background: #fdfdfd;
+  font-family: "Comic Sans MS", "Rounded Mplus 1c", sans-serif;
   overflow-x: hidden; /* 横スクロール禁止 */
+  overflow-y: auto;   /* 縦スクロールあり */
 }
 
-/* -----------------------
-   ヘッダー
-   ----------------------- */
-header {
+/* 画面切り替え */
+.screen {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.hidden {
+  display: none;
+}
+
+/* タイトル枠 */
+.app-header {
+  background: deepskyblue;
+  color: white;
   text-align: center;
-  background: #00bfff;
-  padding: 6px;
-  border-radius: 10px 10px 0 0;
+  padding: 8px;
   position: relative;
 }
-
-header h1 {
-  font-size: 18px;
+.app-title {
+  font-size: 1.5em;
   margin: 0;
-  color: white;
 }
-
 #refreshBtn {
   position: absolute;
+  top: 8px;
   right: 10px;
-  top: 6px;
-  padding: 3px 6px;
+  background: white;
   border: none;
-  border-radius: 6px;
-  background: #ff9800;
-  color: white;
-  font-size: 12px;
+  border-radius: 10px;
+  padding: 4px 8px;
   cursor: pointer;
 }
-
 #overallHit {
-  font-size: 12px;
   margin-top: 4px;
-  color: white;
+  font-size: 0.9em;
+}
+.today-label {
+  margin-top: 2px;
+  font-size: 0.9em;
+  color: #333;
 }
 
-#currentDate {
-  text-align: center;
-  margin: 4px 0;
-  font-size: 12px;
-}
-
-/* -----------------------
-   共通
-   ----------------------- */
-.hidden { display: none; }
-
-/* -----------------------
-   24場グリッド
-   ----------------------- */
+/* 24場一覧グリッド */
 .venue-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(6, 1fr);
-  gap: 4px;
-  padding: 6px;
+  gap: 6px;
+  padding: 10px;
 }
-
 .venue-card {
-  background: #cceeff;
-  border-radius: 8px;
-  padding: 6px;
+  background: #e0f7ff;
+  border-radius: 12px;
+  padding: 10px 4px;
   text-align: center;
-  font-size: 12px;
   font-weight: bold;
   cursor: pointer;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  font-size: 0.9em;
+}
+.venue-card.closed {
+  opacity: 0.4;
+  pointer-events: none;
 }
 
-.venue-card.disabled {
-  opacity: 0.5;
-  cursor: default;
-}
-
-/* -----------------------
-   レース番号画面
-   ----------------------- */
+/* レース番号画面 */
 .sub-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 4px 6px;
-  background: #eee;
+  background: deepskyblue;
+  color: white;
+  text-align: center;
+  padding: 8px;
+  position: relative;
 }
-
-.sub-header h2 {
-  font-size: 14px;
-  margin: 0;
+.back-btn {
+  position: absolute;
+  left: 8px;
+  top: 8px;
+  background: white;
+  border: none;
+  border-radius: 8px;
+  padding: 4px 8px;
+  cursor: pointer;
 }
-
 .race-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 4px;
-  padding: 6px;
+  gap: 8px;
+  padding: 10px;
 }
-
 .race-card {
-  background: white;
-  border-radius: 6px;
-  padding: 6px;
+  background: #f0f8ff;
+  border-radius: 12px;
   text-align: center;
-  font-size: 12px;
-  font-weight: bold;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  padding: 12px;
   cursor: pointer;
+  font-size: 1em;
+  font-weight: bold;
 }
 
-/* -----------------------
-   出走表
-   ----------------------- */
-table {
+/* 出走表 */
+.entry-table, .ai-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 6px;
-  background: white;
+  margin-top: 10px;
 }
-
-table th, table td {
+.entry-table th, .entry-table td,
+.ai-table th, .ai-table td {
   border: 1px solid #ccc;
-  padding: 2px;
-  font-size: 11px;
+  padding: 4px;
+  font-size: 0.85em;
   text-align: center;
 }
-table th { background: #eee; }
 
-#aiComment .comment-grid {
+/* 出走表6枠色 */
+.entry-table tbody tr:nth-child(1) td { background: #ffffff; }
+.entry-table tbody tr:nth-child(2) td { background: #f0f0f0; }
+.entry-table tbody tr:nth-child(3) td { background: #ffd6d6; }
+.entry-table tbody tr:nth-child(4) td { background: #d6eaff; }
+.entry-table tbody tr:nth-child(5) td { background: #fff9d6; }
+.entry-table tbody tr:nth-child(6) td { background: #d6ffd6; }
+
+/* AIコメント */
+.comment-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 2px;
-  margin-top: 4px;
+  gap: 8px;
+  padding: 10px;
 }
 .comment-card {
-  background: #fff7e6;
-  padding: 2px;
-  border-radius: 3px;
-  font-size: 10px;
-}
-
-/* 枠色（6艇） */
-#entryTable tbody tr:nth-child(1) td { background: #ffffff; }
-#entryTable tbody tr:nth-child(2) td { background: #f0f0f0; }
-#entryTable tbody tr:nth-child(3) td { background: #ffd6d6; }
-#entryTable tbody tr:nth-child(4) td { background: #d6eaff; }
-#entryTable tbody tr:nth-child(5) td { background: #fff9d6; }
-#entryTable tbody tr:nth-child(6) td { background: #d6ffd6; }
-
-.back-btn {
-  padding: 2px 6px;
-  border: none;
-  border-radius: 4px;
-  background: #666;
-  color: white;
-  font-size: 11px;
-  cursor: pointer;
+  background: #f9f9f9;
+  border-radius: 10px;
+  padding: 6px;
+  font-size: 0.85em;
 }
