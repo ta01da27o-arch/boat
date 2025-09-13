@@ -1,117 +1,147 @@
-body {
-  font-family: "Yu Gothic", sans-serif;
+/* 全体レイアウト：実機スマホ縦型（横7cm×縦12cmを意識） */
+html, body {
   margin: 0;
   padding: 0;
-  background: #f8f8f8;
-  width: 100%;
-  max-width: 420px; /* スマホ縦型固定 */
-  margin: auto;
+  height: 100%;
+  max-width: 420px; /* 約7cm */
+  max-height: 720px; /* 約12cm */
+  margin-left: auto;
+  margin-right: auto;
+  background: #fdfdfd;
+  font-family: "Comic Sans MS", "Rounded Mplus 1c", sans-serif;
+  overflow-x: hidden; /* 横スクロール禁止 */
+  overflow-y: auto;   /* 縦スクロールあり */
 }
 
-.title-bar {
-  background-color: deepskyblue;
+/* 画面切り替え */
+.screen {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
+  flex-direction: column;
+  height: 100%;
+}
+.hidden {
+  display: none;
+}
+
+/* タイトル枠 */
+.app-header {
+  background: deepskyblue;
+  color: white;
   text-align: center;
-  border-radius: 8px 8px 0 0;
+  padding: 8px;
+  position: relative;
 }
-.title-bar h1 {
+.app-title {
+  font-size: 1.5em;
   margin: 0;
-  font-size: 1.3em;
 }
-.title-bar button {
-  padding: 6px 12px;
+#refreshBtn {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  background: white;
   border: none;
-  border-radius: 5px;
-  background: #fff;
+  border-radius: 10px;
+  padding: 4px 8px;
   cursor: pointer;
 }
-
-.total-hit {
-  text-align: center;
-  padding: 6px;
-  font-weight: bold;
+#overallHit {
+  margin-top: 4px;
+  font-size: 0.9em;
+}
+.today-label {
+  margin-top: 2px;
+  font-size: 0.9em;
+  color: #333;
 }
 
-.race-date {
-  text-align: center;
-  padding: 6px;
-}
-
-#venueGrid {
+/* 24場一覧グリッド */
+.venue-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 6px;
   padding: 10px;
 }
-
 .venue-card {
-  background: #cce7ff;
-  border-radius: 10px;
-  padding: 6px;
+  background: #e0f7ff;
+  border-radius: 12px;
+  padding: 10px 4px;
   text-align: center;
+  font-weight: bold;
   cursor: pointer;
+  font-size: 0.9em;
+}
+.venue-card.closed {
+  opacity: 0.4;
+  pointer-events: none;
 }
 
-.venue-card.disabled {
-  background: #eee;
-  color: #999;
-  cursor: default;
-}
-
-.hidden {
-  display: none;
-}
-
-.back-btn {
-  float: right;
-  padding: 6px 12px;
-  border: none;
-  background: #666;
+/* レース番号画面 */
+.sub-header {
+  background: deepskyblue;
   color: white;
-  border-radius: 4px;
+  text-align: center;
+  padding: 8px;
+  position: relative;
+}
+.back-btn {
+  position: absolute;
+  left: 8px;
+  top: 8px;
+  background: white;
+  border: none;
+  border-radius: 8px;
+  padding: 4px 8px;
   cursor: pointer;
-  margin-bottom: 6px;
+}
+.race-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  padding: 10px;
+}
+.race-card {
+  background: #f0f8ff;
+  border-radius: 12px;
+  text-align: center;
+  padding: 12px;
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: bold;
 }
 
-table {
+/* 出走表 */
+.entry-table, .ai-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 10px;
 }
-table th, table td {
+.entry-table th, .entry-table td,
+.ai-table th, .ai-table td {
   border: 1px solid #ccc;
-  padding: 6px;
+  padding: 4px;
+  font-size: 0.85em;
   text-align: center;
 }
-table th {
-  background: #eee;
-}
-tbody tr:nth-child(1) td {background: #fff;}
-tbody tr:nth-child(2) td {background: #f0f0f0;}
-tbody tr:nth-child(3) td {background: #ffecec;}
-tbody tr:nth-child(4) td {background: #e6f0ff;}
-tbody tr:nth-child(5) td {background: #fffbe6;}
-tbody tr:nth-child(6) td {background: #e6ffe6;}
 
-#aiPredictions {
-  margin-top: 10px;
+/* 出走表6枠色 */
+.entry-table tbody tr:nth-child(1) td { background: #ffffff; }
+.entry-table tbody tr:nth-child(2) td { background: #f0f0f0; }
+.entry-table tbody tr:nth-child(3) td { background: #ffd6d6; }
+.entry-table tbody tr:nth-child(4) td { background: #d6eaff; }
+.entry-table tbody tr:nth-child(5) td { background: #fff9d6; }
+.entry-table tbody tr:nth-child(6) td { background: #d6ffd6; }
+
+/* AIコメント */
+.comment-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  padding: 10px;
 }
-#mainPredictions {
-  margin-bottom: 10px;
-}
-#mainPredictions div {
-  display: flex;
-  justify-content: space-between;
-  padding: 2px 6px;
-  border-bottom: 1px solid #ccc;
-}
-#aiComments div {
-  background: #fff7e6;
-  border: 1px solid #ffcc80;
-  border-radius: 5px;
-  padding: 4px;
-  margin-bottom: 4px;
+.comment-card {
+  background: #f9f9f9;
+  border-radius: 10px;
+  padding: 6px;
+  font-size: 0.85em;
 }
