@@ -2,37 +2,32 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>ボートAI予想アプリ</title>
+  <title>ボートAIアプリ</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
-    <h1>ボートAI予想アプリ</h1>
-    <div class="header-controls">
-      <span id="dateDisplay"></span>
-      <button id="refreshBtn">更新</button>
-    </div>
-    <div>総合的中率: <span id="overallHit">-</span></div>
+    <h1>ボートAIアプリ</h1>
+    <button id="refreshBtn">更新</button>
+    <div id="overallHit">総合的中率: ー</div>
   </header>
 
-  <!-- 24場カード画面 -->
   <section id="screen-venues">
-    <div id="venueList" class="venue-grid"></div>
+    <h2>全国ボートレース場一覧</h2>
+    <div id="venueGrid" class="venue-grid">
+      <!-- 24場カード（固定） -->
+    </div>
   </section>
 
-  <!-- レース番号画面 -->
   <section id="screen-races" class="hidden">
     <h2 id="venueTitle"></h2>
-    <button id="backBtnRace" class="back-btn">← 戻る</button>
-    <div id="raceList" class="race-grid"></div>
+    <button class="back-btn" id="backBtnRace">← 場一覧へ戻る</button>
+    <div id="raceGrid" class="race-grid"></div>
   </section>
 
-  <!-- 出走表画面 -->
   <section id="screen-detail" class="hidden">
     <h2 id="raceTitle"></h2>
-    <button id="backBtnDetail" class="back-btn">← 戻る</button>
-    
-    <!-- 出走表 -->
+    <button class="back-btn" id="backBtnDetail">← レース一覧へ戻る</button>
     <table id="entryTable">
       <thead>
         <tr>
@@ -48,7 +43,7 @@
       <tbody></tbody>
     </table>
 
-    <!-- AI予想（本命・穴） -->
+    <h3>AI予想</h3>
     <table id="aiPrediction">
       <thead>
         <tr>
@@ -59,10 +54,10 @@
       <tbody id="aiPredictionBody"></tbody>
     </table>
 
-    <!-- AIコメント（新聞風） -->
     <div id="aiComment"></div>
   </section>
 
+  <script src="ai.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

@@ -3,88 +3,70 @@ body {
   margin: 0;
   padding: 0;
   background: #f8f8f8;
-  color: #333;
+  max-width: 420px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 header {
-  background: #00bfff;
+  background: #0066cc;
   color: white;
   padding: 10px;
   text-align: center;
+  position: relative;
 }
-
-.header-controls {
-  margin-top: 5px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.back-btn, #refreshBtn {
-  margin: 5px 0;
-  padding: 6px 12px;
+header button#refreshBtn {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  padding: 4px 8px;
   border: none;
-  background: #666;
-  color: white;
   border-radius: 4px;
+  background: #ff9800;
+  color: white;
   cursor: pointer;
 }
-.back-btn:hover, #refreshBtn:hover {
-  background: #333;
+
+#overallHit {
+  margin-top: 5px;
 }
 
 .hidden { display: none; }
 
-/* 24場カード */
 .venue-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 6px;
-  padding: 6px;
+  gap: 5px;
+  padding: 10px;
 }
 
 .venue-card {
-  background: #fff;
+  background: white;
+  border-radius: 8px;
   padding: 8px;
-  border-radius: 6px;
   text-align: center;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   cursor: pointer;
 }
 
-.venue-card.disabled {
-  color: #aaa;
-  cursor: not-allowed;
-}
+.venue-card.disabled { opacity: 0.5; cursor: default; }
 
-.venue-name {
-  font-weight: bold;
-  font-size: 16px;
-}
-
-.venue-status { margin: 4px 0; }
-
-.venue-rate { font-size: 14px; }
-
-/* レース番号カード */
 .race-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 6px;
-  padding: 6px;
+  gap: 5px;
+  padding: 10px;
 }
 
 .race-card {
-  background: #fff;
+  background: white;
+  border-radius: 8px;
   padding: 8px;
-  border-radius: 6px;
   text-align: center;
-  cursor: pointer;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  cursor: pointer;
 }
-.race-card:hover { background: #f0f8ff; }
 
-/* 出走表 */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -95,57 +77,34 @@ table th, table td {
   border: 1px solid #ccc;
   padding: 4px;
   text-align: center;
-  font-size: 12px;
 }
 table th { background: #eee; }
 
-/* 出走表背景色コース毎 */
-#entryTable tbody tr:nth-child(1) td {background: #fff;}
-#entryTable tbody tr:nth-child(2) td {background: #f0f0f0;}
-#entryTable tbody tr:nth-child(3) td {background: #ffe6e6;}
-#entryTable tbody tr:nth-child(4) td {background: #e6f0ff;}
-#entryTable tbody tr:nth-child(5) td {background: #ffffe6;}
-#entryTable tbody tr:nth-child(6) td {background: #e6ffe6;}
-
-/* AIコメント */
-#aiComment {
-  margin-top: 8px;
-  padding: 6px;
-  background: #fff7e6;
-  border: 1px solid #ffcc80;
-  border-radius: 5px;
-  font-size: 12px;
-}
-
-/* AI予想 */
-#aiPrediction {
-  margin-top: 8px;
-  width: 100%;
-  border-collapse: collapse;
-}
-#aiPrediction th, #aiPrediction td {
-  border: 1px solid #ccc;
-  padding: 4px;
-  font-size: 12px;
-}
-
-/* AIコメント新聞風スタイル */
-.comment-grid {
+#aiComment .comment-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 4px;
-  padding: 4px;
 }
 .comment-card {
-  background: #fff;
-  border-left: 4px solid #ff9800;
-  padding: 4px 6px;
-  font-size: 11px;
-  line-height: 1.2;
-  border-radius: 3px;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  background: #fff7e6;
+  padding: 4px;
+  border-radius: 4px;
+  font-size: 12px;
 }
-.comment-card strong {
-  color: #ff0000;
-  font-weight: bold;
+
+table tbody tr:nth-child(1) td { background: #ffffff; }
+table tbody tr:nth-child(2) td { background: #f0f0f0; }
+table tbody tr:nth-child(3) td { background: #ffd6d6; }
+table tbody tr:nth-child(4) td { background: #d6eaff; }
+table tbody tr:nth-child(5) td { background: #fff9d6; }
+table tbody tr:nth-child(6) td { background: #d6ffd6; }
+
+.back-btn {
+  margin: 5px 0;
+  padding: 4px 8px;
+  border: none;
+  border-radius: 4px;
+  background: #666;
+  color: white;
+  cursor: pointer;
 }
