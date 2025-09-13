@@ -1,183 +1,132 @@
-// ===============================
-// 要素取得
-// ===============================
-const screenVenues = document.getElementById("screen-venues"); // 場一覧
-const screenRaces = document.getElementById("screen-races");   // レース一覧
-const screenDetail = document.getElementById("screen-detail"); // 出走表
+let allRaces = [];
+let currentVenue = null;
+let currentDay = "today"; // today / yesterday
+
+const venueListContainer = document.getElementById("venueList");
+const raceListContainer = document.getElementById("raceList");
+const entryTableBody = document.querySelector("#entryTable tbody");
+
+const screenVenues = document.getElementById("screen-venues");
+const screenRaces = document.getElementById("screen-races");
+const screenDetail = document.getElementById("screen-detail");
 
 const todayBtn = document.getElementById("todayBtn");
 const yesterdayBtn = document.getElementById("yesterdayBtn");
 const backBtnRace = document.getElementById("backBtnRace");
 const backBtnDetail = document.getElementById("backBtnDetail");
 
-const venueList = document.getElementById("venueList");
-const raceList = document.getElementById("raceList");
-const venueTitle = document.getElementById("venueTitle");
-const raceTitle = document.getElementById("raceTitle");
-const entryTableBody = document.querySelector("#entryTable tbody");
-const aiCommentDiv = document.getElementById("aiComment");
+todayBtn.addEventListener("click", () => { currentDay = "today"; updateTab(); renderVenues(); });
+yesterdayBtn.addEventListener("click", () => { currentDay = "yesterday"; updateTab(); renderVenues(); });
+backBtnRace.addEventListener("click", () => switchScreen("venues"));
+backBtnDetail.addEventListener("click", () => switchScreen("races"));
 
-// ===============================
-// データ保持
-// ===============================
-let raceData = [];
-let selectedDate = "";
-let selectedVenue = "";
+function updateTab() {
+  todayBtn.classList.toggle("active", currentDay === "today");
+  yesterdayBtn.classList.toggle("active", currentDay === "yesterday");
+}
 
-// ===============================
-// データロード
-// ===============================
+// 日付の判定
+function filterByDay() {
+  const today = new Date();
+  const targetDate = new Date(today);
+  if (currentDay === "yesterday") targetDate.setDate(today.getDate() - 1);
+  const y = targetDate.getFullYear();
+  const m = String(targetDate.getMonth() + 1).padStart(2, "0");
+  const d = String(targetDate.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+}
+
+// データ取得
 async function loadRaceData() {
   try {
-    const res = await fetch("data.json?nocache=" + Date.now());
+    const res = await fetch("https://ta01da27o-arch.github.io/boat/data.json?nocache=" + Date.now());
     const json = await res.json();
-
     if (json && json.races && Array.isArray(json.races.programs)) {
-      raceData = json.races.programs;
+      allRaces = json.races.programs;
     } else {
-      throw new Error("JSON形式エラー: races.programs が配列でない");
+      throw new Error("JSON形式エラー");
     }
-
-    // 初期は当日
-    selectedDate = getToday();
-    todayBtn.classList.add("active");
-    yesterdayBtn.classList.remove("active");
-
-    showVenueList();
+    renderVenues();
   } catch (e) {
-    venueList.innerHTML = `<li>データ取得失敗: ${e}</li>`;
-    console.error("データ読み込み失敗:", e);
+    venueListContainer.innerHTML = `<p>データ取得失敗: ${e}</p>`;
   }
 }
 
-// ===============================
-// 場リストを表示
-// ===============================
-function showVenueList() {
-  screenDetail.classList.add("hidden");
-  screenRaces.classList.add("hidden");
-  screenVenues.classList.remove("hidden");
-
-  venueList.innerHTML = "";
-
-  // 選択日付でフィルタ
-  const filtered = raceData.filter(r => formatDate(r.race_date) === selectedDate);
-  const venues = [...new Set(filtered.map(r => r.race_stadium_number))]; // 場コードで重複除去
-
-  venues.forEach(venue => {
-    const li = document.createElement("li");
-    li.textContent = `場 ${venue}`;
-    li.addEventListener("click", () => {
-      selectedVenue = venue;
-      showRaceList();
-    });
-    venueList.appendChild(li);
-  });
-}
-
-// ===============================
-// レースリストを表示
-// ===============================
-function showRaceList() {
+// 画面切替
+function switchScreen(screen) {
   screenVenues.classList.add("hidden");
+  screenRaces.classList.add("hidden");
   screenDetail.classList.add("hidden");
-  screenRaces.classList.remove("hidden");
-
-  venueTitle.textContent = `場 ${selectedVenue}`;
-  raceList.innerHTML = "";
-
-  const filtered = raceData.filter(r => formatDate(r.race_date) === selectedDate && r.race_stadium_number === selectedVenue);
-
-  filtered.forEach(race => {
-    const li = document.createElement("li");
-    li.textContent = `${race.race_number}R (${race.race_closed_at})`;
-    li.addEventListener("click", () => showRaceDetail(race));
-    raceList.appendChild(li);
-  });
+  if (screen === "venues") screenVenues.classList.remove("hidden");
+  if (screen === "races") screenRaces.classList.remove("hidden");
+  if (screen === "detail") screenDetail.classList.remove("hidden");
 }
 
-// ===============================
-// レース詳細（出走表）表示
-// ===============================
-function showRaceDetail(race) {
-  screenRaces.classList.add("hidden");
-  screenDetail.classList.remove("hidden");
+// 場一覧
+function renderVenues() {
+  const targetDate = filterByDay();
+  const venues = [...new Set(allRaces.filter(r => r.race_date === targetDate).map(r => r.race_stadium_number))];
+  venueListContainer.innerHTML = "";
+  venues.forEach(v => {
+    const div = document.createElement("div");
+    div.textContent = `場 ${v}`;
+    div.onclick = () => renderRaces(v, targetDate);
+    venueListContainer.appendChild(div);
+  });
+  switchScreen("venues");
+}
 
-  raceTitle.textContent = `場${race.race_stadium_number} ${race.race_number}R ${race.race_title}`;
+// レース一覧
+function renderRaces(venue, date) {
+  currentVenue = venue;
+  document.getElementById("venueTitle").textContent = `場 ${venue}`;
+  const races = allRaces.filter(r => r.race_stadium_number === venue && r.race_date === date);
+  raceListContainer.innerHTML = "";
+  races.forEach(r => {
+    const div = document.createElement("div");
+    div.textContent = `${r.race_number}`;
+    div.onclick = () => renderRaceDetail(r);
+    raceListContainer.appendChild(div);
+  });
+  switchScreen("races");
+}
 
+// 出走表
+function renderRaceDetail(race) {
+  document.getElementById("raceTitle").textContent = `${race.race_number}R`;
   entryTableBody.innerHTML = "";
   race.boats.forEach(b => {
     const tr = document.createElement("tr");
     tr.classList.add(`lane-${b.racer_boat_number}`);
+
+    // 評価算出
+    const evalScore = (1 / (b.racer_average_start_timing || 0.3)) *
+                      (b.racer_flying_count === 0 ? 1 : 0.8) *
+                      (b.racer_national_top_1_percent || 1) *
+                      (b.motor_win_rate || 1) *
+                      (b.course_win_rate || 1);
+    let evalMark = "ー";
+    if (evalScore > 50) evalMark = "◎";
+    else if (evalScore > 30) evalMark = "○";
+    else if (evalScore > 20) evalMark = "△";
+    else if (evalScore > 10) evalMark = "✕";
+
     tr.innerHTML = `
       <td>${b.racer_boat_number}</td>
-      <td>${b.racer_name}</td>
-      <td>${b.racer_national_top_1_percent?.toFixed(2) ?? "-"}</td>
-      <td>${b.racer_average_start_timing ?? "-"}</td>
+      <td>
+        <div>${["A1","A2","B1","B2"][b.racer_class_number-1] || ""}</div>
+        <div>${b.racer_name}</div>
+        <div>ST:${b.racer_average_start_timing}</div>
+      </td>
+      <td>${b.racer_flying_count > 0 ? "F" : ""}</td>
+      <td>${b.local_win_rate || "-"}</td>
+      <td>${b.motor_win_rate || "-"}</td>
+      <td>${b.course_win_rate || "-"}</td>
+      <td class="${evalMark === "◎" ? "eval-strong" : ""}">${evalMark}</td>
     `;
     entryTableBody.appendChild(tr);
   });
-
-  aiCommentDiv.innerHTML = `<p>${generateComment(race)}</p>`;
+  switchScreen("detail");
 }
 
-// ===============================
-// 戻るボタン
-// ===============================
-backBtnRace.addEventListener("click", () => {
-  screenRaces.classList.add("hidden");
-  screenVenues.classList.remove("hidden");
-});
-
-backBtnDetail.addEventListener("click", () => {
-  screenDetail.classList.add("hidden");
-  screenRaces.classList.remove("hidden");
-});
-
-// ===============================
-// 日付切替
-// ===============================
-todayBtn.addEventListener("click", () => {
-  todayBtn.classList.add("active");
-  yesterdayBtn.classList.remove("active");
-  selectedDate = getToday();
-  showVenueList();
-});
-
-yesterdayBtn.addEventListener("click", () => {
-  yesterdayBtn.classList.add("active");
-  todayBtn.classList.remove("active");
-  selectedDate = getYesterday();
-  showVenueList();
-});
-
-// ===============================
-// 日付ヘルパー
-// ===============================
-function getToday() {
-  const d = new Date();
-  return d.toISOString().slice(0, 10);
-}
-function getYesterday() {
-  const d = new Date();
-  d.setDate(d.getDate() - 1);
-  return d.toISOString().slice(0, 10);
-}
-function formatDate(str) {
-  // "2025-09-12" → "2025-09-12"
-  return str.slice(0, 10);
-}
-
-// ===============================
-// AIコメント生成（仮）
-// ===============================
-function generateComment(race) {
-  if (!race.boats || race.boats.length === 0) return "データなし";
-  const fav = race.boats.reduce((a, b) => (a.racer_national_top_1_percent > b.racer_national_top_1_percent ? a : b));
-  return `${fav.racer_boat_number}号艇 ${fav.racer_name} が有力候補と見られます。`;
-}
-
-// ===============================
-// 初期化
-// ===============================
 loadRaceData();

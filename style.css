@@ -2,12 +2,12 @@
 body {
   margin: 0;
   font-family: "Segoe UI", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
-  background: #f6f9fc;
+  background: #ffffff;
   color: #333;
 }
 
 header {
-  background: #004aad;
+  background: deepskyblue;
   color: #fff;
   padding: 0.8rem;
   text-align: center;
@@ -37,11 +37,7 @@ nav button.active {
   color: #fff;
 }
 
-main {
-  padding: 1rem;
-}
-
-/* 画面切り替え */
+/* 画面切替 */
 .screen {
   display: block;
 }
@@ -49,35 +45,12 @@ main {
   display: none;
 }
 
-/* リスト */
-ul {
-  list-style: none;
-  padding: 0;
-}
-
-li {
-  padding: 0.8rem;
-  margin: 0.4rem 0;
-  background: #fff;
-  border-radius: 6px;
-  cursor: pointer;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-}
-
-li:hover {
-  background: #f1f1f1;
-}
-
 /* ナビゲーションバー */
 .nav-bar {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   margin-bottom: 1rem;
-}
-
-.nav-bar h2 {
-  margin: 0 auto;
-  font-size: 1.1rem;
 }
 
 .nav-bar button {
@@ -89,16 +62,54 @@ li:hover {
   cursor: pointer;
 }
 
+/* 24場一覧（4×6固定） */
+.venue-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+}
+
+.venue-grid div {
+  background: #e6f7ff;
+  padding: 0.8rem;
+  text-align: center;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.venue-grid div:hover {
+  background: #ccefff;
+}
+
+/* レース番号（3×4固定） */
+.race-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+}
+
+.race-grid div {
+  background: #e6f7ff;
+  padding: 1.2rem;
+  text-align: center;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
 /* 出走表 */
 #entryTable {
   width: 100%;
   border-collapse: collapse;
   margin-top: 0.8rem;
+  font-size: 0.85rem;
 }
 
 #entryTable th, #entryTable td {
   border: 1px solid #ddd;
-  padding: 0.5rem;
+  padding: 0.4rem;
   text-align: center;
 }
 
@@ -107,13 +118,13 @@ li:hover {
   color: #fff;
 }
 
-/* レーン別カラー */
-.lane-1 { background-color: #ffeeee; }
-.lane-2 { background-color: #eeffee; }
-.lane-3 { background-color: #eeeeff; }
-.lane-4 { background-color: #fff6e6; }
-.lane-5 { background-color: #f0e6ff; }
-.lane-6 { background-color: #e6f6ff; }
+/* 枠色 */
+.lane-1 { background: #ffffff; }
+.lane-2 { background: #f2f2f2; }
+.lane-3 { background: #ffe5e5; }
+.lane-4 { background: #e5f0ff; }
+.lane-5 { background: #fff9d9; }
+.lane-6 { background: #e5ffe5; }
 
 /* AIコメント */
 .ai-comment {
@@ -124,10 +135,5 @@ li:hover {
   border-radius: 4px;
 }
 
-/* フッター */
-footer {
-  text-align: center;
-  padding: 1rem;
-  font-size: 0.8rem;
-  color: #777;
-}
+/* 評価色 */
+.eval-strong { color: red; font-weight: bold; }

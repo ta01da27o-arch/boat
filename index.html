@@ -11,40 +11,43 @@
   <header>
     <h1>競艇AI予想</h1>
     <nav>
-      <button id="todayBtn" class="active">今日</button>
-      <button id="yesterdayBtn">昨日</button>
+      <button id="todayBtn" class="active">本日</button>
+      <button id="yesterdayBtn">前日</button>
     </nav>
   </header>
 
   <main>
-    <!-- 場リスト画面 -->
+    <!-- 24場一覧 -->
     <section id="screen-venues" class="screen">
-      <h2>開催場</h2>
-      <ul id="venueList"></ul>
+      <h2>開催場一覧</h2>
+      <div id="venueList" class="venue-grid"></div>
     </section>
 
-    <!-- レース一覧画面 -->
+    <!-- レース番号画面 -->
     <section id="screen-races" class="screen hidden">
       <div class="nav-bar">
-        <button id="backBtnRace">← 戻る</button>
         <h2 id="venueTitle"></h2>
+        <button id="backBtnRace">戻る</button>
       </div>
-      <ul id="raceList"></ul>
+      <div id="raceList" class="race-grid"></div>
     </section>
 
-    <!-- レース詳細画面 -->
+    <!-- 出走表 -->
     <section id="screen-detail" class="screen hidden">
       <div class="nav-bar">
-        <button id="backBtnDetail">← 戻る</button>
         <h2 id="raceTitle"></h2>
+        <button id="backBtnDetail">戻る</button>
       </div>
       <table id="entryTable">
         <thead>
           <tr>
             <th>艇</th>
             <th>選手</th>
-            <th>勝率(%)</th>
-            <th>平均ST</th>
+            <th>F</th>
+            <th>当地</th>
+            <th>MT</th>
+            <th>コース</th>
+            <th>評価</th>
           </tr>
         </thead>
         <tbody></tbody>
