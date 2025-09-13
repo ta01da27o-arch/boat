@@ -13,8 +13,8 @@
       <h1 class="app-title">競艇AI予想</h1>
       <button id="refreshBtn">🔄</button>
       <div id="overallHit">総合的中率: ー</div>
-      <div id="todayLabel" class="today-label"></div>
     </header>
+    <div id="todayLabel" class="today-label"></div>
     <main>
       <div id="venueList" class="venue-grid"></div>
     </main>
@@ -41,8 +41,13 @@
       <table class="entry-table">
         <thead>
           <tr>
-            <th>枠</th><th>選手名</th><th>F</th>
-            <th>当地勝率</th><th>モーター勝率</th><th>コース勝率</th><th>評価</th>
+            <th>枠</th>
+            <th>選手情報</th>
+            <th>F</th>
+            <th>当地</th>
+            <th>モーター</th>
+            <th>コース</th>
+            <th>評価</th>
           </tr>
         </thead>
         <tbody id="entryTableBody"></tbody>
@@ -50,12 +55,14 @@
       <h3>AI予想</h3>
       <table class="ai-table">
         <thead>
-          <tr><th>本命</th><th>穴</th></tr>
+          <tr><th>買い目</th><th>確率</th></tr>
         </thead>
         <tbody id="aiPredictionBody"></tbody>
       </table>
       <h3>AIコメント</h3>
-      <div id="aiCommentDiv"></div>
+      <table class="comment-table">
+        <tbody id="aiCommentBody"></tbody>
+      </table>
     </main>
   </div>
 

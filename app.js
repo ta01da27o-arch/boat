@@ -15,7 +15,7 @@ const venueList = document.getElementById("venueList");
 const raceList = document.getElementById("raceList");
 const entryTableBody = document.getElementById("entryTableBody");
 const aiPredictionBody = document.getElementById("aiPredictionBody");
-const aiCommentDiv = document.getElementById("aiCommentDiv");
+const aiCommentBody = document.getElementById("aiCommentBody");
 
 const venueTitle = document.getElementById("venueTitle");
 const raceTitle = document.getElementById("raceTitle");
@@ -27,16 +27,17 @@ const overallHit = document.getElementById("overallHit");
 const today = new Date();
 todayLabel.textContent = today.toISOString().split("T")[0];
 
-// データ仮置き
-let selectedVenue = null;
-
 // 24場カード生成
 function renderVenues() {
   venueList.innerHTML = "";
   venueNames.forEach((name, i) => {
     const div = document.createElement("div");
     div.className = "venue-card";
-    div.textContent = name;
+    div.innerHTML = `
+      <div>${name}</div>
+      <div>開催中</div>
+      <div>ー%</div>
+    `;
     div.onclick = () => showRaces(name);
     venueList.appendChild(div);
   });
@@ -44,7 +45,6 @@ function renderVenues() {
 
 // レース番号表示
 function showRaces(venue) {
-  selectedVenue = venue;
   screenVenues.classList.add("hidden");
   screenRaces.classList.remove("hidden");
   venueTitle.textContent = `${venue}`;
@@ -63,38 +63,43 @@ function showRaceDetail(venue, raceNo) {
   screenRaces.classList.add("hidden");
   screenDetail.classList.remove("hidden");
   raceTitle.textContent = `${venue} ${raceNo}R 出走表`;
+
+  // 出走表
   entryTableBody.innerHTML = "";
+  const classes = ["A1","A2","B1","B2"];
   for (let i = 1; i <= 6; i++) {
     const tr = document.createElement("tr");
+    const rank = classes[Math.floor(Math.random()*classes.length)];
+    const st = (Math.random()*0.3+0.1).toFixed(2);
     tr.innerHTML = `
       <td>${i}</td>
-      <td>選手${i}</td>
+      <td><div>${rank}</div><div>選手${i}</div><div>${st}</div></td>
       <td>-</td>
       <td>${(Math.random()*7).toFixed(2)}</td>
       <td>${(Math.random()*7).toFixed(2)}</td>
-      <td>-</td>
+      <td>${(Math.random()*7).toFixed(2)}</td>
       <td>A</td>
     `;
     entryTableBody.appendChild(tr);
   }
-  // AI予想
+
+  // AI予想（サンプル）
   aiPredictionBody.innerHTML = "";
-  for (let i=0;i<5;i++) {
+  const buys = ["1-2-3","1-3-2","3-1-2","2-1-4","1-4-5"];
+  buys.forEach(b=>{
     const tr=document.createElement("tr");
-    tr.innerHTML=`<td>1-2-3</td><td>4-5-6</td>`;
+    tr.innerHTML=`<td>${b}</td><td>${Math.floor(Math.random()*40+30)}%</td>`;
     aiPredictionBody.appendChild(tr);
-  }
+  });
+
   // AIコメント
-  aiCommentDiv.innerHTML = "";
-  const comDiv = document.createElement("div");
-  comDiv.className = "comment-grid";
+  aiCommentBody.innerHTML = "";
   for (let i=1;i<=6;i++) {
-    const c=document.createElement("div");
-    c.className="comment-card";
-    c.textContent=`選手${i}：スタート良好`;
-    comDiv.appendChild(c);
+    const tr=document.createElement("tr");
+    const comment=`選手${i}：スタート鋭く展開有利。伸び脚も上向きで注目。`;
+    tr.innerHTML=`<td>${comment}</td>`;
+    aiCommentBody.appendChild(tr);
   }
-  aiCommentDiv.appendChild(comDiv);
 }
 
 // 戻るボタン

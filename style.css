@@ -1,27 +1,20 @@
-/* 全体レイアウト：実機スマホ縦型（横7cm×縦12cmを意識） */
+/* 全体レイアウト */
 html, body {
   margin: 0;
   padding: 0;
   height: 100%;
-  max-width: 420px; /* 約7cm */
-  max-height: 720px; /* 約12cm */
+  max-width: 420px;
   margin-left: auto;
   margin-right: auto;
   background: #fdfdfd;
   font-family: "Comic Sans MS", "Rounded Mplus 1c", sans-serif;
-  overflow-x: hidden; /* 横スクロール禁止 */
-  overflow-y: auto;   /* 縦スクロールあり */
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
-/* 画面切り替え */
-.screen {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-.hidden {
-  display: none;
-}
+/* 共通 */
+.screen { display: flex; flex-direction: column; height: 100%; }
+.hidden { display: none; }
 
 /* タイトル枠 */
 .app-header {
@@ -31,10 +24,7 @@ html, body {
   padding: 8px;
   position: relative;
 }
-.app-title {
-  font-size: 1.5em;
-  margin: 0;
-}
+.app-title { font-size: 1.5em; margin: 0; }
 #refreshBtn {
   position: absolute;
   top: 8px;
@@ -45,17 +35,16 @@ html, body {
   padding: 4px 8px;
   cursor: pointer;
 }
-#overallHit {
-  margin-top: 4px;
-  font-size: 0.9em;
-}
+#overallHit { margin-top: 4px; font-size: 0.9em; }
 .today-label {
-  margin-top: 2px;
+  background: #f0f0f0;
+  text-align: center;
+  padding: 6px;
   font-size: 0.9em;
-  color: #333;
+  border-bottom: 1px solid #ccc;
 }
 
-/* 24場一覧グリッド */
+/* 24場一覧 */
 .venue-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -65,16 +54,14 @@ html, body {
 .venue-card {
   background: #e0f7ff;
   border-radius: 12px;
-  padding: 10px 4px;
+  padding: 6px;
   text-align: center;
+  font-size: 0.85em;
   font-weight: bold;
   cursor: pointer;
-  font-size: 0.9em;
 }
-.venue-card.closed {
-  opacity: 0.4;
-  pointer-events: none;
-}
+.venue-card div { margin: 2px 0; }
+.venue-card.closed { opacity: 0.4; pointer-events: none; }
 
 /* レース番号画面 */
 .sub-header {
@@ -111,17 +98,24 @@ html, body {
 }
 
 /* 出走表 */
-.entry-table, .ai-table {
+.entry-table, .ai-table, .comment-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 10px;
 }
 .entry-table th, .entry-table td,
-.ai-table th, .ai-table td {
+.ai-table th, .ai-table td,
+.comment-table td {
   border: 1px solid #ccc;
   padding: 4px;
-  font-size: 0.85em;
+  font-size: 0.8em;
   text-align: center;
+}
+.entry-table th:nth-child(2),
+.entry-table td:nth-child(2) {
+  width: 40%; /* 選手名広め */
+  text-align: left;
+  padding-left: 6px;
 }
 
 /* 出走表6枠色 */
@@ -133,15 +127,9 @@ html, body {
 .entry-table tbody tr:nth-child(6) td { background: #d6ffd6; }
 
 /* AIコメント */
-.comment-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
-  padding: 10px;
-}
-.comment-card {
+.comment-table td {
   background: #f9f9f9;
-  border-radius: 10px;
+  border-radius: 6px;
+  text-align: left;
   padding: 6px;
-  font-size: 0.85em;
 }
