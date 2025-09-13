@@ -3,63 +3,78 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ボートレースAI予想</title>
+  <title>競艇AI予想</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- タイトル枠 -->
-  <header class="title-bar">
-    <h1 class="app-title">ボートレースAI予想</h1>
-    <button id="refreshBtn">更新</button>
-    <div id="overallHit">総合的中率: ー</div>
-  </header>
+  <div id="app">
 
-  <!-- 日付 -->
-  <div id="dateLabel" class="date-label"></div>
+    <!-- タイトル枠 -->
+    <header class="header">
+      <h1 class="title">競艇AI予想</h1>
+      <button id="refreshBtn" class="refresh">更新</button>
+      <div id="globalHit" class="hit-rate">総合的中率: ー%</div>
+    </header>
 
-  <!-- メイン画面（24場） -->
-  <main id="screen-venues" class="screen">
-    <div class="venues-grid" id="venuesGrid"></div>
-  </main>
+    <!-- 日付 -->
+    <div id="todayLabel" class="date-label">日付: 2025-09-13</div>
 
-  <!-- レース番号画面 -->
-  <section id="screen-races" class="screen hidden">
-    <button class="backBtn" id="backToVenues">戻る</button>
-    <h2 id="venueTitle"></h2>
-    <div id="racesGrid" class="races-grid"></div>
-  </section>
+    <!-- メイン画面（場一覧） -->
+    <section id="screen-venues" class="screen active">
+      <div class="venues-grid" id="venuesGrid">
+        <!-- 24場がここにJSで入る -->
+      </div>
+    </section>
 
-  <!-- 出走表画面 -->
-  <section id="screen-detail" class="screen hidden">
-    <button class="backBtn" id="backToRaces">戻る</button>
-    <h2 id="raceTitle"></h2>
+    <!-- レース番号画面 -->
+    <section id="screen-races" class="screen">
+      <div class="race-header">
+        <h2 id="venueTitle">場名</h2>
+        <button class="back-btn" data-target="screen-venues">戻る</button>
+      </div>
+      <div class="races-grid" id="racesGrid">
+        <!-- JSでレース番号を生成 -->
+      </div>
+    </section>
 
-    <table class="entry-table">
-      <thead>
-        <tr>
-          <th>枠</th>
-          <th>選手</th>
-          <th>F</th>
-          <th>当地</th>
-          <th>モーター</th>
-          <th>コース</th>
-          <th>評価</th>
-        </tr>
-      </thead>
-      <tbody id="entryTableBody"></tbody>
-    </table>
+    <!-- 出走表画面 -->
+    <section id="screen-race" class="screen">
+      <div class="race-header">
+        <h2 id="raceTitle">◯R 出走表</h2>
+        <button class="back-btn" data-target="screen-races">戻る</button>
+      </div>
+      <table class="race-table">
+        <thead>
+          <tr>
+            <th>艇</th>
+            <th>級/選手名/ST</th>
+            <th>当地</th>
+            <th>モーター</th>
+            <th>コース</th>
+          </tr>
+        </thead>
+        <tbody id="raceTableBody">
+          <!-- 選手情報がJSで挿入 -->
+        </tbody>
+      </table>
 
-    <h3>AI予想</h3>
-    <table class="ai-table">
-      <thead>
-        <tr><th>本命</th><th>穴</th><th>確率</th></tr>
-      </thead>
-      <tbody id="aiPredictionBody"></tbody>
-    </table>
+      <!-- AI予想 -->
+      <div class="ai-section">
+        <h3>AI予想</h3>
+        <ul id="aiPicks" class="ai-picks">
+          <!-- 買い目表示 -->
+        </ul>
+      </div>
 
-    <h3>AIコメント</h3>
-    <div id="aiCommentDiv" class="ai-comment"></div>
-  </section>
+      <!-- AIコメント -->
+      <div class="ai-comments">
+        <h3>AIコメント</h3>
+        <div id="aiCommentsList" class="comments-list">
+          <!-- 各艇コメント（6枠固定） -->
+        </div>
+      </div>
+    </section>
+  </div>
 
   <script src="app.js"></script>
 </body>
