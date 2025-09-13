@@ -7,27 +7,37 @@
 </head>
 <body>
   <header>
-    <h1>ボートAIアプリ</h1>
-    <button id="refreshBtn">更新</button>
+    <div class="title-bar">
+      <h1>ボートAIアプリ</h1>
+      <button id="refreshBtn">更新</button>
+    </div>
     <div id="overallHit">総合的中率: ー</div>
   </header>
 
+  <div id="currentDate"></div>
+
+  <!-- 24場一覧 -->
   <section id="screen-venues">
-    <h2>全国ボートレース場一覧</h2>
     <div id="venueGrid" class="venue-grid">
-      <!-- 24場カード（固定） -->
+      <!-- 24場カード -->
     </div>
   </section>
 
+  <!-- レース番号一覧 -->
   <section id="screen-races" class="hidden">
-    <h2 id="venueTitle"></h2>
-    <button class="back-btn" id="backBtnRace">← 場一覧へ戻る</button>
+    <div class="sub-header">
+      <h2 id="venueTitle"></h2>
+      <button class="back-btn" id="backBtnRace">← 戻る</button>
+    </div>
     <div id="raceGrid" class="race-grid"></div>
   </section>
 
+  <!-- 出走表 -->
   <section id="screen-detail" class="hidden">
-    <h2 id="raceTitle"></h2>
-    <button class="back-btn" id="backBtnDetail">← レース一覧へ戻る</button>
+    <div class="sub-header">
+      <h2 id="raceTitle"></h2>
+      <button class="back-btn" id="backBtnDetail">← 戻る</button>
+    </div>
     <table id="entryTable">
       <thead>
         <tr>

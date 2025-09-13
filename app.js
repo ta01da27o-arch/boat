@@ -14,6 +14,7 @@ const entryTableBody = document.querySelector("#entryTable tbody");
 const aiPredictionBody = document.getElementById("aiPredictionBody");
 const aiCommentDiv = document.getElementById("aiComment");
 const overallHit = document.getElementById("overallHit");
+const currentDateDiv = document.getElementById("currentDate");
 
 let raceData = [];
 let selectedVenue = "";
@@ -23,9 +24,18 @@ let selectedRace = null;
 const allVenues = ["桐生","戸田","江戸川","平和島","多摩川","浜名湖","蒲郡","常滑","津","三国","びわこ","住之江","尼崎","鳴門","丸亀","児島","宮島","徳山","下関","若松","芦屋","福岡","唐津","大村"];
 
 // ---------------------------
+// 日付表示
+// ---------------------------
+function showDate(){
+  const d = new Date();
+  currentDateDiv.textContent = `日付: ${d.getFullYear()}-${(d.getMonth()+1).toString().padStart(2,"0")}-${d.getDate().toString().padStart(2,"0")}`;
+}
+
+// ---------------------------
 // データロード
 // ---------------------------
 async function loadRaceData(){
+  showDate();
   try{
     const res = await fetch("https://ta01da27o-arch.github.io/boat/data.json?nocache="+Date.now());
     const json = await res.json();
@@ -42,7 +52,7 @@ async function loadRaceData(){
         f:b.racer_flying_count,
         local1:b.racer_local_top_1_percent,
         motor1:b.racer_assigned_motor_top_2_percent,
-        course1:null // 将来API取得
+        course1:null
       }))
     }));
     showVenueList();
@@ -113,7 +123,7 @@ function showRaceDetail(race){
 }
 
 // ---------------------------
-// 戻る
+// 戻るボタン
 // ---------------------------
 backBtnRace.addEventListener("click",()=>showVenueList());
 backBtnDetail.addEventListener("click",()=>showRaceList());
