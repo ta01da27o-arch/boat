@@ -2,62 +2,51 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>競艇AI予想アプリ</title>
+  <title>ボートAI予想</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <!-- メイン画面 -->
-  <div id="screen-venues" class="screen">
-    <header class="app-header">
-      <h1 class="app-title">競艇AI予想</h1>
-      <button id="refreshBtn">🔄</button>
-      <div id="overallHit">総合的中率: ー</div>
-      <div id="todayLabel" class="today-label"></div>
-    </header>
-    <main>
-      <div id="venueList" class="venue-grid"></div>
-    </main>
-  </div>
+  <section id="screen-venues">
+    <div class="title-bar">
+      <h1>ボートAI予想</h1>
+      <button id="refreshBtn">更新</button>
+    </div>
+    <div class="total-hit">総合的中率: -</div>
+    <div class="race-date" id="raceDate"></div>
+    <div id="venueGrid"></div>
+  </section>
 
   <!-- レース番号画面 -->
-  <div id="screen-races" class="screen hidden">
-    <header class="sub-header">
-      <button id="backToVenues" class="back-btn">← 戻る</button>
-      <h2 id="venueTitle"></h2>
-    </header>
-    <main>
-      <div id="raceList" class="race-grid"></div>
-    </main>
-  </div>
+  <section id="screen-races" class="hidden">
+    <h2 id="venueTitle"></h2>
+    <button id="backBtnRace" class="back-btn">← 戻る</button>
+    <div id="raceGrid"></div>
+  </section>
 
   <!-- 出走表画面 -->
-  <div id="screen-detail" class="screen hidden">
-    <header class="sub-header">
-      <button id="backToRaces" class="back-btn">← 戻る</button>
-      <h2 id="raceTitle"></h2>
-    </header>
-    <main>
-      <table class="entry-table">
-        <thead>
-          <tr>
-            <th>枠</th><th>選手名</th><th>F</th>
-            <th>当地勝率</th><th>モーター勝率</th><th>コース勝率</th><th>評価</th>
-          </tr>
-        </thead>
-        <tbody id="entryTableBody"></tbody>
-      </table>
-      <h3>AI予想</h3>
-      <table class="ai-table">
-        <thead>
-          <tr><th>本命</th><th>穴</th></tr>
-        </thead>
-        <tbody id="aiPredictionBody"></tbody>
-      </table>
-      <h3>AIコメント</h3>
-      <div id="aiCommentDiv"></div>
-    </main>
-  </div>
+  <section id="screen-detail" class="hidden">
+    <h2 id="raceTitle"></h2>
+    <button id="backBtnDetail" class="back-btn">← 戻る</button>
+    <table id="entryTable">
+      <thead>
+        <tr>
+          <th>枠</th>
+          <th>選手名</th>
+          <th>当地</th>
+          <th>モーター</th>
+          <th>コース</th>
+          <th>総合評価</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <div id="aiPredictions">
+      <div id="mainPredictions"></div>
+      <div id="aiComments"></div>
+    </div>
+  </section>
 
   <script src="app.js"></script>
 </body>
