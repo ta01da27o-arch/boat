@@ -3,78 +3,59 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>競艇AI予想</title>
+  <title>競艇AI予想アプリ</title>
+  <link rel="manifest" href="manifest.webmanifest">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="app">
+  <header>
+    <h1>競艇AI予想</h1>
+    <nav>
+      <button id="todayBtn" class="active">今日</button>
+      <button id="yesterdayBtn">昨日</button>
+    </nav>
+  </header>
 
-    <!-- タイトル枠 -->
-    <header class="header">
-      <h1 class="title">競艇AI予想</h1>
-      <button id="refreshBtn" class="refresh">更新</button>
-      <div id="globalHit" class="hit-rate">総合的中率: ー%</div>
-    </header>
-
-    <!-- 日付 -->
-    <div id="todayLabel" class="date-label">日付: 2025-09-13</div>
-
-    <!-- メイン画面（場一覧） -->
-    <section id="screen-venues" class="screen active">
-      <div class="venues-grid" id="venuesGrid">
-        <!-- 24場がここにJSで入る -->
-      </div>
+  <main>
+    <!-- 場リスト画面 -->
+    <section id="screen-venues" class="screen">
+      <h2>開催場</h2>
+      <ul id="venueList"></ul>
     </section>
 
-    <!-- レース番号画面 -->
-    <section id="screen-races" class="screen">
-      <div class="race-header">
-        <h2 id="venueTitle">場名</h2>
-        <button class="back-btn" data-target="screen-venues">戻る</button>
+    <!-- レース一覧画面 -->
+    <section id="screen-races" class="screen hidden">
+      <div class="nav-bar">
+        <button id="backBtnRace">← 戻る</button>
+        <h2 id="venueTitle"></h2>
       </div>
-      <div class="races-grid" id="racesGrid">
-        <!-- JSでレース番号を生成 -->
-      </div>
+      <ul id="raceList"></ul>
     </section>
 
-    <!-- 出走表画面 -->
-    <section id="screen-race" class="screen">
-      <div class="race-header">
-        <h2 id="raceTitle">◯R 出走表</h2>
-        <button class="back-btn" data-target="screen-races">戻る</button>
+    <!-- レース詳細画面 -->
+    <section id="screen-detail" class="screen hidden">
+      <div class="nav-bar">
+        <button id="backBtnDetail">← 戻る</button>
+        <h2 id="raceTitle"></h2>
       </div>
-      <table class="race-table">
+      <table id="entryTable">
         <thead>
           <tr>
             <th>艇</th>
-            <th>級/選手名/ST</th>
-            <th>当地</th>
-            <th>モーター</th>
-            <th>コース</th>
+            <th>選手</th>
+            <th>勝率(%)</th>
+            <th>平均ST</th>
           </tr>
         </thead>
-        <tbody id="raceTableBody">
-          <!-- 選手情報がJSで挿入 -->
-        </tbody>
+        <tbody></tbody>
       </table>
-
-      <!-- AI予想 -->
-      <div class="ai-section">
-        <h3>AI予想</h3>
-        <ul id="aiPicks" class="ai-picks">
-          <!-- 買い目表示 -->
-        </ul>
-      </div>
-
-      <!-- AIコメント -->
-      <div class="ai-comments">
-        <h3>AIコメント</h3>
-        <div id="aiCommentsList" class="comments-list">
-          <!-- 各艇コメント（6枠固定） -->
-        </div>
-      </div>
+      <div id="aiComment" class="ai-comment"></div>
     </section>
-  </div>
+  </main>
+
+  <footer>
+    <small>© 2025 競艇AI予想</small>
+  </footer>
 
   <script src="app.js"></script>
 </body>
