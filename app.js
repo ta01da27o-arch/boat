@@ -32,8 +32,29 @@ async function loadRaceData() {
     const res = await fetch("https://ta01da27o-arch.github.io/boat/data.json?nocache=" + Date.now());
     const json = await res.json();
 
-    // races 配列が存在しなければ空配列に
-    raceData = Array.isArray(json.races) ? json.races : [];
+    // 現在の JSON に合わせる
+    if (json && json.races && Array.isArray(json.races.programs)) {
+      // programs 配列を raceData に格納
+      raceData = json.races.programs.map(p => {
+        return {
+          date: p.race_date.replace(/-/g, ""),          // YYYYMMDD に変換
+          place: `場${p.race_stadium_number}`,          // 場番号を文字列に
+          race_no: p.race_number,
+          race_title: p.race_title,
+          race_subtitle: p.race_subtitle,
+          race_distance: p.race_distance,
+          start_time: p.race_closed_at ? p.race_closed_at.split(" ")[1] : "-",
+          entries: Array.isArray(p.boats) ? p.boats.map(b => ({
+            lane: b.racer_boat_number,
+            name: b.racer_name,
+            win_rate: b.racer_national_top_1_percent ?? null,
+            start_avg: b.racer_average_start_timing ?? null
+          })) : []
+        };
+      });
+    } else {
+      raceData = [];
+    }
 
     // 初期は当日
     selectedDate = getToday();
@@ -57,7 +78,6 @@ function showVenueList() {
 
   venueList.innerHTML = "";
 
-  // 選択日付でフィルタ、安全確認
   const filtered = raceData.filter(r => r.date === selectedDate && r.place);
   const venues = [...new Set(filtered.map(r => r.place))];
 
