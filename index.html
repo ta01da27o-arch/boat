@@ -6,66 +6,64 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <div class="title-bar">
+  <div class="app-frame">
+    <header>
       <h1>ボートAIアプリ</h1>
       <button id="refreshBtn">更新</button>
-    </div>
-    <div id="overallHit">総合的中率: ー</div>
-  </header>
+      <div id="overallHit">総合的中率: ー</div>
+    </header>
 
-  <div id="currentDate"></div>
+    <div id="currentDate"></div>
 
-  <!-- 24場一覧 -->
-  <section id="screen-venues">
-    <div id="venueGrid" class="venue-grid">
-      <!-- 24場カード -->
-    </div>
-  </section>
+    <!-- メイン画面（24場） -->
+    <section id="screen-venues">
+      <div id="venueGrid" class="venue-grid"></div>
+    </section>
 
-  <!-- レース番号一覧 -->
-  <section id="screen-races" class="hidden">
-    <div class="sub-header">
-      <h2 id="venueTitle"></h2>
-      <button class="back-btn" id="backBtnRace">← 戻る</button>
-    </div>
-    <div id="raceGrid" class="race-grid"></div>
-  </section>
+    <!-- レース番号画面 -->
+    <section id="screen-races" class="hidden">
+      <div class="sub-header">
+        <button class="back-btn" id="backBtnRace">← 戻る</button>
+        <h2 id="venueTitle"></h2>
+      </div>
+      <div id="raceGrid" class="race-grid"></div>
+    </section>
 
-  <!-- 出走表 -->
-  <section id="screen-detail" class="hidden">
-    <div class="sub-header">
-      <h2 id="raceTitle"></h2>
-      <button class="back-btn" id="backBtnDetail">← 戻る</button>
-    </div>
-    <table id="entryTable">
-      <thead>
-        <tr>
-          <th>枠</th>
-          <th>選手名</th>
-          <th>F</th>
-          <th>当地勝率</th>
-          <th>モーター勝率</th>
-          <th>コース勝率</th>
-          <th>総合評価</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+    <!-- 出走表画面 -->
+    <section id="screen-detail" class="hidden">
+      <div class="sub-header">
+        <button class="back-btn" id="backBtnDetail">← 戻る</button>
+        <h2 id="raceTitle"></h2>
+      </div>
+      <table id="entryTable">
+        <thead>
+          <tr>
+            <th>枠</th>
+            <th>選手名</th>
+            <th>F</th>
+            <th>当地勝率</th>
+            <th>モーター勝率</th>
+            <th>コース勝率</th>
+            <th>総合評価</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
 
-    <h3>AI予想</h3>
-    <table id="aiPrediction">
-      <thead>
-        <tr>
-          <th>本命予想</th>
-          <th>穴予想</th>
-        </tr>
-      </thead>
-      <tbody id="aiPredictionBody"></tbody>
-    </table>
+      <h3>AI予想</h3>
+      <table id="aiPrediction">
+        <thead>
+          <tr>
+            <th>本命予想</th>
+            <th>穴予想</th>
+          </tr>
+        </thead>
+        <tbody id="aiPredictionBody"></tbody>
+      </table>
 
-    <div id="aiComment"></div>
-  </section>
+      <div id="aiComment"></div>
+    </section>
+  </div>
 
   <script src="ai.js"></script>
   <script src="app.js"></script>

@@ -20,20 +20,13 @@ let raceData = [];
 let selectedVenue = "";
 let selectedRace = null;
 
-// 全24場固定
 const allVenues = ["桐生","戸田","江戸川","平和島","多摩川","浜名湖","蒲郡","常滑","津","三国","びわこ","住之江","尼崎","鳴門","丸亀","児島","宮島","徳山","下関","若松","芦屋","福岡","唐津","大村"];
 
-// ---------------------------
-// 日付表示
-// ---------------------------
 function showDate(){
   const d = new Date();
   currentDateDiv.textContent = `日付: ${d.getFullYear()}-${(d.getMonth()+1).toString().padStart(2,"0")}-${d.getDate().toString().padStart(2,"0")}`;
 }
 
-// ---------------------------
-// データロード
-// ---------------------------
 async function loadRaceData(){
   showDate();
   try{
@@ -61,9 +54,6 @@ async function loadRaceData(){
   }
 }
 
-// ---------------------------
-// 24場カード表示
-// ---------------------------
 function showVenueList(){
   screenDetail.classList.add("hidden");
   screenRaces.classList.add("hidden");
@@ -80,9 +70,6 @@ function showVenueList(){
   });
 }
 
-// ---------------------------
-// レース番号表示
-// ---------------------------
 function showRaceList(){
   screenVenues.classList.add("hidden");
   screenDetail.classList.add("hidden");
@@ -99,9 +86,6 @@ function showRaceList(){
   });
 }
 
-// ---------------------------
-// 出走表表示
-// ---------------------------
 function showRaceDetail(race){
   screenVenues.classList.add("hidden");
   screenRaces.classList.add("hidden");
@@ -122,14 +106,8 @@ function showRaceDetail(race){
   aiCommentDiv.innerHTML="<div class='comment-grid'>各選手コメント表示</div>";
 }
 
-// ---------------------------
-// 戻るボタン
-// ---------------------------
 backBtnRace.addEventListener("click",()=>showVenueList());
 backBtnDetail.addEventListener("click",()=>showRaceList());
 refreshBtn.addEventListener("click",()=>loadRaceData());
 
-// ---------------------------
-// 初期化
-// ---------------------------
 loadRaceData();
