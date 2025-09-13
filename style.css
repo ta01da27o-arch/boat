@@ -1,124 +1,85 @@
-/* 全体レイアウト */
-html, body {
+/* 全体 */
+body {
+  font-family: "Kosugi Maru", sans-serif;
   margin: 0;
-  padding: 0;
-  height: 100%;
-  max-width: 420px;
-  margin-left: auto;
-  margin-right: auto;
-  background: #fdfdfd;
-  font-family: "Comic Sans MS", "Rounded Mplus 1c", sans-serif;
-  overflow-x: hidden;
-  overflow-y: auto;
+  background: #f9f9f9;
+  max-width: 420px; /* スマホ幅 */
+  margin: 0 auto;
 }
 
-/* 共通 */
-.screen { display: flex; flex-direction: column; height: 100%; }
-.hidden { display: none; }
-
 /* タイトル枠 */
-.app-header {
+.title-bar {
   background: deepskyblue;
   color: white;
   text-align: center;
   padding: 8px;
   position: relative;
 }
-.app-title { font-size: 1.5em; margin: 0; }
+.app-title {
+  margin: 0;
+  font-size: 18px;
+}
 #refreshBtn {
   position: absolute;
-  top: 8px;
   right: 10px;
-  background: white;
-  border: none;
-  border-radius: 10px;
+  top: 8px;
   padding: 4px 8px;
-  cursor: pointer;
+  border: none;
+  border-radius: 8px;
 }
-#overallHit { margin-top: 4px; font-size: 0.9em; }
-.today-label {
-  background: #f0f0f0;
+#overallHit {
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+/* 日付 */
+.date-label {
   text-align: center;
-  padding: 6px;
-  font-size: 0.9em;
-  border-bottom: 1px solid #ccc;
+  font-size: 14px;
+  margin: 6px 0;
 }
 
 /* 24場一覧 */
-.venue-grid {
+.venues-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 6px;
-  padding: 10px;
+  padding: 6px;
 }
 .venue-card {
   background: #e0f7ff;
   border-radius: 12px;
-  padding: 6px;
   text-align: center;
-  font-size: 0.85em;
-  font-weight: bold;
-  cursor: pointer;
+  padding: 6px;
+  font-size: 13px;
 }
-.venue-card div { margin: 2px 0; }
-.venue-card.closed { opacity: 0.4; pointer-events: none; }
 
 /* レース番号画面 */
-.sub-header {
-  background: deepskyblue;
-  color: white;
-  text-align: center;
-  padding: 8px;
-  position: relative;
-}
-.back-btn {
-  position: absolute;
-  left: 8px;
-  top: 8px;
-  background: white;
-  border: none;
-  border-radius: 8px;
-  padding: 4px 8px;
-  cursor: pointer;
-}
-.race-grid {
+.races-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-  padding: 10px;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 4px;
+  padding: 6px;
 }
 .race-card {
-  background: #f0f8ff;
-  border-radius: 12px;
+  background: #f0f0f0;
+  border-radius: 10px;
   text-align: center;
-  padding: 12px;
-  cursor: pointer;
-  font-size: 1em;
-  font-weight: bold;
+  padding: 6px;
+  font-size: 12px;
 }
 
 /* 出走表 */
-.entry-table, .ai-table, .comment-table {
+.entry-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 10px;
 }
-.entry-table th, .entry-table td,
-.ai-table th, .ai-table td,
-.comment-table td {
+.entry-table th, .entry-table td {
   border: 1px solid #ccc;
   padding: 4px;
-  font-size: 0.8em;
-  text-align: center;
+  font-size: 12px;
 }
-.entry-table th:nth-child(2),
-.entry-table td:nth-child(2) {
-  width: 40%; /* 選手名広め */
-  text-align: left;
-  padding-left: 6px;
-}
-
-/* 出走表6枠色 */
 .entry-table tbody tr:nth-child(1) td { background: #ffffff; }
 .entry-table tbody tr:nth-child(2) td { background: #f0f0f0; }
 .entry-table tbody tr:nth-child(3) td { background: #ffd6d6; }
@@ -126,10 +87,28 @@ html, body {
 .entry-table tbody tr:nth-child(5) td { background: #fff9d6; }
 .entry-table tbody tr:nth-child(6) td { background: #d6ffd6; }
 
+/* AI予想 */
+.ai-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 6px;
+}
+.ai-table th, .ai-table td {
+  border: 1px solid #ccc;
+  padding: 4px;
+  font-size: 12px;
+  text-align: center;
+}
+
 /* AIコメント */
-.comment-table td {
-  background: #f9f9f9;
-  border-radius: 6px;
-  text-align: left;
+.ai-comment {
+  margin-top: 6px;
+}
+.comment-card {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background: #fff;
   padding: 6px;
+  font-size: 12px;
+  margin-bottom: 6px;
 }
