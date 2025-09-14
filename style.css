@@ -1,110 +1,107 @@
 body {
-  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background: #f9f9f9;
+  background: #f4f9ff;
   color: #333;
 }
 
-header {
-  background: #00aaff;
+.screen {
+  display: none;
+  padding: 10px;
+}
+
+.screen.active {
+  display: block;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #0077b6;
   color: white;
   padding: 10px;
-  text-align: center;
+  border-radius: 8px;
 }
 
-header h1 {
-  margin: 5px 0;
-  font-size: 1.4em;
+.header h1 {
+  margin: 0;
+  font-size: 18px;
 }
 
-.nav-buttons {
-  margin-top: 6px;
+.subtitle {
+  display: flex;
+  gap: 10px;
 }
 
-.nav-buttons button {
-  margin: 0 5px;
-  background: #fff;
-  color: #333;
-  font-weight: bold;
+.nav-btn {
+  background: white;
+  color: #0077b6;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 14px;
 }
 
 .sub-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin: 8px 0;
+  padding: 6px;
   background: #e6f7ff;
-  padding: 8px 12px;
-  font-size: 0.95em;
+  border-radius: 6px;
 }
 
-.sub-header span {
-  font-weight: bold;
-  color: #333;
-}
-
-.sub-header button {
-  background: #00aaff;
+#refreshBtn {
+  background: #0077b6;
   color: white;
-  font-weight: bold;
+  border: none;
+  padding: 4px 10px;
+  border-radius: 6px;
+  cursor: pointer;
 }
 
+/* 競艇場一覧 (触らない) */
 .venues-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  padding: 12px;
+  gap: 8px;
 }
 
 .venue-card {
   background: #e6f7ff;
-  border-radius: 10px;
-  padding: 12px;
+  border-radius: 6px;
+  padding: 10px;
   text-align: center;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-}
-
-.venue-card h3 {
-  margin: 0;
-  font-size: 1.1em;
-}
-
-.venue-status {
-  font-size: 0.9em;
-  margin-top: 4px;
-  color: #0077cc;
+  cursor: pointer;
+  font-size: 14px;
   font-weight: bold;
 }
 
-.hidden {
-  display: none;
+/* レース番号画面 */
+.races-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.race-card {
+  background: #e6f7ff;
+  border-radius: 6px;
+  padding: 20px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 .back-button {
-  float: right;
-  margin: 10px;
-  background: #00aaff;
-  color: white;
-  font-weight: bold;
-}
-
-#entryTable {
-  padding: 10px;
-}
-
-#comments {
-  margin: 15px;
-  padding: 10px;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-  font-size: 0.95em;
-  line-height: 1.5;
-}
-
-footer {
-  text-align: center;
-  padding: 10px;
-  font-size: 0.8em;
-  color: #666;
+  background: white;
+  color: #0077b6;
+  border: 1px solid white;
+  padding: 4px 10px;
+  border-radius: 6px;
+  cursor: pointer;
 }

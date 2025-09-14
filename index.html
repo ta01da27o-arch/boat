@@ -3,45 +3,43 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>競艇AI予想</title>
+  <title>競艇アプリ</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <h1>競艇AI予想</h1>
-    <div class="nav-buttons">
-      <button id="todayBtn">本日</button>
-      <button id="prevBtn">前日</button>
+  <!-- メイン画面 -->
+  <div id="screen-venues" class="screen active">
+    <div class="header">
+      <h1>競艇AI予想</h1>
+      <div class="subtitle">
+        <span class="nav-btn">前日</span>
+        <span class="nav-btn">本日</span>
+      </div>
     </div>
-  </header>
-
-  <div class="sub-header">
-    <span id="todayLabel"></span>
-    <button id="refreshBtn">更新</button>
+    <div class="sub-header">
+      <span id="todayLabel"></span>
+      <button id="refreshBtn">更新</button>
+    </div>
+    <div id="venues" class="venues-grid"></div>
   </div>
 
-  <main id="screen-venues">
-    <div class="venues-grid" id="venuesGrid">
-      <!-- 競艇場リストがJSで埋め込まれる -->
+  <!-- レース番号画面 -->
+  <div id="screen-races" class="screen">
+    <div class="header">
+      <h1 id="venueTitle"></h1>
+      <button class="back-button" onclick="goBack()">戻る</button>
     </div>
-  </main>
+    <div id="races" class="races-grid"></div>
+  </div>
 
-  <main id="screen-races" class="hidden">
-    <button id="backBtn" class="back-button">戻る</button>
-    <h2 id="venueTitle"></h2>
-    <div id="racesList"></div>
-  </main>
-
-  <main id="screen-race" class="hidden">
-    <button id="raceBackBtn" class="back-button">戻る</button>
-    <h2 id="raceTitle"></h2>
-    <div id="entryTable"></div>
-    <div id="comments"></div>
-  </main>
-
-  <footer>
-    <p>© 2025 BOAT AI</p>
-  </footer>
+  <!-- レース詳細画面 -->
+  <div id="screen-race" class="screen">
+    <div class="header">
+      <h1 id="raceTitle"></h1>
+      <button class="back-button" onclick="goBack()">戻る</button>
+    </div>
+    <div id="raceContent"></div>
+  </div>
 
   <script src="app.js"></script>
 </body>
