@@ -27,7 +27,7 @@ const venues = [
   "芦屋","福岡","唐津","大村"
 ];
 
-// ランダムコメント（言葉のみ）
+// ランダムコメント
 const comments = [
   "今節のST絶好調❗捲り一撃濃厚❗",
   "冷静な差しが決まる展開❗",
@@ -43,7 +43,7 @@ const comments = [
 
 // 日付表示
 const today = new Date();
-todayLabel.textContent = today.toISOString().slice(0,10) + " (日)";
+todayLabel.textContent = today.toISOString().slice(0,10);
 
 // 競艇場一覧表示
 function renderVenues() {

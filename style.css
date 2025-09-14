@@ -18,33 +18,35 @@ header h1 {
   font-size: 1.4em;
 }
 
-.date-controls {
+.nav-buttons {
+  margin-top: 6px;
+}
+
+.nav-buttons button {
+  margin: 0 5px;
+  background: #fff;
+  color: #333;
+  font-weight: bold;
+}
+
+.sub-header {
   display: flex;
-  justify-content: center;
-  gap: 8px;
-  margin-top: 5px;
+  justify-content: space-between;
+  align-items: center;
+  background: #e6f7ff;
+  padding: 8px 12px;
+  font-size: 0.95em;
 }
 
-.date-controls span {
-  background: #fff;
+.sub-header span {
+  font-weight: bold;
   color: #333;
-  padding: 4px 8px;
-  border-radius: 4px;
 }
 
-button {
-  border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  background: #fff;
-  color: #333;
-  font-size: 0.9em;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-}
-
-button:hover {
-  background: #f0f0f0;
+.sub-header button {
+  background: #00aaff;
+  color: white;
+  font-weight: bold;
 }
 
 .venues-grid {
@@ -55,7 +57,7 @@ button:hover {
 }
 
 .venue-card {
-  background: #e6f7ff; /* ←枠全体を薄い水色 */
+  background: #e6f7ff;
   border-radius: 10px;
   padding: 12px;
   text-align: center;
@@ -79,7 +81,7 @@ button:hover {
 }
 
 .back-button {
-  float: right; /* ←右寄せに変更 */
+  float: right;
   margin: 10px;
   background: #00aaff;
   color: white;
