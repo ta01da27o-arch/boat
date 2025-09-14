@@ -3,43 +3,41 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>競艇予想アプリ</title>
+  <title>競艇AI予想</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- メイン画面 -->
-  <div id="screen-venues" class="screen active">
-    <header class="main-header">
-      <h1 class="app-title">競艇予想アプリ</h1>
-      <div class="header-buttons">
-        <button>前日</button>
-        <button>本日</button>
-      </div>
-    </header>
-    <div class="sub-header">
-      <span id="todayLabel"></span>
-      <button id="refreshBtn">更新</button>
-    </div>
-    <div id="venues" class="venues-grid"></div>
-  </div>
+  <header>
+    <h1 id="todayLabel">競艇AI予想</h1>
+    <button id="refreshBtn">更新</button>
+  </header>
 
-  <!-- レース番号画面 -->
-  <div id="screen-races" class="screen">
-    <header class="race-header">
-      <h2 id="venueTitle"></h2>
-      <button class="back-button" id="backToVenues">戻る</button>
-    </header>
-    <div id="races" class="races-grid"></div>
-  </div>
+  <main id="view">
+    <!-- メイン画面 -->
+    <section id="screen-venues" class="screen"></section>
 
-  <!-- 各レース詳細画面 -->
-  <div id="screen-race" class="screen">
-    <header class="race-header">
-      <h2 id="raceTitle"></h2>
-      <button class="back-button" id="backToRaces">戻る</button>
-    </header>
-    <div id="raceDetail"></div>
-  </div>
+    <!-- レース番号画面 -->
+    <section id="screen-races" class="screen hidden"></section>
+
+    <!-- レース詳細画面 -->
+    <section id="screen-race" class="screen hidden"></section>
+
+    <!-- 出走表画面 -->
+    <section id="screen-race-entry" class="screen hidden">
+      <h2>出走表</h2>
+      <div id="entry-list"></div>
+
+      <h3>AI買い目予想</h3>
+      <div id="ai-predictions" class="ai-box"></div>
+
+      <h3>AIコメント</h3>
+      <div id="ai-comments" class="ai-box"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p id="globalHit">的中率: --%</p>
+  </footer>
 
   <script src="app.js"></script>
 </body>
