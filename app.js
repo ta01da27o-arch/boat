@@ -1,85 +1,95 @@
-const SCREEN_VENUES = document.getElementById("screen-venues");
-const SCREEN_RACES = document.getElementById("screen-races");
-const SCREEN_RACE = document.getElementById("screen-race");
+const raceListEl = document.getElementById("raceList");
+const screenRaces = document.getElementById("screen-races");
+const screenRace = document.getElementById("screen-race");
+const raceTitleEl = document.getElementById("raceTitle");
+const raceTableWrapper = document.getElementById("raceTableWrapper");
+const aiPredictionList = document.getElementById("aiPredictionList");
+const aiCommentEl = document.getElementById("aiComment");
 
-const VENUES_GRID = document.getElementById("venues");
-const RACES_GRID = document.getElementById("races");
-const RACE_DETAIL = document.getElementById("raceDetail");
-
-const venueTitle = document.getElementById("venueTitle");
-const raceTitle = document.getElementById("raceTitle");
-
-const backToVenues = document.getElementById("backToVenues");
-const backToRaces = document.getElementById("backToRaces");
-const refreshBtn = document.getElementById("refreshBtn");
-const todayLabel = document.getElementById("todayLabel");
-
-const venues = [
-  "桐生","戸田","江戸川","平和島","多摩川","浜名湖",
-  "蒲郡","常滑","津","三国","びわこ","住之江",
-  "尼崎","鳴門","丸亀","児島","宮島","徳山",
-  "下関","若松","芦屋","福岡","唐津","大村"
-];
-
-let currentVenue = null;
-let currentRace = null;
-
-function showScreen(screen) {
-  [SCREEN_VENUES, SCREEN_RACES, SCREEN_RACE].forEach(s => s.classList.remove("active"));
-  screen.classList.add("active");
-}
-
-// メイン画面の日付
-function updateDate() {
-  const d = new Date();
-  todayLabel.textContent = `${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()}`;
-}
-refreshBtn.addEventListener("click", updateDate);
-
-// 競艇場一覧生成
-function renderVenues() {
-  VENUES_GRID.innerHTML = "";
-  venues.forEach(v => {
-    const div = document.createElement("div");
-    div.className = "venue-card";
-    div.innerHTML = `
-      <h3>${v}</h3>
-      <p>開催中</p>
-      <p>ー%</p>
-    `;
-    div.addEventListener("click", () => openVenue(v));
-    VENUES_GRID.appendChild(div);
-  });
-}
-
-// レース番号画面
-function openVenue(venue) {
-  currentVenue = venue;
-  venueTitle.textContent = venue;
-  RACES_GRID.innerHTML = "";
-  for (let i=1; i<=12; i++) {
-    const div = document.createElement("div");
-    div.className = "race-card";
-    div.textContent = `${i}R`;
-    div.addEventListener("click", () => openRace(i));
-    RACES_GRID.appendChild(div);
-  }
-  showScreen(SCREEN_RACES);
-}
-
-// レース詳細画面
-function openRace(raceNo) {
-  currentRace = raceNo;
-  raceTitle.textContent = `${currentVenue} ${raceNo}R`;
-  RACE_DETAIL.innerHTML = `<p>${currentVenue} ${raceNo}R の詳細データ</p>`;
-  showScreen(SCREEN_RACE);
-}
-
-// 戻る操作
-backToVenues.addEventListener("click", () => showScreen(SCREEN_VENUES));
-backToRaces.addEventListener("click", () => showScreen(SCREEN_RACES));
+// ダミーデータ (通常は data.json を fetch する)
+const data = {
+  "programs": [
+    {
+      "race_date": "2025-09-14",
+      "race_stadium_number": 2,
+      "race_number": 1,
+      "race_title": "第41回 日本モーターボート選手会会長賞",
+      "race_subtitle": "一般戦",
+      "race_distance": 1800,
+      "boats": [
+        { "racer_boat_number": 1, "racer_name": "岡部 太郎", "racer_exhibit_time": "6.71" },
+        { "racer_boat_number": 2, "racer_name": "佐藤 一郎", "racer_exhibit_time": "6.65" },
+        { "racer_boat_number": 3, "racer_name": "田中 実", "racer_exhibit_time": "6.80" },
+        { "racer_boat_number": 4, "racer_name": "山本 健", "racer_exhibit_time": "6.77" },
+        { "racer_boat_number": 5, "racer_name": "中村 勇", "racer_exhibit_time": "6.69" },
+        { "racer_boat_number": 6, "racer_name": "鈴木 修", "racer_exhibit_time": "6.74" }
+      ]
+    }
+  ]
+};
 
 // 初期表示
-updateDate();
-renderVenues();
-showScreen(SCREEN_VENUES);
+function init() {
+  raceListEl.innerHTML = "";
+  data.programs.forEach(race => {
+    const li = document.createElement("li");
+    li.textContent = `${race.race_number}R ${race.race_title}`;
+    li.onclick = () => showRace(race.race_stadium_number, race.race_number);
+    raceListEl.appendChild(li);
+  });
+}
+init();
+
+// レース詳細表示
+function showRace(stadium, number) {
+  const race = data.programs.find(r => r.race_stadium_number === stadium && r.race_number === number);
+  if (!race) return;
+
+  screenRaces.classList.add("hidden");
+  screenRace.classList.remove("hidden");
+
+  raceTitleEl.textContent = `${race.race_number}R ${race.race_title} (${race.race_subtitle})`;
+
+  // 出走表生成
+  let table = `
+    <table class="race-table">
+      <tr>
+        <th>枠</th><th>選手名</th><th>展示タイム</th><th>総合評価</th>
+      </tr>
+  `;
+  race.boats.forEach(b => {
+    table += `
+      <tr class="waku-${b.racer_boat_number}">
+        <td>${b.racer_boat_number}</td>
+        <td>${b.racer_name}</td>
+        <td>${b.racer_exhibit_time}</td>
+        <td>ー</td>
+      </tr>
+    `;
+  });
+  table += "</table>";
+  raceTableWrapper.innerHTML = table;
+
+  // AI買い目予想 (ダミー)
+  aiPredictionList.innerHTML = "";
+  const dummyPredictions = ["1-2-3", "1-3-4", "2-1-5", "3-1-2"];
+  dummyPredictions.forEach(p => {
+    const li = document.createElement("li");
+    li.textContent = p;
+    aiPredictionList.appendChild(li);
+  });
+
+  // AIコメント (ダミー)
+  const dummyComments = [
+    "1号艇のスピードが抜けており、逃げ切り濃厚。",
+    "2号艇の差しが決まれば波乱もありそう。",
+    "外枠勢も展開次第で頭も十分に狙える。"
+  ];
+  aiCommentEl.textContent = dummyComments[Math.floor(Math.random() * dummyComments.length)];
+}
+
+// 戻る
+function backToRaces() {
+  screenRace.classList.add("hidden");
+  screenRaces.classList.remove("hidden");
+}

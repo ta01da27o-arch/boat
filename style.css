@@ -1,125 +1,76 @@
 body {
+  font-family: "Yu Gothic", sans-serif;
   margin: 0;
-  font-family: "Segoe UI", sans-serif;
-  background: #f8f9fa;
+  padding: 0;
+  background: #f4f4f9;
+  color: #333;
 }
 
-.screen {
-  display: none;
-  padding: 10px;
-}
-
-.screen.active {
-  display: block;
-}
-
-/* メイン画面ヘッダー */
-.main-header {
-  background: #00bfff; /* ディープスカイブルー */
-  color: white;
+header {
+  background: #0044cc;
+  color: #fff;
   padding: 10px;
   text-align: center;
-  border-radius: 6px;
 }
 
-.app-title {
+h1 {
   margin: 0;
   font-size: 20px;
 }
 
-.header-buttons {
-  margin-top: 5px;
-  display: flex;
-  justify-content: center;
-  gap: 10px;
+.hidden {
+  display: none;
 }
 
-.header-buttons button {
-  background: white;
-  color: #00bfff;
-  border: 1px solid #00bfff;
-  padding: 3px 10px;
-  border-radius: 4px;
-  cursor: pointer;
+#raceList {
+  list-style: none;
+  padding: 0;
 }
 
-.sub-header {
-  margin-top: 8px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 14px;
-}
-
-#refreshBtn {
-  background: white;
-  color: #00bfff;
-  border: 1px solid #00bfff;
-  padding: 3px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-/* 24場一覧グリッド */
-.venues-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 4列固定 */
-  gap: 8px;
-  margin-top: 10px;
-}
-
-.venue-card {
-  background: #e6f7ff;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+#raceList li {
   padding: 10px;
-  text-align: center;
+  margin: 5px;
+  background: #fff;
+  border: 1px solid #ddd;
   cursor: pointer;
 }
 
-.venue-card h3 {
-  margin: 0;
-  font-size: 16px;
+#raceList li:hover {
+  background: #eef;
 }
 
-.venue-card p {
-  margin: 2px 0;
-  font-size: 14px;
-}
-
-/* レース番号画面 */
-.race-header {
-  background: #00bfff; /* ディープスカイブルー */
-  color: white;
-  padding: 8px;
-  border-radius: 6px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.back-button {
-  background: white;
-  color: #00bfff;
-  border: 1px solid #00bfff;
-  padding: 3px 8px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.races-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
+/* 出走表 */
+.race-table {
+  width: 100%;
+  border-collapse: collapse;
   margin-top: 10px;
+  background: #fff;
 }
 
-.race-card {
-  background: #e6f7ff;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  padding: 20px 0; /* 高さを広げる */
+.race-table th, .race-table td {
+  border: 1px solid #ddd;
+  padding: 6px;
   text-align: center;
-  cursor: pointer;
   font-size: 14px;
+}
+
+.race-table th {
+  background: #eee;
+}
+
+/* 枠色 */
+.waku-1 { background: #fff; }
+.waku-2 { background: #ccc; }
+.waku-3 { background: #f66; }
+.waku-4 { background: #66f; color: #fff; }
+.waku-5 { background: #ff6; }
+.waku-6 { background: #6f6; }
+
+/* AI欄 */
+.ai-section {
+  background: #e6f3ff;
+  border: 1px solid #99c;
+  padding: 10px;
+  margin-top: 15px;
+  border-radius: 6px;
 }
