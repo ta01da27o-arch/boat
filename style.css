@@ -1,9 +1,7 @@
 body {
-  font-family: Arial, sans-serif;
   margin: 0;
-  padding: 0;
-  background: #f4f9ff;
-  color: #333;
+  font-family: "Segoe UI", sans-serif;
+  background: #f8f9fa;
 }
 
 .screen {
@@ -15,93 +13,97 @@ body {
   display: block;
 }
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #0077b6;
+/* メイン画面ヘッダー */
+.main-header {
+  background: #00bfff; /* ディープスカイブルー */
   color: white;
   padding: 10px;
-  border-radius: 8px;
+  text-align: center;
+  border-radius: 6px;
 }
 
-.header h1 {
+.app-title {
   margin: 0;
-  font-size: 18px;
-}
-
-.subtitle {
-  display: flex;
-  gap: 10px;
-}
-
-.nav-btn {
-  background: white;
-  color: #0077b6;
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-size: 14px;
+  font-size: 20px;
 }
 
 .sub-header {
+  margin-top: 5px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 8px 0;
-  padding: 6px;
-  background: #e6f7ff;
-  border-radius: 6px;
+  font-size: 14px;
 }
 
 #refreshBtn {
-  background: #0077b6;
-  color: white;
-  border: none;
-  padding: 4px 10px;
-  border-radius: 6px;
+  background: white;
+  color: #00bfff;
+  border: 1px solid #00bfff;
+  padding: 3px 10px;
+  border-radius: 4px;
   cursor: pointer;
 }
 
-/* 競艇場一覧 (触らない) */
+/* 24場一覧グリッド */
 .venues-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 8px;
+  margin-top: 10px;
 }
 
 .venue-card {
   background: #e6f7ff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 8px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.venue-card h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.venue-card p {
+  margin: 2px 0;
+  font-size: 14px;
+}
+
+/* レース番号画面 */
+.race-header {
+  background: #00bfff; /* ディープスカイブルー */
+  color: white;
+  padding: 8px;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.back-button {
+  background: white;
+  color: #00bfff;
+  border: 1px solid #00bfff;
+  padding: 3px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.races-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.race-card {
+  background: #e6f7ff;
+  border: 1px solid #ccc;
   border-radius: 6px;
   padding: 10px;
   text-align: center;
   cursor: pointer;
   font-size: 14px;
-  font-weight: bold;
-}
-
-/* レース番号画面 */
-.races-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  margin-top: 12px;
-}
-
-.race-card {
-  background: #e6f7ff;
-  border-radius: 6px;
-  padding: 20px;
-  text-align: center;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.back-button {
-  background: white;
-  color: #0077b6;
-  border: 1px solid white;
-  padding: 4px 10px;
-  border-radius: 6px;
-  cursor: pointer;
 }

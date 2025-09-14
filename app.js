@@ -2,75 +2,84 @@ const SCREEN_VENUES = document.getElementById("screen-venues");
 const SCREEN_RACES = document.getElementById("screen-races");
 const SCREEN_RACE = document.getElementById("screen-race");
 
-const venuesDiv = document.getElementById("venues");
-const racesDiv = document.getElementById("races");
-const venueTitle = document.getElementById("venueTitle");
+const VENUES_GRID = document.getElementById("venues");
+const RACES_GRID = document.getElementById("races");
+const RACE_DETAIL = document.getElementById("raceDetail");
 
-const todayLabel = document.getElementById("todayLabel");
+const venueTitle = document.getElementById("venueTitle");
+const raceTitle = document.getElementById("raceTitle");
+
+const backToVenues = document.getElementById("backToVenues");
+const backToRaces = document.getElementById("backToRaces");
 const refreshBtn = document.getElementById("refreshBtn");
+const todayLabel = document.getElementById("todayLabel");
 
 const venues = [
-  "桐生", "戸田", "江戸川", "平和島", "多摩川", "浜名湖",
-  "蒲郡", "常滑", "津", "三国", "びわこ", "住之江",
-  "尼崎", "鳴門", "丸亀", "児島", "宮島", "徳山",
-  "下関", "若松", "芦屋", "福岡", "唐津", "大村"
+  "桐生","戸田","江戸川","平和島","多摩川","浜名湖",
+  "蒲郡","常滑","津","三国","びわこ","住之江",
+  "尼崎","鳴門","丸亀","児島","宮島","徳山",
+  "下関","若松","芦屋","福岡","唐津","大村"
 ];
 
-let currentVenue = "";
+let currentVenue = null;
+let currentRace = null;
 
-// 日付更新
-function updateToday() {
-  const d = new Date();
-  todayLabel.textContent = `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()}`;
+function showScreen(screen) {
+  [SCREEN_VENUES, SCREEN_RACES, SCREEN_RACE].forEach(s => s.classList.remove("active"));
+  screen.classList.add("active");
 }
-updateToday();
-refreshBtn.addEventListener("click", updateToday);
 
-// 競艇場一覧を表示
-function showVenues() {
-  venuesDiv.innerHTML = "";
+// メイン画面の日付
+function updateDate() {
+  const d = new Date();
+  todayLabel.textContent = `${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()}`;
+}
+refreshBtn.addEventListener("click", updateDate);
+
+// 競艇場一覧生成
+function renderVenues() {
+  VENUES_GRID.innerHTML = "";
   venues.forEach(v => {
     const div = document.createElement("div");
     div.className = "venue-card";
-    div.textContent = v;
-    div.onclick = () => showRaces(v);
-    venuesDiv.appendChild(div);
+    div.innerHTML = `
+      <h3>${v}</h3>
+      <p>開催中</p>
+      <p>ー%</p>
+    `;
+    div.addEventListener("click", () => openVenue(v));
+    VENUES_GRID.appendChild(div);
   });
 }
-showVenues();
 
-// レース番号画面を表示
-function showRaces(venue) {
+// レース番号画面
+function openVenue(venue) {
   currentVenue = venue;
-  venueTitle.textContent = venue; // ← 「〇〇のレース一覧」を「〇〇」に変更
-  racesDiv.innerHTML = "";
-
-  for (let i = 1; i <= 12; i++) {
+  venueTitle.textContent = venue;
+  RACES_GRID.innerHTML = "";
+  for (let i=1; i<=12; i++) {
     const div = document.createElement("div");
     div.className = "race-card";
     div.textContent = `${i}R`;
-    div.onclick = () => showRace(i);
-    racesDiv.appendChild(div);
+    div.addEventListener("click", () => openRace(i));
+    RACES_GRID.appendChild(div);
   }
-
-  SCREEN_VENUES.classList.remove("active");
-  SCREEN_RACES.classList.add("active");
+  showScreen(SCREEN_RACES);
 }
 
 // レース詳細画面
-function showRace(raceNo) {
-  document.getElementById("raceTitle").textContent = `${currentVenue} ${raceNo}R`;
-  SCREEN_RACES.classList.remove("active");
-  SCREEN_RACE.classList.add("active");
+function openRace(raceNo) {
+  currentRace = raceNo;
+  raceTitle.textContent = `${currentVenue} ${raceNo}R`;
+  RACE_DETAIL.innerHTML = `<p>${currentVenue} ${raceNo}R の詳細データ</p>`;
+  showScreen(SCREEN_RACE);
 }
 
-// 戻る機能
-function goBack() {
-  if (SCREEN_RACE.classList.contains("active")) {
-    SCREEN_RACE.classList.remove("active");
-    SCREEN_RACES.classList.add("active");
-  } else if (SCREEN_RACES.classList.contains("active")) {
-    SCREEN_RACES.classList.remove("active");
-    SCREEN_VENUES.classList.add("active");
-  }
-}
+// 戻る操作
+backToVenues.addEventListener("click", () => showScreen(SCREEN_VENUES));
+backToRaces.addEventListener("click", () => showScreen(SCREEN_RACES));
+
+// 初期表示
+updateDate();
+renderVenues();
+showScreen(SCREEN_VENUES);
