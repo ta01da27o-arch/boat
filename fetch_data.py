@@ -1,114 +1,107 @@
 import requests
 from bs4 import BeautifulSoup
 import json
-from datetime import datetime
+import os
+from datetime import datetime, timedelta
+from glob import glob
 
-BASE_URL = "https://www.boatrace.jp/owpc/pc/race"
-
-# 全24場の場コード一覧
+# === 24場の場コード一覧 ===
 VENUES = {
-    "桐生": "01",
-    "戸田": "02",
-    "江戸川": "03",
-    "平和島": "04",
-    "多摩川": "05",
-    "浜名湖": "06",
-    "蒲郡": "07",
-    "常滑": "08",
-    "津": "09",
-    "三国": "10",
-    "びわこ": "11",
-    "住之江": "12",
-    "尼崎": "13",
-    "鳴門": "14",
-    "丸亀": "15",
-    "児島": "16",
-    "宮島": "17",
-    "徳山": "18",
-    "下関": "19",
-    "若松": "20",
-    "芦屋": "21",
-    "福岡": "22",
-    "唐津": "23",
-    "大村": "24"
+    1: "桐生", 2: "戸田", 3: "江戸川", 4: "平和島", 5: "多摩川", 6: "浜名湖",
+    7: "蒲郡", 8: "常滑", 9: "津", 10: "三国", 11: "びわこ", 12: "住之江",
+    13: "尼崎", 14: "鳴門", 15: "丸亀", 16: "児島", 17: "宮島", 18: "徳山",
+    19: "下関", 20: "若松", 21: "芦屋", 22: "福岡", 23: "唐津", 24: "大村"
 }
 
-def get_racelist(jcd, date):
-    """
-    出走表を取得して返す
-    """
-    url = f"{BASE_URL}/racelist?jcd={jcd}&hd={date}"
-    res = requests.get(url)
-    res.encoding = res.apparent_encoding
-    soup = BeautifulSoup(res.text, "html.parser")
+# 保存フォルダ
+DATA_DIR = "data"
+os.makedirs(DATA_DIR, exist_ok=True)
 
-    races = []
-    race_tables = soup.select("div.race_table_01")  # 各Rのテーブル
-    for rno, table in enumerate(race_tables, start=1):
+# 取得対象日
+today = datetime.now().strftime("%Y-%m-%d")
+
+# --- 出走表と結果を取得する関数 ---
+def fetch_race_data(stadium_code, date):
+    race_data = []
+    base_url = "https://www.boatrace.jp/owpc/pc/race"
+
+    for race_no in range(1, 13):  # 1〜12R
+        entry_url = f"{base_url}/racelist?rno={race_no}&jcd={stadium_code:02d}&hd={date}"
+        result_url = f"{base_url}/raceresult?rno={race_no}&jcd={stadium_code:02d}&hd={date}"
+
         boats = []
-        rows = table.select("tbody tr")
-        for row in rows:
-            cols = row.find_all("td")
-            if len(cols) >= 2:
+        result = []
+
+        # --- 出走表取得 ---
+        try:
+            res = requests.get(entry_url)
+            soup = BeautifulSoup(res.text, "html.parser")
+            rows = soup.select("div.is-fs12")
+            for idx, row in enumerate(rows[:6]):  # 6艇分
+                boats.append({"number": idx + 1, "name": row.get_text(strip=True)})
+        except Exception as e:
+            print(f"出走表取得失敗: {stadium_code} {race_no}R {e}")
+
+        # --- 結果取得 ---
+        try:
+            res = requests.get(result_url)
+            soup = BeautifulSoup(res.text, "html.parser")
+            ranks = soup.select("div.is-fs12")
+            for rank in ranks[:6]:
                 try:
-                    number = int(cols[0].text.strip())
-                    name = cols[1].text.strip()
-                    boats.append({"number": number, "name": name})
+                    result.append(int(rank.get_text(strip=True)))
                 except:
-                    pass
-        races.append({"race_number": rno, "boats": boats})
-    return races
+                    continue
+        except Exception as e:
+            print(f"結果取得失敗: {stadium_code} {race_no}R {e}")
+
+        race_data.append({
+            "race_date": date,
+            "race_stadium_number": stadium_code,
+            "race_number": race_no,
+            "boats": boats,
+            "result": result
+        })
+
+    return race_data
 
 
-def get_result(jcd, date, rno):
-    """
-    レース結果を取得して返す（1〜6着の艇番号）
-    """
-    url = f"{BASE_URL}/raceresult?rno={rno}&jcd={jcd}&hd={date}"
-    res = requests.get(url)
-    res.encoding = res.apparent_encoding
-    soup = BeautifulSoup(res.text, "html.parser")
+# --- 全場分まとめて取得 ---
+all_races = []
+for code in VENUES.keys():
+    all_races.extend(fetch_race_data(code, today.replace("-", "")))
 
-    result_table = soup.select("div.table1.is-p3 tr")
-    ranks = []
-    for row in result_table:
-        cols = row.find_all("td")
-        if len(cols) >= 2:
-            try:
-                ranks.append(int(cols[1].text.strip()))
-            except:
-                pass
-    return ranks if len(ranks) == 6 else []
+# --- 当日分を data.json に保存 ---
+with open("data.json", "w", encoding="utf-8") as f:
+    json.dump(all_races, f, ensure_ascii=False, indent=2)
 
+# --- 日付ごとの履歴保存 ---
+daily_file = os.path.join(DATA_DIR, f"{today}.json")
+with open(daily_file, "w", encoding="utf-8") as f:
+    json.dump(all_races, f, ensure_ascii=False, indent=2)
 
-def main():
-    today = datetime.now().strftime("%Y%m%d")
-    data = []
+# --- AI的中率の集計 ---
+total_races = 0
+hit_races = 0
 
-    for stadium, jcd in VENUES.items():
-        racelist = get_racelist(jcd, today)
+for file in glob(os.path.join(DATA_DIR, "*.json")):
+    with open(file, "r", encoding="utf-8") as f:
+        races = json.load(f)
+        for r in races:
+            if "result" in r and r["result"]:
+                total_races += 1
+                # TODO: AI予想と比較して的中したかどうか判定するロジックをここに追加
+                # 仮に「1号艇が勝ったら的中」とする
+                if r["result"][0] == 1:
+                    hit_races += 1
 
-        for race in racelist:
-            rno = race["race_number"]
-            boats = race["boats"]
+summary = {
+    "global_hit_rate": round(hit_races / total_races * 100, 1) if total_races > 0 else 0,
+    "total_races": total_races,
+    "hit_races": hit_races
+}
 
-            # 結果を取得
-            result = get_result(jcd, today, rno)
+with open("summary.json", "w", encoding="utf-8") as f:
+    json.dump(summary, f, ensure_ascii=False, indent=2)
 
-            entry = {
-                "race_date": today,
-                "stadium": stadium,
-                "stadium_code": jcd,
-                "race_number": rno,
-                "boats": boats,
-                "result": result
-            }
-            data.append(entry)
-
-    # JSON保存
-    with open("data.json", "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
-
-
-if __name__ == "__main__":
-    main()
+print("✅ fetch_data.py 完了")
