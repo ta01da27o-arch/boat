@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import json
 import os
-from datetime import datetime, timedelta
+from datetime import datetime
 from glob import glob
 
 # === 24場の場コード一覧 ===
@@ -19,6 +19,19 @@ os.makedirs(DATA_DIR, exist_ok=True)
 
 # 取得対象日
 today = datetime.now().strftime("%Y-%m-%d")
+today_param = datetime.now().strftime("%Y%m%d")
+
+# --- 簡易AI予想ロジック（暫定版） ---
+def ai_predict(boats):
+    """
+    boats: [{"number":1,"name":"..."}] のリスト
+    戻り値: 予想順位リスト (例: [1,2,3,4,5,6])
+    """
+    if not boats:
+        return []
+    # 暫定ルール: 1号艇有利、次に2,3号艇
+    prediction = [1, 2, 3, 4, 5, 6]
+    return prediction
 
 # --- 出走表と結果を取得する関数 ---
 def fetch_race_data(stadium_code, date):
@@ -31,6 +44,7 @@ def fetch_race_data(stadium_code, date):
 
         boats = []
         result = []
+        ai_prediction = []
 
         # --- 出走表取得 ---
         try:
@@ -41,6 +55,9 @@ def fetch_race_data(stadium_code, date):
                 boats.append({"number": idx + 1, "name": row.get_text(strip=True)})
         except Exception as e:
             print(f"出走表取得失敗: {stadium_code} {race_no}R {e}")
+
+        # --- AI予想作成 ---
+        ai_prediction = ai_predict(boats)
 
         # --- 結果取得 ---
         try:
@@ -56,10 +73,11 @@ def fetch_race_data(stadium_code, date):
             print(f"結果取得失敗: {stadium_code} {race_no}R {e}")
 
         race_data.append({
-            "race_date": date,
+            "race_date": today,
             "race_stadium_number": stadium_code,
             "race_number": race_no,
             "boats": boats,
+            "ai_prediction": ai_prediction,
             "result": result
         })
 
@@ -69,7 +87,7 @@ def fetch_race_data(stadium_code, date):
 # --- 全場分まとめて取得 ---
 all_races = []
 for code in VENUES.keys():
-    all_races.extend(fetch_race_data(code, today.replace("-", "")))
+    all_races.extend(fetch_race_data(code, today_param))
 
 # --- 当日分を data.json に保存 ---
 with open("data.json", "w", encoding="utf-8") as f:
@@ -88,11 +106,10 @@ for file in glob(os.path.join(DATA_DIR, "*.json")):
     with open(file, "r", encoding="utf-8") as f:
         races = json.load(f)
         for r in races:
-            if "result" in r and r["result"]:
+            if "result" in r and r["result"] and "ai_prediction" in r and r["ai_prediction"]:
                 total_races += 1
-                # TODO: AI予想と比較して的中したかどうか判定するロジックをここに追加
-                # 仮に「1号艇が勝ったら的中」とする
-                if r["result"][0] == 1:
+                # 予想1着と実際の1着を比較
+                if r["ai_prediction"][0] == r["result"][0]:
                     hit_races += 1
 
 summary = {
