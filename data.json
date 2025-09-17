@@ -3,7 +3,38 @@
     "race_date": "2025-09-17",
     "race_stadium_number": 1,
     "race_number": 1,
-    "boats": [],
+    "boats": [
+      {
+        "lane": 1,
+        "player": "選手1",
+        "odds": null
+      },
+      {
+        "lane": 2,
+        "player": "選手2",
+        "odds": null
+      },
+      {
+        "lane": 3,
+        "player": "選手3",
+        "odds": null
+      },
+      {
+        "lane": 4,
+        "player": "選手4",
+        "odds": null
+      },
+      {
+        "lane": 5,
+        "player": "選手5",
+        "odds": null
+      },
+      {
+        "lane": 6,
+        "player": "選手6",
+        "odds": null
+      }
+    ],
     "ai_prediction": [],
     "result": []
   },
@@ -11,7 +42,38 @@
     "race_date": "2025-09-17",
     "race_stadium_number": 1,
     "race_number": 2,
-    "boats": [],
+    "boats": [
+      {
+        "lane": 1,
+        "player": "選手1",
+        "odds": null
+      },
+      {
+        "lane": 2,
+        "player": "選手2",
+        "odds": null
+      },
+      {
+        "lane": 3,
+        "player": "選手3",
+        "odds": null
+      },
+      {
+        "lane": 4,
+        "player": "選手4",
+        "odds": null
+      },
+      {
+        "lane": 5,
+        "player": "選手5",
+        "odds": null
+      },
+      {
+        "lane": 6,
+        "player": "選手6",
+        "odds": null
+      }
+    ],
     "ai_prediction": [],
     "result": []
   },
@@ -19,7 +81,38 @@
     "race_date": "2025-09-17",
     "race_stadium_number": 1,
     "race_number": 3,
-    "boats": [],
+    "boats": [
+      {
+        "lane": 1,
+        "player": "選手1",
+        "odds": null
+      },
+      {
+        "lane": 2,
+        "player": "選手2",
+        "odds": null
+      },
+      {
+        "lane": 3,
+        "player": "選手3",
+        "odds": null
+      },
+      {
+        "lane": 4,
+        "player": "選手4",
+        "odds": null
+      },
+      {
+        "lane": 5,
+        "player": "選手5",
+        "odds": null
+      },
+      {
+        "lane": 6,
+        "player": "選手6",
+        "odds": null
+      }
+    ],
     "ai_prediction": [],
     "result": []
   },
@@ -27,7 +120,38 @@
     "race_date": "2025-09-17",
     "race_stadium_number": 1,
     "race_number": 4,
-    "boats": [],
+    "boats": [
+      {
+        "lane": 1,
+        "player": "選手1",
+        "odds": null
+      },
+      {
+        "lane": 2,
+        "player": "選手2",
+        "odds": null
+      },
+      {
+        "lane": 3,
+        "player": "選手3",
+        "odds": null
+      },
+      {
+        "lane": 4,
+        "player": "選手4",
+        "odds": null
+      },
+      {
+        "lane": 5,
+        "player": "選手5",
+        "odds": null
+      },
+      {
+        "lane": 6,
+        "player": "選手6",
+        "odds": null
+      }
+    ],
     "ai_prediction": [],
     "result": []
   },
@@ -35,7 +159,38 @@
     "race_date": "2025-09-17",
     "race_stadium_number": 1,
     "race_number": 5,
-    "boats": [],
+    "boats": [
+      {
+        "lane": 1,
+        "player": "選手1",
+        "odds": null
+      },
+      {
+        "lane": 2,
+        "player": "選手2",
+        "odds": null
+      },
+      {
+        "lane": 3,
+        "player": "選手3",
+        "odds": null
+      },
+      {
+        "lane": 4,
+        "player": "選手4",
+        "odds": null
+      },
+      {
+        "lane": 5,
+        "player": "選手5",
+        "odds": null
+      },
+      {
+        "lane": 6,
+        "player": "選手6",
+        "odds": null
+      }
+    ],
     "ai_prediction": [],
     "result": []
   },
@@ -43,7 +198,38 @@
     "race_date": "2025-09-17",
     "race_stadium_number": 1,
     "race_number": 6,
-    "boats": [],
+    "boats": [
+      {
+        "lane": 1,
+        "player": "選手1",
+        "odds": null
+      },
+      {
+        "lane": 2,
+        "player": "選手2",
+        "odds": null
+      },
+      {
+        "lane": 3,
+        "player": "選手3",
+        "odds": null
+      },
+      {
+        "lane": 4,
+        "player": "選手4",
+        "odds": null
+      },
+      {
+        "lane": 5,
+        "player": "選手5",
+        "odds": null
+      },
+      {
+        "lane": 6,
+        "player": "選手6",
+        "odds": null
+      }
+    ],
     "ai_prediction": [],
     "result": []
   },
@@ -51,7 +237,38 @@
     "race_date": "2025-09-17",
     "race_stadium_number": 1,
     "race_number": 7,
-    "boats": [],
+    "boats": [
+      {
+        "lane": 1,
+        "player": "選手1",
+        "odds": null
+      },
+      {
+        "lane": 2,
+        "player": "選手2",
+        "odds": null
+      },
+      {
+        "lane": 3,
+        "player": "選手3",
+        "odds": null
+      },
+      {
+        "lane": 4,
+        "player": "選手4",
+        "odds": null
+      },
+      {
+        "lane": 5,
+        "player": "選手5",
+        "odds": null
+      },
+      {
+        "lane": 6,
+        "player": "選手6",
+        "odds": null
+      }
+    ],
     "ai_prediction": [],
     "result": []
   },
@@ -59,7 +276,38 @@
     "race_date": "2025-09-17",
     "race_stadium_number": 1,
     "race_number": 8,
-    "boats": [],
+    "boats": [
+      {
+        "lane": 1,
+        "player": "選手1",
+        "odds": null
+      },
+      {
+        "lane": 2,
+        "player": "選手2",
+        "odds": null
+      },
+      {
+        "lane": 3,
+        "player": "選手3",
+        "odds": null
+      },
+      {
+        "lane": 4,
+        "player": "選手4",
+        "odds": null
+      },
+      {
+        "lane": 5,
+        "player": "選手5",
+        "odds": null
+      },
+      {
+        "lane": 6,
+        "player": "選手6",
+        "odds": null
+      }
+    ],
     "ai_prediction": [],
     "result": []
   },
@@ -67,7 +315,38 @@
     "race_date": "2025-09-17",
     "race_stadium_number": 1,
     "race_number": 9,
-    "boats": [],
+    "boats": [
+      {
+        "lane": 1,
+        "player": "選手1",
+        "odds": null
+      },
+      {
+        "lane": 2,
+        "player": "選手2",
+        "odds": null
+      },
+      {
+        "lane": 3,
+        "player": "選手3",
+        "odds": null
+      },
+      {
+        "lane": 4,
+        "player": "選手4",
+        "odds": null
+      },
+      {
+        "lane": 5,
+        "player": "選手5",
+        "odds": null
+      },
+      {
+        "lane": 6,
+        "player": "選手6",
+        "odds": null
+      }
+    ],
     "ai_prediction": [],
     "result": []
   },
@@ -75,7 +354,38 @@
     "race_date": "2025-09-17",
     "race_stadium_number": 1,
     "race_number": 10,
-    "boats": [],
+    "boats": [
+      {
+        "lane": 1,
+        "player": "選手1",
+        "odds": null
+      },
+      {
+        "lane": 2,
+        "player": "選手2",
+        "odds": null
+      },
+      {
+        "lane": 3,
+        "player": "選手3",
+        "odds": null
+      },
+      {
+        "lane": 4,
+        "player": "選手4",
+        "odds": null
+      },
+      {
+        "lane": 5,
+        "player": "選手5",
+        "odds": null
+      },
+      {
+        "lane": 6,
+        "player": "選手6",
+        "odds": null
+      }
+    ],
     "ai_prediction": [],
     "result": []
   },
@@ -83,7 +393,38 @@
     "race_date": "2025-09-17",
     "race_stadium_number": 1,
     "race_number": 11,
-    "boats": [],
+    "boats": [
+      {
+        "lane": 1,
+        "player": "選手1",
+        "odds": null
+      },
+      {
+        "lane": 2,
+        "player": "選手2",
+        "odds": null
+      },
+      {
+        "lane": 3,
+        "player": "選手3",
+        "odds": null
+      },
+      {
+        "lane": 4,
+        "player": "選手4",
+        "odds": null
+      },
+      {
+        "lane": 5,
+        "player": "選手5",
+        "odds": null
+      },
+      {
+        "lane": 6,
+        "player": "選手6",
+        "odds": null
+      }
+    ],
     "ai_prediction": [],
     "result": []
   },
@@ -91,2215 +432,38 @@
     "race_date": "2025-09-17",
     "race_stadium_number": 1,
     "race_number": 12,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 2,
-    "race_number": 1,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 2,
-    "race_number": 2,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 2,
-    "race_number": 3,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 2,
-    "race_number": 4,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 2,
-    "race_number": 5,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 2,
-    "race_number": 6,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 2,
-    "race_number": 7,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 2,
-    "race_number": 8,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 2,
-    "race_number": 9,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 2,
-    "race_number": 10,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 2,
-    "race_number": 11,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 2,
-    "race_number": 12,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 3,
-    "race_number": 1,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 3,
-    "race_number": 2,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 3,
-    "race_number": 3,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 3,
-    "race_number": 4,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 3,
-    "race_number": 5,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 3,
-    "race_number": 6,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 3,
-    "race_number": 7,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 3,
-    "race_number": 8,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 3,
-    "race_number": 9,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 3,
-    "race_number": 10,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 3,
-    "race_number": 11,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 3,
-    "race_number": 12,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 4,
-    "race_number": 1,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 4,
-    "race_number": 2,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 4,
-    "race_number": 3,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 4,
-    "race_number": 4,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 4,
-    "race_number": 5,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 4,
-    "race_number": 6,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 4,
-    "race_number": 7,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 4,
-    "race_number": 8,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 4,
-    "race_number": 9,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 4,
-    "race_number": 10,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 4,
-    "race_number": 11,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 4,
-    "race_number": 12,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 5,
-    "race_number": 1,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 5,
-    "race_number": 2,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 5,
-    "race_number": 3,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 5,
-    "race_number": 4,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 5,
-    "race_number": 5,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 5,
-    "race_number": 6,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 5,
-    "race_number": 7,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 5,
-    "race_number": 8,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 5,
-    "race_number": 9,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 5,
-    "race_number": 10,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 5,
-    "race_number": 11,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 5,
-    "race_number": 12,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 6,
-    "race_number": 1,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 6,
-    "race_number": 2,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 6,
-    "race_number": 3,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 6,
-    "race_number": 4,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 6,
-    "race_number": 5,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 6,
-    "race_number": 6,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 6,
-    "race_number": 7,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 6,
-    "race_number": 8,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 6,
-    "race_number": 9,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 6,
-    "race_number": 10,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 6,
-    "race_number": 11,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 6,
-    "race_number": 12,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 7,
-    "race_number": 1,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 7,
-    "race_number": 2,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 7,
-    "race_number": 3,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 7,
-    "race_number": 4,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 7,
-    "race_number": 5,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 7,
-    "race_number": 6,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 7,
-    "race_number": 7,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 7,
-    "race_number": 8,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 7,
-    "race_number": 9,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 7,
-    "race_number": 10,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 7,
-    "race_number": 11,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 7,
-    "race_number": 12,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 8,
-    "race_number": 1,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 8,
-    "race_number": 2,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 8,
-    "race_number": 3,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 8,
-    "race_number": 4,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 8,
-    "race_number": 5,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 8,
-    "race_number": 6,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 8,
-    "race_number": 7,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 8,
-    "race_number": 8,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 8,
-    "race_number": 9,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 8,
-    "race_number": 10,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 8,
-    "race_number": 11,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 8,
-    "race_number": 12,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 9,
-    "race_number": 1,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 9,
-    "race_number": 2,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 9,
-    "race_number": 3,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 9,
-    "race_number": 4,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 9,
-    "race_number": 5,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 9,
-    "race_number": 6,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 9,
-    "race_number": 7,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 9,
-    "race_number": 8,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 9,
-    "race_number": 9,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 9,
-    "race_number": 10,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 9,
-    "race_number": 11,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 9,
-    "race_number": 12,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 10,
-    "race_number": 1,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 10,
-    "race_number": 2,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 10,
-    "race_number": 3,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 10,
-    "race_number": 4,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 10,
-    "race_number": 5,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 10,
-    "race_number": 6,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 10,
-    "race_number": 7,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 10,
-    "race_number": 8,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 10,
-    "race_number": 9,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 10,
-    "race_number": 10,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 10,
-    "race_number": 11,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 10,
-    "race_number": 12,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 11,
-    "race_number": 1,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 11,
-    "race_number": 2,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 11,
-    "race_number": 3,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 11,
-    "race_number": 4,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 11,
-    "race_number": 5,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 11,
-    "race_number": 6,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 11,
-    "race_number": 7,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 11,
-    "race_number": 8,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 11,
-    "race_number": 9,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 11,
-    "race_number": 10,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 11,
-    "race_number": 11,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 11,
-    "race_number": 12,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 12,
-    "race_number": 1,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 12,
-    "race_number": 2,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 12,
-    "race_number": 3,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 12,
-    "race_number": 4,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 12,
-    "race_number": 5,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 12,
-    "race_number": 6,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 12,
-    "race_number": 7,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 12,
-    "race_number": 8,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 12,
-    "race_number": 9,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 12,
-    "race_number": 10,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 12,
-    "race_number": 11,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 12,
-    "race_number": 12,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 13,
-    "race_number": 1,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 13,
-    "race_number": 2,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 13,
-    "race_number": 3,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 13,
-    "race_number": 4,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 13,
-    "race_number": 5,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 13,
-    "race_number": 6,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 13,
-    "race_number": 7,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 13,
-    "race_number": 8,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 13,
-    "race_number": 9,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 13,
-    "race_number": 10,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 13,
-    "race_number": 11,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 13,
-    "race_number": 12,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 14,
-    "race_number": 1,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 14,
-    "race_number": 2,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 14,
-    "race_number": 3,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 14,
-    "race_number": 4,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 14,
-    "race_number": 5,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 14,
-    "race_number": 6,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 14,
-    "race_number": 7,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 14,
-    "race_number": 8,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 14,
-    "race_number": 9,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 14,
-    "race_number": 10,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 14,
-    "race_number": 11,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 14,
-    "race_number": 12,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 15,
-    "race_number": 1,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 15,
-    "race_number": 2,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 15,
-    "race_number": 3,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 15,
-    "race_number": 4,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 15,
-    "race_number": 5,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 15,
-    "race_number": 6,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 15,
-    "race_number": 7,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 15,
-    "race_number": 8,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 15,
-    "race_number": 9,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 15,
-    "race_number": 10,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 15,
-    "race_number": 11,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 15,
-    "race_number": 12,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 16,
-    "race_number": 1,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 16,
-    "race_number": 2,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 16,
-    "race_number": 3,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 16,
-    "race_number": 4,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 16,
-    "race_number": 5,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 16,
-    "race_number": 6,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 16,
-    "race_number": 7,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 16,
-    "race_number": 8,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 16,
-    "race_number": 9,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 16,
-    "race_number": 10,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 16,
-    "race_number": 11,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 16,
-    "race_number": 12,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 17,
-    "race_number": 1,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 17,
-    "race_number": 2,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 17,
-    "race_number": 3,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 17,
-    "race_number": 4,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 17,
-    "race_number": 5,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 17,
-    "race_number": 6,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 17,
-    "race_number": 7,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 17,
-    "race_number": 8,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 17,
-    "race_number": 9,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 17,
-    "race_number": 10,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 17,
-    "race_number": 11,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 17,
-    "race_number": 12,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 18,
-    "race_number": 1,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 18,
-    "race_number": 2,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 18,
-    "race_number": 3,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 18,
-    "race_number": 4,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 18,
-    "race_number": 5,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 18,
-    "race_number": 6,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 18,
-    "race_number": 7,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 18,
-    "race_number": 8,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 18,
-    "race_number": 9,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 18,
-    "race_number": 10,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 18,
-    "race_number": 11,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 18,
-    "race_number": 12,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 19,
-    "race_number": 1,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 19,
-    "race_number": 2,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 19,
-    "race_number": 3,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 19,
-    "race_number": 4,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 19,
-    "race_number": 5,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 19,
-    "race_number": 6,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 19,
-    "race_number": 7,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 19,
-    "race_number": 8,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 19,
-    "race_number": 9,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 19,
-    "race_number": 10,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 19,
-    "race_number": 11,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 19,
-    "race_number": 12,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 20,
-    "race_number": 1,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 20,
-    "race_number": 2,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 20,
-    "race_number": 3,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 20,
-    "race_number": 4,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 20,
-    "race_number": 5,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 20,
-    "race_number": 6,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 20,
-    "race_number": 7,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 20,
-    "race_number": 8,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 20,
-    "race_number": 9,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 20,
-    "race_number": 10,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 20,
-    "race_number": 11,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 20,
-    "race_number": 12,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 21,
-    "race_number": 1,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 21,
-    "race_number": 2,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 21,
-    "race_number": 3,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 21,
-    "race_number": 4,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 21,
-    "race_number": 5,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 21,
-    "race_number": 6,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 21,
-    "race_number": 7,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 21,
-    "race_number": 8,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 21,
-    "race_number": 9,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 21,
-    "race_number": 10,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 21,
-    "race_number": 11,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 21,
-    "race_number": 12,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 22,
-    "race_number": 1,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 22,
-    "race_number": 2,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 22,
-    "race_number": 3,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 22,
-    "race_number": 4,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 22,
-    "race_number": 5,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 22,
-    "race_number": 6,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 22,
-    "race_number": 7,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 22,
-    "race_number": 8,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 22,
-    "race_number": 9,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 22,
-    "race_number": 10,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 22,
-    "race_number": 11,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 22,
-    "race_number": 12,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 23,
-    "race_number": 1,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 23,
-    "race_number": 2,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 23,
-    "race_number": 3,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 23,
-    "race_number": 4,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 23,
-    "race_number": 5,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 23,
-    "race_number": 6,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 23,
-    "race_number": 7,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 23,
-    "race_number": 8,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 23,
-    "race_number": 9,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 23,
-    "race_number": 10,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 23,
-    "race_number": 11,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 23,
-    "race_number": 12,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 24,
-    "race_number": 1,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 24,
-    "race_number": 2,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 24,
-    "race_number": 3,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 24,
-    "race_number": 4,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 24,
-    "race_number": 5,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 24,
-    "race_number": 6,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 24,
-    "race_number": 7,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 24,
-    "race_number": 8,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 24,
-    "race_number": 9,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 24,
-    "race_number": 10,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 24,
-    "race_number": 11,
-    "boats": [],
-    "ai_prediction": [],
-    "result": []
-  },
-  {
-    "race_date": "2025-09-17",
-    "race_stadium_number": 24,
-    "race_number": 12,
-    "boats": [],
+    "boats": [
+      {
+        "lane": 1,
+        "player": "選手1",
+        "odds": null
+      },
+      {
+        "lane": 2,
+        "player": "選手2",
+        "odds": null
+      },
+      {
+        "lane": 3,
+        "player": "選手3",
+        "odds": null
+      },
+      {
+        "lane": 4,
+        "player": "選手4",
+        "odds": null
+      },
+      {
+        "lane": 5,
+        "player": "選手5",
+        "odds": null
+      },
+      {
+        "lane": 6,
+        "player": "選手6",
+        "odds": null
+      }
+    ],
     "ai_prediction": [],
     "result": []
   }
