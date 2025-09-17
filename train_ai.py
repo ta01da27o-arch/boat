@@ -1,99 +1,69 @@
 import os
+import glob
 import json
-import joblib
-import numpy as np
 import pandas as pd
-from glob import glob
-from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
+from sklearn.ensemble import RandomForestClassifier
+import joblib
 
-DATA_DIR = "data"
-MODEL_DIR = "model"
-os.makedirs(MODEL_DIR, exist_ok=True)
-
-# --- データをロード ---
-def load_data():
-    races = []
-    for file in glob(os.path.join(DATA_DIR, "*.json")):
-        with open(file, "r", encoding="utf-8") as f:
-            try:
-                races.extend(json.load(f))
-            except:
-                continue
-    return races
-
-# --- 特徴量を作成 ---
-def extract_features(race):
-    """
-    1レース分の boats, result から特徴量とラベルを作成
-    """
-    features = []
-    labels = []
-
-    boats = race.get("boats", [])
-    result = race.get("result", [])
-
-    if not boats or not result:
-        return features, labels
-
-    for b in boats:
-        # number: 1〜6
-        num = b.get("number", 0)
-
-        # --- サンプル特徴量 ---
-        # 今は boat 番号だけを使うが、拡張で展示タイム・モーター勝率などを追加可能
-        feat = [
-            num,                # 枠番
-            1 if num == 1 else 0,  # 1号艇フラグ
-            1 if num <= 3 else 0   # 内枠フラグ
-        ]
-
-        features.append(feat)
-
-        # --- 正解ラベル ---
+# === 1. データの読み込み ===
+def load_data(data_dir="data"):
+    files = glob.glob(os.path.join(data_dir, "*.json"))
+    records = []
+    for f in files:
         try:
-            rank = result.index(num) + 1  # 順位
-        except ValueError:
-            continue
-        labels.append(1 if rank == 1 else 0)  # 1着=1, それ以外=0
+            with open(f, "r", encoding="utf-8") as fp:
+                d = json.load(fp)
+                if isinstance(d, list):
+                    records.extend(d)
+        except Exception as e:
+            print(f"[WARN] {f} の読み込みに失敗: {e}")
+    return pd.DataFrame(records)
 
-    return features, labels
+# === 2. 前処理 (例: 数値化と欠損除去) ===
+def preprocess(df):
+    df = df.dropna()
+    # 必要に応じて特徴量を選択
+    features = ["st", "weight", "course", "ranking"]  # 仮のカラム名
+    target = "result"  # 勝ち負けなどのラベル
+    df = df[[*features, target]].copy()
+    return df, features, target
 
-# --- メイン処理 ---
-def main():
-    races = load_data()
-    X, y = [], []
+# === 3. 学習 ===
+def train_model(df, features, target):
+    X = df[features]
+    y = df[target]
 
-    for race in races:
-        feats, labels = extract_features(race)
-        X.extend(feats)
-        y.extend(labels)
-
-    if not X:
-        print("❌ 学習データがありません")
-        return
-
-    X = np.array(X)
-    y = np.array(y)
-
-    # --- 学習 ---
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.2, random_state=42
     )
 
     model = RandomForestClassifier(
-        n_estimators=200, max_depth=10, random_state=42
+        n_estimators=200,
+        max_depth=10,
+        random_state=42
     )
     model.fit(X_train, y_train)
 
-    # --- 評価 ---
-    y_pred = model.predict(X_test)
-    acc = accuracy_score(y_test, y_pred)
-    print(f"✅ モデル学習完了 精度: {acc*100:.2f}%")
+    acc = model.score(X_test, y_test)
+    print(f"[INFO] 学習完了: 精度 = {acc:.3f}")
+    return model
 
-    # --- 保存 ---
-    joblib.dump(model, os.path.join(MODEL_DIR, "model.pkl"))
+# === 4. 保存 ===
+def save_model(model, out_path="model/model.pkl"):
+    os.makedirs(os.path.dirname(out_path), exist_ok=True)
+    joblib.dump(model, out_path)
+    print(f"[INFO] モデルを保存しました → {out_path}")
 
+# === メイン処理 ===
 if __name__ == "__main__":
-    main()
+    print("[INFO] データ読み込み開始")
+    df = load_data("data")
+
+    if df.empty:
+        print("[ERROR] データがありません。data/ 以下にJSONを置いてください。")
+        exit(1)
+
+    df, features, target = preprocess(df)
+    model = train_model(df, features, target)
+    save_model(model, "model/model.pkl")
