@@ -4,6 +4,7 @@ import json
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score
 import joblib
 
 # === 1. データの読み込み ===
@@ -23,9 +24,9 @@ def load_data(data_dir="data"):
 # === 2. 前処理 (例: 数値化と欠損除去) ===
 def preprocess(df):
     df = df.dropna()
-    # 必要に応じて特徴量を選択
+    # 必要に応じて特徴量を選択（あなたのデータに合わせて修正してOK）
     features = ["st", "weight", "course", "ranking"]  # 仮のカラム名
-    target = "result"  # 勝ち負けなどのラベル
+    target = "result"  # 予測したいラベル（例: 1着艇）
     df = df[[*features, target]].copy()
     return df, features, target
 
@@ -47,13 +48,38 @@ def train_model(df, features, target):
 
     acc = model.score(X_test, y_test)
     print(f"[INFO] 学習完了: 精度 = {acc:.3f}")
-    return model
+    return model, acc
 
-# === 4. 保存 ===
+# === 4. モデル保存 ===
 def save_model(model, out_path="model/model.pkl"):
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
     joblib.dump(model, out_path)
     print(f"[INFO] モデルを保存しました → {out_path}")
+
+# === 5. サマリー保存 ===
+def save_summary(df, model, features, target, acc, out_path="summary.json"):
+    # 全体統計
+    summary = {
+        "stats": {
+            "races": len(df),
+            "accuracy": round(acc, 3),
+            "features": features
+        },
+        # レースごとの一部データ（例: 最新50件）
+        "races": []
+    }
+
+    preds = model.predict(df[features])
+    for i, row in df.head(50).iterrows():
+        summary["races"].append({
+            "index": int(i),
+            "prediction": int(preds[i]) if i < len(preds) else None,
+            "result": int(row[target])
+        })
+
+    with open(out_path, "w", encoding="utf-8") as f:
+        json.dump(summary, f, ensure_ascii=False, indent=2)
+    print(f"[INFO] summary.json を保存しました → {out_path}")
 
 # === メイン処理 ===
 if __name__ == "__main__":
@@ -65,5 +91,6 @@ if __name__ == "__main__":
         exit(1)
 
     df, features, target = preprocess(df)
-    model = train_model(df, features, target)
+    model, acc = train_model(df, features, target)
     save_model(model, "model/model.pkl")
+    save_summary(df, model, features, target, acc, "summary.json")
