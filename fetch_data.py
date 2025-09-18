@@ -1,54 +1,101 @@
 import requests
+from bs4 import BeautifulSoup
 import json
-from datetime import datetime, timedelta
+from datetime import datetime
 
-def fetch_today():
-    url = "https://boatrace-open-api.vercel.app/programs"  # OpenAPIサンプル
+def fetch_race_data(stadium_number=1, date=None):
+    """
+    ボートレース公式サイトから指定会場の全レースデータを取得
+    stadium_number: 01=桐生, ... 24=大村
+    date: YYYYMMDD (未指定なら今日)
+    """
+    if date is None:
+        date = datetime.now().strftime("%Y%m%d")
+
+    url = f"https://www.boatrace.jp/owpc/pc/race/racelist?jcd={stadium_number:02d}&hd={date}"
     res = requests.get(url)
-    programs = res.json()
+    res.encoding = res.apparent_encoding
+    if res.status_code != 200:
+        return []
 
-    today = datetime.now().strftime("%Y-%m-%d")
     races = []
+    for race_no in range(1, 13):  # 1〜12R
+        race = {
+            "race_date": date,
+            "race_stadium_number": stadium_number,
+            "race_number": race_no,
+            "boats": [],
+            "ai_prediction": [],
+            "result": []
+        }
 
-    for p in programs:
-        if p.get("date") != today:
+        race_url = f"https://www.boatrace.jp/owpc/pc/race/racelist?rno={race_no}&jcd={stadium_number:02d}&hd={date}"
+        res_race = requests.get(race_url)
+        res_race.encoding = res_race.apparent_encoding
+        if res_race.status_code != 200:
             continue
-        entries = [
-            {
-                "lane": b.get("lane"),
-                "name": b.get("name"),
-                "win_rate": b.get("win_rate"),
-            }
-            for b in p.get("boats", [])
-        ]
-        races.append({
-            "stadium_name": p.get("stadium"),
-            "race_number": p.get("race"),
-            "entries": entries
-        })
+
+        soup_race = BeautifulSoup(res_race.text, "html.parser")
+        rows = soup_race.select("table.is-lineH2 tbody tr")
+
+        for tr in rows:
+            tds = tr.find_all("td")
+            if len(tds) < 5:
+                continue
+            try:
+                lane = int(tds[0].text.strip())
+                player = tds[2].text.strip()
+                win_rate_txt = tds[4].text.strip()
+                try:
+                    win_rate = float(win_rate_txt)
+                except:
+                    win_rate = None
+                race["boats"].append({
+                    "lane": lane,
+                    "player": player,
+                    "win_rate": win_rate
+                })
+            except:
+                continue
+
+        if race["boats"]:
+            races.append(race)
 
     return races
 
-def fetch_history():
-    # 実際は艇国データバンクやCSVをスクレイピング／API利用
-    # サンプル: ダミーデータ
-    history = [
-        {"name": "選手1", "avg_start": 0.15, "recent_rate": 7.0},
-        {"name": "選手2", "avg_start": 0.18, "recent_rate": 6.5},
-    ]
-    return history
+
+def save_data(data, out_path="data.json"):
+    with open(out_path, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+    print(f"[INFO] data.json を保存しました")
+
+
+def save_summary(data, out_path="summary.json"):
+    summary = {
+        "races": len(data),
+        "stadiums": sorted(list({r["race_stadium_number"] for r in data})),
+        "columns": list(data[0].keys()) if data else []
+    }
+    with open(out_path, "w", encoding="utf-8") as f:
+        json.dump(summary, f, ensure_ascii=False, indent=2)
+    print(f"[INFO] summary.json を保存しました")
+
 
 def main():
-    today_data = fetch_today()
-    history_data = fetch_history()
+    today = datetime.now().strftime("%Y%m%d")
+    all_data = []
+    for stadium in range(1, 25):
+        try:
+            races = fetch_race_data(stadium, today)
+            if races:
+                all_data.extend(races)
+                print(f"[INFO] {stadium:02d}場 {len(races)}R 取得")
+        except Exception as e:
+            print(f"[WARN] {stadium:02d}場 取得失敗: {e}")
 
-    with open("data.json", "w", encoding="utf-8") as f:
-        json.dump(today_data, f, ensure_ascii=False, indent=2)
+    save_data(all_data, "data.json")
+    save_summary(all_data, "summary.json")
 
-    with open("history.json", "w", encoding="utf-8") as f:
-        json.dump(history_data, f, ensure_ascii=False, indent=2)
-
-    print("[INFO] data.json, history.json を更新しました")
 
 if __name__ == "__main__":
     main()
