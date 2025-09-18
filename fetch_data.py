@@ -1,7 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
+
 
 def fetch_race_data(stadium_number=1, date=None):
     """
@@ -65,33 +66,47 @@ def fetch_race_data(stadium_number=1, date=None):
 
 
 def save_data(data, out_path="data.json"):
+    """
+    data.json を必ず配列 [] 形式で保存する
+    （{} のままにならないように修正済み）
+    """
+    if not isinstance(data, list):
+        data = []
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
-    print(f"[INFO] data.json を保存しました")
+    print(f"[INFO] {out_path} を保存しました")
 
 
 def save_summary(data, out_path="summary.json"):
     summary = {
         "races": len(data),
-        "stadiums": sorted(list({r["race_stadium_number"] for r in data})),
+        "stadiums": sorted(list({r["race_stadium_number"] for r in data})) if data else [],
+        "date_range": [min(r["race_date"] for r in data), max(r["race_date"] for r in data)] if data else [],
         "columns": list(data[0].keys()) if data else []
     }
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(summary, f, ensure_ascii=False, indent=2)
-    print(f"[INFO] summary.json を保存しました")
+    print(f"[INFO] {out_path} を保存しました")
 
 
 def main():
-    today = datetime.now().strftime("%Y%m%d")
+    today = datetime.now()
+    # 直近3ヶ月分のデータを取得（必要に応じて 180 に変更可）
+    start_date = today - timedelta(days=90)
+
     all_data = []
-    for stadium in range(1, 25):
-        try:
-            races = fetch_race_data(stadium, today)
-            if races:
-                all_data.extend(races)
-                print(f"[INFO] {stadium:02d}場 {len(races)}R 取得")
-        except Exception as e:
-            print(f"[WARN] {stadium:02d}場 取得失敗: {e}")
+    current = start_date
+    while current <= today:
+        date_str = current.strftime("%Y%m%d")
+        for stadium in range(1, 25):  # 01〜24場
+            try:
+                races = fetch_race_data(stadium, date_str)
+                if races:
+                    all_data.extend(races)
+                    print(f"[INFO] {date_str} {stadium:02d}場 {len(races)}R 取得")
+            except Exception as e:
+                print(f"[WARN] {date_str} {stadium:02d}場 失敗: {e}")
+        current += timedelta(days=1)
 
     save_data(all_data, "data.json")
     save_summary(all_data, "summary.json")
