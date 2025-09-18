@@ -1,11 +1,5 @@
 {
-  "races": 12,
-  "columns": [
-    "race_date",
-    "race_stadium_number",
-    "race_number",
-    "boats",
-    "ai_prediction",
-    "result"
-  ]
+  "races": 0,
+  "stadiums": [],
+  "columns": []
 }
