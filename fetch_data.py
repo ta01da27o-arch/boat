@@ -1,95 +1,78 @@
 import requests
+from bs4 import BeautifulSoup
 import json
-import datetime
-import os
+from datetime import datetime, timedelta
 
-DATA_FILE = "data.json"
-HISTORY_FILE = "history.json"
+# 保存ファイル
+OUTPUT_FILE = "data.json"
 
-# ダミーAPI URL（実際は公式・外部データAPIに差し替え）
-API_URL = "https://example.com/api/races"
+# 全国24会場（公式サイトの場コード）
+VENUE_CODES = {
+    "桐生": "01", "戸田": "02", "江戸川": "03", "平和島": "04", "多摩川": "05",
+    "浜名湖": "06", "蒲郡": "07", "常滑": "08", "津": "09", "三国": "10",
+    "琵琶湖": "11", "住之江": "12", "尼崎": "13", "鳴門": "14", "丸亀": "15",
+    "児島": "16", "宮島": "17", "徳山": "18", "下関": "19", "若松": "20",
+    "芦屋": "21", "福岡": "22", "唐津": "23", "大村": "24"
+}
 
-def load_json(filename):
-    if os.path.exists(filename):
-        with open(filename, "r", encoding="utf-8") as f:
-            return json.load(f)
-    return {}
+def get_today():
+    """本日の日付（YYYYMMDD形式）"""
+    return datetime.now().strftime("%Y%m%d")
 
-def save_json(filename, data):
-    with open(filename, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
+def fetch_race_html(jcd, rno, date):
+    """レース一覧ページを取得"""
+    url = f"https://www.boatrace.jp/owpc/pc/race/racelist?rno={rno}&jcd={jcd}&hd={date}"
+    res = requests.get(url)
+    res.encoding = "utf-8"
+    return res.text
 
-def fetch_race_data():
-    # 本物は requests.get(API_URL).json() を使用
-    today = datetime.date.today()
-    yesterday = today - datetime.timedelta(days=1)
+def parse_race_table(html):
+    """出走表データを解析してリスト化"""
+    soup = BeautifulSoup(html, "html.parser")
+    table = soup.find("table", class_="is-w495")
+    if not table:
+        return []
 
-    # ダミーデータ生成（テスト用）
-    return {
-        str(today): {
-            "venue": "住之江",
-            "races": [
-                {"race_no": 1, "ai_prediction": ["1-2-3"], "ai_hit": True},
-                {"race_no": 2, "ai_prediction": ["1-3-2"], "ai_hit": False}
-            ]
-        },
-        str(yesterday): {
-            "venue": "住之江",
-            "races": [
-                {"race_no": 1, "ai_prediction": ["2-1-3"], "ai_hit": True},
-                {"race_no": 2, "ai_prediction": ["1-2-3"], "ai_hit": True}
-            ]
+    rows = table.find_all("tr")[1:]  # 見出し行を除外
+    data = []
+
+    for row in rows:
+        cols = row.find_all("td")
+        if len(cols) < 5:
+            continue
+        racer = {
+            "枠": cols[0].get_text(strip=True),
+            "選手名": cols[1].get_text(strip=True),
+            "支部/出身地": cols[2].get_text(strip=True),
+            "年齢/体重": cols[3].get_text(strip=True),
+            "級別": cols[1].find("span").get_text(strip=True) if cols[1].find("span") else "",
+            "全国勝率": cols[4].get_text(strip=True) if len(cols) > 4 else ""
         }
-    }
-
-def calc_ai_hit_results(all_data):
-    results = {"global": {"hit": 0, "total": 0}, "venues": {}}
-
-    for date, day_data in all_data.items():
-        venue = day_data["venue"]
-        if venue not in results["venues"]:
-            results["venues"][venue] = {"hit": 0, "total": 0}
-
-        for race in day_data["races"]:
-            results["global"]["total"] += 1
-            results["venues"][venue]["total"] += 1
-            if race.get("ai_hit"):
-                results["global"]["hit"] += 1
-                results["venues"][venue]["hit"] += 1
-
-    return results
+        data.append(racer)
+    return data
 
 def main():
-    new_data = fetch_race_data()
+    all_data = {"本日": {}, "前日": {}}
+    today = get_today()
+    yesterday = (datetime.now() - timedelta(days=1)).strftime("%Y%m%d")
 
-    # 既存データの読み込み
-    data = load_json(DATA_FILE)
-    history = load_json(HISTORY_FILE)
+    for label, target_date in [("本日", today), ("前日", yesterday)]:
+        for venue, code in VENUE_CODES.items():
+            all_data[label][venue] = {}
+            for rno in range(1, 13):  # 1R〜12R
+                try:
+                    html = fetch_race_html(code, rno, target_date)
+                    race_data = parse_race_table(html)
+                    all_data[label][venue][f"{rno}R"] = race_data
+                except Exception as e:
+                    print(f"Error: {venue} {rno}R {e}")
+                    all_data[label][venue][f"{rno}R"] = []
 
-    # data.json → 「本日」「前日」だけに更新
-    today = str(datetime.date.today())
-    yesterday = str(datetime.date.today() - datetime.timedelta(days=1))
+    # JSON保存
+    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+        json.dump(all_data, f, ensure_ascii=False, indent=2)
 
-    filtered_data = {}
-    for d in [today, yesterday]:
-        if d in new_data:
-            filtered_data[d] = new_data[d]
-
-    # 過去データを history.json に追加保存
-    for d, content in new_data.items():
-        if d not in [today, yesterday]:
-            history[d] = content
-
-    # AI的中率を算出
-    ai_hit_results = calc_ai_hit_results(filtered_data)
-    filtered_data["ai_hit_results"] = ai_hit_results
-
-    # 保存
-    save_json(DATA_FILE, filtered_data)
-    save_json(HISTORY_FILE, history)
-
-    print("✅ data.json 更新完了")
-    print("✅ history.json 蓄積完了")
+    print(f"✅ {OUTPUT_FILE} を更新しました")
 
 if __name__ == "__main__":
     main()
