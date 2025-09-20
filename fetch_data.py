@@ -16,8 +16,8 @@ VENUES = {
 }
 
 
-def fetch_race_data(venue_code, date):
-    """指定会場・日付の全レース出走表を取得"""
+def fetch_race_data(venue_code, venue_name, date):
+    """指定会場・日付の全レース出走表を取得し、programs形式で返す"""
     url = f"{BASE_URL}?jcd={venue_code}&hd={date}"
     res = requests.get(url)
     res.encoding = "utf-8"
@@ -30,9 +30,10 @@ def fetch_race_data(venue_code, date):
         race_no_tag = race_card.select_one(".numberSet1_number")
         if not race_no_tag:
             continue
+
         race_no = race_no_tag.get_text(strip=True).replace("R", "")
 
-        entries = []
+        boats = []
         rows = race_card.select("tbody tr")
 
         for row in rows:
@@ -40,29 +41,39 @@ def fetch_race_data(venue_code, date):
             if not cols or len(cols) < 5:
                 continue
 
-            lane = int(cols[0].get_text(strip=True)) if cols[0].get_text(strip=True).isdigit() else None
+            try:
+                boat_number = int(cols[0].get_text(strip=True))
+            except:
+                boat_number = None
+
             name = cols[1].get_text(strip=True)
 
-            # 勝率（全国 / 当地）
             try:
-                win_rate_all = float(cols[3].get_text(strip=True))
+                win_rate = float(cols[3].get_text(strip=True))
             except:
-                win_rate_all = None
-            try:
-                win_rate_local = float(cols[4].get_text(strip=True))
-            except:
-                win_rate_local = None
+                win_rate = None
 
-            entries.append({
-                "lane": lane,
-                "name": name,
-                "win_rate": win_rate_all,
-                "local_win_rate": win_rate_local
+            try:
+                local_win_rate = float(cols[4].get_text(strip=True))
+            except:
+                local_win_rate = None
+
+            boats.append({
+                "racer_boat_number": boat_number,
+                "racer_name": name,
+                "racer_class": None,  # クラス情報が取れなければ空
+                "win_rate": win_rate,
+                "local_win_rate": local_win_rate
             })
 
         races.append({
-            "race_no": race_no,
-            "entries": entries
+            "race_date": datetime.datetime.strptime(date, "%Y%m%d").strftime("%Y-%m-%d"),
+            "race_stadium_number": int(venue_code),
+            "race_number": int(race_no),
+            "race_title": f"{race_no}R {venue_name}",
+            "ai_prediction": [],
+            "result": [],
+            "boats": boats
         })
 
     return races
@@ -72,21 +83,24 @@ def main():
     today = datetime.date.today()
     date_str = today.strftime("%Y%m%d")
 
-    all_data = {"date": date_str, "venues": {}}
+    data = {
+        "programs": [],
+        "stats": {},
+        "history": []
+    }
 
     for code, name in VENUES.items():
         print(f"Fetching {name}...")
         try:
-            races = fetch_race_data(code, date_str)
-            all_data["venues"][name] = races
+            races = fetch_race_data(code, name, date_str)
+            data["programs"].extend(races)
         except Exception as e:
             print(f"⚠️ {name} 取得失敗: {e}")
-            all_data["venues"][name] = []
 
-        time.sleep(1)  # サーバー負荷対策で1秒待機
+        time.sleep(1)  # サーバー負荷対策
 
     with open("data.json", "w", encoding="utf-8") as f:
-        json.dump(all_data, f, ensure_ascii=False, indent=2)
+        json.dump(data, f, ensure_ascii=False, indent=2)
 
     print("✅ data.json updated!")
 
