@@ -1,78 +1,95 @@
 import requests
 from bs4 import BeautifulSoup
 import json
-from datetime import datetime, timedelta
+import datetime
+import time
 
-# 保存ファイル
-OUTPUT_FILE = "data.json"
+BASE_URL = "https://www.boatrace.jp/owpc/pc/race/racelist"
 
-# 全国24会場（公式サイトの場コード）
-VENUE_CODES = {
-    "桐生": "01", "戸田": "02", "江戸川": "03", "平和島": "04", "多摩川": "05",
-    "浜名湖": "06", "蒲郡": "07", "常滑": "08", "津": "09", "三国": "10",
-    "琵琶湖": "11", "住之江": "12", "尼崎": "13", "鳴門": "14", "丸亀": "15",
-    "児島": "16", "宮島": "17", "徳山": "18", "下関": "19", "若松": "20",
-    "芦屋": "21", "福岡": "22", "唐津": "23", "大村": "24"
+# 全国24会場コード
+VENUES = {
+    "01": "桐生", "02": "戸田", "03": "江戸川", "04": "平和島", "05": "多摩川",
+    "06": "浜名湖", "07": "蒲郡", "08": "常滑", "09": "津", "10": "三国",
+    "11": "びわこ", "12": "住之江", "13": "尼崎", "14": "鳴門", "15": "丸亀",
+    "16": "児島", "17": "宮島", "18": "徳山", "19": "下関", "20": "若松",
+    "21": "芦屋", "22": "福岡", "23": "唐津", "24": "大村"
 }
 
-def get_today():
-    """本日の日付（YYYYMMDD形式）"""
-    return datetime.now().strftime("%Y%m%d")
 
-def fetch_race_html(jcd, rno, date):
-    """レース一覧ページを取得"""
-    url = f"https://www.boatrace.jp/owpc/pc/race/racelist?rno={rno}&jcd={jcd}&hd={date}"
+def fetch_race_data(venue_code, date):
+    """指定会場・日付の全レース出走表を取得"""
+    url = f"{BASE_URL}?jcd={venue_code}&hd={date}"
     res = requests.get(url)
     res.encoding = "utf-8"
-    return res.text
+    soup = BeautifulSoup(res.text, "html.parser")
 
-def parse_race_table(html):
-    """出走表データを解析してリスト化"""
-    soup = BeautifulSoup(html, "html.parser")
-    table = soup.find("table", class_="is-w495")
-    if not table:
-        return []
+    races = []
+    race_cards = soup.select(".is-raceList")
 
-    rows = table.find_all("tr")[1:]  # 見出し行を除外
-    data = []
-
-    for row in rows:
-        cols = row.find_all("td")
-        if len(cols) < 5:
+    for race_card in race_cards:
+        race_no_tag = race_card.select_one(".numberSet1_number")
+        if not race_no_tag:
             continue
-        racer = {
-            "枠": cols[0].get_text(strip=True),
-            "選手名": cols[1].get_text(strip=True),
-            "支部/出身地": cols[2].get_text(strip=True),
-            "年齢/体重": cols[3].get_text(strip=True),
-            "級別": cols[1].find("span").get_text(strip=True) if cols[1].find("span") else "",
-            "全国勝率": cols[4].get_text(strip=True) if len(cols) > 4 else ""
-        }
-        data.append(racer)
-    return data
+        race_no = race_no_tag.get_text(strip=True).replace("R", "")
+
+        entries = []
+        rows = race_card.select("tbody tr")
+
+        for row in rows:
+            cols = row.find_all("td")
+            if not cols or len(cols) < 5:
+                continue
+
+            lane = int(cols[0].get_text(strip=True)) if cols[0].get_text(strip=True).isdigit() else None
+            name = cols[1].get_text(strip=True)
+
+            # 勝率（全国 / 当地）
+            try:
+                win_rate_all = float(cols[3].get_text(strip=True))
+            except:
+                win_rate_all = None
+            try:
+                win_rate_local = float(cols[4].get_text(strip=True))
+            except:
+                win_rate_local = None
+
+            entries.append({
+                "lane": lane,
+                "name": name,
+                "win_rate": win_rate_all,
+                "local_win_rate": win_rate_local
+            })
+
+        races.append({
+            "race_no": race_no,
+            "entries": entries
+        })
+
+    return races
+
 
 def main():
-    all_data = {"本日": {}, "前日": {}}
-    today = get_today()
-    yesterday = (datetime.now() - timedelta(days=1)).strftime("%Y%m%d")
+    today = datetime.date.today()
+    date_str = today.strftime("%Y%m%d")
 
-    for label, target_date in [("本日", today), ("前日", yesterday)]:
-        for venue, code in VENUE_CODES.items():
-            all_data[label][venue] = {}
-            for rno in range(1, 13):  # 1R〜12R
-                try:
-                    html = fetch_race_html(code, rno, target_date)
-                    race_data = parse_race_table(html)
-                    all_data[label][venue][f"{rno}R"] = race_data
-                except Exception as e:
-                    print(f"Error: {venue} {rno}R {e}")
-                    all_data[label][venue][f"{rno}R"] = []
+    all_data = {"date": date_str, "venues": {}}
 
-    # JSON保存
-    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+    for code, name in VENUES.items():
+        print(f"Fetching {name}...")
+        try:
+            races = fetch_race_data(code, date_str)
+            all_data["venues"][name] = races
+        except Exception as e:
+            print(f"⚠️ {name} 取得失敗: {e}")
+            all_data["venues"][name] = []
+
+        time.sleep(1)  # サーバー負荷対策で1秒待機
+
+    with open("data.json", "w", encoding="utf-8") as f:
         json.dump(all_data, f, ensure_ascii=False, indent=2)
 
-    print(f"✅ {OUTPUT_FILE} を更新しました")
+    print("✅ data.json updated!")
+
 
 if __name__ == "__main__":
     main()
