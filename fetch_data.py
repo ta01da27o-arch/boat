@@ -3,7 +3,6 @@ from bs4 import BeautifulSoup
 import json
 from datetime import datetime
 
-# 会場コード（jcd）と名称
 VENUES = {
     "01": "桐生", "02": "戸田", "03": "江戸川", "04": "平和島", "05": "多摩川",
     "06": "浜名湖", "07": "蒲郡", "08": "常滑", "09": "津", "10": "三国",
@@ -15,9 +14,8 @@ VENUES = {
 BASE_URL = "https://www.boatrace.jp/owpc/pc/race/racelist"
 
 def fetch_race_program(jcd, venue, date):
-    """1会場分の出走表データを取得"""
     programs = []
-    for rno in range(1, 13):  # 1R〜12R
+    for rno in range(1, 13):
         url = f"{BASE_URL}?rno={rno}&jcd={jcd}&hd={date}"
         res = requests.get(url)
         res.encoding = res.apparent_encoding
@@ -25,10 +23,7 @@ def fetch_race_program(jcd, venue, date):
             continue
 
         soup = BeautifulSoup(res.text, "html.parser")
-        rows = soup.select("table.is-tableFixed__layout4 tr.is-fs12")
-
-        if not rows:
-            continue  # レースなし（中止や非開催）
+        rows = soup.select("tr.is-fs12")  # 出走表の行
 
         entries = []
         for row in rows:
@@ -36,18 +31,15 @@ def fetch_race_program(jcd, venue, date):
             if len(cols) < 7:
                 continue
 
-            try:
-                entry = {
-                    "艇": cols[0],
-                    "選手名": cols[2],
-                    "級別": cols[3],
-                    "平均ST": cols[4],
-                    "当地勝率": cols[5],
-                    "モーター勝率": cols[6]
-                }
-                entries.append(entry)
-            except Exception:
-                continue
+            entry = {
+                "艇": cols[0],
+                "選手名": cols[2],
+                "級別": cols[3],
+                "平均ST": cols[4],
+                "当地勝率": cols[5],
+                "モーター勝率": cols[6]
+            }
+            entries.append(entry)
 
         if entries:
             programs.append({
@@ -64,14 +56,13 @@ def main():
     all_programs = []
 
     for jcd, venue in VENUES.items():
-        venue_programs = fetch_race_program(jcd, venue, date)
-        all_programs.extend(venue_programs)
+        all_programs.extend(fetch_race_program(jcd, venue, date))
 
     data = {
         "date": date,
         "programs": all_programs,
-        "stats": {},   # 後で組み込み
-        "history": []  # 後で組み込み
+        "stats": {},
+        "history": []
     }
 
     with open("data.json", "w", encoding="utf-8") as f:
