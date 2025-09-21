@@ -3,6 +3,13 @@ from bs4 import BeautifulSoup
 import json
 from datetime import datetime
 
+# ブラウザっぽい User-Agent を指定
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Linux; Android 10; Mobile; rv:99.0) Gecko/99.0 Firefox/99.0"
+}
+
+BASE_URL = "https://www.boatrace.jp/owpc/pc/race/racelist"
+
 VENUES = {
     "01": "桐生", "02": "戸田", "03": "江戸川", "04": "平和島", "05": "多摩川",
     "06": "浜名湖", "07": "蒲郡", "08": "常滑", "09": "津", "10": "三国",
@@ -11,19 +18,27 @@ VENUES = {
     "21": "芦屋", "22": "福岡", "23": "唐津", "24": "大村"
 }
 
-BASE_URL = "https://www.boatrace.jp/owpc/pc/race/racelist"
-
 def fetch_race_program(jcd, venue, date):
     programs = []
     for rno in range(1, 13):
         url = f"{BASE_URL}?rno={rno}&jcd={jcd}&hd={date}"
-        res = requests.get(url)
+        res = requests.get(url, headers=HEADERS)
         res.encoding = res.apparent_encoding
+
         if res.status_code != 200:
+            print(f"⚠️ {url} 取得失敗 {res.status_code}")
             continue
 
         soup = BeautifulSoup(res.text, "html.parser")
-        rows = soup.select("tr.is-fs12")  # 出走表の行
+
+        # デバッグ用：最初の1会場1Rだけ HTML を保存
+        if rno == 1 and jcd == "01":
+            with open("debug.html", "w", encoding="utf-8") as f:
+                f.write(res.text[:3000])  # 先頭3000文字だけ保存
+
+        # 出走表の行（選手データが並ぶ部分）
+        rows = soup.select("tr.is-fs12")
+        print(f"会場:{venue} R{rno} → {len(rows)}行")
 
         entries = []
         for row in rows:
@@ -47,7 +62,6 @@ def fetch_race_program(jcd, venue, date):
                 "race_no": rno,
                 "entries": entries
             })
-
     return programs
 
 
@@ -55,7 +69,8 @@ def main():
     date = datetime.now().strftime("%Y%m%d")
     all_programs = []
 
-    for jcd, venue in VENUES.items():
+    # ✅ まずはテスト用に桐生(01)だけ
+    for jcd, venue in {"01": "桐生"}.items():
         all_programs.extend(fetch_race_program(jcd, venue, date))
 
     data = {
