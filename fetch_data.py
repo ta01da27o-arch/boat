@@ -1,88 +1,121 @@
 import requests
 from bs4 import BeautifulSoup
 import json
-from datetime import datetime
+import datetime
+import time
 
-# ブラウザっぽい User-Agent を指定
+OUTPUT_FILE = "data.json"
+
 HEADERS = {
-    "User-Agent": "Mozilla/5.0 (Linux; Android 10; Mobile; rv:99.0) Gecko/99.0 Firefox/99.0"
+    "User-Agent": "Mozilla/5.0 (Linux; Android 13; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0 Mobile Safari/537.36"
 }
 
-BASE_URL = "https://www.boatrace.jp/owpc/pc/race/racelist"
+BASE_URL = "https://www.boatrace.jp/owpc/pc/race/"
 
-VENUES = {
-    "01": "桐生", "02": "戸田", "03": "江戸川", "04": "平和島", "05": "多摩川",
-    "06": "浜名湖", "07": "蒲郡", "08": "常滑", "09": "津", "10": "三国",
-    "11": "びわこ", "12": "住之江", "13": "尼崎", "14": "鳴門", "15": "丸亀",
-    "16": "児島", "17": "宮島", "18": "徳山", "19": "下関", "20": "若松",
-    "21": "芦屋", "22": "福岡", "23": "唐津", "24": "大村"
-}
+def log(msg):
+    print(f"[DEBUG] {msg}")
 
-def fetch_race_program(jcd, venue, date):
-    programs = []
-    for rno in range(1, 13):
-        url = f"{BASE_URL}?rno={rno}&jcd={jcd}&hd={date}"
+def fetch_venues(date):
+    """当日の開催会場一覧を取得"""
+    url = BASE_URL + "index"
+    res = requests.get(url, headers=HEADERS)
+    log(f"会場一覧アクセス: {url} → {res.status_code}")
+
+    if res.status_code != 200:
+        return []
+
+    soup = BeautifulSoup(res.text, "html.parser")
+    venues = []
+
+    for tag in soup.select(".raceIndex__item a"):
+        href = tag.get("href")
+        name = tag.get_text(strip=True)
+        if "jcd=" in href:
+            jcd = href.split("jcd=")[1].split("&")[0]
+            venues.append({"name": name, "jcd": jcd})
+            log(f"検出: {name} ({jcd})")
+
+    return venues
+
+def fetch_racelist(jcd, date):
+    """会場ごとのレース一覧を取得"""
+    races = []
+    for rno in range(1, 13):  # 1R～12R
+        url = f"{BASE_URL}racelist?rno={rno}&jcd={jcd}&hd={date}"
         res = requests.get(url, headers=HEADERS)
-        res.encoding = res.apparent_encoding
+        log(f"レースアクセス: {url} → {res.status_code}")
 
         if res.status_code != 200:
-            print(f"⚠️ {url} 取得失敗 {res.status_code}")
             continue
 
         soup = BeautifulSoup(res.text, "html.parser")
-
-        # デバッグ用：最初の1会場1Rだけ HTML を保存
-        if rno == 1 and jcd == "01":
-            with open("debug.html", "w", encoding="utf-8") as f:
-                f.write(res.text[:3000])  # 先頭3000文字だけ保存
-
-        # 出走表の行（選手データが並ぶ部分）
-        rows = soup.select("tr.is-fs12")
-        print(f"会場:{venue} R{rno} → {len(rows)}行")
+        race_title = soup.select_one(".heading1_title")
+        title = race_title.get_text(strip=True) if race_title else f"{rno}R"
 
         entries = []
+        rows = soup.select(".table1 tbody tr")
         for row in rows:
-            cols = [c.get_text(strip=True) for c in row.find_all("td")]
-            if len(cols) < 7:
+            cols = row.find_all("td")
+            if len(cols) < 8:
                 continue
 
-            entry = {
-                "艇": cols[0],
-                "選手名": cols[2],
-                "級別": cols[3],
-                "平均ST": cols[4],
-                "当地勝率": cols[5],
-                "モーター勝率": cols[6]
-            }
-            entries.append(entry)
+            try:
+                lane = cols[0].get_text(strip=True)       # 枠番
+                rank = cols[2].get_text(strip=True)       # 階級
+                name = cols[3].get_text(strip=True)       # 選手名
+                avg_st = cols[4].get_text(strip=True)     # 平均ST
+                local_win = cols[5].get_text(strip=True)  # 当地勝率
+                motor_win = cols[6].get_text(strip=True)  # モーター勝率
+                course_win = cols[7].get_text(strip=True) # コース勝率
 
-        if entries:
-            programs.append({
-                "venue": venue,
-                "race_no": rno,
-                "entries": entries
-            })
-    return programs
+                entries.append({
+                    "lane": lane,
+                    "rank": rank,
+                    "name": name,
+                    "avg_st": avg_st,
+                    "local_win": local_win,
+                    "motor_win": motor_win,
+                    "course_win": course_win
+                })
+            except Exception as e:
+                log(f"解析エラー: {e}")
 
+        races.append({
+            "race_no": rno,
+            "title": title,
+            "entries": entries
+        })
+
+        time.sleep(0.5)  # サーバー負荷対策
+
+    return races
 
 def main():
-    date = datetime.now().strftime("%Y%m%d")
-    all_programs = []
+    today = datetime.datetime.now().strftime("%Y%m%d")
+    log(f"処理開始: {today}")
 
-    # ✅ まずはテスト用に桐生(01)だけ
-    for jcd, venue in {"01": "桐生"}.items():
-        all_programs.extend(fetch_race_program(jcd, venue, date))
+    venues = fetch_venues(today)
+    programs = []
+
+    for v in venues:
+        log(f"処理中: {v['name']}")
+        races = fetch_racelist(v["jcd"], today)
+        programs.append({
+            "venue": v["name"],
+            "races": races
+        })
 
     data = {
-        "date": date,
-        "programs": all_programs,
+        "date": today,
+        "programs": programs,
         "stats": {},
         "history": []
     }
 
-    with open("data.json", "w", encoding="utf-8") as f:
+    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
+    log(f"保存完了: {OUTPUT_FILE}")
 
 if __name__ == "__main__":
     main()
