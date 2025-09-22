@@ -1,5 +1,4 @@
 import requests
-from bs4 import BeautifulSoup
 import json
 import datetime
 import time
@@ -13,78 +12,70 @@ VENUES = {
     "21": "芦屋", "22": "福岡", "23": "唐津", "24": "大村"
 }
 
-# 今日の日付
+# 今日の日付（YYYYMMDD）
 today = datetime.date.today().strftime("%Y%m%d")
 
 programs = []
 
 for jcd, venue in VENUES.items():
-    races = []
-    for rno in range(1, 13):
-        url = f"https://www.boatrace.jp/owpc/pc/race/racedata?jcd={jcd}&hd={today}&rno={rno}"
-        try:
-            res = requests.get(url, timeout=10)
-            if res.status_code != 200:
-                continue
-
-            # 👇 追加：レスポンスの先頭500文字を出力（デバッグ用）
-            print(f"DEBUG {venue} {rno}R:", res.text[:500])
-
-            soup = BeautifulSoup(res.text, "html.parser")
-
-            # レースタイトル
-            title_tag = soup.select_one("div.title3")
-            title = title_tag.get_text(strip=True) if title_tag else f"{rno}R"
-
-            boats = []
-            rows = soup.select("table.is-tableFixed tbody tr")
-            for row in rows:
-                cols = row.find_all("td")
-                if len(cols) < 5:
-                    continue
-                try:
-                    lane = int(row.find("th").get_text(strip=True))
-                    reg_class_name = cols[0].get_text(strip=True)
-                    branch_age_weight = cols[1].get_text(strip=True)
-                    nation = cols[2].get_text(strip=True)
-                    local = cols[3].get_text(strip=True)
-                    motor = cols[4].get_text(strip=True)
-                    boat = cols[5].get_text(strip=True)
-
-                    boats.append({
-                        "lane": lane,
-                        "info": reg_class_name,
-                        "details": branch_age_weight,
-                        "nation": nation,
-                        "local": local,
-                        "motor": motor,
-                        "boat": boat
-                    })
-                except:
-                    continue
-
-            if boats:
-                races.append({
-                    "number": rno,
-                    "title": title,
-                    "boats": boats
-                })
-
-            time.sleep(0.5)  # アクセス負荷を下げる
-        except Exception as e:
+    url = f"https://www.boatrace.jp/owpc/pc/race/cardjson?jcd={jcd}&hd={today}"
+    try:
+        res = requests.get(url, timeout=10, headers={
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+        })
+        if res.status_code != 200:
+            print(f"⚠ {venue} ({jcd}) データ取得失敗: {res.status_code}")
+            programs.append({"venue": venue, "races": []})
             continue
 
-    programs.append({
-        "venue": venue,
-        "races": races
-    })
+        data_json = res.json()
 
-data = {
+        races = []
+        # レースごとのデータを抽出
+        for race in data_json.get("cardDataList", []):
+            rno = race.get("raceNo")
+            title = race.get("title", f"{rno}R")
+
+            boats = []
+            for entry in race.get("sensyuList", []):
+                boats.append({
+                    "lane": entry.get("teiban"),
+                    "name": entry.get("name"),
+                    "branch": entry.get("kyu"),
+                    "age": entry.get("nenrei"),
+                    "weight": entry.get("taiju"),
+                    "nation": entry.get("ken"),
+                    "motor": entry.get("motorNo"),
+                    "boat": entry.get("boatNo")
+                })
+
+            races.append({
+                "number": rno,
+                "title": title,
+                "boats": boats
+            })
+
+        programs.append({
+            "venue": venue,
+            "races": races
+        })
+
+        time.sleep(0.3)  # アクセス間隔を空ける
+
+    except Exception as e:
+        print(f"❌ {venue} 取得エラー: {e}")
+        programs.append({"venue": venue, "races": []})
+
+# 出力する全体データ
+output = {
     "date": today,
     "programs": programs,
     "stats": {},
     "history": []
 }
 
+# data.json に保存
 with open("data.json", "w", encoding="utf-8") as f:
-    json.dump(data, f, ensure_ascii=False, indent=2)
+    json.dump(output, f, ensure_ascii=False, indent=2)
+
+print("✅ data.json を更新しました")
