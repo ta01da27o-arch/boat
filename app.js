@@ -1,4 +1,4 @@
-// app.js 改良版（完全版ベース）
+// app.js 改良版（完全版データ保持対応）
 
 const SCREEN_VENUES = document.getElementById("screen-venues");
 const SCREEN_RACES = document.getElementById("screen-races");
@@ -6,6 +6,7 @@ const SCREEN_RACE = document.getElementById("screen-race");
 
 const todayBtn = document.getElementById("todayBtn");
 const yesterdayBtn = document.getElementById("yesterdayBtn");
+const refreshBtn = document.getElementById("refreshBtn");
 
 let allData = [];
 let currentVenue = null;
@@ -14,10 +15,10 @@ let currentRace = null;
 // ====== データ取得 ======
 async function loadData(day = "today") {
   try {
-    const res = await fetch("data.json");
+    const res = await fetch("data.json", { cache: "no-store" });
     const json = await res.json();
 
-    // データ形式を吸収
+    // データ形式を保持（programs配下 or 直配列）
     if (Array.isArray(json)) {
       allData = json;
     } else if (json.programs) {
@@ -85,9 +86,29 @@ function showRace(race) {
   currentRace = race;
 
   let html = `<h2>${race.jyo_name} ${race.race_no}R 出走表</h2>`;
+
+  // header情報（保持している場合）
+  if (race.header) {
+    html += `<div class="race-header">
+               <p>日付: ${race.header.date || "-"}</p>
+               <p>${race.header.title || ""}</p>
+             </div>`;
+  }
+
+  // weather情報（保持している場合）
+  if (race.weather) {
+    html += `<div class="race-weather">
+               天候: ${race.weather.condition || "-"}　
+               風速: ${race.weather.wind_speed || "-"}m　
+               波高: ${race.weather.wave || "-"}cm
+             </div>`;
+  }
+
+  // 出走表
   html += `<table class="race-table">
             <tr>
-              <th>枠</th><th>選手名</th><th>級</th><th>ST</th><th>F</th><th>モーター</th><th>ボート</th><th>コメント</th>
+              <th>枠</th><th>選手名</th><th>級</th><th>ST</th><th>F</th>
+              <th>モーター</th><th>ボート</th><th>コメント</th>
             </tr>`;
 
   race.racers.forEach(r => {
@@ -114,22 +135,28 @@ function showRace(race) {
             <p>抑え: ${predictions.sub}</p>
           </div>`;
 
+  // 結果（保持している場合）
+  if (race.result) {
+    html += `<div class="race-result">
+               <h3>結果</h3>
+               <p>${race.result.text || JSON.stringify(race.result)}</p>
+             </div>`;
+  }
+
   html += `<button onclick="showRaces('${race.jcd}','${race.jyo_name}')">← 戻る</button>`;
 
   SCREEN_RACE.innerHTML = html;
   showScreen(SCREEN_RACE);
 }
 
-// ====== 予想コメント生成 ======
+// ====== コメント生成 ======
 function generateComment(r) {
   const comments = [];
-
   if (r.racer_class_number === 1) comments.push("実力上位");
   if (r.racer_average_start_timing && r.racer_average_start_timing < 0.15) comments.push("スタート鋭い");
   if (r.racer_flying_count > 0) comments.push("F持ち注意");
   if (r.racer_assigned_motor_top_2_percent >= 35) comments.push("モーター◎");
   if (r.racer_assigned_boat_top_2_percent >= 35) comments.push("ボート良");
-
   return comments.join("・") || "平凡";
 }
 
@@ -165,9 +192,10 @@ function className(num) {
   }
 }
 
-// ====== 日付切替 ======
+// ====== イベント ======
 todayBtn.onclick = () => loadData("today");
 yesterdayBtn.onclick = () => loadData("yesterday");
+refreshBtn.onclick = () => loadData();
 
 // 初期ロード
 loadData();
