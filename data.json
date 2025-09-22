@@ -1,6 +1,18 @@
 {
-  "date": "20250921",
-  "programs": [],
-  "stats": {},
-  "history": []
+  "programs": [
+    {
+      "race_date": "2025-09-21",
+      "race_stadium_number": 1,
+      "race_number": 1,
+      "race_title": "テスト予選",
+      "boats": [
+        {"racer_boat_number":1,"racer_name":"山田太郎","racer_class":"A1","racer_average_start_timing":0.13,"racer_flying_count":0,"racer_local_win_rate":60,"racer_motor_win_rate":55,"racer_course_win_rate":52},
+        {"racer_boat_number":2,"racer_name":"佐藤花子","racer_class":"A2","racer_average_start_timing":0.15,"racer_flying_count":1,"racer_local_win_rate":50,"racer_motor_win_rate":40,"racer_course_win_rate":30},
+        {"racer_boat_number":3,"racer_name":"鈴木一郎","racer_class":"B1","racer_average_start_timing":0.18,"racer_flying_count":0,"racer_local_win_rate":30,"racer_motor_win_rate":35,"racer_course_win_rate":25},
+        {"racer_boat_number":4,"racer_name":"田中美咲","racer_class":"B2","racer_average_start_timing":0.20,"racer_flying_count":0,"racer_local_win_rate":25,"racer_motor_win_rate":28,"racer_course_win_rate":22},
+        {"racer_boat_number":5,"racer_name":"高橋健太","racer_class":"A2","racer_average_start_timing":0.16,"racer_flying_count":0,"racer_local_win_rate":45,"racer_motor_win_rate":33,"racer_course_win_rate":31},
+        {"racer_boat_number":6,"racer_name":"伊藤明子","racer_class":"B1","racer_average_start_timing":0.17,"racer_flying_count":0,"racer_local_win_rate":20,"racer_motor_win_rate":25,"racer_course_win_rate":18}
+      ]
+    }
+  ]
 }
