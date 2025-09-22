@@ -1,113 +1,77 @@
 import requests
 from bs4 import BeautifulSoup
 import json
-import datetime
-import time
+from datetime import datetime
 
-OUTPUT_FILE = "data.json"
+# 出走表のベースURL
+BASE_URL = "https://www.boatrace.jp/owpc/pc/race/racelist"
 
-HEADERS = {
-    "User-Agent": "Mozilla/5.0 (Linux; Android 13; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0 Mobile Safari/537.36"
+# 全国24会場（場コードと名称の対応）
+VENUES = {
+    1: "桐生", 2: "戸田", 3: "江戸川", 4: "平和島", 5: "多摩川", 6: "浜名湖",
+    7: "蒲郡", 8: "常滑", 9: "津", 10: "三国", 11: "びわこ", 12: "住之江",
+    13: "尼崎", 14: "鳴門", 15: "丸亀", 16: "児島", 17: "宮島", 18: "徳山",
+    19: "下関", 20: "若松", 21: "芦屋", 22: "福岡", 23: "唐津", 24: "大村"
 }
 
-BASE_URL = "https://www.boatrace.jp/owpc/pc/race/"
-
-def log(msg):
-    print(f"[DEBUG] {msg}")
-
-def fetch_venues(date):
-    """当日の開催会場一覧を取得"""
-    url = BASE_URL + "index"
-    res = requests.get(url, headers=HEADERS)
-    log(f"会場一覧アクセス: {url} → {res.status_code}")
-
-    if res.status_code != 200:
-        return []
-
-    soup = BeautifulSoup(res.text, "html.parser")
-    venues = []
-
-    for tag in soup.select(".raceIndex__item a"):
-        href = tag.get("href")
-        name = tag.get_text(strip=True)
-        if "jcd=" in href:
-            jcd = href.split("jcd=")[1].split("&")[0]
-            venues.append({"name": name, "jcd": jcd})
-            log(f"検出: {name} ({jcd})")
-
-    return venues
-
-def fetch_racelist(jcd, date):
-    """会場ごとのレース一覧を取得"""
-    races = []
-    for rno in range(1, 13):  # 1R～12R
-        url = f"{BASE_URL}racelist?rno={rno}&jcd={jcd}&hd={date}"
-        res = requests.get(url, headers=HEADERS)
-        log(f"レースアクセス: {url} → {res.status_code}")
-
-        if res.status_code != 200:
-            continue
-
-        soup = BeautifulSoup(res.text, "html.parser")
-        race_title = soup.select_one(".heading1_title")
-        title = race_title.get_text(strip=True) if race_title else f"{rno}R"
-
-        entries = []
-        # 出走表テーブルを抽出
-        rows = soup.select(".table1 tbody tr")
-        for row in rows:
-            cols = row.find_all("td")
-            if len(cols) < 8:
-                continue
-
-            try:
-                wakuban = cols[0].get_text(strip=True)       # 枠番
-                teiban = cols[1].get_text(strip=True)        # 登録番号（艇番）
-                rank = cols[2].get_text(strip=True)          # 階級
-                name = cols[3].get_text(strip=True)          # 選手名
-                avg_st = cols[4].get_text(strip=True)        # 平均ST
-                local_win = cols[5].get_text(strip=True)     # 当地勝率
-                motor_win = cols[6].get_text(strip=True)     # モーター勝率
-                course_win = cols[7].get_text(strip=True)    # コース勝率
-
-                entries.append({
-                    "枠番": wakuban,
-                    "艇番": teiban,
-                    "階級": rank,
-                    "選手名": name,
-                    "平均ST": avg_st,
-                    "当地勝率": local_win,
-                    "モーター勝率": motor_win,
-                    "コース勝率": course_win
-                })
-            except Exception as e:
-                log(f"解析エラー: {e}")
-
-        races.append({
-            "race_no": rno,
-            "title": title,
-            "entries": entries
-        })
-
-        time.sleep(0.5)  # サーバー負荷対策
-
-    return races
-
-def main():
-    today = datetime.datetime.now().strftime("%Y%m%d")
-    log(f"処理開始: {today}")
-
-    venues = fetch_venues(today)
+def fetch_race_data():
+    today = datetime.now().strftime("%Y%m%d")
     programs = []
 
-    for v in venues:
-        log(f"処理中: {v['name']}")
-        races = fetch_racelist(v["jcd"], today)
+    for jcd, name in VENUES.items():
+        url = f"{BASE_URL}?jcd={jcd:02d}&hd={today}"
+        try:
+            r = requests.get(url, timeout=10)
+            r.raise_for_status()
+        except Exception as e:
+            print(f"❌ {name} の取得失敗: {e}")
+            continue
+
+        soup = BeautifulSoup(r.text, "html.parser")
+        race_tables = soup.select(".is-lineH2")  # レースごとのテーブル見出し
+        races = []
+
+        for idx, race in enumerate(race_tables, start=1):
+            title = race.get_text(strip=True)
+
+            # 各レースの出走表テーブルを取得
+            table = race.find_next("table")
+            boats = []
+            if table:
+                rows = table.select("tbody tr")
+                for row in rows:
+                    cols = row.find_all("td")
+                    if len(cols) < 5:
+                        continue
+                    try:
+                        lane = int(cols[0].get_text(strip=True))
+                        racer = cols[1].get_text(strip=True)
+                        age = int(cols[2].get_text(strip=True))
+                        branch = cols[3].get_text(strip=True)
+                        rank = cols[4].get_text(strip=True)
+                    except:
+                        continue
+
+                    boats.append({
+                        "lane": lane,
+                        "racer": racer,
+                        "age": age,
+                        "branch": branch,
+                        "rank": rank
+                    })
+
+            races.append({
+                "number": idx,
+                "title": title,
+                "boats": boats
+            })
+
         programs.append({
-            "venue": v["name"],
+            "venue": name,
             "races": races
         })
 
+    # JSON形式にまとめる
     data = {
         "date": today,
         "programs": programs,
@@ -115,10 +79,10 @@ def main():
         "history": []
     }
 
-    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+    with open("data.json", "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
-    log(f"保存完了: {OUTPUT_FILE}")
+    print("✅ data.json を更新しました")
 
 if __name__ == "__main__":
-    main()
+    fetch_race_data()
