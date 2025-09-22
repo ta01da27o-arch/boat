@@ -26,6 +26,10 @@ for jcd, venue in VENUES.items():
             res = requests.get(url, timeout=10)
             if res.status_code != 200:
                 continue
+
+            # 👇 追加：レスポンスの先頭500文字を出力（デバッグ用）
+            print(f"DEBUG {venue} {rno}R:", res.text[:500])
+
             soup = BeautifulSoup(res.text, "html.parser")
 
             # レースタイトル
