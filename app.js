@@ -1,4 +1,4 @@
-// app.js (完全版＋コメント強化)
+// app.js (完全版 3連単のみ & コメント全艇表示)
 const DATA_URL = './data.json'; // 必要に応じて GitHub Pages のフル URL に変更
 
 const VENUE_NAMES = [
@@ -20,7 +20,6 @@ const raceTitle = document.getElementById('raceTitle');
 
 const entryTableBody = document.querySelector('#entryTable tbody');
 const aiMainBody = document.querySelector('#aiMain tbody');
-const aiSubBody = document.querySelector('#aiSub tbody');
 const commentTableBody = document.querySelector('#commentTable tbody');
 
 const SCREEN_VENUES = document.getElementById('screen-venues');
@@ -39,8 +38,10 @@ let CURRENT_RACE_NO = null;
 // util
 function getIsoDate(d){ return d.toISOString().slice(0,10); }
 function formatToDisplay(dstr){
-  try { const d = new Date(dstr); return d.toLocaleDateString('ja-JP', { year:'numeric', month:'2-digit', day:'2-digit', weekday:'short' });}
-  catch(e){ return dstr; }
+  try { 
+    const d = new Date(dstr); 
+    return d.toLocaleDateString('ja-JP', { year:'numeric', month:'2-digit', day:'2-digit', weekday:'short' });
+  } catch(e){ return dstr; }
 }
 function showScreen(name){
   SCREEN_VENUES.classList.remove('active');
@@ -50,40 +51,6 @@ function showScreen(name){
   if(name==='races') SCREEN_RACES.classList.add('active');
   if(name==='race') SCREEN_RACE.classList.add('active');
 }
-
-// コメント候補（30〜50文字）
-const COMMENT_TEMPLATES = {
-  "◎": [
-    "イン速攻で展開有利。機力も十分で主導権を握れる一戦。",
-    "スピードと安定感で信頼度高い。首位争いの中心となる。",
-    "地力は最上位。機力も後押しして軸視は揺るがない。"
-  ],
-  "○": [
-    "自在な立ち回りで逆転を狙う。展開一つで浮上十分。",
-    "機力は水準以上。スピードを活かせば勝機も見える。",
-    "相手次第で連争い可能。侮れない存在となる。"
-  ],
-  "▲": [
-    "展開に乗れば食い込める力はある。連下候補の一角。",
-    "スタート決まれば一発も。穴党注目の存在。",
-    "波に乗れば台頭あり。警戒は怠れない存在。"
-  ],
-  "△": [
-    "安定感欠くが展開次第で浮上。押さえ評価が妥当。",
-    "地力は一歩劣るが流れ次第で好走可能。",
-    "連下食い込みの余地は残る。展開待ちの一手。"
-  ],
-  "✕": [
-    "近況は物足りないが波乱を呼ぶ可能性も。",
-    "力強さ不足も展開が向けば一発の魅力。",
-    "評価は低いが侮れない。軽視禁物の存在。"
-  ],
-  "ー": [
-    "データ少なく判断難。静観したい一戦。",
-    "目立った材料なく、展開頼みの戦いとなるか。",
-    "地力不足否めず、慎重な評価が妥当か。"
-  ]
-};
 
 // load data
 async function loadData(force=false){
@@ -109,7 +76,7 @@ async function loadData(force=false){
   }
 }
 
-// venues
+// venues -> 24場
 function renderVenues(){
   showScreen('venues');
   venuesGrid.innerHTML = '';
@@ -129,25 +96,25 @@ function renderVenues(){
     card.className = 'venue-card ' + (has ? 'clickable' : 'disabled');
     card.setAttribute('data-venue', id);
 
-    const vname = document.createElement('div'); vname.className='v-name'; vname.textContent = name;
-    const status = document.createElement('div'); status.className='v-status'; status.textContent = has ? '開催中' : 'ー';
-    const rate = document.createElement('div'); rate.className='v-rate'; rate.textContent = '--%';
+    const vname = document.createElement('div'); vname.className='v-name'; vname.textContent = name;  
+    const status = document.createElement('div'); status.className='v-status'; status.textContent = has ? '開催中' : 'ー';  
+    const rate = document.createElement('div'); rate.className='v-rate'; rate.textContent = '--%';  
 
-    card.appendChild(vname);
-    card.appendChild(status);
-    card.appendChild(rate);
+    card.appendChild(vname);  
+    card.appendChild(status);  
+    card.appendChild(rate);  
 
-    if(has){
-      card.addEventListener('click', ()=>{
-        CURRENT_VENUE_ID = id;
-        renderRaces(id);
-      });
-    }
+    if(has){  
+      card.addEventListener('click', ()=>{  
+        CURRENT_VENUE_ID = id;  
+        renderRaces(id);  
+      });  
+    }  
     venuesGrid.appendChild(card);
   }
 }
 
-// races
+// render 1..12
 function renderRaces(venueId){
   showScreen('races');
   CURRENT_VENUE_ID = venueId;
@@ -175,7 +142,7 @@ function renderRaces(venueId){
   }
 }
 
-// race detail
+// render single race
 function renderRaceDetail(venueId, raceNo){
   showScreen('race');
   const targetDate = (CURRENT_MODE==='today') ? getIsoDate(new Date()) : (function(){const d=new Date(); d.setDate(d.getDate()-1); return getIsoDate(d);})();
@@ -188,7 +155,6 @@ function renderRaceDetail(venueId, raceNo){
 
   // 出走表
   entryTableBody.innerHTML = '';
-  const marks = {};
   for(let i=1;i<=6;i++){
     const b = boats.find(x => (x.racer_boat_number||i) === i) || null;
     const klass = b && (b.racer_class_number ? (['','A1','A2','B1','B2'][b.racer_class_number] || '-') : (b.racer_class || '-')) || '-';
@@ -201,55 +167,101 @@ function renderRaceDetail(venueId, raceNo){
     const motor = b && (b.racer_assigned_motor_top_2_percent ? b.racer_assigned_motor_top_2_percent : (b.racer_motor_win_rate ?? null));
     const course = b && (b.racer_assigned_boat_top_2_percent ? b.racer_assigned_boat_top_2_percent : (b.racer_course_win_rate ?? null));
 
-    const stScore = st ? (1/(st || 0.3)) : 1;
-    const fScore = (fcount>0) ? 0.7 : 1.0;
-    const localScore = (typeof local === 'number') ? (local/100) : 1.0;
-    const motorScore = (typeof motor === 'number') ? (motor/100) : 1.0;
-    const courseScore = (typeof course === 'number') ? (course/100) : 1.0;
-    const rawScore = stScore * fScore * localScore * motorScore * courseScore * 100;
+    const stScore = st ? (1/(st || 0.3)) : 1;  
+    const fScore = (fcount>0) ? 0.7 : 1.0;  
+    const localScore = (typeof local === 'number') ? (local/100) : 1.0;  
+    const motorScore = (typeof motor === 'number') ? (motor/100) : 1.0;  
+    const courseScore = (typeof course === 'number') ? (course/100) : 1.0;  
+    const rawScore = stScore * fScore * localScore * motorScore * courseScore * 100;  
 
-    let mark = 'ー';
-    if(rawScore >= 40) mark = '◎';
-    else if(rawScore >= 25) mark = '○';
-    else if(rawScore >= 15) mark = '△';
-    else if(rawScore >= 8) mark = '✕';
-    else mark = 'ー';
-    marks[i] = mark;
+    let mark = 'ー';  
+    if(rawScore >= 40) mark = '◎';  
+    else if(rawScore >= 25) mark = '○';  
+    else if(rawScore >= 15) mark = '△';  
+    else if(rawScore >= 8) mark = '✕';  
 
-    const markClass = (mark === '◎') ? 'metric-symbol top' : 'metric-symbol';
+    const markClass = (mark === '◎') ? 'metric-symbol top' : 'metric-symbol';  
 
-    const tr = document.createElement('tr');
-    tr.className = `row-${i}`;
-    tr.innerHTML = `
-      <td class="mono">${i}</td>
+    const tr = document.createElement('tr');  
+    tr.className = `row-${i}`;  
+    tr.innerHTML = `  
+      <td class="mono">${i}</td>  
       <td>
-        <div class="entry-left">
-          <div class="klass">${klass}</div>
-          <div class="name">${name}</div>
-          <div class="st">${stText}</div>
+        <div class="entry-left">  
+          <div class="klass">${klass}</div>  
+          <div class="name">${name}</div>  
+          <div class="st">${stText}</div>  
         </div>
-      </td>
-      <td>${fText}</td>
-      <td>${(typeof local==='number') ? (local + '%') : '-'}</td>
-      <td>${(typeof motor==='number') ? (motor + '%') : '-'}</td>
-      <td>${(typeof course==='number') ? (course + '%') : '-'}</td>
-      <td><div class="${markClass}">${mark}</div></td>
-    `;
+      </td>  
+      <td>${fText}</td>  
+      <td>${(typeof local==='number') ? (local + '%') : '-'}</td>  
+      <td>${(typeof motor==='number') ? (motor + '%') : '-'}</td>  
+      <td>${(typeof course==='number') ? (course + '%') : '-'}</td>  
+      <td><div class="${markClass}">${mark}</div></td>  
+    `;  
     entryTableBody.appendChild(tr);
   }
 
-  // AI予想（省略：元コードそのまま残す）
-  // ... ここまで同じ ...
+  // AI予想 3連単のみ
+  const scored = boats.map(b=>{
+    const st = (typeof b.racer_average_start_timing === 'number') ? b.racer_average_start_timing : 0.25;
+    const fcount = Number(b.racer_flying_count || 0);
+    const local = (b.racer_local_top_1_percent || b.racer_local_win_rate || 30);
+    const motor = (b.racer_assigned_motor_top_2_percent || b.racer_motor_win_rate || 30);
+    const course = (b.racer_assigned_boat_top_2_percent || b.racer_course_win_rate || 30);
+    const stScore = st ? (1/(st||0.3)) : 1;
+    const fScore = (fcount > 0) ? 0.7 : 1.0;
+    const score = stScore * fScore * (local/100) * (motor/100) * (course/100);
+    return { b, score };
+  });
+  scored.sort((a,b)=> b.score - a.score);
 
-  // コメント生成
+  const picks = scored.slice(0,6).map(s=> s.b.racer_boat_number || '?');
+  const main = [];
+  const used = new Set();
+  function pushBet(list,a,b,c,prob){
+    const key = `${a}-${b}-${c}`;
+    if(used.has(key)) return;
+    used.add(key);
+    list.push({bet:key, prob: Math.max(0, Math.round(prob))});
+  }
+  for(let i=0;i<picks.length;i++){
+    for(let j=0;j<picks.length;j++){
+      for(let k=0;k<picks.length;k++){
+        if(i===j||j===k||i===k) continue;
+        const weight = (scored[i]?.score||0)*3 + (scored[j]?.score||0)*1.5 + (scored[k]?.score||0);
+        if(main.length < 10) pushBet(main, picks[i], picks[j], picks[k], weight*150);
+        if(main.length>=10) break;
+      }
+      if(main.length>=10) break;
+    }
+    if(main.length>=10) break;
+  }
+  while(main.length<10) main.push({bet:'-', prob:0});
+
+  aiMainBody && (aiMainBody.innerHTML = '');
+  main.forEach(it=>{
+    const tr = document.createElement('tr'); tr.innerHTML = `<td>${it.bet}</td><td class="mono">${it.prob}%</td>`; aiMainBody.appendChild(tr);
+  });
+
+  // コメント（6艇分）
   commentTableBody.innerHTML = '';
   for(let lane=1; lane<=6; lane++){
-    const mark = marks[lane] || 'ー';
-    const templates = COMMENT_TEMPLATES[mark] || COMMENT_TEMPLATES["ー"];
-    const text = templates[Math.floor(Math.random()*templates.length)];
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${lane}号艇</td><td style="text-align:left">${text}</td>`;
-    commentTableBody.appendChild(tr);
+    const b = boats.find(x => (x.racer_boat_number||lane) === lane) || null;
+    let text = 'データなし';
+    if(b){
+      const st = b.racer_average_start_timing ?? null;
+      const motor = b.racer_assigned_motor_top_2_percent ?? b.racer_motor_win_rate ?? null;
+      const local = b.racer_local_top_1_percent ?? b.racer_local_win_rate ?? null;
+      const parts = [];
+      if(st != null && st <= 0.13) parts.push('鋭いスタートで展開作れる');
+      if(motor != null && motor >= 50) parts.push('モーター気配上々');
+      if(local != null && local >= 40) parts.push('当地実績で信頼度高い');
+      if(parts.length===0) parts.push('安定感ある走りで粘り込みたい');
+      const reason = main.some(m => m.bet.split('-').includes(String(lane))) ? '本命候補' : '連下評価';
+      text = `${lane}号艇：${parts.join('、')}。${reason}。`;
+    }
+    const tr = document.createElement('tr'); tr.innerHTML = `<td>${lane}コース</td><td style="text-align:left">${text}</td>`; commentTableBody.appendChild(tr);
   }
 }
 
