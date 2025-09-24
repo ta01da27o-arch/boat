@@ -1,30 +1,13 @@
-// app.js (完全版+ランダムコメント組込)
+// app.js (完全版 + コメント生成統合)
+import { generateComment } from './ai.js';
+
 const DATA_URL = './data.json'; // 必要に応じて GitHub Pages のフル URL に変更
 
 const VENUE_NAMES = [
-  "桐生","戸田","江戸川","平和島","多摩川","浜名湖","蒲郡","常滑",
-  "津","三国","びわこ","住之江","尼崎","鳴門","丸亀","児島",
-  "宮島","徳山","下関","若松","芦屋","福岡","唐津","大村"
+"桐生","戸田","江戸川","平和島","多摩川","浜名湖","蒲郡","常滑",
+"津","三国","びわこ","住之江","尼崎","鳴門","丸亀","児島",
+"宮島","徳山","下関","若松","芦屋","福岡","唐津","大村"
 ];
-
-// ランダムフレーズ辞書
-const COMMENT_PARTS = {
-  start: [
-    "好スタートを切りたい", "持ち味を発揮したい", "展開を突く", "冷静に立ち回る",
-    "インから主導権を握る", "波乱を起こしたい", "積極果敢なレースを見せたい"
-  ],
-  motor: [
-    "モーター仕上がりは上々", "足色はやや不安", "出足・伸びともに良好",
-    "調整の成果が出ている", "直線勝負に強みあり", "パワー不足は否めない"
-  ],
-  local: [
-    "当地実績豊富", "水面との相性良し", "慣れた水面で期待", "経験不足が課題",
-    "苦手水面も克服を狙う", "ここでは勝率が高い"
-  ],
-  mindset: [
-    "気合十分！", "一発狙う", "堅実に走る", "勝負駆け", "気持ちは前向き", "集中して挑む"
-  ]
-};
 
 // DOM
 const dateLabel = document.getElementById('dateLabel');
@@ -58,8 +41,10 @@ let CURRENT_RACE_NO = null;
 // util
 function getIsoDate(d){ return d.toISOString().slice(0,10); }
 function formatToDisplay(dstr){
-  try { const d = new Date(dstr); return d.toLocaleDateString('ja-JP', { year:'numeric', month:'2-digit', day:'2-digit', weekday:'short' });}
-  catch(e){ return dstr; }
+  try {
+    const d = new Date(dstr);
+    return d.toLocaleDateString('ja-JP', { year:'numeric', month:'2-digit', day:'2-digit', weekday:'short' });
+  } catch(e){ return dstr; }
 }
 function showScreen(name){
   SCREEN_VENUES.classList.remove('active');
@@ -77,12 +62,14 @@ async function loadData(force=false){
     const res = await fetch(url, {cache: 'no-store'});
     if(!res.ok) throw new Error('HTTP '+res.status);
     const json = await res.json();
+    // normalize
     let progs = null;
     if(json && json.races && Array.isArray(json.races.programs)) progs = json.races.programs;
     else if(Array.isArray(json.programs)) progs = json.programs;
     else if(Array.isArray(json)) progs = json;
     if(!progs) throw new Error('JSON構造違い: programs または races.programs を期待');
     ALL_PROGRAMS = progs;
+    // header date
     const d = new Date();
     dateLabel.textContent = formatToDisplay(d.toISOString());
     renderVenues();
@@ -114,20 +101,20 @@ function renderVenues(){
     card.className = 'venue-card ' + (has ? 'clickable' : 'disabled');
     card.setAttribute('data-venue', id);
 
-    const vname = document.createElement('div'); vname.className='v-name'; vname.textContent = name;
-    const status = document.createElement('div'); status.className='v-status'; status.textContent = has ? '開催中' : 'ー';
-    const rate = document.createElement('div'); rate.className='v-rate'; rate.textContent = '--%';
+    const vname = document.createElement('div'); vname.className='v-name'; vname.textContent = name;  
+    const status = document.createElement('div'); status.className='v-status'; status.textContent = has ? '開催中' : 'ー';  
+    const rate = document.createElement('div'); rate.className='v-rate'; rate.textContent = '--%';  
 
-    card.appendChild(vname);
-    card.appendChild(status);
-    card.appendChild(rate);
+    card.appendChild(vname);  
+    card.appendChild(status);  
+    card.appendChild(rate);  
 
-    if(has){
-      card.addEventListener('click', ()=>{
-        CURRENT_VENUE_ID = id;
-        renderRaces(id);
-      });
-    }
+    if(has){  
+      card.addEventListener('click', ()=>{  
+        CURRENT_VENUE_ID = id;  
+        renderRaces(id);  
+      });  
+    }  
     venuesGrid.appendChild(card);
   }
 }
@@ -136,7 +123,7 @@ function renderVenues(){
 function renderRaces(venueId){
   showScreen('races');
   CURRENT_VENUE_ID = venueId;
-  venueTitle.textContent = VENUE_NAMES[venueId-1] || `場 ${venueId}`;
+  venueTitle.textContent = VENUE_NAMES[venueId-1] || `場${venueId}`;
   racesGrid.innerHTML = '';
 
   const targetDate = (CURRENT_MODE==='today') ? getIsoDate(new Date()) : (function(){const d=new Date(); d.setDate(d.getDate()-1); return getIsoDate(d);})();
@@ -169,33 +156,128 @@ function renderRaceDetail(venueId, raceNo){
 
   raceTitle.textContent = `${VENUE_NAMES[venueId-1] || venueId} ${raceNo}R ${prog.race_title || ''}`;
 
-  // ...（entryTable, AI予想の部分は完全版を維持、省略）...
+  const boats = Array.isArray(prog.boats) ? prog.boats.slice().sort((a,b)=> (a.racer_boat_number||0)-(b.racer_boat_number||0)) : [];
 
-  // --- コメント生成 (ランダム組合せ追加) ---
+  // 出走表
+  entryTableBody.innerHTML = '';
+  for(let i=1;i<=6;i++){
+    const b = boats.find(x => (x.racer_boat_number||i) === i) || null;
+    const klass = b && (b.racer_class_number ? (['','A1','A2','B1','B2'][b.racer_class_number] || '-') : (b.racer_class || '-')) || '-';
+    const name = b ? (b.racer_name || '-') : '-';
+    const st = b && (typeof b.racer_average_start_timing === 'number' ? b.racer_average_start_timing : (b.racer_average_start_timing ? Number(b.racer_average_start_timing) : null));
+    const stText = (st != null) ? `ST:${st.toFixed(2)}` : 'ST:-';
+    const fcount = b ? Number(b.racer_flying_count || 0) : 0;
+    const fText = fcount>0 ? `F${fcount}` : 'ー';
+    const local = b && (b.racer_local_top_1_percent ? b.racer_local_top_1_percent : (b.racer_local_win_rate ?? null));
+    const motor = b && (b.racer_assigned_motor_top_2_percent ? b.racer_assigned_motor_top_2_percent : (b.racer_motor_win_rate ?? null));
+    const course = b && (b.racer_assigned_boat_top_2_percent ? b.racer_assigned_boat_top_2_percent : (b.racer_course_win_rate ?? null));
+
+    // 評価
+    const stScore = st ? (1/(st || 0.3)) : 1;  
+    const fScore = (fcount>0) ? 0.7 : 1.0;  
+    const localScore = (typeof local === 'number') ? (local/100) : 1.0;  
+    const motorScore = (typeof motor === 'number') ? (motor/100) : 1.0;  
+    const courseScore = (typeof course === 'number') ? (course/100) : 1.0;  
+    const rawScore = stScore * fScore * localScore * motorScore * courseScore * 100;  
+
+    let mark = 'ー';  
+    if(rawScore >= 40) mark = '◎';  
+    else if(rawScore >= 25) mark = '○';  
+    else if(rawScore >= 15) mark = '△';  
+    else if(rawScore >= 8) mark = '✕';  
+
+    const markClass = (mark === '◎') ? 'metric-symbol top' : 'metric-symbol';  
+
+    const tr = document.createElement('tr');  
+    tr.className = `row-${i}`;  
+    tr.innerHTML = `  
+      <td class="mono">${i}</td>  
+      <td>  
+        <div class="entry-left">  
+          <div class="klass">${klass}</div>  
+          <div class="name">${name}</div>  
+          <div class="st">${stText}</div>  
+        </div>  
+      </td>  
+      <td>${fText}</td>  
+      <td>${(typeof local==='number') ? (local + '%') : '-'}</td>  
+      <td>${(typeof motor==='number') ? (motor + '%') : '-'}</td>  
+      <td>${(typeof course==='number') ? (course + '%') : '-'}</td>  
+      <td><div class="${markClass}">${mark}</div></td>  
+    `;  
+    entryTableBody.appendChild(tr);
+  }
+
+  // AI予想（三連単）
+  const scored = boats.map(b=>{
+    const st = (typeof b.racer_average_start_timing === 'number') ? b.racer_average_start_timing : 0.25;
+    const fcount = Number(b.racer_flying_count || 0);
+    const local = (b.racer_local_top_1_percent || b.racer_local_win_rate || 30);
+    const motor = (b.racer_assigned_motor_top_2_percent || b.racer_motor_win_rate || 30);
+    const course = (b.racer_assigned_boat_top_2_percent || b.racer_course_win_rate || 30);
+    const stScore = st ? (1/(st||0.3)) : 1;
+    const fScore = (fcount > 0) ? 0.7 : 1.0;
+    const score = stScore * fScore * (local/100) * (motor/100) * (course/100);
+    return { b, score };
+  });
+  scored.sort((a,b)=> b.score - a.score);
+
+  const picks = scored.slice(0,6).map(s=> s.b.racer_boat_number || '?');
+  const main = []; const sub = [];
+  const used = new Set();
+  function pushBet(list,a,b,c,prob){
+    const key = `${a}-${b}-${c}`;
+    if(used.has(key)) return;
+    used.add(key);
+    list.push({bet:key, prob: Math.max(0, Math.round(prob))});
+  }
+  for(let i=0;i<picks.length;i++){
+    for(let j=0;j<picks.length;j++){
+      for(let k=0;k<picks.length;k++){
+        if(i===j||j===k||i===k) continue;
+        const weight = (scored[i]?.score||0)*3 + (scored[j]?.score||0)*1.5 + (scored[k]?.score||0);
+        if(main.length < 5) pushBet(main, picks[i], picks[j], picks[k], weight*150);
+        else if(sub.length < 5) pushBet(sub, picks[i], picks[j], picks[k], weight*80);
+        if(main.length>=5 && sub.length>=5) break;
+      }
+      if(main.length>=5 && sub.length>=5) break;
+    }
+    if(main.length>=5 && sub.length>=5) break;
+  }
+  while(main.length<5) main.push({bet:'-', prob:0});
+  while(sub.length<5) sub.push({bet:'-', prob:0});
+
+  aiMainBody.innerHTML = '';
+  aiSubBody.innerHTML = '';
+  main.forEach(it=>{
+    const tr = document.createElement('tr'); tr.innerHTML = `<td>${it.bet}</td><td class="mono">${it.prob}%</td>`; aiMainBody.appendChild(tr);
+  });
+  while(aiMainBody.children.length < 5){
+    const tr = document.createElement('tr'); tr.innerHTML = `<td>-</td><td class="mono">-</td>`; aiMainBody.appendChild(tr);
+  }
+  sub.forEach(it=>{
+    const tr = document.createElement('tr'); tr.innerHTML = `<td>${it.bet}</td><td class="mono">${it.prob}%</td>`; aiSubBody.appendChild(tr);
+  });
+  while(aiSubBody.children.length < 5){
+    const tr = document.createElement('tr'); tr.innerHTML = `<td>-</td><td class="mono">-</td>`; aiSubBody.appendChild(tr);
+  }
+
+  // コメント
   commentTableBody.innerHTML = '';
   for(let lane=1; lane<=6; lane++){
-    const b = prog.boats?.find(x => (x.racer_boat_number||lane) === lane) || null;
-    let text = "データなし";
+    const b = boats.find(x => (x.racer_boat_number||lane) === lane) || null;
+    let text = 'データなし';
     if(b){
-      // データ要素
-      const st = b.racer_average_start_timing ?? null;
-      const motor = b.racer_assigned_motor_top_2_percent ?? b.racer_motor_win_rate ?? null;
-      const local = b.racer_local_top_1_percent ?? b.racer_local_win_rate ?? null;
-
-      // ランダム部分
-      function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
-      const parts = [
-        pick(COMMENT_PARTS.start),
-        pick(COMMENT_PARTS.motor),
-        pick(COMMENT_PARTS.local),
-        pick(COMMENT_PARTS.mindset)
-      ];
-
-      text = `${lane}コース：${parts.join('、')}！ ST:${st!=null?st.toFixed(2):'-'} MT:${motor!=null?motor:'-'} 地:${local!=null?local:'-'}`;
+      const player = {
+        st: b.racer_average_start_timing ?? null,
+        motor: b.racer_assigned_motor_top_2_percent ?? b.racer_motor_win_rate ?? null,
+        local: b.racer_local_top_1_percent ?? b.racer_local_win_rate ?? null,
+        course: b.racer_assigned_boat_top_2_percent ?? b.racer_course_win_rate ?? null,
+        eval: scored.find(s => s.b.racer_boat_number === lane) ? '◎' : '△'
+      };
+      text = generateComment(player); // ← ai.js から生成
     }
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${lane}コース</td><td style="text-align:left">${text}</td>`;
-    commentTableBody.appendChild(tr);
+    const tr = document.createElement('tr'); tr.innerHTML = `<td>${lane}</td><td style="text-align:left">${text}</td>`; commentTableBody.appendChild(tr);
   }
 }
 
