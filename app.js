@@ -1,148 +1,278 @@
-// app.js
+// app.js（最終版 — data.json & history.json を読み、24場の的中率＋出走表（当地％変換）を反映）
 
-const VENUES = [
-  { id: 1, name: "桐生" }, { id: 2, name: "戸田" }, { id: 3, name: "江戸川" },
-  { id: 4, name: "平和島" }, { id: 5, name: "多摩川" }, { id: 6, name: "浜名湖" },
-  { id: 7, name: "蒲郡" }, { id: 8, name: "常滑" }, { id: 9, name: "津" },
-  { id: 10, name: "三国" }, { id: 11, name: "びわこ" }, { id: 12, name: "住之江" },
-  { id: 13, name: "尼崎" }, { id: 14, name: "鳴門" }, { id: 15, name: "丸亀" },
-  { id: 16, name: "児島" }, { id: 17, name: "宮島" }, { id: 18, name: "徳山" },
-  { id: 19, name: "下関" }, { id: 20, name: "若松" }, { id: 21, name: "芦屋" },
-  { id: 22, name: "福岡" }, { id: 23, name: "唐津" }, { id: 24, name: "大村" }
+const DATA_URL = './data.json';
+const HISTORY_URL = './history.json';
+
+const VENUE_NAMES = [
+  "桐生","戸田","江戸川","平和島","多摩川","浜名湖","蒲郡","常滑",
+  "津","三国","びわこ","住之江","尼崎","鳴門","丸亀","児島",
+  "宮島","徳山","下関","若松","芦屋","福岡","唐津","大村"
 ];
 
-const PROGRAMS_URL = "./data.json";     // 出走表
-const HISTORY_URL  = "./history.json";  // 過去結果（AI学習用）
+// DOM（index.html の ID と一致させています）
+const dateLabel = document.getElementById('dateLabel');
+const todayBtn = document.getElementById('todayBtn');
+const yesterdayBtn = document.getElementById('yesterdayBtn');
+const refreshBtn = document.getElementById('refreshBtn');
 
-const container = document.getElementById("view");
+const venuesGrid = document.getElementById('venuesGrid');
+const racesGrid = document.getElementById('racesGrid');
+const venueTitle = document.getElementById('venueTitle');
+const raceTitle = document.getElementById('raceTitle');
 
-let programs = [];
-let historyData = {};
+const entryTableBody = document.querySelector('#entryTable tbody');
+const aiMainBody = document.querySelector('#aiMain tbody');
+const aiSubBody = document.querySelector('#aiSub tbody');
+const commentTableBody = document.querySelector('#commentTable tbody');
 
-// -------------------- メイン処理 --------------------
-async function loadData() {
-  try {
-    const [programsRes, historyRes] = await Promise.all([
-      fetch(PROGRAMS_URL),
-      fetch(HISTORY_URL)
-    ]);
+const SCREEN_VENUES = document.getElementById('screen-venues');
+const SCREEN_RACES  = document.getElementById('screen-races');
+const SCREEN_RACE   = document.getElementById('screen-detail');
 
-    const data = await programsRes.json();
-    programs = data.programs || data;  // data.jsonの形式に対応
-    historyData = await historyRes.json();
+const backToVenuesBtn = document.getElementById('backToVenues');
+const backToRacesBtn = document.getElementById('backToRaces');
+
+let ALL_PROGRAMS = [];   // data.json の programs 配列（当日／前日用）
+let HISTORY = {};        // history.json（過去の結果／AI予想の保存があれば利用）
+
+let CURRENT_MODE = 'today'; // today / yesterday
+let CURRENT_VENUE_ID = null;
+let CURRENT_RACE_NO = null;
+
+// utils
+function getIsoDate(d){ return d.toISOString().slice(0,10); }
+function formatToDisplay(dstr){
+  try { const d = new Date(dstr); return d.toLocaleDateString('ja-JP', { year:'numeric', month:'2-digit', day:'2-digit', weekday:'short' });}
+  catch(e){ return dstr; }
+}
+function showScreen(name){
+  SCREEN_VENUES.classList.remove('active');
+  SCREEN_RACES.classList.remove('active');
+  SCREEN_RACE.classList.remove('active');
+  if(name==='venues') SCREEN_VENUES.classList.add('active');
+  if(name==='races') SCREEN_RACES.classList.add('active');
+  if(name==='race') SCREEN_RACE.classList.add('active');
+}
+
+// load both data.json and history.json
+async function loadData(force=false){
+  try{
+    const cacheBuster = force ? `?t=${Date.now()}` : '';
+    // fetch both in parallel
+    const [pRes, hRes] = await Promise.all([fetch(DATA_URL + cacheBuster), fetch(HISTORY_URL + cacheBuster)]);
+    if(!pRes.ok) throw new Error('data.json HTTP '+pRes.status);
+    if(!hRes.ok) throw new Error('history.json HTTP '+hRes.status);
+
+    const pJson = await pRes.json();
+    const hJson = await hRes.json();
+
+    // normalize programs array — data.json may be { programs: [...] } or an array
+    let progs = null;
+    if(pJson && Array.isArray(pJson.programs)) progs = pJson.programs;
+    else if(Array.isArray(pJson)) progs = pJson;
+    else if(pJson && Array.isArray(pJson.programs)) progs = pJson.programs;
+    else progs = pJson.programs || [];
+
+    ALL_PROGRAMS = progs;
+    HISTORY = hJson || {};
+
+    // set header date to today (display)
+    dateLabel.textContent = formatToDisplay(new Date().toISOString());
 
     renderVenues();
-  } catch (err) {
-    console.error("データ取得エラー:", err);
-    container.innerHTML = "<p>データを読み込めませんでした。</p>";
+    return true;
+  }catch(err){
+    console.error('loadData error', err);
+    venuesGrid.innerHTML = `<div class="card">データ取得エラー: ${err.message}</div>`;
+    return false;
   }
 }
 
-// -------------------- 会場ごとの表示 --------------------
-function renderVenues() {
-  container.innerHTML = "";
+// render 24 venues
+function renderVenues(){
+  showScreen('venues');
+  venuesGrid.innerHTML = '';
+  const targetDate = (CURRENT_MODE==='today') ? getIsoDate(new Date()) : (function(){const d=new Date(); d.setDate(d.getDate()-1); return getIsoDate(d);})();
 
-  VENUES.forEach(venue => {
-    const prog = programs.find(p => p.race_stadium_number === venue.id);
-    const status = prog ? "開催中" : "ー";
-
-    const hitRate = calcHitRate(venue.id);
-
-    const div = document.createElement("div");
-    div.className = "venue-card";
-    div.innerHTML = `
-      <h2>${venue.name}</h2>
-      <p>状態: ${status}</p>
-      <p>的中率: ${hitRate}</p>
-    `;
-    if (prog) {
-      div.addEventListener("click", () => renderRaces(venue.id));
+  // build map of stadiums that have programs on targetDate
+  const hasMap = {};
+  ALL_PROGRAMS.forEach(p=>{
+    if(p.race_date && p.race_stadium_number && p.race_date === targetDate){
+      hasMap[p.race_stadium_number] = true;
     }
-    container.appendChild(div);
   });
+
+  for(let i=0;i<24;i++){
+    const id = i+1;
+    const name = VENUE_NAMES[i] || `場${id}`;
+    const has = !!hasMap[id];
+
+    const card = document.createElement('div');
+    card.className = 'venue-card ' + (has ? 'clickable' : 'disabled');
+    card.setAttribute('data-venue', id);
+
+    const vname = document.createElement('div'); vname.className='v-name'; vname.textContent = name;
+    const status = document.createElement('div'); status.className='v-status'; status.textContent = has ? '開催中' : 'ー';
+    const rate = document.createElement('div'); rate.className='v-rate'; rate.textContent = calcHitRateText(id);
+
+    card.appendChild(vname);
+    card.appendChild(status);
+    card.appendChild(rate);
+
+    if(has){
+      card.addEventListener('click', ()=>{
+        CURRENT_VENUE_ID = id;
+        renderRaces(id);
+      });
+    }
+    venuesGrid.appendChild(card);
+  }
 }
 
-// -------------------- レース一覧 --------------------
-function renderRaces(venueId) {
-  container.innerHTML = "";
+// render race buttons 1..12 for venue
+function renderRaces(venueId){
+  showScreen('races');
+  CURRENT_VENUE_ID = venueId;
+  venueTitle.textContent = VENUE_NAMES[venueId-1] || `場 ${venueId}`;
+  racesGrid.innerHTML = '';
 
-  const races = programs.filter(p => p.race_stadium_number === venueId);
+  const targetDate = (CURRENT_MODE==='today') ? getIsoDate(new Date()) : (function(){const d=new Date(); d.setDate(d.getDate()-1); return getIsoDate(d);})();
+  const progs = ALL_PROGRAMS.filter(p => p.race_date === targetDate && p.race_stadium_number === venueId);
+  const existing = new Set(progs.map(p => Number(p.race_number)));
 
-  races.forEach(race => {
-    const div = document.createElement("div");
-    div.className = "race-card";
-    div.innerHTML = `
-      <h3>${race.race_number}R ${race.race_title}</h3>
-      <p>${race.race_subtitle || ""}</p>
+  for(let no=1; no<=12; no++){
+    const btn = document.createElement('button'); btn.className='race-btn';
+    const found = existing.has(no);
+    btn.textContent = `${no}R`;
+    if(found){
+      btn.addEventListener('click', ()=>{
+        CURRENT_RACE_NO = no;
+        renderRaceDetail(venueId, no);
+      });
+    } else {
+      btn.classList.add('disabled');
+      btn.disabled = true;
+    }
+    racesGrid.appendChild(btn);
+  }
+}
+
+// render single race detail
+function renderRaceDetail(venueId, raceNo){
+  showScreen('race');
+  const targetDate = (CURRENT_MODE==='today') ? getIsoDate(new Date()) : (function(){const d=new Date(); d.setDate(d.getDate()-1); return getIsoDate(d);})();
+  const prog = ALL_PROGRAMS.find(p => p.race_date===targetDate && p.race_stadium_number===venueId && Number(p.race_number)===Number(raceNo));
+  if(!prog){ alert('レースデータがありません'); renderRaces(venueId); return; }
+
+  raceTitle.textContent = `${VENUE_NAMES[venueId-1] || venueId} ${raceNo}R ${prog.race_title || ''}`;
+
+  // boats sorted by boat number
+  const boats = Array.isArray(prog.boats) ? prog.boats.slice().sort((a,b)=> (a.racer_boat_number||0)-(b.racer_boat_number||0)) : [];
+
+  // render entry table rows
+  entryTableBody.innerHTML = '';
+  for(let i=1;i<=6;i++){
+    const b = boats.find(x => (x.racer_boat_number||i) === i) || null;
+    const klass = b && (b.racer_class_number ? (['','A1','A2','B1','B2'][b.racer_class_number] || '-') : (b.racer_class || '-')) || '-';
+    const name = b ? (b.racer_name || '-') : '-';
+    const st = b && (typeof b.racer_average_start_timing === 'number' ? b.racer_average_start_timing : (b.racer_average_start_timing ? Number(b.racer_average_start_timing) : null));
+    const stText = (st != null) ? `ST:${st.toFixed(2)}` : 'ST:-';
+    const fcount = b ? Number(b.racer_flying_count || 0) : 0;
+    const fText = fcount>0 ? `F${fcount}` : 'ー';
+
+    // local conversion: official 5.80 -> display 58% (×10), round nearest integer
+    const localRaw = b && ( (typeof b.racer_local_top_1_percent === 'number') ? b.racer_local_top_1_percent : (typeof b.racer_local_win_rate === 'number' ? b.racer_local_win_rate : null) );
+    const localText = (localRaw != null && !Number.isNaN(localRaw)) ? (Math.round(localRaw * 10) + '%') : '-';
+
+    const motorRaw = b && ( (typeof b.racer_assigned_motor_top_2_percent === 'number') ? b.racer_assigned_motor_top_2_percent : (typeof b.racer_motor_win_rate === 'number' ? b.racer_motor_win_rate : null) );
+    const motorText = (motorRaw != null && !Number.isNaN(motorRaw)) ? (Math.round(motorRaw) + '%') : '-';
+
+    const courseRaw = b && ( (typeof b.racer_assigned_boat_top_2_percent === 'number') ? b.racer_assigned_boat_top_2_percent : (typeof b.racer_course_win_rate === 'number' ? b.racer_course_win_rate : null) );
+    const courseText = (courseRaw != null && !Number.isNaN(courseRaw)) ? (Math.round(courseRaw) + '%') : '-';
+
+    // compute a simple mark (re-using small heuristic)
+    const stScore = st ? (1/(st || 0.3)) : 1;
+    const fScore = (fcount>0) ? 0.7 : 1.0;
+    const localScore = (typeof localRaw === 'number') ? (localRaw/100) : 1.0;
+    const motorScore = (typeof motorRaw === 'number') ? (motorRaw/100) : 1.0;
+    const courseScore = (typeof courseRaw === 'number') ? (courseRaw/100) : 1.0;
+    const rawScore = stScore * fScore * localScore * motorScore * courseScore * 100;
+
+    let mark = 'ー';
+    if(rawScore >= 40) mark = '◎';
+    else if(rawScore >= 25) mark = '○';
+    else if(rawScore >= 15) mark = '△';
+    else if(rawScore >= 8) mark = '✕';
+
+    const markClass = (mark === '◎') ? 'metric-symbol top' : 'metric-symbol';
+
+    const tr = document.createElement('tr');
+    tr.className = `row-${i}`;
+    tr.innerHTML = `
+      <td class="mono">${i}</td>
+      <td>
+        <div class="entry-left">
+          <div class="klass">${klass}</div>
+          <div class="name">${name}</div>
+          <div class="st">${stText}</div>
+        </div>
+      </td>
+      <td>${fText}</td>
+      <td>${localText}</td>
+      <td>${motorText}</td>
+      <td>${courseText}</td>
+      <td><div class="${markClass}">${mark}</div></td>
     `;
-    div.addEventListener("click", () => renderRaceDetail(race));
-    container.appendChild(div);
-  });
+    entryTableBody.appendChild(tr);
+  }
 
-  const backBtn = document.createElement("button");
-  backBtn.textContent = "← 戻る";
-  backBtn.addEventListener("click", renderVenues);
-  container.appendChild(backBtn);
+  // (AI予想・コメントは既存のロジックを踏襲してあればここに挿入可能)
+  // For now keep aiMain/aiSub/commentTable as-is (you can plug earlier generate3renBets/generateComment here)
+  // Clear AI tables
+  if(aiMainBody) aiMainBody.innerHTML = '<tr><td>-</td><td class="mono">-</td></tr>'.repeat(5);
+  if(aiSubBody) aiSubBody.innerHTML  = '<tr><td>-</td><td class="mono">-</td></tr>'.repeat(5);
+  if(commentTableBody) commentTableBody.innerHTML = ''; // can be populated elsewhere
 }
 
-// -------------------- レース詳細（選手データ表示） --------------------
-function renderRaceDetail(race) {
-  container.innerHTML = `
-    <h2>${race.race_number}R ${race.race_title}</h2>
-    <p>距離: ${race.race_distance}m</p>
-  `;
-
-  race.boats.forEach(boat => {
-    const div = document.createElement("div");
-    div.className = "boat-card";
-
-    // 当地勝率（×10で%表示）
-    const localWinRate = boat.racer_local_top_1_percent;
-    const localWinRatePercent = localWinRate ? Math.round(localWinRate * 10) + "%" : "--";
-
-    div.innerHTML = `
-      <h4>${boat.racer_boat_number}号艇 ${boat.racer_name}</h4>
-      <p>登録番号: ${boat.racer_number}</p>
-      <p>級別: ${boat.racer_class_number}</p>
-      <p>平均ST: ${boat.racer_average_start_timing}</p>
-      <p>当地勝率: ${localWinRatePercent}</p>
-      <p>モーター2連率: ${boat.racer_assigned_motor_top_2_percent || "--"}%</p>
-      <p>ボート2連率: ${boat.racer_assigned_boat_top_2_percent || "--"}%</p>
-    `;
-    container.appendChild(div);
-  });
-
-  const backBtn = document.createElement("button");
-  backBtn.textContent = "← 戻る";
-  backBtn.addEventListener("click", () => renderRaces(race.race_stadium_number));
-  container.appendChild(backBtn);
-}
-
-// -------------------- 的中率を計算 --------------------
-function calcHitRate(venueId) {
-  let total = 0;
-  let hit = 0;
-
-  for (const dateKey in historyData) {
-    const day = historyData[dateKey];
-    if (!day.results) continue;
-
-    day.results.forEach(race => {
-      if (race.race_stadium_number === venueId) {
-        total++;
-        const trifectaResult = race.payouts?.trifecta?.[0]?.combination;
-        const aiPredictions = race.ai_predictions || [];
-
-        if (trifectaResult && aiPredictions.includes(trifectaResult)) {
-          hit++;
-        }
+// calc hit rate text for venue (uses HISTORY if race.ai_predictions exist)
+function calcHitRateText(venueId){
+  let total = 0, hit = 0;
+  for(const dateKey in HISTORY){
+    const day = HISTORY[dateKey];
+    if(!day || !Array.isArray(day.results)) continue;
+    day.results.forEach(race=>{
+      if(race.race_stadium_number !== venueId) return;
+      total++;
+      // trifecta result
+      const trif = race.payouts && race.payouts.trifecta && race.payouts.trifecta[0] && race.payouts.trifecta[0].combination;
+      // AI predictions (must be saved in history JSON earlier) — support multiple possible keys
+      const aiPreds = race.ai_predictions || race.ai_trifecta_predictions || race.predicted_trifecta || [];
+      if(trif && Array.isArray(aiPreds) && aiPreds.length > 0){
+        if(aiPreds.includes(trif)) hit++;
       }
     });
   }
-
-  if (total === 0) return "--%";
-  return Math.round((hit / total) * 100) + "%";
+  if(total === 0) return '--%';
+  return Math.round((hit/total)*100) + '%';
 }
 
-// -------------------- 初期化 --------------------
-loadData();
+// events
+todayBtn.addEventListener('click', ()=>{
+  CURRENT_MODE = 'today';
+  todayBtn.classList.add('active'); yesterdayBtn.classList.remove('active');
+  loadData(true);
+});
+yesterdayBtn.addEventListener('click', ()=>{
+  CURRENT_MODE = 'yesterday';
+  yesterdayBtn.classList.add('active'); todayBtn.classList.remove('active');
+  loadData(true);
+});
+refreshBtn.addEventListener('click', ()=> loadData(true));
+backToVenuesBtn?.addEventListener('click', ()=> { CURRENT_VENUE_ID = null; CURRENT_RACE_NO = null; renderVenues(); });
+backToRacesBtn?.addEventListener('click', ()=> { CURRENT_RACE_NO = null; renderRaces(CURRENT_VENUE_ID); });
+
+// boot
+(async ()=>{
+  todayBtn.classList.add('active');
+  await loadData(false);
+})();
