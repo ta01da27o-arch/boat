@@ -1,175 +1,111 @@
 // app.js
 
-// DOM要素取得
-const VIEW = document.getElementById('view');
-const todayLabel = document.getElementById('todayLabel');
-const globalHit = document.getElementById('globalHit');
-const refreshBtn = document.getElementById('refreshBtn');
+const VENUES = [
+  { id: 1, name: "桐生" },
+  { id: 2, name: "戸田" },
+  { id: 3, name: "江戸川" },
+  { id: 4, name: "平和島" },
+  { id: 5, name: "多摩川" },
+  { id: 6, name: "浜名湖" },
+  { id: 7, name: "蒲郡" },
+  { id: 8, name: "常滑" },
+  { id: 9, name: "津" },
+  { id: 10, name: "三国" },
+  { id: 11, name: "びわこ" },
+  { id: 12, name: "住之江" },
+  { id: 13, name: "尼崎" },
+  { id: 14, name: "鳴門" },
+  { id: 15, name: "丸亀" },
+  { id: 16, name: "児島" },
+  { id: 17, name: "宮島" },
+  { id: 18, name: "徳山" },
+  { id: 19, name: "下関" },
+  { id: 20, name: "若松" },
+  { id: 21, name: "芦屋" },
+  { id: 22, name: "福岡" },
+  { id: 23, name: "唐津" },
+  { id: 24, name: "大村" }
+];
 
-const SCREEN_VENUES = document.getElementById('screen-venues');
-const SCREEN_RACES  = document.getElementById('screen-races');
-const SCREEN_RACE   = document.getElementById('screen-race');
+// JSONデータのURL
+const PROGRAMS_URL = "./data.json";     // 出走表
+const HISTORY_URL  = "./history.json";  // 過去結果（AI学習・的中率算出用）
 
-let raceData = null;
-let venues = {};
-let currentVenue = null;
-let currentRace = null;
+// DOMコンテナ
+const container = document.getElementById("view");
 
-// JSONデータ取得
-async function fetchData() {
+// データ保持
+let programs = [];
+let historyData = {};
+
+// メイン処理
+async function loadData() {
   try {
-    const response = await fetch('https://ta01da27o-arch.github.io/boat/data.json');
-    raceData = await response.json();
+    const [programsRes, historyRes] = await Promise.all([
+      fetch(PROGRAMS_URL),
+      fetch(HISTORY_URL)
+    ]);
+
+    programs = await programsRes.json();
+    historyData = await historyRes.json();
+
     renderVenues();
-  } catch (error) {
-    console.error("データ取得エラー:", error);
+  } catch (err) {
+    console.error("データ取得エラー:", err);
+    container.innerHTML = "<p>データを読み込めませんでした。</p>";
   }
 }
 
-// 開催場表示
+// 会場ごとの表示
 function renderVenues() {
-  SCREEN_VENUES.innerHTML = "";
-  venues = {};
+  container.innerHTML = "";
 
-  if (!raceData || !raceData.programs) return;
+  VENUES.forEach(venue => {
+    // 開催中かどうかを判定
+    const isActive = programs.some(p => p.race_stadium_number === venue.id);
+    const status = isActive ? "開催中" : "ー";
 
-  raceData.programs.forEach(program => {
-    const venueId = program.race_stadium_number;
-    if (!venues[venueId]) {
-      venues[venueId] = {
-        name: getVenueName(venueId),
-        races: []
-      };
-    }
-    venues[venueId].races.push(program);
-  });
+    // 各場の的中率を計算
+    const hitRate = calcHitRate(venue.id);
 
-  for (const venueId in venues) {
-    const venue = venues[venueId];
     const div = document.createElement("div");
-    div.className = "venue";
-    div.textContent = venue.name;
-    div.addEventListener("click", () => {
-      currentVenue = venueId;
-      renderRaces(venueId);
-    });
-    SCREEN_VENUES.appendChild(div);
-  }
-}
-
-// レース一覧表示
-function renderRaces(venueId) {
-  SCREEN_RACES.innerHTML = "";
-  const venue = venues[venueId];
-
-  venue.races.forEach(race => {
-    const div = document.createElement("div");
-    div.className = "race";
-    div.textContent = `${race.race_number}R ${race.race_title}`;
-    div.addEventListener("click", () => {
-      currentRace = race;
-      renderRace(race);
-    });
-    SCREEN_RACES.appendChild(div);
-  });
-
-  SCREEN_VENUES.style.display = "none";
-  SCREEN_RACES.style.display = "block";
-  SCREEN_RACE.style.display = "none";
-}
-
-// 出走表表示（当地勝率変換込み）
-function renderRace(race) {
-  SCREEN_RACE.innerHTML = "";
-
-  const title = document.createElement("h2");
-  title.textContent = `${race.race_number}R ${race.race_title}`;
-  SCREEN_RACE.appendChild(title);
-
-  const table = document.createElement("table");
-  const header = document.createElement("tr");
-  header.innerHTML = `
-    <th>艇番</th>
-    <th>選手名</th>
-    <th>当地勝率</th>
-    <th>モーター2連率</th>
-    <th>ボート2連率</th>
-  `;
-  table.appendChild(header);
-
-  race.boats.forEach(boat => {
-    const tr = document.createElement("tr");
-
-    // ✅ 当地勝率の変換処理
-    let localRate = boat.racer_local_top_1_percent;
-    let localRateDisplay = "-";
-    if (localRate !== null && localRate !== undefined) {
-      localRateDisplay = Math.round(localRate * 10) + "%";
-    }
-
-    const motorRate = boat.racer_assigned_motor_top_2_percent
-      ? boat.racer_assigned_motor_top_2_percent + "%"
-      : "-";
-
-    const boatRate = boat.racer_assigned_boat_top_2_percent
-      ? boat.racer_assigned_boat_top_2_percent + "%"
-      : "-";
-
-    tr.innerHTML = `
-      <td>${boat.racer_boat_number}</td>
-      <td>${boat.racer_name}</td>
-      <td>${localRateDisplay}</td>
-      <td>${motorRate}</td>
-      <td>${boatRate}</td>
+    div.className = "venue-card";
+    div.innerHTML = `
+      <h2>${venue.name}</h2>
+      <p>状態: ${status}</p>
+      <p>的中率: ${hitRate}</p>
     `;
-    table.appendChild(tr);
+    container.appendChild(div);
   });
-
-  SCREEN_RACE.appendChild(table);
-
-  const backBtn = document.createElement("button");
-  backBtn.textContent = "戻る";
-  backBtn.addEventListener("click", () => {
-    SCREEN_RACES.style.display = "block";
-    SCREEN_RACE.style.display = "none";
-  });
-  SCREEN_RACE.appendChild(backBtn);
-
-  SCREEN_RACES.style.display = "none";
-  SCREEN_RACE.style.display = "block";
 }
 
-// 開催場名をIDから取得（例: 桐生=1, 戸田=2, …）
-function getVenueName(id) {
-  const venues = {
-    1: "桐生",
-    2: "戸田",
-    3: "江戸川",
-    4: "平和島",
-    5: "多摩川",
-    6: "浜名湖",
-    7: "蒲郡",
-    8: "常滑",
-    9: "津",
-    10: "三国",
-    11: "びわこ",
-    12: "住之江",
-    13: "尼崎",
-    14: "鳴門",
-    15: "丸亀",
-    16: "児島",
-    17: "宮島",
-    18: "徳山",
-    19: "下関",
-    20: "若松",
-    21: "芦屋",
-    22: "福岡",
-    23: "唐津",
-    24: "大村"
-  };
-  return venues[id] || `場ID:${id}`;
+// 的中率を計算（history.jsonから）
+function calcHitRate(venueId) {
+  let total = 0;
+  let hit = 0;
+
+  for (const dateKey in historyData) {
+    const day = historyData[dateKey];
+    if (!day.results) continue;
+
+    day.results.forEach(race => {
+      if (race.race_stadium_number === venueId) {
+        total++;
+
+        // AI予想（三連単）と実際の結果を比較
+        const trifectaResult = race.payouts?.trifecta?.[0]?.combination;
+        const aiPredictions = race.ai_predictions || []; // 事前に保存されているAI予想配列
+
+        if (trifectaResult && aiPredictions.includes(trifectaResult)) {
+          hit++;
+        }
+      }
+    });
+  }
+
+  if (total === 0) return "--%";
+  return Math.round((hit / total) * 100) + "%";
 }
 
 // 初期化
-refreshBtn.addEventListener("click", fetchData);
-fetchData();
+loadData();
