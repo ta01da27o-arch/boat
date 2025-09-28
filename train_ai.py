@@ -3,9 +3,9 @@ import glob
 import json
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 import joblib
+from lightgbm import LGBMClassifier
 
 # === 1. データの読み込み ===
 def load_data(data_dir="data"):
@@ -21,12 +21,11 @@ def load_data(data_dir="data"):
             print(f"[WARN] {f} の読み込みに失敗: {e}")
     return pd.DataFrame(records)
 
-# === 2. 前処理 (例: 数値化と欠損除去) ===
+# === 2. 前処理 ===
 def preprocess(df):
     df = df.dropna()
-    # 必要に応じて特徴量を選択（あなたのデータに合わせて修正してOK）
-    features = ["st", "weight", "course", "ranking"]  # 仮のカラム名
-    target = "result"  # 予測したいラベル（例: 1着艇）
+    features = ["st", "weight", "course", "ranking"]  # 仮の特徴量
+    target = "result"  # 予測したいラベル
     df = df[[*features, target]].copy()
     return df, features, target
 
@@ -39,14 +38,17 @@ def train_model(df, features, target):
         X, y, test_size=0.2, random_state=42
     )
 
-    model = RandomForestClassifier(
-        n_estimators=200,
-        max_depth=10,
+    model = LGBMClassifier(
+        n_estimators=500,
+        learning_rate=0.05,
+        max_depth=-1,
+        num_leaves=31,
         random_state=42
     )
     model.fit(X_train, y_train)
 
-    acc = model.score(X_test, y_test)
+    preds = model.predict(X_test)
+    acc = accuracy_score(y_test, preds)
     print(f"[INFO] 学習完了: 精度 = {acc:.3f}")
     return model, acc
 
@@ -58,14 +60,12 @@ def save_model(model, out_path="model/model.pkl"):
 
 # === 5. サマリー保存 ===
 def save_summary(df, model, features, target, acc, out_path="summary.json"):
-    # 全体統計
     summary = {
         "stats": {
             "races": len(df),
             "accuracy": round(acc, 3),
             "features": features
         },
-        # レースごとの一部データ（例: 最新50件）
         "races": []
     }
 
