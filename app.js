@@ -1,4 +1,5 @@
-// app.js（完全修正版 — data.json & history.json を読み、24場の的中率＋出走表（順位ベースの印）を反映）
+// app.js（完全修正版）
+// data.json & history.json を読み、24場の的中率＋出走表（スコア順位ベースの評価記号）を反映
 
 const DATA_URL = './data.json';
 const HISTORY_URL = './history.json';
@@ -32,14 +33,14 @@ const SCREEN_RACE   = document.getElementById('screen-detail');
 const backToVenuesBtn = document.getElementById('backToVenues');
 const backToRacesBtn = document.getElementById('backToRaces');
 
-let ALL_PROGRAMS = [];   // data.json
-let HISTORY = {};        // history.json
+let ALL_PROGRAMS = [];
+let HISTORY = {};
 
 let CURRENT_MODE = 'today'; // today / yesterday
 let CURRENT_VENUE_ID = null;
 let CURRENT_RACE_NO = null;
 
-// utils
+// --- utils ---
 function getIsoDate(d){ return d.toISOString().slice(0,10); }
 function formatToDisplay(dstr){
   try { const d = new Date(dstr); return d.toLocaleDateString('ja-JP', { year:'numeric', month:'2-digit', day:'2-digit', weekday:'short' });}
@@ -54,11 +55,14 @@ function showScreen(name){
   if(name==='race') SCREEN_RACE.classList.add('active');
 }
 
-// load both data.json and history.json
+// --- データ読み込み ---
 async function loadData(force=false){
   try{
     const cacheBuster = force ? `?t=${Date.now()}` : '';
-    const [pRes, hRes] = await Promise.all([fetch(DATA_URL + cacheBuster), fetch(HISTORY_URL + cacheBuster)]);
+    const [pRes, hRes] = await Promise.all([
+      fetch(DATA_URL + cacheBuster),
+      fetch(HISTORY_URL + cacheBuster)
+    ]);
     if(!pRes.ok) throw new Error('data.json HTTP '+pRes.status);
     if(!hRes.ok) throw new Error('history.json HTTP '+hRes.status);
 
@@ -84,11 +88,13 @@ async function loadData(force=false){
   }
 }
 
-// render 24 venues
+// --- 24場表示 ---
 function renderVenues(){
   showScreen('venues');
   venuesGrid.innerHTML = '';
-  const targetDate = (CURRENT_MODE==='today') ? getIsoDate(new Date()) : (function(){const d=new Date(); d.setDate(d.getDate()-1); return getIsoDate(d);})();
+  const targetDate = (CURRENT_MODE==='today')
+    ? getIsoDate(new Date())
+    : (function(){const d=new Date(); d.setDate(d.getDate()-1); return getIsoDate(d);})();
 
   const hasMap = {};
   ALL_PROGRAMS.forEach(p=>{
@@ -124,14 +130,16 @@ function renderVenues(){
   }
 }
 
-// render race buttons
+// --- レース選択 ---
 function renderRaces(venueId){
   showScreen('races');
   CURRENT_VENUE_ID = venueId;
   venueTitle.textContent = VENUE_NAMES[venueId-1] || `場 ${venueId}`;
   racesGrid.innerHTML = '';
 
-  const targetDate = (CURRENT_MODE==='today') ? getIsoDate(new Date()) : (function(){const d=new Date(); d.setDate(d.getDate()-1); return getIsoDate(d);})();
+  const targetDate = (CURRENT_MODE==='today')
+    ? getIsoDate(new Date())
+    : (function(){const d=new Date(); d.setDate(d.getDate()-1); return getIsoDate(d);})();
   const progs = ALL_PROGRAMS.filter(p => p.race_date === targetDate && p.race_stadium_number === venueId);
   const existing = new Set(progs.map(p => Number(p.race_number)));
 
@@ -152,79 +160,93 @@ function renderRaces(venueId){
   }
 }
 
-// 印のルール
-function getMarkByRank(rank) {
-  switch (rank) {
-    case 1: return "◎";
-    case 2: return "○";
-    case 3: return "△";
-    case 4: return "✕";
-    case 5: return "ー";
-    case 6: return "ー";
-    default: return "ー";
-  }
-}
-
-// render single race detail
+// --- 出走表描画 ---
 function renderRaceDetail(venueId, raceNo){
   showScreen('race');
-  const targetDate = (CURRENT_MODE==='today') ? getIsoDate(new Date()) : (function(){const d=new Date(); d.setDate(d.getDate()-1); return getIsoDate(d);})();
-  const prog = ALL_PROGRAMS.find(p => p.race_date===targetDate && p.race_stadium_number===venueId && Number(p.race_number)===Number(raceNo));
+  const targetDate = (CURRENT_MODE==='today')
+    ? getIsoDate(new Date())
+    : (function(){const d=new Date(); d.setDate(d.getDate()-1); return getIsoDate(d);})();
+  const prog = ALL_PROGRAMS.find(p =>
+    p.race_date===targetDate &&
+    p.race_stadium_number===venueId &&
+    Number(p.race_number)===Number(raceNo)
+  );
   if(!prog){ alert('レースデータがありません'); renderRaces(venueId); return; }
 
   raceTitle.textContent = `${VENUE_NAMES[venueId-1] || venueId} ${raceNo}R ${prog.race_title || ''}`;
 
-  const boats = Array.isArray(prog.boats) ? prog.boats.slice().sort((a,b)=> (a.racer_boat_number||0)-(b.racer_boat_number||0)) : [];
+  const boats = Array.isArray(prog.boats)
+    ? prog.boats.slice().sort((a,b)=> (a.racer_boat_number||0)-(b.racer_boat_number||0))
+    : [];
 
   entryTableBody.innerHTML = '';
-  for(let i=1;i<=6;i++){
-    const b = boats.find(x => (x.racer_boat_number||i) === i) || null;
-    const klass = b && (b.racer_class_number ? (['','A1','A2','B1','B2'][b.racer_class_number] || '-') : (b.racer_class || '-')) || '-';
-    const name = b ? (b.racer_name || '-') : '-';
-    const st = b && (typeof b.racer_average_start_timing === 'number' ? b.racer_average_start_timing : (b.racer_average_start_timing ? Number(b.racer_average_start_timing) : null));
-    const stText = (st != null) ? `ST:${st.toFixed(2)}` : 'ST:-';
-    const fcount = b ? Number(b.racer_flying_count || 0) : 0;
-    const fText = fcount>0 ? `F${fcount}` : 'ー';
 
-    const localRaw = b && ( (typeof b.racer_local_top_1_percent === 'number') ? b.racer_local_top_1_percent : (typeof b.racer_local_win_rate === 'number' ? b.racer_local_win_rate : null) );
-    const localText = (localRaw != null && !Number.isNaN(localRaw)) ? (Math.round(localRaw * 10) + '%') : '-';
+  // スコア算出
+  const scores = boats.map(b=>{
+    const localRaw = (typeof b.racer_local_top_1_percent === 'number') ? b.racer_local_top_1_percent
+                  : (typeof b.racer_local_win_rate === 'number' ? b.racer_local_win_rate : 0);
+    const motorRaw = (typeof b.racer_assigned_motor_top_2_percent === 'number') ? b.racer_assigned_motor_top_2_percent
+                  : (typeof b.racer_motor_win_rate === 'number' ? b.racer_motor_win_rate : 0);
+    const courseRaw = (typeof b.racer_assigned_boat_top_2_percent === 'number') ? b.racer_assigned_boat_top_2_percent
+                  : (typeof b.racer_course_win_rate === 'number' ? b.racer_course_win_rate : 0);
 
-    const motorRaw = b && ( (typeof b.racer_assigned_motor_top_2_percent === 'number') ? b.racer_assigned_motor_top_2_percent : (typeof b.racer_motor_win_rate === 'number' ? b.racer_motor_win_rate : null) );
-    const motorText = (motorRaw != null && !Number.isNaN(motorRaw)) ? (Math.round(motorRaw) + '%') : '-';
+    const local = Number(localRaw)||0;
+    const motor = Number(motorRaw)||0;
+    const course = Number(courseRaw)||0;
 
-    const courseRaw = b && ( (typeof b.racer_assigned_boat_top_2_percent === 'number') ? b.racer_assigned_boat_top_2_percent : (typeof b.racer_course_win_rate === 'number' ? b.racer_course_win_rate : null) );
-    const courseText = (courseRaw != null && !Number.isNaN(courseRaw)) ? (Math.round(courseRaw) + '%') : '-';
+    return {
+      boatNo: b.racer_boat_number,
+      name: b.racer_name,
+      klass: b.racer_class || "-",
+      st: b.racer_average_start_timing,
+      fcount: b.racer_flying_count || 0,
+      local, motor, course,
+      score: local + motor + course
+    };
+  });
 
-    // 表示順位そのまま → 印に変換
-    const mark = getMarkByRank(i);
-    const markClass = (mark === '◎') ? 'metric-symbol top' : 'metric-symbol';
+  // スコア降順で並べ替えて順位付与
+  const sorted = [...scores].sort((a,b)=> b.score - a.score);
+  sorted.forEach((s,idx)=>{
+    let mark = "ー";
+    if(idx===0) mark="◎";
+    else if(idx===1) mark="○";
+    else if(idx===2) mark="△";
+    else if(idx===3) mark="✕";
+    s.mark = mark;
+  });
+
+  // 出走表を描画
+  scores.forEach(r=>{
+    const s = sorted.find(x=>x.boatNo===r.boatNo) || {};
+    const mark = s.mark || "ー";
+    const stText = (r.st!=null) ? `ST:${Number(r.st).toFixed(2)}` : "ST:-";
+    const fText = (r.fcount>0) ? `F${r.fcount}` : "ー";
+
+    const localText = r.local ? (Math.round(r.local*10)+"%") : "-";
+    const motorText = r.motor ? (Math.round(r.motor)+"%") : "-";
+    const courseText = r.course ? (Math.round(r.course)+"%") : "-";
 
     const tr = document.createElement('tr');
-    tr.className = `row-${i}`;
     tr.innerHTML = `
-      <td class="mono">${i}</td>
-      <td>
-        <div class="entry-left">
-          <div class="klass">${klass}</div>
-          <div class="name">${name}</div>
-          <div class="st">${stText}</div>
-        </div>
-      </td>
+      <td class="mono">${r.boatNo}</td>
+      <td><div class="klass">${r.klass}</div><div class="name">${r.name}</div><div class="st">${stText}</div></td>
       <td>${fText}</td>
       <td>${localText}</td>
       <td>${motorText}</td>
       <td>${courseText}</td>
-      <td><div class="${markClass}">${mark}</div></td>
+      <td><div class="metric-symbol">${mark}</div></td>
     `;
     entryTableBody.appendChild(tr);
-  }
+  });
 
+  // AI予想欄は仮のまま（今後追加可）
   if(aiMainBody) aiMainBody.innerHTML = '<tr><td>-</td><td class="mono">-</td></tr>'.repeat(5);
   if(aiSubBody) aiSubBody.innerHTML  = '<tr><td>-</td><td class="mono">-</td></tr>'.repeat(5);
   if(commentTableBody) commentTableBody.innerHTML = '';
 }
 
-// calc hit rate
+// --- 的中率 ---
 function calcHitRateText(venueId){
   let total = 0, hit = 0;
   for(const dateKey in HISTORY){
@@ -244,7 +266,7 @@ function calcHitRateText(venueId){
   return Math.round((hit/total)*100) + '%';
 }
 
-// events
+// --- イベント ---
 todayBtn.addEventListener('click', ()=>{
   CURRENT_MODE = 'today';
   todayBtn.classList.add('active'); yesterdayBtn.classList.remove('active');
@@ -259,7 +281,7 @@ refreshBtn.addEventListener('click', ()=> loadData(true));
 backToVenuesBtn?.addEventListener('click', ()=> { CURRENT_VENUE_ID = null; CURRENT_RACE_NO = null; renderVenues(); });
 backToRacesBtn?.addEventListener('click', ()=> { CURRENT_RACE_NO = null; renderRaces(CURRENT_VENUE_ID); });
 
-// boot
+// --- 初期起動 ---
 (async ()=>{
   todayBtn.classList.add('active');
   await loadData(false);
