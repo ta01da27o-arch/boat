@@ -1,4 +1,4 @@
-// app.js（最終版 — data.json & history.json を読み、24場の的中率＋出走表（当地％変換）を反映）
+// app.js（完全修正版 — data.json & history.json を読み、24場の的中率＋出走表（順位ベースの印）を反映）
 
 const DATA_URL = './data.json';
 const HISTORY_URL = './history.json';
@@ -9,7 +9,7 @@ const VENUE_NAMES = [
   "宮島","徳山","下関","若松","芦屋","福岡","唐津","大村"
 ];
 
-// DOM（index.html の ID と一致させています）
+// DOM
 const dateLabel = document.getElementById('dateLabel');
 const todayBtn = document.getElementById('todayBtn');
 const yesterdayBtn = document.getElementById('yesterdayBtn');
@@ -32,8 +32,8 @@ const SCREEN_RACE   = document.getElementById('screen-detail');
 const backToVenuesBtn = document.getElementById('backToVenues');
 const backToRacesBtn = document.getElementById('backToRaces');
 
-let ALL_PROGRAMS = [];   // data.json の programs 配列（当日／前日用）
-let HISTORY = {};        // history.json（過去の結果／AI予想の保存があれば利用）
+let ALL_PROGRAMS = [];   // data.json
+let HISTORY = {};        // history.json
 
 let CURRENT_MODE = 'today'; // today / yesterday
 let CURRENT_VENUE_ID = null;
@@ -58,7 +58,6 @@ function showScreen(name){
 async function loadData(force=false){
   try{
     const cacheBuster = force ? `?t=${Date.now()}` : '';
-    // fetch both in parallel
     const [pRes, hRes] = await Promise.all([fetch(DATA_URL + cacheBuster), fetch(HISTORY_URL + cacheBuster)]);
     if(!pRes.ok) throw new Error('data.json HTTP '+pRes.status);
     if(!hRes.ok) throw new Error('history.json HTTP '+hRes.status);
@@ -66,17 +65,14 @@ async function loadData(force=false){
     const pJson = await pRes.json();
     const hJson = await hRes.json();
 
-    // normalize programs array — data.json may be { programs: [...] } or an array
     let progs = null;
     if(pJson && Array.isArray(pJson.programs)) progs = pJson.programs;
     else if(Array.isArray(pJson)) progs = pJson;
-    else if(pJson && Array.isArray(pJson.programs)) progs = pJson.programs;
     else progs = pJson.programs || [];
 
     ALL_PROGRAMS = progs;
     HISTORY = hJson || {};
 
-    // set header date to today (display)
     dateLabel.textContent = formatToDisplay(new Date().toISOString());
 
     renderVenues();
@@ -94,7 +90,6 @@ function renderVenues(){
   venuesGrid.innerHTML = '';
   const targetDate = (CURRENT_MODE==='today') ? getIsoDate(new Date()) : (function(){const d=new Date(); d.setDate(d.getDate()-1); return getIsoDate(d);})();
 
-  // build map of stadiums that have programs on targetDate
   const hasMap = {};
   ALL_PROGRAMS.forEach(p=>{
     if(p.race_date && p.race_stadium_number && p.race_date === targetDate){
@@ -129,7 +124,7 @@ function renderVenues(){
   }
 }
 
-// render race buttons 1..12 for venue
+// render race buttons
 function renderRaces(venueId){
   showScreen('races');
   CURRENT_VENUE_ID = venueId;
@@ -157,6 +152,19 @@ function renderRaces(venueId){
   }
 }
 
+// 印のルール
+function getMarkByRank(rank) {
+  switch (rank) {
+    case 1: return "◎";
+    case 2: return "○";
+    case 3: return "△";
+    case 4: return "✕";
+    case 5: return "ー";
+    case 6: return "ー";
+    default: return "ー";
+  }
+}
+
 // render single race detail
 function renderRaceDetail(venueId, raceNo){
   showScreen('race');
@@ -166,10 +174,8 @@ function renderRaceDetail(venueId, raceNo){
 
   raceTitle.textContent = `${VENUE_NAMES[venueId-1] || venueId} ${raceNo}R ${prog.race_title || ''}`;
 
-  // boats sorted by boat number
   const boats = Array.isArray(prog.boats) ? prog.boats.slice().sort((a,b)=> (a.racer_boat_number||0)-(b.racer_boat_number||0)) : [];
 
-  // render entry table rows
   entryTableBody.innerHTML = '';
   for(let i=1;i<=6;i++){
     const b = boats.find(x => (x.racer_boat_number||i) === i) || null;
@@ -180,7 +186,6 @@ function renderRaceDetail(venueId, raceNo){
     const fcount = b ? Number(b.racer_flying_count || 0) : 0;
     const fText = fcount>0 ? `F${fcount}` : 'ー';
 
-    // local conversion: official 5.80 -> display 58% (×10), round nearest integer
     const localRaw = b && ( (typeof b.racer_local_top_1_percent === 'number') ? b.racer_local_top_1_percent : (typeof b.racer_local_win_rate === 'number' ? b.racer_local_win_rate : null) );
     const localText = (localRaw != null && !Number.isNaN(localRaw)) ? (Math.round(localRaw * 10) + '%') : '-';
 
@@ -190,20 +195,8 @@ function renderRaceDetail(venueId, raceNo){
     const courseRaw = b && ( (typeof b.racer_assigned_boat_top_2_percent === 'number') ? b.racer_assigned_boat_top_2_percent : (typeof b.racer_course_win_rate === 'number' ? b.racer_course_win_rate : null) );
     const courseText = (courseRaw != null && !Number.isNaN(courseRaw)) ? (Math.round(courseRaw) + '%') : '-';
 
-    // compute a simple mark (re-using small heuristic)
-    const stScore = st ? (1/(st || 0.3)) : 1;
-    const fScore = (fcount>0) ? 0.7 : 1.0;
-    const localScore = (typeof localRaw === 'number') ? (localRaw/100) : 1.0;
-    const motorScore = (typeof motorRaw === 'number') ? (motorRaw/100) : 1.0;
-    const courseScore = (typeof courseRaw === 'number') ? (courseRaw/100) : 1.0;
-    const rawScore = stScore * fScore * localScore * motorScore * courseScore * 100;
-
-    let mark = 'ー';
-    if(rawScore >= 40) mark = '◎';
-    else if(rawScore >= 25) mark = '○';
-    else if(rawScore >= 15) mark = '△';
-    else if(rawScore >= 8) mark = '✕';
-
+    // 表示順位そのまま → 印に変換
+    const mark = getMarkByRank(i);
     const markClass = (mark === '◎') ? 'metric-symbol top' : 'metric-symbol';
 
     const tr = document.createElement('tr');
@@ -226,15 +219,12 @@ function renderRaceDetail(venueId, raceNo){
     entryTableBody.appendChild(tr);
   }
 
-  // (AI予想・コメントは既存のロジックを踏襲してあればここに挿入可能)
-  // For now keep aiMain/aiSub/commentTable as-is (you can plug earlier generate3renBets/generateComment here)
-  // Clear AI tables
   if(aiMainBody) aiMainBody.innerHTML = '<tr><td>-</td><td class="mono">-</td></tr>'.repeat(5);
   if(aiSubBody) aiSubBody.innerHTML  = '<tr><td>-</td><td class="mono">-</td></tr>'.repeat(5);
-  if(commentTableBody) commentTableBody.innerHTML = ''; // can be populated elsewhere
+  if(commentTableBody) commentTableBody.innerHTML = '';
 }
 
-// calc hit rate text for venue (uses HISTORY if race.ai_predictions exist)
+// calc hit rate
 function calcHitRateText(venueId){
   let total = 0, hit = 0;
   for(const dateKey in HISTORY){
@@ -243,9 +233,7 @@ function calcHitRateText(venueId){
     day.results.forEach(race=>{
       if(race.race_stadium_number !== venueId) return;
       total++;
-      // trifecta result
       const trif = race.payouts && race.payouts.trifecta && race.payouts.trifecta[0] && race.payouts.trifecta[0].combination;
-      // AI predictions (must be saved in history JSON earlier) — support multiple possible keys
       const aiPreds = race.ai_predictions || race.ai_trifecta_predictions || race.predicted_trifecta || [];
       if(trif && Array.isArray(aiPreds) && aiPreds.length > 0){
         if(aiPreds.includes(trif)) hit++;
