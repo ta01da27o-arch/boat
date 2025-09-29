@@ -2,5 +2,6 @@ pandas
 numpy
 scikit-learn
 joblib
+lightgbm
 fastapi
 uvicorn
