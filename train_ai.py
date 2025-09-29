@@ -1,5 +1,4 @@
 import os
-import glob
 import json
 import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -8,24 +7,43 @@ import joblib
 from lightgbm import LGBMClassifier
 
 # === 1. データの読み込み ===
-def load_data(data_dir="data"):
-    files = glob.glob(os.path.join(data_dir, "*.json"))
+def load_data(history_file="history.json"):
+    if not os.path.exists(history_file):
+        print(f"[ERROR] {history_file} が見つかりません。")
+        return pd.DataFrame()
+
+    with open(history_file, "r", encoding="utf-8") as f:
+        data = json.load(f)
+
     records = []
-    for f in files:
-        try:
-            with open(f, "r", encoding="utf-8") as fp:
-                d = json.load(fp)
-                if isinstance(d, list):
-                    records.extend(d)
-        except Exception as e:
-            print(f"[WARN] {f} の読み込みに失敗: {e}")
+    # {日付: {results: [ {boats: [...]} ]}}
+    for date, daily in data.items():
+        for race in daily.get("results", []):
+            race_meta = {
+                "race_date": race.get("race_date"),
+                "race_stadium_number": race.get("race_stadium_number"),
+                "race_number": race.get("race_number"),
+            }
+            for b in race.get("boats", []):
+                rec = race_meta.copy()
+                rec.update({
+                    "boat_number": b.get("racer_boat_number"),
+                    "course": b.get("racer_course_number"),
+                    "st": b.get("racer_start_timing"),
+                    "result": b.get("racer_place_number"),  # ← ラベル
+                    "racer_number": b.get("racer_number"),
+                    "racer_name": b.get("racer_name"),
+                })
+                records.append(rec)
+
     return pd.DataFrame(records)
 
 # === 2. 前処理 ===
 def preprocess(df):
     df = df.dropna()
-    features = ["st", "weight", "course", "ranking"]  # 仮の特徴量
-    target = "result"  # 予測したいラベル
+    # 今回はシンプルにスタートタイミング + コース番号で予測
+    features = ["st", "course"]
+    target = "result"
     df = df[[*features, target]].copy()
     return df, features, target
 
@@ -62,17 +80,17 @@ def save_model(model, out_path="model/model.pkl"):
 def save_summary(df, model, features, target, acc, out_path="summary.json"):
     summary = {
         "stats": {
-            "races": len(df),
+            "records": len(df),
             "accuracy": round(acc, 3),
             "features": features
         },
-        "races": []
+        "samples": []
     }
 
     preds = model.predict(df[features])
     for i, row in df.head(50).iterrows():
-        summary["races"].append({
-            "index": int(i),
+        summary["samples"].append({
+            "boat": int(row["boat_number"]),
             "prediction": int(preds[i]) if i < len(preds) else None,
             "result": int(row[target])
         })
@@ -83,11 +101,11 @@ def save_summary(df, model, features, target, acc, out_path="summary.json"):
 
 # === メイン処理 ===
 if __name__ == "__main__":
-    print("[INFO] データ読み込み開始")
-    df = load_data("data")
+    print("[INFO] history.json 読み込み開始")
+    df = load_data("history.json")
 
     if df.empty:
-        print("[ERROR] データがありません。data/ 以下にJSONを置いてください。")
+        print("[ERROR] history.json に有効なデータがありません。")
         exit(1)
 
     df, features, target = preprocess(df)
