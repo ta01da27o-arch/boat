@@ -1,69 +1,80 @@
+# predict.py
 import json
 import joblib
 import pandas as pd
 
-DATA_FILE = "data.json"
 MODEL_FILE = "model.pkl"
+DATA_FILE = "data.json"
+OUTPUT_FILE = "data.json"
+FEATURES_FILE = "features.csv"
 
-def load_data():
+def load_model():
+    try:
+        return joblib.load(MODEL_FILE)
+    except FileNotFoundError:
+        print("モデルが見つかりません。先に train.py を実行してください。")
+        return None
+
+def load_features():
+    try:
+        return pd.read_csv(FEATURES_FILE).set_index("racer_number")
+    except FileNotFoundError:
+        return pd.DataFrame()
+
+def generate_bets(probabilities):
+    """
+    本命5点 + 穴5点の3連単買い目を生成
+    """
+    sorted_probs = sorted(probabilities.items(), key=lambda x: x[1], reverse=True)
+    top = [r for r, _ in sorted_probs[:3]]
+    bottom = [r for r, _ in sorted_probs[3:]]
+
+    main_bets = [[top[0], top[1], top[2]],
+                 [top[0], top[2], top[1]],
+                 [top[1], top[0], top[2]],
+                 [top[1], top[2], top[0]],
+                 [top[2], top[0], top[1]]]
+
+    dark_bets = []
+    for i in range(min(5, len(bottom))):
+        dark_bets.append([bottom[i], top[0], top[1]])
+
+    return main_bets, dark_bets
+
+def main():
+    model = load_model()
+    if model is None:
+        return
+
+    features_df = load_features()
+
     with open(DATA_FILE, "r", encoding="utf-8") as f:
-        return json.load(f)
+        races = json.load(f)
 
-def save_data(data):
-    with open(DATA_FILE, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
+    for race in races:
+        probabilities = {}
+        for boat in race.get("boats", []):
+            racer_id = boat["racer_number"]
+            if racer_id in features_df.index:
+                X = features_df.loc[[racer_id], ["total_races", "win_rate", "place2_rate", "place3_rate", "avg_rank", "avg_start"]]
+                prob = model.predict(X)[0]
+            else:
+                prob = 0.1  # データがない場合は低めに設定
 
-def predict():
-    model = joblib.load(MODEL_FILE)
-    data = load_data()
+            probabilities[racer_id] = float(prob)
+            boat["predicted_win_prob"] = round(prob, 3)
 
-    for race in data:
-        entries = race.get("entries", [])
-        features = []
-        for e in entries:
-            features.append({
-                "course": e.get("course", 0),
-                "st": float(e.get("st")) if e.get("st") else 0,
-                "recent_win_rate": e.get("recent_win_rate", 0.0),
-            })
-        if not features:
-            continue
+        main_bets, dark_bets = generate_bets(probabilities)
+        race["predicted"] = {
+            "win_probabilities": probabilities,
+            "main_bets": main_bets,
+            "dark_bets": dark_bets
+        }
 
-        X = pd.DataFrame(features).fillna(0)
-        probs = model.predict(X)
+    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+        json.dump(races, f, ensure_ascii=False, indent=2)
 
-        # 各選手に1着確率を付与
-        for e, p in zip(entries, probs):
-            e["predict_win_rate"] = round(float(p), 3)
-
-        # 1着確率順に並べ替え
-        sorted_entries = sorted(entries, key=lambda x: x.get("predict_win_rate", 0), reverse=True)
-
-        # 本命5点（上位選手中心）
-        honmei = []
-        if len(sorted_entries) >= 3:
-            top3 = [e["player_id"] for e in sorted_entries[:3]]
-            for i in range(len(top3)):
-                for j in range(len(top3)):
-                    if i == j: continue
-                    for k in range(len(top3)):
-                        if k in (i, j): continue
-                        honmei.append([top3[i], top3[j], top3[k]])
-        race["predicted_trifecta_honmei"] = honmei[:5]
-
-        # 穴予想5点（下位選手を含める）
-        ana = []
-        low_candidates = sorted_entries[-3:]  # 下位3人
-        if len(low_candidates) >= 2:
-            for top in sorted_entries[:2]:
-                for low in low_candidates:
-                    for third in sorted_entries:
-                        if third["player_id"] not in (top["player_id"], low["player_id"]):
-                            ana.append([top["player_id"], low["player_id"], third["player_id"]])
-        race["predicted_trifecta_ana"] = ana[:5]
-
-    save_data(data)
-    print(f"[INFO] 予測を data.json に追加しました")
+    print(f"AI予想を {OUTPUT_FILE} に保存しました。")
 
 if __name__ == "__main__":
-    predict()
+    main()
