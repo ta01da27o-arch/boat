@@ -75,11 +75,30 @@ def merge_stats_with_programs(programs, stats):
     today = datetime.now().strftime("%Y%m%d")
     for race in programs:
         if not isinstance(race, dict):
+            print("[DEBUG] race is not dict:", race)
             continue
+
+        # 🔍 entries の型を確認（デバッグ用）
+        entries = race.get("entries")
+        print("[DEBUG] race keys:", race.keys())
+        print("[DEBUG] type(entries):", type(entries))
+        if isinstance(entries, list):
+            print("[DEBUG] entries sample:", entries[:2])
+        else:
+            print("[DEBUG] entries value:", entries)
+
         jcd = race.get("jcd")
         if jcd:
             race["weather"] = fetch_weather(jcd, today)
-        for entry in race.get("entries", []):
+
+        # エラー回避：entries がリストでなければスキップ
+        if not isinstance(entries, list):
+            continue
+
+        for entry in entries:
+            if not isinstance(entry, dict):
+                print("[DEBUG] entry is not dict:", entry)
+                continue
             pid = entry.get("player_id")
             if pid in stats:
                 entry["recent_win_rate"] = stats[pid]["win_rate"]
