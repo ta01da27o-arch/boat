@@ -1,0 +1,35 @@
+name: Fetch Boat Race Data
+
+on:
+  schedule:
+    - cron: "0 9,21 * * *"  # 1日2回（日本時間で18時, 6時）
+  workflow_dispatch:
+
+jobs:
+  fetch-data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run fetch scripts
+        run: |
+          python fetch_data.py
+          python fetch_results.py
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data.json history.json   # ✅ 成果物だけ add
+          git commit -m "Update race data [skip ci]" || echo "No changes to commit"
+          git push
