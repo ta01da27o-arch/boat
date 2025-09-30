@@ -14,10 +14,10 @@ def fetch_programs():
     resp.raise_for_status()
     data = resp.json()
 
-    # ✅ データが dict の場合は values を展開
+    # データが dict なら展開して list にする
     if isinstance(data, dict):
         programs = []
-        for k, v in data.items():
+        for v in data.values():
             if isinstance(v, list):
                 programs.extend(v)
         data = programs
@@ -34,7 +34,6 @@ def load_history(path=HISTORY_FILE):
 def aggregate_recent_stats(history, days=90):
     cutoff = datetime.now() - timedelta(days=days)
     stats = {}
-
     for date_str, rec in history.items():
         try:
             d = datetime.strptime(date_str, "%Y%m%d")
@@ -42,7 +41,6 @@ def aggregate_recent_stats(history, days=90):
             continue
         if d < cutoff:
             continue
-
         for r in rec.get("results", []):
             for entry in r.get("entries", []):
                 pid = entry.get("player_id")
@@ -65,25 +63,22 @@ def aggregate_recent_stats(history, days=90):
                     cs["races"] += 1
                     if entry.get("rank") == 1:
                         cs["wins"] += 1
-
+    # 集計後に比率を計算
     for pid, s in stats.items():
-        s["win_rate"] = round(s["wins"] / s["races"], 3) if s["races"] > 0 else 0
-        s["avg_st"] = round(s["st_sum"] / s["races"], 3) if s["races"] > 0 else None
+        s["win_rate"] = round(s["wins"] / s["races"], 3) if s["races"] else 0
+        s["avg_st"] = round(s["st_sum"] / s["races"], 3) if s["races"] else None
         for c, cs in s["course_stats"].items():
-            cs["win_rate"] = round(cs["wins"] / cs["races"], 3) if cs["races"] > 0 else 0
-
+            cs["win_rate"] = round(cs["wins"] / cs["races"], 3) if cs["races"] else 0
     return stats
 
 def merge_stats_with_programs(programs, stats):
     today = datetime.now().strftime("%Y%m%d")
     for race in programs:
         if not isinstance(race, dict):
-            continue  # ✅ 文字列など不正な要素はスキップ
+            continue
         jcd = race.get("jcd")
         if jcd:
-            weather_info = fetch_weather(jcd, today)
-            race["weather"] = weather_info
-
+            race["weather"] = fetch_weather(jcd, today)
         for entry in race.get("entries", []):
             pid = entry.get("player_id")
             if pid in stats:
@@ -93,6 +88,7 @@ def merge_stats_with_programs(programs, stats):
     return programs
 
 def save_programs(data, out_path=DATA_FILE):
+    # ✅ 必ず新規に data.json を生成・上書きする
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
     print(f"[INFO] 出走表を保存しました → {out_path}")
