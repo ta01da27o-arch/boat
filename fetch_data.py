@@ -13,6 +13,15 @@ def fetch_programs():
     resp = requests.get(PROGRAM_API_TODAY, timeout=10)
     resp.raise_for_status()
     data = resp.json()
+
+    # ✅ データが dict の場合は values を展開
+    if isinstance(data, dict):
+        programs = []
+        for k, v in data.items():
+            if isinstance(v, list):
+                programs.extend(v)
+        data = programs
+
     print(f"[INFO] {len(data)} 件の出走表を取得しました")
     return data
 
@@ -68,6 +77,8 @@ def aggregate_recent_stats(history, days=90):
 def merge_stats_with_programs(programs, stats):
     today = datetime.now().strftime("%Y%m%d")
     for race in programs:
+        if not isinstance(race, dict):
+            continue  # ✅ 文字列など不正な要素はスキップ
         jcd = race.get("jcd")
         if jcd:
             weather_info = fetch_weather(jcd, today)
