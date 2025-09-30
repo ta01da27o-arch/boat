@@ -1,0 +1,394 @@
+{
+  "updated": "2025-09-30T08:00:00Z",
+  "programs": [
+    {
+      "race_date": "2025-09-30",
+      "race_stadium_number": 1,
+      "race_number": 1,
+      "race_title": "第1レース",
+      "race_subtitle": "",
+      "race_distance": 1500,
+      "boats": [
+        {"racer_boat_number":1,"racer_name":"選手01-1","racer_number":3011,"racer_class_number":1,"racer_average_start_timing":0.12,"racer_flying_count":0,"racer_local_top_1_percent":5.5,"racer_assigned_motor_top_2_percent":46.0,"racer_assigned_boat_top_2_percent":28.0},
+        {"racer_boat_number":2,"racer_name":"選手01-2","racer_number":3012,"racer_class_number":2,"racer_average_start_timing":0.14,"racer_flying_count":0,"racer_local_top_1_percent":6.0,"racer_assigned_motor_top_2_percent":49.0,"racer_assigned_boat_top_2_percent":30.0},
+        {"racer_boat_number":3,"racer_name":"選手01-3","racer_number":3013,"racer_class_number":3,"racer_average_start_timing":0.11,"racer_flying_count":0,"racer_local_top_1_percent":6.5,"racer_assigned_motor_top_2_percent":52.0,"racer_assigned_boat_top_2_percent":32.0},
+        {"racer_boat_number":4,"racer_name":"選手01-4","racer_number":3014,"racer_class_number":1,"racer_average_start_timing":0.18,"racer_flying_count":0,"racer_local_top_1_percent":5.0,"racer_assigned_motor_top_2_percent":40.0,"racer_assigned_boat_top_2_percent":26.0},
+        {"racer_boat_number":5,"racer_name":"選手01-5","racer_number":3015,"racer_class_number":2,"racer_average_start_timing":0.13,"racer_flying_count":0,"racer_local_top_1_percent":7.0,"racer_assigned_motor_top_2_percent":55.0,"racer_assigned_boat_top_2_percent":34.0},
+        {"racer_boat_number":6,"racer_name":"選手01-6","racer_number":3016,"racer_class_number":3,"racer_average_start_timing":0.10,"racer_flying_count":0,"racer_local_top_1_percent":5.8,"racer_assigned_motor_top_2_percent":47.0,"racer_assigned_boat_top_2_percent":29.0}
+      ]
+    },
+    {
+      "race_date": "2025-09-30",
+      "race_stadium_number": 2,
+      "race_number": 1,
+      "race_title": "第1レース",
+      "race_subtitle": "",
+      "race_distance": 1500,
+      "boats": [
+        {"racer_boat_number":1,"racer_name":"選手02-1","racer_number":3021,"racer_class_number":1,"racer_average_start_timing":0.13,"racer_flying_count":0,"racer_local_top_1_percent":5.6,"racer_assigned_motor_top_2_percent":45.0,"racer_assigned_boat_top_2_percent":27.0},
+        {"racer_boat_number":2,"racer_name":"選手02-2","racer_number":3022,"racer_class_number":2,"racer_average_start_timing":0.15,"racer_flying_count":0,"racer_local_top_1_percent":6.1,"racer_assigned_motor_top_2_percent":48.0,"racer_assigned_boat_top_2_percent":30.0},
+        {"racer_boat_number":3,"racer_name":"選手02-3","racer_number":3023,"racer_class_number":3,"racer_average_start_timing":0.11,"racer_flying_count":0,"racer_local_top_1_percent":6.2,"racer_assigned_motor_top_2_percent":50.0,"racer_assigned_boat_top_2_percent":31.0},
+        {"racer_boat_number":4,"racer_name":"選手02-4","racer_number":3024,"racer_class_number":1,"racer_average_start_timing":0.17,"racer_flying_count":0,"racer_local_top_1_percent":5.2,"racer_assigned_motor_top_2_percent":41.0,"racer_assigned_boat_top_2_percent":26.0},
+        {"racer_boat_number":5,"racer_name":"選手02-5","racer_number":3025,"racer_class_number":2,"racer_average_start_timing":0.12,"racer_flying_count":0,"racer_local_top_1_percent":7.3,"racer_assigned_motor_top_2_percent":53.0,"racer_assigned_boat_top_2_percent":33.0},
+        {"racer_boat_number":6,"racer_name":"選手02-6","racer_number":3026,"racer_class_number":3,"racer_average_start_timing":0.09,"racer_flying_count":0,"racer_local_top_1_percent":5.9,"racer_assigned_motor_top_2_percent":46.5,"racer_assigned_boat_top_2_percent":29.5}
+      ]
+    },
+    {
+      "race_date": "2025-09-30",
+      "race_stadium_number": 3,
+      "race_number": 1,
+      "race_title": "第1レース",
+      "race_subtitle": "",
+      "race_distance": 1500,
+      "boats": [
+        {"racer_boat_number":1,"racer_name":"選手03-1","racer_number":3031,"racer_class_number":1,"racer_average_start_timing":0.11,"racer_flying_count":0,"racer_local_top_1_percent":5.7,"racer_assigned_motor_top_2_percent":47.5,"racer_assigned_boat_top_2_percent":29.0},
+        {"racer_boat_number":2,"racer_name":"選手03-2","racer_number":3032,"racer_class_number":2,"racer_average_start_timing":0.16,"racer_flying_count":0,"racer_local_top_1_percent":6.0,"racer_assigned_motor_top_2_percent":49.0,"racer_assigned_boat_top_2_percent":30.5},
+        {"racer_boat_number":3,"racer_name":"選手03-3","racer_number":3033,"racer_class_number":3,"racer_average_start_timing":0.12,"racer_flying_count":0,"racer_local_top_1_percent":6.3,"racer_assigned_motor_top_2_percent":51.0,"racer_assigned_boat_top_2_percent":31.5},
+        {"racer_boat_number":4,"racer_name":"選手03-4","racer_number":3034,"racer_class_number":1,"racer_average_start_timing":0.18,"racer_flying_count":0,"racer_local_top_1_percent":5.1,"racer_assigned_motor_top_2_percent":42.0,"racer_assigned_boat_top_2_percent":26.5},
+        {"racer_boat_number":5,"racer_name":"選手03-5","racer_number":3035,"racer_class_number":2,"racer_average_start_timing":0.13,"racer_flying_count":0,"racer_local_top_1_percent":7.1,"racer_assigned_motor_top_2_percent":54.0,"racer_assigned_boat_top_2_percent":33.5},
+        {"racer_boat_number":6,"racer_name":"選手03-6","racer_number":3036,"racer_class_number":3,"racer_average_start_timing":0.10,"racer_flying_count":0,"racer_local_top_1_percent":6.0,"racer_assigned_motor_top_2_percent":48.0,"racer_assigned_boat_top_2_percent":30.0}
+      ]
+    },
+    {
+      "race_date": "2025-09-30",
+      "race_stadium_number": 4,
+      "race_number": 1,
+      "race_title": "第1レース",
+      "race_subtitle": "",
+      "race_distance": 1500,
+      "boats": [
+        {"racer_boat_number":1,"racer_name":"選手04-1","racer_number":3041,"racer_class_number":1,"racer_average_start_timing":0.13,"racer_flying_count":0,"racer_local_top_1_percent":5.4,"racer_assigned_motor_top_2_percent":46.0,"racer_assigned_boat_top_2_percent":28.0},
+        {"racer_boat_number":2,"racer_name":"選手04-2","racer_number":3042,"racer_class_number":2,"racer_average_start_timing":0.15,"racer_flying_count":0,"racer_local_top_1_percent":6.2,"racer_assigned_motor_top_2_percent":49.5,"racer_assigned_boat_top_2_percent":30.5},
+        {"racer_boat_number":3,"racer_name":"選手04-3","racer_number":3043,"racer_class_number":3,"racer_average_start_timing":0.11,"racer_flying_count":0,"racer_local_top_1_percent":6.6,"racer_assigned_motor_top_2_percent":52.5,"racer_assigned_boat_top_2_percent":32.5},
+        {"racer_boat_number":4,"racer_name":"選手04-4","racer_number":3044,"racer_class_number":1,"racer_average_start_timing":0.17,"racer_flying_count":0,"racer_local_top_1_percent":5.3,"racer_assigned_motor_top_2_percent":41.5,"racer_assigned_boat_top_2_percent":26.8},
+        {"racer_boat_number":5,"racer_name":"選手04-5","racer_number":3045,"racer_class_number":2,"racer_average_start_timing":0.12,"racer_flying_count":0,"racer_local_top_1_percent":7.2,"racer_assigned_motor_top_2_percent":54.5,"racer_assigned_boat_top_2_percent":33.8},
+        {"racer_boat_number":6,"racer_name":"選手04-6","racer_number":3046,"racer_class_number":3,"racer_average_start_timing":0.10,"racer_flying_count":0,"racer_local_top_1_percent":5.8,"racer_assigned_motor_top_2_percent":47.0,"racer_assigned_boat_top_2_percent":29.0}
+      ]
+    },
+    {
+      "race_date": "2025-09-30",
+      "race_stadium_number": 5,
+      "race_number": 1,
+      "race_title": "第1レース",
+      "race_subtitle": "",
+      "race_distance": 1500,
+      "boats": [
+        {"racer_boat_number":1,"racer_name":"選手05-1","racer_number":3051,"racer_class_number":1,"racer_average_start_timing":0.12,"racer_flying_count":0,"racer_local_top_1_percent":5.5,"racer_assigned_motor_top_2_percent":46.5,"racer_assigned_boat_top_2_percent":28.5},
+        {"racer_boat_number":2,"racer_name":"選手05-2","racer_number":3052,"racer_class_number":2,"racer_average_start_timing":0.15,"racer_flying_count":0,"racer_local_top_1_percent":6.3,"racer_assigned_motor_top_2_percent":49.2,"racer_assigned_boat_top_2_percent":30.1},
+        {"racer_boat_number":3,"racer_name":"選手05-3","racer_number":3053,"racer_class_number":3,"racer_average_start_timing":0.11,"racer_flying_count":0,"racer_local_top_1_percent":6.8,"racer_assigned_motor_top_2_percent":52.2,"racer_assigned_boat_top_2_percent":32.2},
+        {"racer_boat_number":4,"racer_name":"選手05-4","racer_number":3054,"racer_class_number":1,"racer_average_start_timing":0.18,"racer_flying_count":0,"racer_local_top_1_percent":5.4,"racer_assigned_motor_top_2_percent":42.3,"racer_assigned_boat_top_2_percent":27.3},
+        {"racer_boat_number":5,"racer_name":"選手05-5","racer_number":3055,"racer_class_number":2,"racer_average_start_timing":0.13,"racer_flying_count":0,"racer_local_top_1_percent":7.5,"racer_assigned_motor_top_2_percent":55.2,"racer_assigned_boat_top_2_percent":34.2},
+        {"racer_boat_number":6,"racer_name":"選手05-6","racer_number":3056,"racer_class_number":3,"racer_average_start_timing":0.09,"racer_flying_count":0,"racer_local_top_1_percent":6.1,"racer_assigned_motor_top_2_percent":48.5,"racer_assigned_boat_top_2_percent":30.5}
+      ]
+    },
+    {
+      "race_date": "2025-09-30",
+      "race_stadium_number": 6,
+      "race_number": 1,
+      "race_title": "第1レース",
+      "race_subtitle": "",
+      "race_distance": 1500,
+      "boats": [
+        {"racer_boat_number":1,"racer_name":"選手06-1","racer_number":3061,"racer_class_number":1,"racer_average_start_timing":0.11,"racer_flying_count":0,"racer_local_top_1_percent":5.6,"racer_assigned_motor_top_2_percent":47.0,"racer_assigned_boat_top_2_percent":29.0},
+        {"racer_boat_number":2,"racer_name":"選手06-2","racer_number":3062,"racer_class_number":2,"racer_average_start_timing":0.14,"racer_flying_count":0,"racer_local_top_1_percent":6.5,"racer_assigned_motor_top_2_percent":49.8,"racer_assigned_boat_top_2_percent":30.8},
+        {"racer_boat_number":3,"racer_name":"選手06-3","racer_number":3063,"racer_class_number":3,"racer_average_start_timing":0.12,"racer_flying_count":0,"racer_local_top_1_percent":6.7,"racer_assigned_motor_top_2_percent":51.5,"racer_assigned_boat_top_2_percent":31.8},
+        {"racer_boat_number":4,"racer_name":"選手06-4","racer_number":3064,"racer_class_number":1,"racer_average_start_timing":0.17,"racer_flying_count":0,"racer_local_top_1_percent":5.3,"racer_assigned_motor_top_2_percent":41.8,"racer_assigned_boat_top_2_percent":27.0},
+        {"racer_boat_number":5,"racer_name":"選手06-5","racer_number":3065,"racer_class_number":2,"racer_average_start_timing":0.13,"racer_flying_count":0,"racer_local_top_1_percent":7.0,"racer_assigned_motor_top_2_percent":54.0,"racer_assigned_boat_top_2_percent":33.0},
+        {"racer_boat_number":6,"racer_name":"選手06-6","racer_number":3066,"racer_class_number":3,"racer_average_start_timing":0.10,"racer_flying_count":0,"racer_local_top_1_percent":6.0,"racer_assigned_motor_top_2_percent":48.0,"racer_assigned_boat_top_2_percent":30.0}
+      ]
+    },
+    {
+      "race_date": "2025-09-30",
+      "race_stadium_number": 7,
+      "race_number": 1,
+      "race_title": "第1レース",
+      "race_subtitle": "",
+      "race_distance": 1500,
+      "boats": [
+        {"racer_boat_number":1,"racer_name":"選手07-1","racer_number":3071,"racer_class_number":1,"racer_average_start_timing":0.12,"racer_flying_count":0,"racer_local_top_1_percent":5.5,"racer_assigned_motor_top_2_percent":46.2,"racer_assigned_boat_top_2_percent":28.3},
+        {"racer_boat_number":2,"racer_name":"選手07-2","racer_number":3072,"racer_class_number":2,"racer_average_start_timing":0.15,"racer_flying_count":0,"racer_local_top_1_percent":6.4,"racer_assigned_motor_top_2_percent":49.1,"racer_assigned_boat_top_2_percent":30.2},
+        {"racer_boat_number":3,"racer_name":"選手07-3","racer_number":3073,"racer_class_number":3,"racer_average_start_timing":0.11,"racer_flying_count":0,"racer_local_top_1_percent":6.9,"racer_assigned_motor_top_2_percent":53.0,"racer_assigned_boat_top_2_percent":32.1},
+        {"racer_boat_number":4,"racer_name":"選手07-4","racer_number":3074,"racer_class_number":1,"racer_average_start_timing":0.18,"racer_flying_count":0,"racer_local_top_1_percent":5.2,"racer_assigned_motor_top_2_percent":41.2,"racer_assigned_boat_top_2_percent":26.0},
+        {"racer_boat_number":5,"racer_name":"選手07-5","racer_number":3075,"racer_class_number":2,"racer_average_start_timing":0.13,"racer_flying_count":0,"racer_local_top_1_percent":7.4,"racer_assigned_motor_top_2_percent":55.5,"racer_assigned_boat_top_2_percent":34.5},
+        {"racer_boat_number":6,"racer_name":"選手07-6","racer_number":3076,"racer_class_number":3,"racer_average_start_timing":0.10,"racer_flying_count":0,"racer_local_top_1_percent":6.0,"racer_assigned_motor_top_2_percent":48.2,"racer_assigned_boat_top_2_percent":30.2}
+      ]
+    },
+    {
+      "race_date": "2025-09-30",
+      "race_stadium_number": 8,
+      "race_number": 1,
+      "race_title": "第1レース",
+      "race_subtitle": "",
+      "race_distance": 1500,
+      "boats": [
+        {"racer_boat_number":1,"racer_name":"選手08-1","racer_number":3081,"racer_class_number":1,"racer_average_start_timing":0.12,"racer_flying_count":0,"racer_local_top_1_percent":5.3,"racer_assigned_motor_top_2_percent":45.8,"racer_assigned_boat_top_2_percent":27.8},
+        {"racer_boat_number":2,"racer_name":"選手08-2","racer_number":3082,"racer_class_number":2,"racer_average_start_timing":0.15,"racer_flying_count":0,"racer_local_top_1_percent":6.0,"racer_assigned_motor_top_2_percent":48.7,"racer_assigned_boat_top_2_percent":30.1},
+        {"racer_boat_number":3,"racer_name":"選手08-3","racer_number":3083,"racer_class_number":3,"racer_average_start_timing":0.11,"racer_flying_count":0,"racer_local_top_1_percent":6.4,"racer_assigned_motor_top_2_percent":51.0,"racer_assigned_boat_top_2_percent":31.0},
+        {"racer_boat_number":4,"racer_name":"選手08-4","racer_number":3084,"racer_class_number":1,"racer_average_start_timing":0.17,"racer_flying_count":0,"racer_local_top_1_percent":5.1,"racer_assigned_motor_top_2_percent":41.0,"racer_assigned_boat_top_2_percent":26.5},
+        {"racer_boat_number":5,"racer_name":"選手08-5","racer_number":3085,"racer_class_number":2,"racer_average_start_timing":0.13,"racer_flying_count":0,"racer_local_top_1_percent":7.0,"racer_assigned_motor_top_2_percent":54.8,"racer_assigned_boat_top_2_percent":33.8},
+        {"racer_boat_number":6,"racer_name":"選手08-6","racer_number":3086,"racer_class_number":3,"racer_average_start_timing":0.10,"racer_flying_count":0,"racer_local_top_1_percent":5.9,"racer_assigned_motor_top_2_percent":47.5,"racer_assigned_boat_top_2_percent":29.5}
+      ]
+    },
+    {
+      "race_date": "2025-09-30",
+      "race_stadium_number": 9,
+      "race_number": 1,
+      "race_title": "第1レース",
+      "race_subtitle": "",
+      "race_distance": 1500,
+      "boats": [
+        {"racer_boat_number":1,"racer_name":"選手09-1","racer_number":3091,"racer_class_number":1,"racer_average_start_timing":0.13,"racer_flying_count":0,"racer_local_top_1_percent":5.6,"racer_assigned_motor_top_2_percent":46.8,"racer_assigned_boat_top_2_percent":28.6},
+        {"racer_boat_number":2,"racer_name":"選手09-2","racer_number":3092,"racer_class_number":2,"racer_average_start_timing":0.15,"racer_flying_count":0,"racer_local_top_1_percent":6.2,"racer_assigned_motor_top_2_percent":49.6,"racer_assigned_boat_top_2_percent":30.4},
+        {"racer_boat_number":3,"racer_name":"選手09-3","racer_number":3093,"racer_class_number":3,"racer_average_start_timing":0.11,"racer_flying_count":0,"racer_local_top_1_percent":6.5,"racer_assigned_motor_top_2_percent":51.8,"racer_assigned_boat_top_2_percent":31.6},
+        {"racer_boat_number":4,"racer_name":"選手09-4","racer_number":3094,"racer_class_number":1,"racer_average_start_timing":0.17,"racer_flying_count":0,"racer_local_top_1_percent":5.0,"racer_assigned_motor_top_2_percent":41.2,"racer_assigned_boat_top_2_percent":26.4},
+        {"racer_boat_number":5,"racer_name":"選手09-5","racer_number":3095,"racer_class_number":2,"racer_average_start_timing":0.12,"racer_flying_count":0,"racer_local_top_1_percent":7.1,"racer_assigned_motor_top_2_percent":54.2,"racer_assigned_boat_top_2_percent":33.2},
+        {"racer_boat_number":6,"racer_name":"選手09-6","racer_number":3096,"racer_class_number":3,"racer_average_start_timing":0.10,"racer_flying_count":0,"racer_local_top_1_percent":5.8,"racer_assigned_motor_top_2_percent":47.2,"racer_assigned_boat_top_2_percent":29.2}
+      ]
+    },
+    {
+      "race_date": "2025-09-30",
+      "race_stadium_number": 10,
+      "race_number": 1,
+      "race_title": "第1レース",
+      "race_subtitle": "",
+      "race_distance": 1500,
+      "boats": [
+        {"racer_boat_number":1,"racer_name":"選手10-1","racer_number":3101,"racer_class_number":1,"racer_average_start_timing":0.12,"racer_flying_count":0,"racer_local_top_1_percent":5.5,"racer_assigned_motor_top_2_percent":46.1,"racer_assigned_boat_top_2_percent":28.1},
+        {"racer_boat_number":2,"racer_name":"選手10-2","racer_number":3102,"racer_class_number":2,"racer_average_start_timing":0.15,"racer_flying_count":0,"racer_local_top_1_percent":6.0,"racer_assigned_motor_top_2_percent":49.0,"racer_assigned_boat_top_2_percent":30.0},
+        {"racer_boat_number":3,"racer_name":"選手10-3","racer_number":3103,"racer_class_number":3,"racer_average_start_timing":0.11,"racer_flying_count":0,"racer_local_top_1_percent":6.6,"racer_assigned_motor_top_2_percent":52.0,"racer_assigned_boat_top_2_percent":32.0},
+        {"racer_boat_number":4,"racer_name":"選手10-4","racer_number":3104,"racer_class_number":1,"racer_average_start_timing":0.18,"racer_flying_count":0,"racer_local_top_1_percent":5.2,"racer_assigned_motor_top_2_percent":41.0,"racer_assigned_boat_top_2_percent":26.0},
+        {"racer_boat_number":5,"racer_name":"選手10-5","racer_number":3105,"racer_class_number":2,"racer_average_start_timing":0.13,"racer_flying_count":0,"racer_local_top_1_percent":7.0,"racer_assigned_motor_top_2_percent":54.0,"racer_assigned_boat_top_2_percent":33.0},
+        {"racer_boat_number":6,"racer_name":"選手10-6","racer_number":3106,"racer_class_number":3,"racer_average_start_timing":0.10,"racer_flying_count":0,"racer_local_top_1_percent":5.9,"racer_assigned_motor_top_2_percent":47.0,"racer_assigned_boat_top_2_percent":29.0}
+      ]
+    },
+    {
+      "race_date": "2025-09-30",
+      "race_stadium_number": 11,
+      "race_number": 1,
+      "race_title": "第1レース",
+      "race_subtitle": "",
+      "race_distance": 1500,
+      "boats": [
+        {"racer_boat_number":1,"racer_name":"選手11-1","racer_number":3111,"racer_class_number":1,"racer_average_start_timing":0.11,"racer_flying_count":0,"racer_local_top_1_percent":5.4,"racer_assigned_motor_top_2_percent":46.8,"racer_assigned_boat_top_2_percent":28.4},
+        {"racer_boat_number":2,"racer_name":"選手11-2","racer_number":3112,"racer_class_number":2,"racer_average_start_timing":0.14,"racer_flying_count":0,"racer_local_top_1_percent":6.3,"racer_assigned_motor_top_2_percent":49.7,"racer_assigned_boat_top_2_percent":30.7},
+        {"racer_boat_number":3,"racer_name":"選手11-3","racer_number":3113,"racer_class_number":3,"racer_average_start_timing":0.12,"racer_flying_count":0,"racer_local_top_1_percent":6.8,"racer_assigned_motor_top_2_percent":52.8,"racer_assigned_boat_top_2_percent":32.8},
+        {"racer_boat_number":4,"racer_name":"選手11-4","racer_number":3114,"racer_class_number":1,"racer_average_start_timing":0.17,"racer_flying_count":0,"racer_local_top_1_percent":5.1,"racer_assigned_motor_top_2_percent":41.3,"racer_assigned_boat_top_2_percent":26.3},
+        {"racer_boat_number":5,"racer_name":"選手11-5","racer_number":3115,"racer_class_number":2,"racer_average_start_timing":0.13,"racer_flying_count":0,"racer_local_top_1_percent":7.2,"racer_assigned_motor_top_2_percent":54.9,"racer_assigned_boat_top_2_percent":33.9},
+        {"racer_boat_number":6,"racer_name":"選手11-6","racer_number":3116,"racer_class_number":3,"racer_average_start_timing":0.10,"racer_flying_count":0,"racer_local_top_1_percent":6.0,"racer_assigned_motor_top_2_percent":48.1,"racer_assigned_boat_top_2_percent":30.1}
+      ]
+    },
+    {
+      "race_date": "2025-09-30",
+      "race_stadium_number": 12,
+      "race_number": 1,
+      "race_title": "第1レース",
+      "race_subtitle": "",
+      "race_distance": 1500,
+      "boats": [
+        {"racer_boat_number":1,"racer_name":"選手12-1","racer_number":3121,"racer_class_number":1,"racer_average_start_timing":0.12,"racer_flying_count":0,"racer_local_top_1_percent":5.6,"racer_assigned_motor_top_2_percent":46.9,"racer_assigned_boat_top_2_percent":28.9},
+        {"racer_boat_number":2,"racer_name":"選手12-2","racer_number":3122,"racer_class_number":2,"racer_average_start_timing":0.15,"racer_flying_count":0,"racer_local_top_1_percent":6.4,"racer_assigned_motor_top_2_percent":49.9,"racer_assigned_boat_top_2_percent":30.9},
+        {"racer_boat_number":3,"racer_name":"選手12-3","racer_number":3123,"racer_class_number":3,"racer_average_start_timing":0.11,"racer_flying_count":0,"racer_local_top_1_percent":6.7,"racer_assigned_motor_top_2_percent":52.7,"racer_assigned_boat_top_2_percent":32.7},
+        {"racer_boat_number":4,"racer_name":"選手12-4","racer_number":3124,"racer_class_number":1,"racer_average_start_timing":0.17,"racer_flying_count":0,"racer_local_top_1_percent":5.2,"racer_assigned_motor_top_2_percent":41.6,"racer_assigned_boat_top_2_percent":26.6},
+        {"racer_boat_number":5,"racer_name":"選手12-5","racer_number":3125,"racer_class_number":2,"racer_average_start_timing":0.13,"racer_flying_count":0,"racer_local_top_1_percent":7.3,"racer_assigned_motor_top_2_percent":55.1,"racer_assigned_boat_top_2_percent":33.7},
+        {"racer_boat_number":6,"racer_name":"選手12-6","racer_number":3126,"racer_class_number":3,"racer_average_start_timing":0.09,"racer_flying_count":0,"racer_local_top_1_percent":6.0,"racer_assigned_motor_top_2_percent":48.3,"racer_assigned_boat_top_2_percent":30.3}
+      ]
+    },
+    {
+      "race_date": "2025-09-30",
+      "race_stadium_number": 13,
+      "race_number": 1,
+      "race_title": "第1レース",
+      "race_subtitle": "",
+      "race_distance": 1500,
+      "boats": [
+        {"racer_boat_number":1,"racer_name":"選手13-1","racer_number":3131,"racer_class_number":1,"racer_average_start_timing":0.11,"racer_flying_count":0,"racer_local_top_1_percent":5.5,"racer_assigned_motor_top_2_percent":46.5,"racer_assigned_boat_top_2_percent":28.5},
+        {"racer_boat_number":2,"racer_name":"選手13-2","racer_number":3132,"racer_class_number":2,"racer_average_start_timing":0.15,"racer_flying_count":0,"racer_local_top_1_percent":6.3,"racer_assigned_motor_top_2_percent":49.3,"racer_assigned_boat_top_2_percent":30.3},
+        {"racer_boat_number":3,"racer_name":"選手13-3","racer_number":3133,"racer_class_number":3,"racer_average_start_timing":0.12,"racer_flying_count":0,"racer_local_top_1_percent":6.9,"racer_assigned_motor_top_2_percent":52.9,"racer_assigned_boat_top_2_percent":32.9},
+        {"racer_boat_number":4,"racer_name":"選手13-4","racer_number":3134,"racer_class_number":1,"racer_average_start_timing":0.17,"racer_flying_count":0,"racer_local_top_1_percent":5.1,"racer_assigned_motor_top_2_percent":41.5,"racer_assigned_boat_top_2_percent":26.5},
+        {"racer_boat_number":5,"racer_name":"選手13-5","racer_number":3135,"racer_class_number":2,"racer_average_start_timing":0.13,"racer_flying_count":0,"racer_local_top_1_percent":7.4,"racer_assigned_motor_top_2_percent":55.4,"racer_assigned_boat_top_2_percent":33.4},
+        {"racer_boat_number":6,"racer_name":"選手13-6","racer_number":3136,"racer_class_number":3,"racer_average_start_timing":0.10,"racer_flying_count":0,"racer_local_top_1_percent":6.1,"racer_assigned_motor_top_2_percent":48.4,"racer_assigned_boat_top_2_percent":30.4}
+      ]
+    },
+    {
+      "race_date": "2025-09-30",
+      "race_stadium_number": 14,
+      "race_number": 1,
+      "race_title": "第1レース",
+      "race_subtitle": "",
+      "race_distance": 1500,
+      "boats": [
+        {"racer_boat_number":1,"racer_name":"選手14-1","racer_number":3141,"racer_class_number":1,"racer_average_start_timing":0.12,"racer_flying_count":0,"racer_local_top_1_percent":5.6,"racer_assigned_motor_top_2_percent":46.0,"racer_assigned_boat_top_2_percent":28.0},
+        {"racer_boat_number":2,"racer_name":"選手14-2","racer_number":3142,"racer_class_number":2,"racer_average_start_timing":0.15,"racer_flying_count":0,"racer_local_top_1_percent":6.1,"racer_assigned_motor_top_2_percent":49.0,"racer_assigned_boat_top_2_percent":30.0},
+        {"racer_boat_number":3,"racer_name":"選手14-3","racer_number":3143,"racer_class_number":3,"racer_average_start_timing":0.11,"racer_flying_count":0,"racer_local_top_1_percent":6.4,"racer_assigned_motor_top_2_percent":51.0,"racer_assigned_boat_top_2_percent":31.0},
+        {"racer_boat_number":4,"racer_name":"選手14-4","racer_number":3144,"racer_class_number":1,"racer_average_start_timing":0.18,"racer_flying_count":0,"racer_local_top_1_percent":5.2,"racer_assigned_motor_top_2_percent":41.0,"racer_assigned_boat_top_2_percent":26.0},
+        {"racer_boat_number":5,"racer_name":"選手14-5","racer_number":3145,"racer_class_number":2,"racer_average_start_timing":0.13,"racer_flying_count":0,"racer_local_top_1_percent":7.0,"racer_assigned_motor_top_2_percent":54.0,"racer_assigned_boat_top_2_percent":33.0},
+        {"racer_boat_number":6,"racer_name":"選手14-6","racer_number":3146,"racer_class_number":3,"racer_average_start_timing":0.09,"racer_flying_count":0,"racer_local_top_1_percent":5.9,"racer_assigned_motor_top_2_percent":47.0,"racer_assigned_boat_top_2_percent":29.0}
+      ]
+    },
+    {
+      "race_date": "2025-09-30",
+      "race_stadium_number": 15,
+      "race_number": 1,
+      "race_title": "第1レース",
+      "race_subtitle": "",
+      "race_distance": 1500,
+      "boats": [
+        {"racer_boat_number":1,"racer_name":"選手15-1","racer_number":3151,"racer_class_number":1,"racer_average_start_timing":0.11,"racer_flying_count":0,"racer_local_top_1_percent":5.5,"racer_assigned_motor_top_2_percent":46.0,"racer_assigned_boat_top_2_percent":28.0},
+        {"racer_boat_number":2,"racer_name":"選手15-2","racer_number":3152,"racer_class_number":2,"racer_average_start_timing":0.14,"racer_flying_count":0,"racer_local_top_1_percent":6.0,"racer_assigned_motor_top_2_percent":49.0,"racer_assigned_boat_top_2_percent":30.0},
+        {"racer_boat_number":3,"racer_name":"選手15-3","racer_number":3153,"racer_class_number":3,"racer_average_start_timing":0.12,"racer_flying_count":0,"racer_local_top_1_percent":6.7,"racer_assigned_motor_top_2_percent":52.0,"racer_assigned_boat_top_2_percent":32.0},
+        {"racer_boat_number":4,"racer_name":"選手15-4","racer_number":3154,"racer_class_number":1,"racer_average_start_timing":0.18,"racer_flying_count":0,"racer_local_top_1_percent":5.2,"racer_assigned_motor_top_2_percent":41.0,"racer_assigned_boat_top_2_percent":26.0},
+        {"racer_boat_number":5,"racer_name":"選手15-5","racer_number":3155,"racer_class_number":2,"racer_average_start_timing":0.13,"racer_flying_count":0,"racer_local_top_1_percent":7.2,"racer_assigned_motor_top_2_percent":54.0,"racer_assigned_boat_top_2_percent":33.0},
+        {"racer_boat_number":6,"racer_name":"選手15-6","racer_number":3156,"racer_class_number":3,"racer_average_start_timing":0.10,"racer_flying_count":0,"racer_local_top_1_percent":6.0,"racer_assigned_motor_top_2_percent":48.0,"racer_assigned_boat_top_2_percent":30.0}
+      ]
+    },
+    {
+      "race_date": "2025-09-30",
+      "race_stadium_number": 16,
+      "race_number": 1,
+      "race_title": "第1レース",
+      "race_subtitle": "",
+      "race_distance": 1500,
+      "boats": [
+        {"racer_boat_number":1,"racer_name":"選手16-1","racer_number":3161,"racer_class_number":1,"racer_average_start_timing":0.12,"racer_flying_count":0,"racer_local_top_1_percent":5.6,"racer_assigned_motor_top_2_percent":46.5,"racer_assigned_boat_top_2_percent":28.2},
+        {"racer_boat_number":2,"racer_name":"選手16-2","racer_number":3162,"racer_class_number":2,"racer_average_start_timing":0.15,"racer_flying_count":0,"racer_local_top_1_percent":6.4,"racer_assigned_motor_top_2_percent":49.6,"racer_assigned_boat_top_2_percent":30.2},
+        {"racer_boat_number":3,"racer_name":"選手16-3","racer_number":3163,"racer_class_number":3,"racer_average_start_timing":0.11,"racer_flying_count":0,"racer_local_top_1_percent":6.9,"racer_assigned_motor_top_2_percent":52.6,"racer_assigned_boat_top_2_percent":32.2},
+        {"racer_boat_number":4,"racer_name":"選手16-4","racer_number":3164,"racer_class_number":1,"racer_average_start_timing":0.17,"racer_flying_count":0,"racer_local_top_1_percent":5.3,"racer_assigned_motor_top_2_percent":41.3,"racer_assigned_boat_top_2_percent":26.3},
+        {"racer_boat_number":5,"racer_name":"選手16-5","racer_number":3165,"racer_class_number":2,"racer_average_start_timing":0.13,"racer_flying_count":0,"racer_local_top_1_percent":7.1,"racer_assigned_motor_top_2_percent":54.6,"racer_assigned_boat_top_2_percent":33.6},
+        {"racer_boat_number":6,"racer_name":"選手16-6","racer_number":3166,"racer_class_number":3,"racer_average_start_timing":0.10,"racer_flying_count":0,"racer_local_top_1_percent":6.2,"racer_assigned_motor_top_2_percent":48.6,"racer_assigned_boat_top_2_percent":30.6}
+      ]
+    },
+    {
+      "race_date": "2025-09-30",
+      "race_stadium_number": 17,
+      "race_number": 1,
+      "race_title": "第1レース",
+      "race_subtitle": "",
+      "race_distance": 1500,
+      "boats": [
+        {"racer_boat_number":1,"racer_name":"選手17-1","racer_number":3171,"racer_class_number":1,"racer_average_start_timing":0.11,"racer_flying_count":0,"racer_local_top_1_percent":5.4,"racer_assigned_motor_top_2_percent":46.0,"racer_assigned_boat_top_2_percent":28.0},
+        {"racer_boat_number":2,"racer_name":"選手17-2","racer_number":3172,"racer_class_number":2,"racer_average_start_timing":0.14,"racer_flying_count":0,"racer_local_top_1_percent":6.2,"racer_assigned_motor_top_2_percent":49.0,"racer_assigned_boat_top_2_percent":30.0},
+        {"racer_boat_number":3,"racer_name":"選手17-3","racer_number":3173,"racer_class_number":3,"racer_average_start_timing":0.12,"racer_flying_count":0,"racer_local_top_1_percent":6.8,"racer_assigned_motor_top_2_percent":52.0,"racer_assigned_boat_top_2_percent":32.0},
+        {"racer_boat_number":4,"racer_name":"選手17-4","racer_number":3174,"racer_class_number":1,"racer_average_start_timing":0.18,"racer_flying_count":0,"racer_local_top_1_percent":5.0,"racer_assigned_motor_top_2_percent":41.0,"racer_assigned_boat_top_2_percent":26.0},
+        {"racer_boat_number":5,"racer_name":"選手17-5","racer_number":3175,"racer_class_number":2,"racer_average_start_timing":0.13,"racer_flying_count":0,"racer_local_top_1_percent":7.0,"racer_assigned_motor_top_2_percent":54.0,"racer_assigned_boat_top_2_percent":33.0},
+        {"racer_boat_number":6,"racer_name":"選手17-6","racer_number":3176,"racer_class_number":3,"racer_average_start_timing":0.10,"racer_flying_count":0,"racer_local_top_1_percent":5.9,"racer_assigned_motor_top_2_percent":47.0,"racer_assigned_boat_top_2_percent":29.0}
+      ]
+    },
+    {
+      "race_date": "2025-09-30",
+      "race_stadium_number": 18,
+      "race_number": 1,
+      "race_title": "第1レース",
+      "race_subtitle": "",
+      "race_distance": 1500,
+      "boats": [
+        {"racer_boat_number":1,"racer_name":"選手18-1","racer_number":3181,"racer_class_number":1,"racer_average_start_timing":0.12,"racer_flying_count":0,"racer_local_top_1_percent":5.6,"racer_assigned_motor_top_2_percent":46.7,"racer_assigned_boat_top_2_percent":28.7},
+        {"racer_boat_number":2,"racer_name":"選手18-2","racer_number":3182,"racer_class_number":2,"racer_average_start_timing":0.15,"racer_flying_count":0,"racer_local_top_1_percent":6.4,"racer_assigned_motor_top_2_percent":49.7,"racer_assigned_boat_top_2_percent":30.7},
+        {"racer_boat_number":3,"racer_name":"選手18-3","racer_number":3183,"racer_class_number":3,"racer_average_start_timing":0.11,"racer_flying_count":0,"racer_local_top_1_percent":6.9,"racer_assigned_motor_top_2_percent":52.4,"racer_assigned_boat_top_2_percent":32.4},
+        {"racer_boat_number":4,"racer_name":"選手18-4","racer_number":3184,"racer_class_number":1,"racer_average_start_timing":0.17,"racer_flying_count":0,"racer_local_top_1_percent":5.2,"racer_assigned_motor_top_2_percent":41.6,"racer_assigned_boat_top_2_percent":26.6},
+        {"racer_boat_number":5,"racer_name":"選手18-5","racer_number":3185,"racer_class_number":2,"racer_average_start_timing":0.13,"racer_flying_count":0,"racer_local_top_1_percent":7.2,"racer_assigned_motor_top_2_percent":54.7,"racer_assigned_boat_top_2_percent":33.7},
+        {"racer_boat_number":6,"racer_name":"選手18-6","racer_number":3186,"racer_class_number":3,"racer_average_start_timing":0.09,"racer_flying_count":0,"racer_local_top_1_percent":6.0,"racer_assigned_motor_top_2_percent":48.4,"racer_assigned_boat_top_2_percent":30.4}
+      ]
+    },
+    {
+      "race_date": "2025-09-30",
+      "race_stadium_number": 19,
+      "race_number": 1,
+      "race_title": "第1レース",
+      "race_subtitle": "",
+      "race_distance": 1500,
+      "boats": [
+        {"racer_boat_number":1,"racer_name":"選手19-1","racer_number":3191,"racer_class_number":1,"racer_average_start_timing":0.11,"racer_flying_count":0,"racer_local_top_1_percent":5.5,"racer_assigned_motor_top_2_percent":46.2,"racer_assigned_boat_top_2_percent":28.2},
+        {"racer_boat_number":2,"racer_name":"選手19-2","racer_number":3192,"racer_class_number":2,"racer_average_start_timing":0.14,"racer_flying_count":0,"racer_local_top_1_percent":6.3,"racer_assigned_motor_top_2_percent":49.3,"racer_assigned_boat_top_2_percent":30.3},
+        {"racer_boat_number":3,"racer_name":"選手19-3","racer_number":3193,"racer_class_number":3,"racer_average_start_timing":0.12,"racer_flying_count":0,"racer_local_top_1_percent":6.8,"racer_assigned_motor_top_2_percent":52.3,"racer_assigned_boat_top_2_percent":32.3},
+        {"racer_boat_number":4,"racer_name":"選手19-4","racer_number":3194,"racer_class_number":1,"racer_average_start_timing":0.17,"racer_flying_count":0,"racer_local_top_1_percent":5.1,"racer_assigned_motor_top_2_percent":41.4,"racer_assigned_boat_top_2_percent":26.4},
+        {"racer_boat_number":5,"racer_name":"選手19-5","racer_number":3195,"racer_class_number":2,"racer_average_start_timing":0.13,"racer_flying_count":0,"racer_local_top_1_percent":7.1,"racer_assigned_motor_top_2_percent":54.3,"racer_assigned_boat_top_2_percent":33.3},
+        {"racer_boat_number":6,"racer_name":"選手19-6","racer_number":3196,"racer_class_number":3,"racer_average_start_timing":0.10,"racer_flying_count":0,"racer_local_top_1_percent":6.0,"racer_assigned_motor_top_2_percent":48.0,"racer_assigned_boat_top_2_percent":30.0}
+      ]
+    },
+    {
+      "race_date": "2025-09-30",
+      "race_stadium_number": 20,
+      "race_number": 1,
+      "race_title": "第1レース",
+      "race_subtitle": "",
+      "race_distance": 1500,
+      "boats": [
+        {"racer_boat_number":1,"racer_name":"選手20-1","racer_number":3201,"racer_class_number":1,"racer_average_start_timing":0.12,"racer_flying_count":0,"racer_local_top_1_percent":5.7,"racer_assigned_motor_top_2_percent":46.9,"racer_assigned_boat_top_2_percent":28.9},
+        {"racer_boat_number":2,"racer_name":"選手20-2","racer_number":3202,"racer_class_number":2,"racer_average_start_timing":0.15,"racer_flying_count":0,"racer_local_top_1_percent":6.5,"racer_assigned_motor_top_2_percent":49.9,"racer_assigned_boat_top_2_percent":30.9},
+        {"racer_boat_number":3,"racer_name":"選手20-3","racer_number":3203,"racer_class_number":3,"racer_average_start_timing":0.11,"racer_flying_count":0,"racer_local_top_1_percent":6.9,"racer_assigned_motor_top_2_percent":52.9,"racer_assigned_boat_top_2_percent":32.9},
+        {"racer_boat_number":4,"racer_name":"選手20-4","racer_number":3204,"racer_class_number":1,"racer_average_start_timing":0.17,"racer_flying_count":0,"racer_local_top_1_percent":5.2,"racer_assigned_motor_top_2_percent":41.6,"racer_assigned_boat_top_2_percent":26.6},
+        {"racer_boat_number":5,"racer_name":"選手20-5","racer_number":3205,"racer_class_number":2,"racer_average_start_timing":0.13,"racer_flying_count":0,"racer_local_top_1_percent":7.3,"racer_assigned_motor_top_2_percent":54.7,"racer_assigned_boat_top_2_percent":33.7},
+        {"racer_boat_number":6,"racer_name":"選手20-6","racer_number":3206,"racer_class_number":3,"racer_average_start_timing":0.09,"racer_flying_count":0,"racer_local_top_1_percent":6.1,"racer_assigned_motor_top_2_percent":48.4,"racer_assigned_boat_top_2_percent":30.4}
+      ]
+    },
+    {
+      "race_date": "2025-09-30",
+      "race_stadium_number": 21,
+      "race_number": 1,
+      "race_title": "第1レース",
+      "race_subtitle": "",
+      "race_distance": 1500,
+      "boats": [
+        {"racer_boat_number":1,"racer_name":"選手21-1","racer_number":3211,"racer_class_number":1,"racer_average_start_timing":0.12,"racer_flying_count":0,"racer_local_top_1_percent":5.6,"racer_assigned_motor_top_2_percent":46.4,"racer_assigned_boat_top_2_percent":28.4},
+        {"racer_boat_number":2,"racer_name":"選手21-2","racer_number":3212,"racer_class_number":2,"racer_average_start_timing":0.15,"racer_flying_count":0,"racer_local_top_1_percent":6.4,"racer_assigned_motor_top_2_percent":49.6,"racer_assigned_boat_top_2_percent":30.6},
+        {"racer_boat_number":3,"racer_name":"選手21-3","racer_number":3213,"racer_class_number":3,"racer_average_start_timing":0.11,"racer_flying_count":0,"racer_local_top_1_percent":6.7,"racer_assigned_motor_top_2_percent":52.6,"racer_assigned_boat_top_2_percent":32.6},
+        {"racer_boat_number":4,"racer_name":"選手21-4","racer_number":3214,"racer_class_number":1,"racer_average_start_timing":0.17,"racer_flying_count":0,"racer_local_top_1_percent":5.2,"racer_assigned_motor_top_2_percent":41.5,"racer_assigned_boat_top_2_percent":26.5},
+        {"racer_boat_number":5,"racer_name":"選手21-5","racer_number":3215,"racer_class_number":2,"racer_average_start_timing":0.13,"racer_flying_count":0,"racer_local_top_1_percent":7.2,"racer_assigned_motor_top_2_percent":54.9,"racer_assigned_boat_top_2_percent":33.9},
+        {"racer_boat_number":6,"racer_name":"選手21-6","racer_number":3216,"racer_class_number":3,"racer_average_start_timing":0.10,"racer_flying_count":0,"racer_local_top_1_percent":6.0,"racer_assigned_motor_top_2_percent":48.3,"racer_assigned_boat_top_2_percent":30.3}
+      ]
+    },
+    {
+      "race_date": "2025-09-30",
+      "race_stadium_number": 22,
+      "race_number": 1,
+      "race_title": "第1レース",
+      "race_subtitle": "",
+      "race_distance": 1500,
+      "boats": [
+        {"racer_boat_number":1,"racer_name":"選手22-1","racer_number":3221,"racer_class_number":1,"racer_average_start_timing":0.11,"racer_flying_count":0,"racer_local_top_1_percent":5.5,"racer_assigned_motor_top_2_percent":46.1,"racer_assigned_boat_top_2_percent":28.1},
+        {"racer_boat_number":2,"racer_name":"選手22-2","racer_number":3222,"racer_class_number":2,"racer_average_start_timing":0.14,"racer_flying_count":0,"racer_local_top_1_percent":6.1,"racer_assigned_motor_top_2_percent":49.2,"racer_assigned_boat_top_2_percent":30.2},
+        {"racer_boat_number":3,"racer_name":"選手22-3","racer_number":3223,"racer_class_number":3,"racer_average_start_timing":0.12,"racer_flying_count":0,"racer_local_top_1_percent":6.6,"racer_assigned_motor_top_2_percent":52.1,"racer_assigned_boat_top_2_percent":32.1},
+        {"racer_boat_number":4,"racer_name":"選手22-4","racer_number":3224,"racer_class_number":1,"racer_average_start_timing":0.17,"racer_flying_count":0,"racer_local_top_1_percent":5.2,"racer_assigned_motor_top_2_percent":41.3,"racer_assigned_boat_top_2_percent":26.3},
+        {"racer_boat_number":5,"racer_name":"選手22-5","racer_number":3225,"racer_class_number":2,"racer_average_start_timing":0.13,"racer_flying_count":0,"racer_local_top_1_percent":7.3,"racer_assigned_motor_top_2_percent":54.8,"racer_assigned_boat_top_2_percent":33.8},
+        {"racer_boat_number":6,"racer_name":"選手22-6","racer_number":3226,"racer_class_number":3,"racer_average_start_timing":0.09,"racer_flying_count":0,"racer_local_top_1_percent":6.0,"racer_assigned_motor_top_2_percent":48.0,"racer_assigned_boat_top_2_percent":30.0}
+      ]
+    },
+    {
+      "race_date": "2025-09-30",
+      "race_stadium_number": 23,
+      "race_number": 1,
+      "race_title": "第1レース",
+      "race_subtitle": "",
+      "race_distance": 1500,
+      "boats": [
+        {"racer_boat_number":1,"racer_name":"選手23-1","racer_number":3231,"racer_class_number":1,"racer_average_start_timing":0.12,"racer_flying_count":0,"racer_local_top_1_percent":5.6,"racer_assigned_motor_top_2_percent":46.4,"racer_assigned_boat_top_2_percent":28.4},
+        {"racer_boat_number":2,"racer_name":"選手23-2","racer_number":3232,"racer_class_number":2,"racer_average_start_timing":0.15,"racer_flying_count":0,"racer_local_top_1_percent":6.4,"racer_assigned_motor_top_2_percent":49.4,"racer_assigned_boat_top_2_percent":30.4},
+        {"racer_boat_number":3,"racer_name":"選手23-3","racer_number":3233,"racer_class_number":3,"racer_average_start_timing":0.11,"racer_flying_count":0,"racer_local_top_1_percent":6.9,"racer_assigned_motor_top_2_percent":52.4,"racer_assigned_boat_top_2_percent":32.4},
+        {"racer_boat_number":4,"racer_name":"選手23-4","racer_number":3234,"racer_class_number":1,"racer_average_start_timing":0.17,"racer_flying_count":0,"racer_local_top_1_percent":5.2,"racer_assigned_motor_top_2_percent":41.6,"racer_assigned_boat_top_2_percent":26.6},
+        {"racer_boat_number":5,"racer_name":"選手23-5","racer_number":3235,"racer_class_number":2,"racer_average_start_timing":0.13,"racer_flying_count":0,"racer_local_top_1_percent":7.2,"racer_assigned_motor_top_2_percent":54.9,"racer_assigned_boat_top_2_percent":33.9},
+        {"racer_boat_number":6,"racer_name":"選手23-6","racer_number":3236,"racer_class_number":3,"racer_average_start_timing":0.10,"racer_flying_count":0,"racer_local_top_1_percent":6.0,"racer_assigned_motor_top_2_percent":48.3,"racer_assigned_boat_top_2_percent":30.3}
+      ]
+    },
+    {
+      "race_date": "2025-09-30",
+      "race_stadium_number": 24,
+      "race_number": 1,
+      "race_title": "第1レース",
+      "race_subtitle": "",
+      "race_distance": 1500,
+      "boats": [
+        {"racer_boat_number":1,"racer_name":"選手24-1","racer_number":3241,"racer_class_number":1,"racer_average_start_timing":0.12,"racer_flying_count":0,"racer_local_top_1_percent":5.6,"racer_assigned_motor_top_2_percent":46.6,"racer_assigned_boat_top_2_percent":28.6},
+        {"racer_boat_number":2,"racer_name":"選手24-2","racer_number":3242,"racer_class_number":2,"racer_average_start_timing":0.15,"racer_flying_count":0,"racer_local_top_1_percent":6.5,"racer_assigned_motor_top_2_percent":49.5,"racer_assigned_boat_top_2_percent":30.5},
+        {"racer_boat_number":3,"racer_name":"選手24-3","racer_number":3243,"racer_class_number":3,"racer_average_start_timing":0.11,"racer_flying_count":0,"racer_local_top_1_percent":6.9,"racer_assigned_motor_top_2_percent":52.9,"racer_assigned_boat_top_2_percent":32.9},
+        {"racer_boat_number":4,"racer_name":"選手24-4","racer_number":3244,"racer_class_number":1,"racer_average_start_timing":0.17,"racer_flying_count":0,"racer_local_top_1_percent":5.2,"racer_assigned_motor_top_2_percent":41.6,"racer_assigned_boat_top_2_percent":26.6},
+        {"racer_boat_number":5,"racer_name":"選手24-5","racer_number":3245,"racer_class_number":2,"racer_average_start_timing":0.13,"racer_flying_count":0,"racer_local_top_1_percent":7.2,"racer_assigned_motor_top_2_percent":54.9,"racer_assigned_boat_top_2_percent":33.9},
+        {"racer_boat_number":6,"racer_name":"選手24-6","racer_number":3246,"racer_class_number":3,"racer_average_start_timing":0.09,"racer_flying_count":0,"racer_local_top_1_percent":6.1,"racer_assigned_motor_top_2_percent":48.3,"racer_assigned_boat_top_2_percent":30.3}
+      ]
+    }
+  ],
+  "races": {
+    "programs": []
+  },
+  "stats": {},
+  "history": {}
+    }
