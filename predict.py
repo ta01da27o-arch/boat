@@ -1,26 +1,45 @@
 import pandas as pd
-import joblib
+import pickle
 
 FEATURES_FILE = "features.csv"
 MODEL_FILE = "model.pkl"
 
 def load_features():
+    # 特徴量CSV読み込み
     df = pd.read_csv(FEATURES_FILE)
-    if "racer_number" not in df.columns:
-        raise ValueError("features.csv に 'racer_number' が存在しません。features.py を修正してください。")
-    return df.set_index("racer_number")
+
+    # ✅ 修正: 'racer_id' → 'racer_number'
+    grouped = df.groupby("racer_number").agg(
+        avg_rank=("racer_place_number", "mean"),
+        best_rank=("racer_place_number", "min"),
+        worst_rank=("racer_place_number", "max"),
+        race_count=("racer_place_number", "count")
+    ).reset_index()
+
+    X = grouped[["avg_rank", "best_rank", "worst_rank", "race_count"]].fillna(0)
+    return grouped, X
 
 def main():
-    df = load_features()
-    model = joblib.load(MODEL_FILE)
+    # 特徴量データ
+    grouped, X = load_features()
 
-    # 直近のレースを予測対象にする（例：最後のレコード6艇分）
-    target = df.tail(6)
-    X = target[["racer_course_number", "racer_start_timing", "race_wind", "race_wave", "race_weather_number"]].fillna(0)
-    preds = model.predict(X)
+    # モデル読み込み
+    with open(MODEL_FILE, "rb") as f:
+        model = pickle.load(f)
 
-    for (racer_id, row), pred in zip(target.iterrows(), preds):
-        print(f"選手番号: {racer_id} ({row['racer_name']}) -> 予測着順: {pred}")
+    # 予測
+    preds = model.predict_proba(X)[:, 1]  # 「強い選手」の確率
+
+    # 出力用データフレーム
+    result_df = grouped[["racer_number"]].copy()
+    result_df["avg_rank"] = grouped["avg_rank"]
+    result_df["strength_prob"] = preds
+
+    # ソートして上位を表示
+    result_df = result_df.sort_values("strength_prob", ascending=False)
+
+    print("[INFO] 予測結果 (上位10人)")
+    print(result_df.head(10).to_string(index=False))
 
 if __name__ == "__main__":
     main()
