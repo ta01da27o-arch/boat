@@ -1,68 +1,79 @@
-# features.py（修正版）
 import json
 import pandas as pd
-from collections import defaultdict
-from datetime import datetime
+from pathlib import Path
 
-HISTORY_FILE = "history.json"
-FEATURES_FILE = "features.csv"
-
-def load_history():
-    try:
-        with open(HISTORY_FILE, "r", encoding="utf-8") as f:
-            return json.load(f)
-    except FileNotFoundError:
-        return {}
 
 def build_features(history, recent_n=20):
     """
-    選手ごとに直近N走の特徴量を生成
+    選手ごとの過去レース結果から特徴量を生成
+    recent_n: 直近何走分を対象にするか
     """
-    races_by_racer = defaultdict(list)
+    rows = []
+    for h in history:
+        places = h.get("places", [])
+        features = {}
+        valid_places = []
 
-    for date_key, content in history.items():
-        for race in content.get("results", []):
-            race_date = datetime.strptime(race["race_date"], "%Y-%m-%d")
-            for boat in race.get("boats", []):
-                place = boat.get("racer_place_number", 0)
-                if place > 0:  # 順位データあり
-                    races_by_racer[boat["racer_number"]].append({
-                        "date": race_date,
-                        "rank": place,
-                        "start": boat.get("racer_start_timing", 0.2)
-                    })
+        # 直近 recent_n レース分を対象
+        for place in places[-recent_n:]:
+            # None や空文字はスキップ
+            if place is None:
+                continue
+            if isinstance(place, str):
+                # "失格" "欠場" など数字以外は無視
+                if not place.isdigit():
+                    continue
+                place = int(place)
 
-    feature_rows = []
-    for racer_id, results in races_by_racer.items():
-        results = sorted(results, key=lambda x: x["date"], reverse=True)[:recent_n]
-        if not results:
-            continue
+            try:
+                p = int(place)
+            except Exception:
+                continue
 
-        total = len(results)
-        firsts = sum(1 for r in results if r["rank"] == 1)
-        seconds = sum(1 for r in results if r["rank"] == 2)
-        thirds = sum(1 for r in results if r["rank"] == 3)
-        avg_rank = sum(r["rank"] for r in results) / total
-        avg_start = sum(r["start"] for r in results) / total
+            if p > 0:  # 1着以上なら有効
+                valid_places.append(p)
 
-        feature_rows.append({
-            "racer_number": racer_id,
-            "total_races": total,
-            "win_rate": firsts / total,
-            "place2_rate": (firsts + seconds) / total,
-            "place3_rate": (firsts + seconds + thirds) / total,
-            "avg_rank": avg_rank,
-            "avg_start": avg_start,
-            "target": 1 if firsts > 0 else 0
-        })
+        # 特徴量を計算
+        if valid_places:
+            features["avg_rank"] = sum(valid_places) / len(valid_places)
+            features["best_rank"] = min(valid_places)
+            features["worst_rank"] = max(valid_places)
+            features["race_count"] = len(valid_places)
+        else:
+            # データなし → ダミー値
+            features["avg_rank"] = None
+            features["best_rank"] = None
+            features["worst_rank"] = None
+            features["race_count"] = 0
 
-    return pd.DataFrame(feature_rows)
+        # 選手IDなど基本情報を保持
+        features["racer_id"] = h.get("racer_id")
+        features["racer_name"] = h.get("racer_name")
+
+        rows.append(features)
+
+    return pd.DataFrame(rows)
+
 
 def main():
-    history = load_history()
+    # history.json を読み込み
+    history_path = Path("history.json")
+    if not history_path.exists():
+        print("[ERROR] history.json が存在しません")
+        return
+
+    with open(history_path, "r", encoding="utf-8") as f:
+        history = json.load(f)
+
+    print(f"[INFO] 履歴データ読み込み完了: {len(history)} 件")
+
+    # 特徴量生成
     df = build_features(history, recent_n=20)
-    df.to_csv(FEATURES_FILE, index=False)
-    print(f"特徴量を {FEATURES_FILE} に保存しました。 {len(df)} 選手分")
+
+    # CSV 出力
+    df.to_csv("features.csv", index=False, encoding="utf-8")
+    print(f"[INFO] 特徴量を features.csv に保存しました (件数: {len(df)})")
+
 
 if __name__ == "__main__":
     main()
