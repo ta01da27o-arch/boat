@@ -1,80 +1,26 @@
-# predict.py
-import json
-import joblib
 import pandas as pd
+import joblib
 
-MODEL_FILE = "model.pkl"
-DATA_FILE = "data.json"
-OUTPUT_FILE = "data.json"
 FEATURES_FILE = "features.csv"
-
-def load_model():
-    try:
-        return joblib.load(MODEL_FILE)
-    except FileNotFoundError:
-        print("モデルが見つかりません。先に train.py を実行してください。")
-        return None
+MODEL_FILE = "model.pkl"
 
 def load_features():
-    try:
-        return pd.read_csv(FEATURES_FILE).set_index("racer_number")
-    except FileNotFoundError:
-        return pd.DataFrame()
-
-def generate_bets(probabilities):
-    """
-    本命5点 + 穴5点の3連単買い目を生成
-    """
-    sorted_probs = sorted(probabilities.items(), key=lambda x: x[1], reverse=True)
-    top = [r for r, _ in sorted_probs[:3]]
-    bottom = [r for r, _ in sorted_probs[3:]]
-
-    main_bets = [[top[0], top[1], top[2]],
-                 [top[0], top[2], top[1]],
-                 [top[1], top[0], top[2]],
-                 [top[1], top[2], top[0]],
-                 [top[2], top[0], top[1]]]
-
-    dark_bets = []
-    for i in range(min(5, len(bottom))):
-        dark_bets.append([bottom[i], top[0], top[1]])
-
-    return main_bets, dark_bets
+    df = pd.read_csv(FEATURES_FILE)
+    if "racer_number" not in df.columns:
+        raise ValueError("features.csv に 'racer_number' が存在しません。features.py を修正してください。")
+    return df.set_index("racer_number")
 
 def main():
-    model = load_model()
-    if model is None:
-        return
+    df = load_features()
+    model = joblib.load(MODEL_FILE)
 
-    features_df = load_features()
+    # 直近のレースを予測対象にする（例：最後のレコード6艇分）
+    target = df.tail(6)
+    X = target[["racer_course_number", "racer_start_timing", "race_wind", "race_wave", "race_weather_number"]].fillna(0)
+    preds = model.predict(X)
 
-    with open(DATA_FILE, "r", encoding="utf-8") as f:
-        races = json.load(f)
-
-    for race in races:
-        probabilities = {}
-        for boat in race.get("boats", []):
-            racer_id = boat["racer_number"]
-            if racer_id in features_df.index:
-                X = features_df.loc[[racer_id], ["total_races", "win_rate", "place2_rate", "place3_rate", "avg_rank", "avg_start"]]
-                prob = model.predict(X)[0]
-            else:
-                prob = 0.1  # データがない場合は低めに設定
-
-            probabilities[racer_id] = float(prob)
-            boat["predicted_win_prob"] = round(prob, 3)
-
-        main_bets, dark_bets = generate_bets(probabilities)
-        race["predicted"] = {
-            "win_probabilities": probabilities,
-            "main_bets": main_bets,
-            "dark_bets": dark_bets
-        }
-
-    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-        json.dump(races, f, ensure_ascii=False, indent=2)
-
-    print(f"AI予想を {OUTPUT_FILE} に保存しました。")
+    for (racer_id, row), pred in zip(target.iterrows(), preds):
+        print(f"選手番号: {racer_id} ({row['racer_name']}) -> 予測着順: {pred}")
 
 if __name__ == "__main__":
     main()
