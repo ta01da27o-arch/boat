@@ -2,65 +2,46 @@ import json
 import pandas as pd
 from pathlib import Path
 
-
 def build_features(history, recent_n=20):
     """
-    選手ごとの過去レース結果から特徴量を生成
+    履歴データから特徴量を生成する
+    history: list of dict
     """
-    rows = []
+    features = []
     for h in history:
-        # 文字列として入っている場合 → dict に変換
-        if isinstance(h, str):
-            try:
-                h = json.loads(h)
-            except Exception:
-                continue
-
-        if not isinstance(h, dict):
-            continue
-
         places = h.get("places", [])
-        features = {}
-        valid_places = []
+        racer_ids = h.get("racer_ids", [])
+        racer_names = h.get("racer_names", [])
 
-        for place in places[-recent_n:]:
-            if place is None:
-                continue
-            if isinstance(place, str):
-                if not place.isdigit():  # "失格" "欠場" はスキップ
-                    continue
-                place = int(place)
-
-            try:
-                p = int(place)
-            except Exception:
+        for i, (rid, name) in enumerate(zip(racer_ids, racer_names)):
+            recent_places = places[:recent_n] if places else []
+            if not recent_places or all(p is None for p in recent_places):
                 continue
 
-            if p > 0:
-                valid_places.append(p)
+            valid_places = [p for p in recent_places if p is not None]
+            if not valid_places:
+                continue
 
-        # 特徴量を計算
-        if valid_places:
-            features["avg_rank"] = sum(valid_places) / len(valid_places)
-            features["best_rank"] = min(valid_places)
-            features["worst_rank"] = max(valid_places)
-            features["race_count"] = len(valid_places)
-        else:
-            features["avg_rank"] = None
-            features["best_rank"] = None
-            features["worst_rank"] = None
-            features["race_count"] = 0
+            avg_rank = sum(valid_places) / len(valid_places)
+            best_rank = min(valid_places)
+            worst_rank = max(valid_places)
 
-        features["racer_id"] = h.get("racer_id")
-        features["racer_name"] = h.get("racer_name")
+            features.append({
+                "racer_id": rid,
+                "racer_name": name,
+                "avg_rank": avg_rank,
+                "best_rank": best_rank,
+                "worst_rank": worst_rank,
+                "race_count": len(valid_places),
+            })
 
-        rows.append(features)
-
-    return pd.DataFrame(rows)
+    return pd.DataFrame(features)
 
 
 def main():
     history_path = Path("history.json")
+    features_path = Path("features.csv")
+
     if not history_path.exists():
         print("[ERROR] history.json が存在しません")
         return
@@ -70,9 +51,23 @@ def main():
 
     print(f"[INFO] 履歴データ読み込み完了: {len(history)} 件")
 
-    df = build_features(history, recent_n=20)
-    df.to_csv("features.csv", index=False, encoding="utf-8")
-    print(f"[INFO] 特徴量を features.csv に保存しました (件数: {len(df)})")
+    df_new = build_features(history, recent_n=20)
+
+    if df_new.empty:
+        print("[WARNING] 特徴量が作成できませんでした → 追記せず終了します")
+        return
+
+    # 既存の features.csv を読み込んで追記
+    if features_path.exists():
+        df_old = pd.read_csv(features_path)
+        df_all = pd.concat([df_old, df_new], ignore_index=True)
+        # racer_id + race_count で重複削除（必要に応じてキーを調整）
+        df_all = df_all.drop_duplicates(subset=["racer_id", "race_count"], keep="last")
+    else:
+        df_all = df_new
+
+    df_all.to_csv(features_path, index=False, encoding="utf-8")
+    print(f"[INFO] 特徴量を features.csv に保存しました (累計件数: {len(df_all)})")
 
 
 if __name__ == "__main__":
