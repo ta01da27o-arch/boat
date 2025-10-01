@@ -9,6 +9,9 @@ def build_features(history, recent_n=20):
     """
     features = []
     for h in history:
+        if not isinstance(h, dict):
+            continue  # dict 以外は無視
+
         places = h.get("places", [])
         racer_ids = h.get("racer_ids", [])
         racer_names = h.get("racer_names", [])
@@ -49,7 +52,16 @@ def main():
     with open(history_path, "r", encoding="utf-8") as f:
         history = json.load(f)
 
-    print(f"[INFO] 履歴データ読み込み完了: {len(history)} 件")
+    # 🔧 list[str] の場合は必ず dict に変換
+    if history and isinstance(history[0], str):
+        print("[INFO] history.json 内のデータを再パースします (list[str] → list[dict])")
+        try:
+            history = [json.loads(h) for h in history]
+        except Exception as e:
+            print(f"[ERROR] history.json の再パースに失敗しました: {e}")
+            return
+
+    print(f"[INFO] 履歴データ読み込み完了: {len(history)} 件 (dict型に変換済み)")
 
     df_new = build_features(history, recent_n=20)
 
@@ -61,7 +73,6 @@ def main():
     if features_path.exists():
         df_old = pd.read_csv(features_path)
         df_all = pd.concat([df_old, df_new], ignore_index=True)
-        # racer_id + race_count で重複削除（必要に応じてキーを調整）
         df_all = df_all.drop_duplicates(subset=["racer_id", "race_count"], keep="last")
     else:
         df_all = df_new
