@@ -2,41 +2,58 @@ import json
 import pandas as pd
 from pathlib import Path
 
-def build_features(history, recent_n=20):
+def build_features(history):
     """
-    履歴データから特徴量を生成する
-    history: list of dict
+    history.json のデータを1行ごとの特徴量に変換する
+    1レース × 6艇 → 6行
     """
     features = []
-    for h in history:
-        if not isinstance(h, dict):
-            continue  # dict 以外は無視
 
-        places = h.get("places", [])
-        racer_ids = h.get("racer_ids", [])
-        racer_names = h.get("racer_names", [])
+    # 日付ごと
+    for date, daily in history.items():
+        results = daily.get("results", [])
+        for race in results:
+            # レース情報
+            race_date = race.get("race_date")
+            stadium = race.get("race_stadium_number")
+            race_no = race.get("race_number")
+            wind = race.get("race_wind")
+            wind_dir = race.get("race_wind_direction_number")
+            wave = race.get("race_wave")
+            weather = race.get("race_weather_number")
+            temp = race.get("race_temperature")
+            water_temp = race.get("race_water_temperature")
+            technique = race.get("race_technique_number")
 
-        for i, (rid, name) in enumerate(zip(racer_ids, racer_names)):
-            recent_places = places[:recent_n] if places else []
-            if not recent_places or all(p is None for p in recent_places):
-                continue
+            boats = race.get("boats", [])
+            for boat in boats:
+                racer_id = boat.get("racer_number")
+                racer_name = boat.get("racer_name")
+                boat_no = boat.get("racer_boat_number")
+                course_no = boat.get("racer_course_number")
+                start_timing = boat.get("racer_start_timing")
+                place = boat.get("racer_place_number")
 
-            valid_places = [p for p in recent_places if p is not None]
-            if not valid_places:
-                continue
-
-            avg_rank = sum(valid_places) / len(valid_places)
-            best_rank = min(valid_places)
-            worst_rank = max(valid_places)
-
-            features.append({
-                "racer_id": rid,
-                "racer_name": name,
-                "avg_rank": avg_rank,
-                "best_rank": best_rank,
-                "worst_rank": worst_rank,
-                "race_count": len(valid_places),
-            })
+                features.append({
+                    # レース情報
+                    "race_date": race_date,
+                    "race_stadium_number": stadium,
+                    "race_number": race_no,
+                    "race_wind": wind,
+                    "race_wind_direction_number": wind_dir,
+                    "race_wave": wave,
+                    "race_weather_number": weather,
+                    "race_temperature": temp,
+                    "race_water_temperature": water_temp,
+                    "race_technique_number": technique,
+                    # 選手情報
+                    "racer_id": racer_id,
+                    "racer_name": racer_name,
+                    "racer_boat_number": boat_no,
+                    "racer_course_number": course_no,
+                    "racer_start_timing": start_timing,
+                    "racer_place_number": place
+                })
 
     return pd.DataFrame(features)
 
@@ -49,34 +66,36 @@ def main():
         print("[ERROR] history.json が存在しません")
         return
 
+    # JSON読み込み
     with open(history_path, "r", encoding="utf-8") as f:
         history = json.load(f)
 
-    # 🔧 list[str] の場合は必ず dict に変換
-    if history and isinstance(history[0], str):
-        print("[INFO] history.json 内のデータを再パースします (list[str] → list[dict])")
-        try:
-            history = [json.loads(h) for h in history]
-        except Exception as e:
-            print(f"[ERROR] history.json の再パースに失敗しました: {e}")
-            return
-
-    print(f"[INFO] 履歴データ読み込み完了: {len(history)} 件 (dict型に変換済み)")
-
-    df_new = build_features(history, recent_n=20)
-
-    if df_new.empty:
-        print("[WARNING] 特徴量が作成できませんでした → 追記せず終了します")
+    if not isinstance(history, dict):
+        print("[ERROR] history.json の形式が想定外です（dictではない）")
         return
 
-    # 既存の features.csv を読み込んで追記
+    print(f"[INFO] 履歴データ読み込み完了: {len(history)} 日分")
+
+    # 特徴量生成
+    df_new = build_features(history)
+
+    if df_new.empty:
+        print("[WARNING] 特徴量が生成されませんでした")
+        return
+
+    # 既存CSVがあれば追記（重複削除）
     if features_path.exists():
         df_old = pd.read_csv(features_path)
         df_all = pd.concat([df_old, df_new], ignore_index=True)
-        df_all = df_all.drop_duplicates(subset=["racer_id", "race_count"], keep="last")
+        df_all.drop_duplicates(
+            subset=["race_date", "race_stadium_number", "race_number", "racer_id"],
+            keep="last",
+            inplace=True
+        )
     else:
         df_all = df_new
 
+    # 保存
     df_all.to_csv(features_path, index=False, encoding="utf-8")
     print(f"[INFO] 特徴量を features.csv に保存しました (累計件数: {len(df_all)})")
 
