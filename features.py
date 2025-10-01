@@ -1,18 +1,24 @@
 import json
 import pandas as pd
-from pathlib import Path
 
 def build_features(history):
-    """
-    history.json のデータを1行ごとの特徴量に変換する
-    1レース × 6艇 → 6行
-    """
     features = []
 
-    # 日付ごと
     for date, daily in history.items():
+        if not isinstance(daily, dict):
+            print(f"[WARN] daily が dict ではありません: {type(daily)} -> {daily}")
+            continue
+
         results = daily.get("results", [])
+        if not isinstance(results, list):
+            print(f"[WARN] results が list ではありません: {type(results)} -> {results}")
+            continue
+
         for race in results:
+            if not isinstance(race, dict):
+                print(f"[WARN] race が dict ではありません: {type(race)} -> {race}")
+                continue
+
             # レース情報
             race_date = race.get("race_date")
             stadium = race.get("race_stadium_number")
@@ -26,7 +32,15 @@ def build_features(history):
             technique = race.get("race_technique_number")
 
             boats = race.get("boats", [])
+            if not isinstance(boats, list):
+                print(f"[WARN] boats が list ではありません: {type(boats)} -> {boats}")
+                continue
+
             for boat in boats:
+                if not isinstance(boat, dict):
+                    print(f"[WARN] boat が dict ではありません: {type(boat)} -> {boat}")
+                    continue
+
                 racer_id = boat.get("racer_number")
                 racer_name = boat.get("racer_name")
                 boat_no = boat.get("racer_boat_number")
@@ -35,7 +49,6 @@ def build_features(history):
                 place = boat.get("racer_place_number")
 
                 features.append({
-                    # レース情報
                     "race_date": race_date,
                     "race_stadium_number": stadium,
                     "race_number": race_no,
@@ -46,7 +59,6 @@ def build_features(history):
                     "race_temperature": temp,
                     "race_water_temperature": water_temp,
                     "race_technique_number": technique,
-                    # 選手情報
                     "racer_id": racer_id,
                     "racer_name": racer_name,
                     "racer_boat_number": boat_no,
@@ -59,45 +71,22 @@ def build_features(history):
 
 
 def main():
-    history_path = Path("history.json")
-    features_path = Path("features.csv")
-
-    if not history_path.exists():
-        print("[ERROR] history.json が存在しません")
-        return
-
-    # JSON読み込み
-    with open(history_path, "r", encoding="utf-8") as f:
+    with open("history.json", "r", encoding="utf-8") as f:
         history = json.load(f)
-
-    if not isinstance(history, dict):
-        print("[ERROR] history.json の形式が想定外です（dictではない）")
-        return
-
     print(f"[INFO] 履歴データ読み込み完了: {len(history)} 日分")
 
-    # 特徴量生成
     df_new = build_features(history)
+    print(f"[INFO] 新規データ: {len(df_new)} 行")
 
-    if df_new.empty:
-        print("[WARNING] 特徴量が生成されませんでした")
-        return
-
-    # 既存CSVがあれば追記（重複削除）
-    if features_path.exists():
-        df_old = pd.read_csv(features_path)
-        df_all = pd.concat([df_old, df_new], ignore_index=True)
-        df_all.drop_duplicates(
-            subset=["race_date", "race_stadium_number", "race_number", "racer_id"],
-            keep="last",
-            inplace=True
-        )
-    else:
+    # CSVに保存
+    try:
+        df_old = pd.read_csv("features.csv")
+        df_all = pd.concat([df_old, df_new]).drop_duplicates()
+    except FileNotFoundError:
         df_all = df_new
 
-    # 保存
-    df_all.to_csv(features_path, index=False, encoding="utf-8")
-    print(f"[INFO] 特徴量を features.csv に保存しました (累計件数: {len(df_all)})")
+    df_all.to_csv("features.csv", index=False, encoding="utf-8-sig")
+    print(f"[INFO] 特徴量CSVを保存しました: {len(df_all)} 行")
 
 
 if __name__ == "__main__":
