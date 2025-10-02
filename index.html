@@ -33,7 +33,7 @@
       </div>
     </section>
 
-    <!-- レース番号画面（4列×3行 = 12） -->
+    <!-- レース番号画面 -->
     <section id="screen-races" class="screen">
       <div class="card screen-top">
         <div class="screen-title" id="venueTitle">-</div>
@@ -44,14 +44,14 @@
       </div>
     </section>
 
-    <!-- 出走表 -->
+    <!-- 出走表詳細 -->
     <section id="screen-detail" class="screen">
       <div class="card screen-top">
         <div class="screen-title" id="raceTitle">-</div>
         <button id="backToRaces" class="btn back">戻る</button>
       </div>
 
-      <!-- 出走表本体 -->
+      <!-- 出走表 -->
       <div class="card">
         <table class="table" id="entryTable">
           <thead>
@@ -69,7 +69,7 @@
         </table>
       </div>
 
-      <!-- AI予想 -->
+      <!-- AI予想（買い目） -->
       <div class="card ai-block">
         <div class="ai-col">
           <div class="h3">AI 本命（5点）</div>
@@ -87,27 +87,22 @@
         </div>
       </div>
 
+      <!-- AI順位予測（新しいカード枠） -->
+      <div class="card">
+        <h3>AI順位予測</h3>
+        <table class="table" id="aiRank">
+          <thead>
+            <tr><th>順位</th><th>艇</th><th>選手</th><th>評価値</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
       <!-- コース別コメント -->
       <div class="card">
         <div class="h3">コース別コメント（1〜6コース）</div>
         <table class="table" id="commentTable">
           <thead><tr><th>コース</th><th>コメント</th></tr></thead>
-          <tbody></tbody>
-        </table>
-      </div>
-
-      <!-- レース順位予測 -->
-      <div class="card">
-        <div class="h3">AI 順位予測（6艇分）</div>
-        <table class="table" id="rankingTable">
-          <thead>
-            <tr>
-              <th>順位</th>
-              <th>艇</th>
-              <th>選手名</th>
-              <th>評価値</th>
-            </tr>
-          </thead>
           <tbody></tbody>
         </table>
       </div>
