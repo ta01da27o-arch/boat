@@ -1,45 +1,40 @@
 import pandas as pd
-import pickle
+import joblib
 
 FEATURES_FILE = "features.csv"
 MODEL_FILE = "model.pkl"
 
-def load_features():
-    # 特徴量CSV読み込み
+def main():
+    # モデル読み込み
+    model = joblib.load(MODEL_FILE)
+
+    # データ読み込み
     df = pd.read_csv(FEATURES_FILE)
 
-    # ✅ 修正: 'racer_id' → 'racer_number'
-    grouped = df.groupby("racer_number").agg(
-        avg_rank=("racer_place_number", "mean"),
-        best_rank=("racer_place_number", "min"),
-        worst_rank=("racer_place_number", "max"),
-        race_count=("racer_place_number", "count")
-    ).reset_index()
-
-    X = grouped[["avg_rank", "best_rank", "worst_rank", "race_count"]].fillna(0)
-    return grouped, X
-
-def main():
-    # 特徴量データ
-    grouped, X = load_features()
-
-    # モデル読み込み
-    with open(MODEL_FILE, "rb") as f:
-        model = pickle.load(f)
+    # 特徴量
+    X = df[[
+        "racer_course_number",
+        "racer_start_timing",
+        "race_wind",
+        "race_wave",
+        "race_temperature",
+        "race_water_temperature"
+    ]].fillna(0)
 
     # 予測
-    preds = model.predict_proba(X)[:, 1]  # 「強い選手」の確率
+    preds = model.predict(X)
+    df["predicted_place"] = preds
 
-    # 出力用データフレーム
-    result_df = grouped[["racer_number"]].copy()
-    result_df["avg_rank"] = grouped["avg_rank"]
-    result_df["strength_prob"] = preds
+    # 出力サンプル
+    for _, row in df.head(20).iterrows():
+        print(f"{row['race_date']} 競艇場:{row['race_stadium_number']} "
+              f"R{row['race_number']} {row['racer_name']} "
+              f"(艇番:{row['racer_boat_number']}, コース:{row['racer_course_number']}) "
+              f"=> 予測順位: {row['predicted_place']} 着")
 
-    # ソートして上位を表示
-    result_df = result_df.sort_values("strength_prob", ascending=False)
-
-    print("[INFO] 予測結果 (上位10人)")
-    print(result_df.head(10).to_string(index=False))
+    # 保存（必要なら JSON で出力も可）
+    df.to_csv("predictions.csv", index=False, encoding="utf-8-sig")
+    print("[INFO] 予測結果を predictions.csv に保存しました")
 
 if __name__ == "__main__":
     main()
