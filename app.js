@@ -1,8 +1,9 @@
 // app.js — 競艇AI予想フル版
-// data.json (出走表) + history.json (過去実績)
+// data.json (出走表) + history.json (過去実績) + predictions.csv (AI予測結果)
 
 const DATA_URL = "./data.json";
 const HISTORY_URL = "./history.json";
+const PREDICTIONS_URL = "./predictions.csv";
 
 const VENUE_NAMES = [
   "桐生","戸田","江戸川","平和島","多摩川","浜名湖","蒲郡","常滑",
@@ -26,13 +27,16 @@ const aiMainBody = document.querySelector("#aiMain tbody");
 const aiSubBody = document.querySelector("#aiSub tbody");
 const commentTableBody = document.querySelector("#commentTable tbody");
 const rankingTableBody = document.querySelector("#rankingTable tbody");
+const csvTableBody = document.querySelector("#csvTable tbody"); // CSV用
 
 const SCREEN_VENUES = document.getElementById("screen-venues");
 const SCREEN_RACES = document.getElementById("screen-races");
 const SCREEN_RACE = document.getElementById("screen-detail");
+const SCREEN_CSV = document.getElementById("screen-csv"); // CSV画面
 
 const backToVenuesBtn = document.getElementById("backToVenues");
 const backToRacesBtn = document.getElementById("backToRaces");
+const backToMainBtn = document.getElementById("backToMain"); // CSV画面から戻る
 
 // 状態
 let ALL_PROGRAMS = [];
@@ -54,10 +58,11 @@ function formatToDisplay(dstr) {
   }
 }
 function showScreen(name) {
-  [SCREEN_VENUES, SCREEN_RACES, SCREEN_RACE].forEach(s => s.classList.remove("active"));
+  [SCREEN_VENUES, SCREEN_RACES, SCREEN_RACE, SCREEN_CSV].forEach(s => s.classList.remove("active"));
   if (name === "venues") SCREEN_VENUES.classList.add("active");
   if (name === "races") SCREEN_RACES.classList.add("active");
   if (name === "race") SCREEN_RACE.classList.add("active");
+  if (name === "csv") SCREEN_CSV.classList.add("active");
 }
 function safeNum(v) {
   return (v==null || v==="" || isNaN(Number(v))) ? null : Number(v);
@@ -113,6 +118,29 @@ async function loadData(force=false) {
     renderVenues();
   } catch (e) {
     venuesGrid.innerHTML = `<div>データ取得失敗: ${e.message}</div>`;
+  }
+}
+
+/* --------- CSV読み込み --------- */
+async function loadCSV() {
+  try {
+    const response = await fetch(PREDICTIONS_URL + `?t=${Date.now()}`);
+    const text = await response.text();
+    const rows = text.trim().split("\n").map(r => r.split(","));
+    const headers = rows[0];
+    const records = rows.slice(1);
+
+    csvTableBody.innerHTML = "";
+    records.forEach(r=>{
+      const tr=document.createElement("tr");
+      r.forEach(c=>{ tr.innerHTML += `<td>${c}</td>`; });
+      csvTableBody.appendChild(tr);
+    });
+
+    showScreen("csv");
+  } catch(e) {
+    csvTableBody.innerHTML = `<tr><td colspan="10">CSV読込失敗: ${e.message}</td></tr>`;
+    showScreen("csv");
   }
 }
 
@@ -237,6 +265,7 @@ yesterdayBtn.onclick=()=>{CURRENT_MODE="yesterday";yesterdayBtn.classList.add("a
 refreshBtn.onclick=()=>loadData(true);
 backToVenuesBtn.onclick=()=>showScreen("venues");
 backToRacesBtn.onclick=()=>showScreen("races");
+backToMainBtn.onclick=()=>showScreen("venues"); // CSV画面から戻る
 
 /* --------- 起動 --------- */
 loadData();
