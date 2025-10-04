@@ -14,8 +14,9 @@ BASE_URL = "https://www.boatrace.jp/owpc/pc/race/index"
 
 def fetch_weather(jcd, date):
     """
-    場コード jcd (01:桐生, 02:戸田, ...)
-    date: "YYYYMMDD"
+    気象情報を取得
+    jcd: 場コード
+    date: YYYYMMDD
     """
     url = f"{BASE_URL}?jcd={jcd}&hd={date}"
     print(f"[INFO] 気象データ取得: {url}")
@@ -43,6 +44,7 @@ def fetch_weather(jcd, date):
 
 
 def flatten_data(data):
+    """APIのdict/list混在をフラット化"""
     if isinstance(data, dict):
         flat = []
         for v in data.values():
@@ -80,7 +82,7 @@ def merge_weather(programs):
             if jcd:
                 if jcd not in weather_cache:
                     weather_cache[jcd] = fetch_weather(jcd, today)
-                # ✅ アプリ画面には表示しないが data.json に保存して AI 予想で使う
+                # ✅ 表示用ではなく AI 学習用に保存
                 race["weather_info"] = weather_cache[jcd]
 
     return programs
@@ -112,16 +114,15 @@ def save_results(results):
 
 if __name__ == "__main__":
     try:
-        # 実行時間によって処理を分ける
         hour = datetime.now().hour
 
-        if hour < 12:  # 日本時間 朝 (例: 8時実行)
+        if hour < 12:  # JST朝 → 出走表処理
             print("[INFO] 出走表処理モード")
             programs = fetch_programs()
             programs = merge_weather(programs)
             save_programs(programs)
 
-        else:  # 日本時間 夜 (例: 23時実行)
+        else:  # JST夜 → 結果処理
             print("[INFO] レース結果処理モード")
             results = fetch_results()
             save_results(results)
