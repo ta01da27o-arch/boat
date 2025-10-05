@@ -1,4 +1,5 @@
-// app.js — AI学習エンジン連携版（修正版：堅牢化 + ステータス表示）
+// app.js — AI学習エンジン連携版（表示改善：階級表示＋勝率フォーマット）
+
 import { generateAIComments, generateAIPredictions, learnFromResults } from './ai_engine.js';
 
 const DATA_URL = "./data.json";
@@ -13,7 +14,7 @@ const dateLabel = document.getElementById("dateLabel");
 const todayBtn = document.getElementById("todayBtn");
 const yesterdayBtn = document.getElementById("yesterdayBtn");
 const refreshBtn = document.getElementById("refreshBtn");
-const aiStatus = document.getElementById("aiStatus");        // ← ステータス要素を取得
+const aiStatus = document.getElementById("aiStatus");
 const venuesGrid = document.getElementById("venuesGrid");
 const racesGrid = document.getElementById("racesGrid");
 const venueTitle = document.getElementById("venueTitle");
@@ -51,11 +52,34 @@ function showScreen(name){
   if(name === "race") SCREEN_RACE.classList.add("active");
 }
 function safeNum(v){ return (v == null || v === "" || isNaN(Number(v))) ? null : Number(v); }
+function logStatus(msg) { console.log("[APP]", msg); if (aiStatus) aiStatus.textContent = msg; }
 
-// 小さなユーティリティ：コンソールと画面ログ
-function logStatus(msg) {
-  console.log("[APP]", msg);
-  if (aiStatus) aiStatus.textContent = msg;
+/* 階級取得（数値→表示に対応） */
+function formatKlass(b) {
+  // 優先順にプロパティを読む（多様なデータソースに対応）
+  if (b.racer_class) return String(b.racer_class);
+  if (b.klass) return String(b.klass);
+  if (b.racer_class_number != null) {
+    const map = {1: "A1", 2: "A2", 3: "B1", 4: "B2"};
+    return map[b.racer_class_number] || String(b.racer_class_number);
+  }
+  if (b.racer_class_number_text) return String(b.racer_class_number_text);
+  if (b.class || b.class_number) return String(b.class || b.class_number);
+  return "-";
+}
+
+/* 勝率フォーマット
+   - 入力例: 7.8 -> 表示 78%
+   - 0.78 -> 78%
+   - 78 -> 78%
+*/
+function formatRateRaw(v) {
+  if (v == null || v === "" || isNaN(Number(v))) return null;
+  const n = Number(v);
+  if (n <= 1) return Math.round(n * 100);      // 0.78 -> 78
+  if (n <= 10) return Math.round(n * 10);      // 7.8 -> 78
+  if (n <= 100) return Math.round(n);          // 78 -> 78
+  return Math.round(n);                        // fallback
 }
 
 /* データ読み込み（堅牢化） */
@@ -64,32 +88,23 @@ async function loadData(force = false) {
     logStatus("データ取得中...");
     const q = force ? `?t=${Date.now()}` : "";
 
-    // fetch 個別に取り、404 を個別にチェックする（Promise.all の一発失敗を避ける）
     const fetchJsonSafe = async (url) => {
       try {
         const res = await fetch(url + q);
-        if (!res.ok) {
-          logStatus(`fetch error: ${url} -> ${res.status}`);
-          return null;
-        }
+        if (!res.ok) { logStatus(`fetch error: ${url} -> ${res.status}`); return null; }
         return await res.json();
       } catch (e) {
-        logStatus(`network error: ${url} -> ${e.message}`);
-        return null;
+        logStatus(`network error: ${url} -> ${e.message}`); return null;
       }
     };
 
     const fetchTextSafe = async (url) => {
       try {
         const res = await fetch(url + q);
-        if (!res.ok) {
-          logStatus(`fetch error: ${url} -> ${res.status}`);
-          return null;
-        }
+        if (!res.ok) { logStatus(`fetch error: ${url} -> ${res.status}`); return null; }
         return await res.text();
       } catch (e) {
-        logStatus(`network error: ${url} -> ${e.message}`);
-        return null;
+        logStatus(`network error: ${url} -> ${e.message}`); return null;
       }
     };
 
@@ -97,18 +112,13 @@ async function loadData(force = false) {
     const hData = await fetchJsonSafe(HISTORY_URL);
     const csvText = await fetchTextSafe(PREDICTIONS_URL);
 
-    // data.json の形が object (辞書) の場合は flatten（APIによって形が違うため）
     if (pData == null) {
       ALL_PROGRAMS = [];
     } else if (Array.isArray(pData)) {
       ALL_PROGRAMS = pData;
     } else if (typeof pData === "object") {
-      // flatten nested lists/objects
       const flattened = [];
-      Object.values(pData).forEach(v => {
-        if (Array.isArray(v)) flattened.push(...v);
-        else if (typeof v === "object") flattened.push(v);
-      });
+      Object.values(pData).forEach(v => { if (Array.isArray(v)) flattened.push(...v); else if (typeof v === "object") flattened.push(v); });
       ALL_PROGRAMS = flattened;
     } else {
       ALL_PROGRAMS = [];
@@ -116,22 +126,16 @@ async function loadData(force = false) {
 
     HISTORY = hData || {};
 
-    // CSV パース（安全）
     PREDICTIONS = [];
-    if (csvText && csvText.trim().length) {
-      try {
-        PREDICTIONS = parseCSV(csvText);
-      } catch (e) {
-        logStatus("predictions.csv parse error: " + e.message);
-        PREDICTIONS = [];
-      }
+    if (csvText && csvText.trim()) {
+      try { PREDICTIONS = parseCSV(csvText); }
+      catch (e) { logStatus("predictions.csv parse error: " + e.message); PREDICTIONS = []; }
     } else {
       logStatus("predictions.csv が見つからないか空です。");
     }
 
     dateLabel.textContent = formatToDisplay(new Date());
 
-    // AI 学習（履歴からモデルを更新）
     try {
       logStatus("AI 学習処理を実行中...");
       await learnFromResults(HISTORY);
@@ -143,7 +147,6 @@ async function loadData(force = false) {
     renderVenues();
     logStatus("準備完了");
   } catch (e) {
-    // ここに来るのは極めて稀（最上位の例外捕捉）
     console.error(e);
     venuesGrid.innerHTML = `<div>データ処理失敗: ${e.message}</div>`;
     logStatus("データ処理失敗");
@@ -167,12 +170,9 @@ function parseCSV(text) {
 function renderVenues(){
   showScreen("venues");
   venuesGrid.innerHTML = "";
-  const targetDate = (CURRENT_MODE === "today")
-    ? getIsoDate(new Date())
-    : getIsoDate(new Date(Date.now() - 86400000));
+  const targetDate = (CURRENT_MODE === "today") ? getIsoDate(new Date()) : getIsoDate(new Date(Date.now() - 86400000));
   const hasMap = {};
   ALL_PROGRAMS.forEach(p => {
-    // some programs might store date as race_date or date
     const d = p.race_date || p.date || null;
     const stadium = p.race_stadium_number || p.jcd || p.venue_id || null;
     if (d === targetDate && stadium) hasMap[stadium] = true;
@@ -197,9 +197,7 @@ function renderRaces(venueId) {
   showScreen("races");
   venueTitle.textContent = VENUE_NAMES[venueId - 1];
   racesGrid.innerHTML = "";
-  const targetDate = (CURRENT_MODE === "today")
-    ? getIsoDate(new Date())
-    : getIsoDate(new Date(Date.now() - 86400000));
+  const targetDate = (CURRENT_MODE === "today") ? getIsoDate(new Date()) : getIsoDate(new Date(Date.now() - 86400000));
   const progs = ALL_PROGRAMS.filter(p => {
     const d = p.race_date || p.date || null;
     const stadium = p.race_stadium_number || p.jcd || p.venue_id || null;
@@ -211,10 +209,7 @@ function renderRaces(venueId) {
     btn.textContent = `${no}R`;
     btn.className = "race-btn";
     if (exists.has(no)) btn.onclick = () => renderRaceDetail(venueId, no);
-    else {
-      btn.disabled = true;
-      btn.classList.add("disabled");
-    }
+    else { btn.disabled = true; btn.classList.add("disabled"); }
     racesGrid.appendChild(btn);
   }
 }
@@ -222,11 +217,8 @@ function renderRaces(venueId) {
 /* 出走表 + AI展開コメント + AI 順位予測 */
 async function renderRaceDetail(venueId, raceNo) {
   showScreen("race");
-  const targetDate = (CURRENT_MODE === "today")
-    ? getIsoDate(new Date())
-    : getIsoDate(new Date(Date.now() - 86400000));
+  const targetDate = (CURRENT_MODE === "today") ? getIsoDate(new Date()) : getIsoDate(new Date(Date.now() - 86400000));
 
-  // 柔軟にプロパティ名を探す
   const prog = ALL_PROGRAMS.find(p => {
     const d = p.race_date || p.date || null;
     const stadium = p.race_stadium_number || p.jcd || p.venue_id || null;
@@ -250,13 +242,16 @@ async function renderRaceDetail(venueId, raceNo) {
   const boats = prog.boats || prog.entries || prog.participants || [];
   const players = boats.map(b => {
     const st = safeNum(b.racer_average_start_timing || b.racer_start_timing || b.start_timing);
-    const local = safeNum(b.racer_local_top_1_percent || b.local_win_rate || b.local_win || 0);
-    const motor = safeNum(b.racer_assigned_motor_top_2_percent || b.motor_win_rate || b.motor);
-    const course = safeNum(b.racer_assigned_boat_top_2_percent || b.boat_win_rate || b.course);
+    const localRaw = safeNum(b.racer_local_top_1_percent || b.local_top_1_percent || b.local_win_rate || b.local || b.racer_local_win_rate);
+    const motorRaw = safeNum(b.racer_assigned_motor_top_2_percent || b.motor_top_2_percent || b.motor_win_rate || b.motor);
+    const courseRaw = safeNum(b.racer_assigned_boat_top_2_percent || b.boat_top_2_percent || b.boat_win_rate || b.course);
+    const local = formatRateRaw(localRaw);
+    const motor = formatRateRaw(motorRaw);
+    const course = formatRateRaw(courseRaw);
     return {
       lane: +b.racer_boat_number || +b.racer_course_number || +b.boat_no || 0,
       name: b.racer_name || b.name || "-",
-      klass: b.racer_class || b.klass || "-",
+      klass: formatKlass(b),
       st, local, motor, course,
       rawScore: (1 / (st || 0.3)) * ((motor || 30) / 100) * ((local || 30) / 100) * ((course || 30) / 100)
     };
@@ -279,9 +274,9 @@ async function renderRaceDetail(venueId, raceNo) {
         </div>
       </td>
       <td>-</td>
-      <td>${p.local != null ? Math.round(p.local) + "%" : "-"}</td>
-      <td>${p.motor != null ? Math.round(p.motor) + "%" : "-"}</td>
-      <td>${p.course != null ? Math.round(p.course) + "%" : "-"}</td>
+      <td>${p.local != null ? p.local + "%" : "-"}</td>
+      <td>${p.motor != null ? p.motor + "%" : "-"}</td>
+      <td>${p.course != null ? p.course + "%" : "-"}</td>
       <td class="eval-mark">${p.mark}</td>
     `;
     entryTableBody.appendChild(tr);
