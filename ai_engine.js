@@ -1,5 +1,4 @@
-// ai_engine.js — AI展開コメント・順位予測・買い目生成 + 学習対応 + 整合ロジック
-
+// ai_engine.js — AI展開コメント・順位予測・買い目生成 + 学習対応
 let aiMemory = {}; // 学習データを蓄積
 
 export async function learnFromResults(history) {
@@ -14,55 +13,50 @@ export async function learnFromResults(history) {
   });
 }
 
-// === AI展開コメント + 順位予測 + 買い目生成 ===
 export async function analyzeRace(players) {
-  players.forEach(p => {
-    const base = p.rawScore || 1;
-    const st = 1.0 - Math.min(p.st || 0.25, 0.25);
-    const local = (p.localWinRate || 0) / 100;
-    const adjust = (p.rank === "A1" ? 1.1 : p.rank === "A2" ? 1.05 : p.rank === "B1" ? 1.0 : 0.95);
-    p.evalScore = (base * 0.5 + st * 0.25 + local * 0.25) * adjust;
-  });
+  const ranks = await generateAIPredictions(players);
+  const comments = await generateAIComments(players, ranks);
+  return { ...ranks, comments };
+}
 
-  // === AI順位予測 ===
-  const ranks = [...players]
-    .sort((a, b) => b.evalScore - a.evalScore)
-    .map((p, i) => ({
-      rank: i + 1,
-      lane: p.lane,
-      name: p.name,
-      score: p.evalScore.toFixed(2)
-    }));
-
-  // === AI買い目（上位3艇） ===
-  const top3 = ranks.slice(0, 3).map(r => r.lane);
-  const mainCombo = top3.join("-");
-  const main = [{ combo: mainCombo, prob: "78.5" }];
-  const sub = [
-    { combo: [top3[0], top3[2], top3[1]].join("-"), prob: "45.0" },
-    { combo: [top3[1], top3[0], top3[2]].join("-"), prob: "35.0" }
-  ];
-
-  // === 展開コメント ===
-  const comments = players.map(p => {
-    const rankObj = ranks.find(r => r.lane === p.lane);
-    const pos = rankObj?.rank || 6;
+// === 展開コメント生成 ===
+export async function generateAIComments(players, aiPred) {
+  return players.map(p => {
+    const s = p.rawScore || 0;
     let comment = "";
-    if (pos === 1)
-      comment = `機力上位。展開を支配し頭を狙う。スタートも安定。`;
-    else if (pos === 2)
-      comment = `差し脚鋭く、展開次第で逆転も。機力上向き。`;
-    else if (pos === 3)
-      comment = `攻めの姿勢。展開一つで頭も十分。気配良好。`;
-    else if (pos === 4)
-      comment = `中堅級。スタート決まれば連下も。調整次第。`;
-    else if (pos === 5)
-      comment = `やや苦戦気味。展開頼みで上位食い込みを狙う。`;
-    else
-      comment = `機力劣勢。厳しい戦いも、気迫で一発狙う。`;
-
+    if (s > 3.5) comment = "機力上位。出足・伸びともに申し分なし。主導権を握る展開。";
+    else if (s > 2.5) comment = "仕上がり良好。スタート決まれば頭も十分。";
+    else if (s > 1.8) comment = "中堅級でバランス型。展開を突く足はある。";
+    else if (s > 1.0) comment = "足はやや見劣る。道中での粘りに期待。";
+    else comment = "苦戦気味。展開頼みの厳しい戦いになりそう。";
     return { lane: p.lane, comment };
   });
+}
 
-  return { ranks, main, sub, comments };
+// === AI順位予測 & 買い目生成 ===
+export async function generateAIPredictions(players) {
+  const sorted = [...players].sort((a, b) => b.rawScore - a.rawScore);
+  const ranks = sorted.map((p, i) => ({
+    rank: i + 1,
+    lane: p.lane,
+    name: p.name,
+    score: p.rawScore
+  }));
+
+  const combos = generateCombos([1, 2, 3, 4, 5, 6]);
+  const main = combos.slice(0, 5).map(c => ({ combo: c.join("-"), prob: (85 - c[0] * 8).toFixed(1) }));
+  const sub = combos.slice(-5).map(c => ({ combo: c.join("-"), prob: (15 + c[0] * 4).toFixed(1) }));
+
+  return { ranks, main, sub };
+}
+
+// === 3連単組み合わせ ===
+function generateCombos(arr) {
+  const result = [];
+  for (let i = 0; i < arr.length; i++)
+    for (let j = 0; j < arr.length; j++)
+      for (let k = 0; k < arr.length; k++)
+        if (i !== j && j !== k && i !== k)
+          result.push([arr[i], arr[j], arr[k]]);
+  return result;
 }
