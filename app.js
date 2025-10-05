@@ -1,4 +1,4 @@
-// app.js — 出走表＋AI展開コメント＋順位予測付き版
+// app.js — フル修正版（表示調整＋AI強弱コメント改善）
 
 const DATA_URL = "./data.json";
 const HISTORY_URL = "./history.json";
@@ -99,9 +99,13 @@ function renderVenues(){
   VENUE_NAMES.forEach((name, idx) => {
     const id = idx + 1;
     const has = !!hasMap[id];
+    const hitText = calcHitRateText(id);
     const card = document.createElement("div");
     card.className = "venue-card " + (has ? "clickable" : "disabled");
-    card.innerHTML = `<div class="v-name">${name}</div><div class="v-status">${has ? "開催中" : "ー"}</div><div class="v-rate">${calcHitRateText(id)}</div>`;
+    card.innerHTML = `
+      <div class="v-name">${name}</div>
+      <div class="v-status">${has ? "開催中" : "ー"}</div>
+      <div class="v-rate">${hitText}</div>`;
     if (has) card.onclick = () => renderRaces(id);
     venuesGrid.appendChild(card);
   });
@@ -130,7 +134,7 @@ function renderRaces(venueId) {
   }
 }
 
-/* 出走表 + AI 展開コメント + AI 順位予測 */
+/* 出走表 + AI展開コメント + AI 順位予測 */
 function renderRaceDetail(venueId, raceNo) {
   showScreen("race");
   const targetDate = (CURRENT_MODE === "today")
@@ -173,7 +177,6 @@ function renderRaceDetail(venueId, raceNo) {
   players.forEach(p => {
     const tr = document.createElement("tr");
     tr.classList.add(`row-${p.lane}`);
-    // 背景行クラス row-1 などは既に CSS に定義あり
     tr.innerHTML = `
       <td>${p.lane}</td>
       <td>
@@ -215,54 +218,38 @@ function renderRaceDetail(venueId, raceNo) {
   aiSubBody.innerHTML = "";
   const mainList = preds.filter(r => r.type === "main").slice(0, 5);
   const subList = preds.filter(r => r.type === "sub").slice(0, 5);
-  mainList.forEach(r => {
-    aiMainBody.innerHTML += `<tr><td>${r.combination}</td><td>${r.prob || "--"}%</td></tr>`;
-  });
-  subList.forEach(r => {
-    aiSubBody.innerHTML += `<tr><td>${r.combination}</td><td>${r.prob || "--"}%</td></tr>`;
-  });
+  if (mainList.length) {
+    mainList.forEach(r => aiMainBody.innerHTML += `<tr><td>${r.combination}</td><td>${r.prob || "--"}%</td></tr>`);
+  } else {
+    aiMainBody.innerHTML = `<tr><td colspan="2">データなし</td></tr>`;
+  }
+  if (subList.length) {
+    subList.forEach(r => aiSubBody.innerHTML += `<tr><td>${r.combination}</td><td>${r.prob || "--"}%</td></tr>`);
+  } else {
+    aiSubBody.innerHTML = `<tr><td colspan="2">データなし</td></tr>`;
+  }
 
-  // AI展開コメント 自動生成（各コース向け）
+  // AI展開コメント（強弱つける）
   commentTableBody.innerHTML = "";
+  const sorted = [...players].sort((a, b) => b.rawScore - a.rawScore);
+  const max = sorted[0].rawScore;
+  const min = sorted[sorted.length - 1].rawScore;
   players.forEach(p => {
-    const lane = p.lane;
-    const comment = generateComment(p, players);
+    const rate = (p.rawScore - min) / (max - min + 0.001);
+    const comment = generateComment(p, rate);
     const tr = document.createElement("tr");
-    tr.innerHTML = `<td>${lane}</td><td>${comment}</td>`;
+    tr.innerHTML = `<td>${p.lane}</td><td>${comment}</td>`;
     commentTableBody.appendChild(tr);
   });
 }
 
-// コメント生成：新聞記者風／実況風（約50文字程度）
-function generateComment(player, allPlayers) {
-  // 出走選手の情報を使って文生成
-  const { lane, st, motor, local, rawScore } = player;
-  let parts = [];
-
-  if (st != null) {
-    if (st < 0.14) parts.push("鋭いスタートで展開主導");
-    else parts.push("やや出遅れ警戒");
-  }
-  if (motor != null) {
-    if (motor > 60) parts.push("モーター絶好調");
-    else if (motor > 40) parts.push("機力まずまず");
-    else parts.push("機力平凡");
-  }
-  if (local != null) {
-    if (local > 50) parts.push("当地実績有利");
-    else parts.push("当地実績控えめ");
-  }
-  // 他選手との比較で強み・弱み補足
-  const topScore = Math.max(...allPlayers.map(p => p.rawScore || 0));
-  if (rawScore > topScore * 0.9) {
-    parts.push("展開依存少なく主導権狙う");
-  } else {
-    parts.push("他艇の動きに翻弄される可能性も");
-  }
-
-  // 文長を調整して約 40～60 字にまとめ
-  const sentence = parts.join("、") + "。";
-  return sentence;
+// 強弱つけたコメント生成
+function generateComment(p, rate) {
+  if (rate >= 0.8) return `機力上位。好スタート決めて展開主導、勝負気配濃厚。`;
+  if (rate >= 0.6) return `安定感あり。展開ひとつで上位争い可能。`;
+  if (rate >= 0.4) return `中堅域。展開待ちもチャンスあり。`;
+  if (rate >= 0.2) return `やや劣勢。スタート決めたいところ。`;
+  return `機力苦戦。展開頼みの厳しい戦い。`;
 }
 
 /* 的中率 */
@@ -278,7 +265,7 @@ function calcHitRateText(venueId) {
       }
     });
   }
-  return total ? `的中率 ${Math.round(hit / total * 100)}%` : "-";
+  return total ? `${Math.round(hit / total * 100)}%` : "0%";
 }
 
 /* イベント設定 */
