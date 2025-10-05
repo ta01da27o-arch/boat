@@ -1,45 +1,117 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ボートレースAI予想</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>競艇AI予想</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="favicon.ico" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header>
-    <h1>ボートレースAI予想</h1>
+  <header class="app-header">
+    <div class="title-wrap">
+      <h1 class="app-title">競艇AI予想</h1>
+      <div class="meta-row">
+        <div id="dateLabel" class="date-label">--/--/----</div>
+        <div class="tabs">
+          <button id="todayBtn" class="tab active">本日</button>
+          <button id="yesterdayBtn" class="tab">前日</button>
+        </div>
+      </div>
+    </div>
+    <div class="header-right">
+      <button id="refreshBtn" class="btn refresh">更新</button>
+    </div>
   </header>
 
-  <main id="screen-venues">
-    <div id="venue-list"></div>
-  </main>
+  <main class="view">
+    <!-- 24場一覧 -->
+    <section id="screen-venues" class="screen active">
+      <div class="card">
+        <div id="venuesGrid" class="venues-grid" aria-live="polite"></div>
+      </div>
+    </section>
 
-  <main id="screen-races" class="hidden">
-    <button id="backToVenues">← 戻る</button>
-    <h2 id="venue-name"></h2>
-    <div id="race-list"></div>
-  </main>
+    <!-- レース番号画面 -->
+    <section id="screen-races" class="screen">
+      <div class="card screen-top">
+        <div class="screen-title" id="venueTitle">-</div>
+        <button id="backToVenues" class="btn back">戻る</button>
+      </div>
+      <div class="card">
+        <div id="racesGrid" class="races-grid"></div>
+      </div>
+    </section>
 
-  <main id="screen-race" class="hidden">
-    <button id="backToRaces">← 戻る</button>
-    <h2 id="race-title"></h2>
-    <div id="race-table"></div>
+    <!-- 出走表 -->
+    <section id="screen-detail" class="screen">
+      <div class="card screen-top">
+        <div class="screen-title" id="raceTitle">-</div>
+        <button id="backToRaces" class="btn back">戻る</button>
+      </div>
 
-    <section id="ai-section">
-      <h3>AI買い目予想</h3>
-      <div id="ai-main-picks"></div>
-      <div id="ai-hole-picks"></div>
+      <!-- 出走表 -->
+      <div class="card">
+        <table class="table" id="entryTable">
+          <thead>
+            <tr>
+              <th>艇</th>
+              <th>級 / 選手名 / ST</th>
+              <th>F</th>
+              <th>当地</th>
+              <th>MT</th>
+              <th>コース</th>
+              <th>評価</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
 
-      <h3>AI展開コメント</h3>
-      <div id="ai-comments"></div>
+      <!-- AI予想 -->
+      <div class="card ai-block">
+        <div class="ai-col">
+          <div class="h3">AI 本命</div>
+          <table class="table prediction" id="aiMain">
+            <thead><tr><th>買い目</th><th>確率</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="ai-col">
+          <div class="h3">AI 穴</div>
+          <table class="table prediction" id="aiSub">
+            <thead><tr><th>買い目</th><th>確率</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
 
-      <h3>AI順位予測</h3>
-      <div id="ai-prediction"></div>
+      <!-- コース別コメント -->
+      <div class="card">
+        <div class="h3">展開予想コメント（1～6コース）</div>
+        <table class="table" id="commentTable">
+          <thead><tr><th>コース</th><th>コメント</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <!-- AI順位予測 -->
+      <div class="card">
+        <div class="h3">AI 順位予測</div>
+        <table class="table" id="rankingTable">
+          <thead>
+            <tr><th>順位</th><th>艇</th><th>選手名</th><th>評価値</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
     </section>
   </main>
 
-  <script src="ai_engine.js"></script>
+  <footer class="app-footer">© 2025 BOAT AI</footer>
+
   <script src="app.js"></script>
 </body>
 </html>
