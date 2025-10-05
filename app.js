@@ -1,6 +1,6 @@
-// app.js — AI学習エンジン連携＋AI解析(analyzeRace)統合版
+// app.js — AI学習エンジン連携版（表示改善：階級表示＋勝率フォーマット）
 
-import { generateAIComments, generateAIPredictions, learnFromResults, analyzeRace } from './ai_engine.js';
+import { generateAIComments, generateAIPredictions, learnFromResults } from './ai_engine.js';
 
 const DATA_URL = "./data.json";
 const HISTORY_URL = "./history.json";
@@ -54,8 +54,9 @@ function showScreen(name){
 function safeNum(v){ return (v == null || v === "" || isNaN(Number(v))) ? null : Number(v); }
 function logStatus(msg) { console.log("[APP]", msg); if (aiStatus) aiStatus.textContent = msg; }
 
-/* 階級取得 */
+/* 階級取得（数値→表示に対応） */
 function formatKlass(b) {
+  // 優先順にプロパティを読む（多様なデータソースに対応）
   if (b.racer_class) return String(b.racer_class);
   if (b.klass) return String(b.klass);
   if (b.racer_class_number != null) {
@@ -67,17 +68,21 @@ function formatKlass(b) {
   return "-";
 }
 
-/* 勝率フォーマット */
+/* 勝率フォーマット
+   - 入力例: 7.8 -> 表示 78%
+   - 0.78 -> 78%
+   - 78 -> 78%
+*/
 function formatRateRaw(v) {
   if (v == null || v === "" || isNaN(Number(v))) return null;
   const n = Number(v);
-  if (n <= 1) return Math.round(n * 100);
-  if (n <= 10) return Math.round(n * 10);
-  if (n <= 100) return Math.round(n);
-  return Math.round(n);
+  if (n <= 1) return Math.round(n * 100);      // 0.78 -> 78
+  if (n <= 10) return Math.round(n * 10);      // 7.8 -> 78
+  if (n <= 100) return Math.round(n);          // 78 -> 78
+  return Math.round(n);                        // fallback
 }
 
-/* データ読み込み */
+/* データ読み込み（堅牢化） */
 async function loadData(force = false) {
   try {
     logStatus("データ取得中...");
@@ -86,34 +91,64 @@ async function loadData(force = false) {
     const fetchJsonSafe = async (url) => {
       try {
         const res = await fetch(url + q);
-        if (!res.ok) return null;
+        if (!res.ok) { logStatus(`fetch error: ${url} -> ${res.status}`); return null; }
         return await res.json();
-      } catch { return null; }
+      } catch (e) {
+        logStatus(`network error: ${url} -> ${e.message}`); return null;
+      }
     };
 
     const fetchTextSafe = async (url) => {
       try {
         const res = await fetch(url + q);
-        if (!res.ok) return null;
+        if (!res.ok) { logStatus(`fetch error: ${url} -> ${res.status}`); return null; }
         return await res.text();
-      } catch { return null; }
+      } catch (e) {
+        logStatus(`network error: ${url} -> ${e.message}`); return null;
+      }
     };
 
     const pData = await fetchJsonSafe(DATA_URL);
     const hData = await fetchJsonSafe(HISTORY_URL);
     const csvText = await fetchTextSafe(PREDICTIONS_URL);
 
-    ALL_PROGRAMS = Array.isArray(pData) ? pData : (typeof pData === "object" ? Object.values(pData).flat() : []);
+    if (pData == null) {
+      ALL_PROGRAMS = [];
+    } else if (Array.isArray(pData)) {
+      ALL_PROGRAMS = pData;
+    } else if (typeof pData === "object") {
+      const flattened = [];
+      Object.values(pData).forEach(v => { if (Array.isArray(v)) flattened.push(...v); else if (typeof v === "object") flattened.push(v); });
+      ALL_PROGRAMS = flattened;
+    } else {
+      ALL_PROGRAMS = [];
+    }
+
     HISTORY = hData || {};
-    PREDICTIONS = csvText ? parseCSV(csvText) : [];
+
+    PREDICTIONS = [];
+    if (csvText && csvText.trim()) {
+      try { PREDICTIONS = parseCSV(csvText); }
+      catch (e) { logStatus("predictions.csv parse error: " + e.message); PREDICTIONS = []; }
+    } else {
+      logStatus("predictions.csv が見つからないか空です。");
+    }
 
     dateLabel.textContent = formatToDisplay(new Date());
 
-    await learnFromResults(HISTORY);
+    try {
+      logStatus("AI 学習処理を実行中...");
+      await learnFromResults(HISTORY);
+      logStatus("AI 学習完了");
+    } catch (e) {
+      logStatus("AI 学習エラー: " + e.message);
+    }
+
     renderVenues();
     logStatus("準備完了");
   } catch (e) {
     console.error(e);
+    venuesGrid.innerHTML = `<div>データ処理失敗: ${e.message}</div>`;
     logStatus("データ処理失敗");
   }
 }
@@ -121,11 +156,12 @@ async function loadData(force = false) {
 function parseCSV(text) {
   if (!text || !text.trim()) return [];
   const lines = text.trim().split(/\r?\n/);
-  const headers = lines[0].split(",");
+  if (lines.length < 2) return [];
+  const headers = lines[0].split(",").map(h => h.trim());
   return lines.slice(1).map(line => {
     const cols = line.split(",");
     const obj = {};
-    headers.forEach((h, i) => obj[h] = cols[i]);
+    headers.forEach((h, i) => obj[h] = cols[i] !== undefined ? cols[i] : "");
     return obj;
   });
 }
@@ -137,8 +173,8 @@ function renderVenues(){
   const targetDate = (CURRENT_MODE === "today") ? getIsoDate(new Date()) : getIsoDate(new Date(Date.now() - 86400000));
   const hasMap = {};
   ALL_PROGRAMS.forEach(p => {
-    const d = p.race_date || p.date;
-    const stadium = p.race_stadium_number || p.jcd || p.venue_id;
+    const d = p.race_date || p.date || null;
+    const stadium = p.race_stadium_number || p.jcd || p.venue_id || null;
     if (d === targetDate && stadium) hasMap[stadium] = true;
   });
   VENUE_NAMES.forEach((name, idx) => {
@@ -162,8 +198,12 @@ function renderRaces(venueId) {
   venueTitle.textContent = VENUE_NAMES[venueId - 1];
   racesGrid.innerHTML = "";
   const targetDate = (CURRENT_MODE === "today") ? getIsoDate(new Date()) : getIsoDate(new Date(Date.now() - 86400000));
-  const progs = ALL_PROGRAMS.filter(p => (p.race_date || p.date) === targetDate && (p.race_stadium_number || p.jcd || p.venue_id) === venueId);
-  const exists = new Set(progs.map(p => +p.race_number || +p.race_no));
+  const progs = ALL_PROGRAMS.filter(p => {
+    const d = p.race_date || p.date || null;
+    const stadium = p.race_stadium_number || p.jcd || p.venue_id || null;
+    return d === targetDate && stadium === venueId;
+  });
+  const exists = new Set(progs.map(p => +p.race_number || +p.race_no || 0));
   for (let no = 1; no <= 12; no++) {
     const btn = document.createElement("button");
     btn.textContent = `${no}R`;
@@ -174,80 +214,111 @@ function renderRaces(venueId) {
   }
 }
 
-/* 出走表＋AI予測＋AI解析(analyzeRace) */
+/* 出走表 + AI展開コメント + AI 順位予測 */
 async function renderRaceDetail(venueId, raceNo) {
   showScreen("race");
   const targetDate = (CURRENT_MODE === "today") ? getIsoDate(new Date()) : getIsoDate(new Date(Date.now() - 86400000));
 
-  const prog = ALL_PROGRAMS.find(p =>
-    (p.race_date || p.date) === targetDate &&
-    (p.race_stadium_number || p.jcd || p.venue_id) === venueId &&
-    (+p.race_number || +p.race_no) === raceNo
-  );
-
-  if (!prog) return;
-
-  raceTitle.textContent = `${VENUE_NAMES[venueId - 1]} ${raceNo}R ${prog.race_title || ""}`;
-  const boats = prog.boats || prog.entries || [];
-  const players = boats.map(b => ({
-    lane: +b.racer_boat_number || +b.boat_no || 0,
-    name: b.racer_name || b.name || "-",
-    klass: formatKlass(b),
-    st: safeNum(b.racer_average_start_timing || b.start_timing),
-    local: formatRateRaw(b.local_win_rate),
-    motor: formatRateRaw(b.motor_win_rate),
-    course: formatRateRaw(b.course_win_rate)
-  }));
-
-  // --- 出走表表示 ---
-  entryTableBody.innerHTML = "";
-  players.forEach(p => {
-    entryTableBody.innerHTML += `
-      <tr>
-        <td>${p.lane}</td>
-        <td><div class="klass">${p.klass}</div><div class="name">${p.name}</div><div class="st">ST:${p.st ?? "-"}</div></td>
-        <td>${p.local ?? "-"}</td>
-        <td>${p.motor ?? "-"}</td>
-        <td>${p.course ?? "-"}</td>
-      </tr>`;
+  const prog = ALL_PROGRAMS.find(p => {
+    const d = p.race_date || p.date || null;
+    const stadium = p.race_stadium_number || p.jcd || p.venue_id || null;
+    const rn = +p.race_number || +p.race_no || 0;
+    return d === targetDate && stadium === venueId && rn === raceNo;
   });
 
+  if (!prog) {
+    entryTableBody.innerHTML = `<tr><td colspan="7">出走データが見つかりません</td></tr>`;
+    aiMainBody.innerHTML = `<tr><td colspan="2">データなし</td></tr>`;
+    aiSubBody.innerHTML = `<tr><td colspan="2">データなし</td></tr>`;
+    commentTableBody.innerHTML = `<tr><td colspan="2">データなし</td></tr>`;
+    rankingTableBody.innerHTML = `<tr><td colspan="4">予測データなし</td></tr>`;
+    return;
+  }
+
+  raceTitle.textContent = `${VENUE_NAMES[venueId - 1]} ${raceNo}R ${prog.race_title || ""}`;
+
+  // 出走表
+  entryTableBody.innerHTML = "";
+  const boats = prog.boats || prog.entries || prog.participants || [];
+  const players = boats.map(b => {
+    const st = safeNum(b.racer_average_start_timing || b.racer_start_timing || b.start_timing);
+    const localRaw = safeNum(b.racer_local_top_1_percent || b.local_top_1_percent || b.local_win_rate || b.local || b.racer_local_win_rate);
+    const motorRaw = safeNum(b.racer_assigned_motor_top_2_percent || b.motor_top_2_percent || b.motor_win_rate || b.motor);
+    const courseRaw = safeNum(b.racer_assigned_boat_top_2_percent || b.boat_top_2_percent || b.boat_win_rate || b.course);
+    const local = formatRateRaw(localRaw);
+    const motor = formatRateRaw(motorRaw);
+    const course = formatRateRaw(courseRaw);
+    return {
+      lane: +b.racer_boat_number || +b.racer_course_number || +b.boat_no || 0,
+      name: b.racer_name || b.name || "-",
+      klass: formatKlass(b),
+      st, local, motor, course,
+      rawScore: (1 / (st || 0.3)) * ((motor || 30) / 100) * ((local || 30) / 100) * ((course || 30) / 100)
+    };
+  }).sort((a, b) => a.lane - b.lane);
+
+  // 評価マーク
+  const ranked = [...players].sort((a, b) => b.rawScore - a.rawScore);
+  ranked.forEach((p, i) => p.mark = (i === 0 ? "◎" : i === 1 ? "○" : i === 2 ? "▲" : "✕"));
+
+  players.forEach(p => {
+    const tr = document.createElement("tr");
+    tr.classList.add(`row-${p.lane}`);
+    tr.innerHTML = `
+      <td>${p.lane}</td>
+      <td>
+        <div class="entry-left">
+          <div class="klass">${p.klass}</div>
+          <div class="name">${p.name}</div>
+          <div class="st">ST:${p.st != null ? p.st.toFixed(2) : "-"}</div>
+        </div>
+      </td>
+      <td>-</td>
+      <td>${p.local != null ? p.local + "%" : "-"}</td>
+      <td>${p.motor != null ? p.motor + "%" : "-"}</td>
+      <td>${p.course != null ? p.course + "%" : "-"}</td>
+      <td class="eval-mark">${p.mark}</td>
+    `;
+    entryTableBody.appendChild(tr);
+  });
+
+  // AI 学習エンジン呼び出し
   try {
-    logStatus("AI解析実行中...");
-    const ai = await analyzeRace(players);
+    logStatus("AI 予測生成中...");
+    const aiPred = await generateAIPredictions(players);
+    const aiComments = await generateAIComments(players, aiPred);
 
     // AI買い目
-    renderPrediction("aiMain", ai.main);
-    renderPrediction("aiSub", ai.sub);
+    aiMainBody.innerHTML = "";
+    aiSubBody.innerHTML = "";
+    const mainList = (aiPred.main || []).slice(0, 5);
+    const subList = (aiPred.sub || []).slice(0, 5);
+    if (mainList.length) mainList.forEach(r => aiMainBody.innerHTML += `<tr><td>${r.combo}</td><td>${r.prob}%</td></tr>`);
+    else aiMainBody.innerHTML = `<tr><td colspan="2">データなし</td></tr>`;
+    if (subList.length) subList.forEach(r => aiSubBody.innerHTML += `<tr><td>${r.combo}</td><td>${r.prob}%</td></tr>`);
+    else aiSubBody.innerHTML = `<tr><td colspan="2">データなし</td></tr>`;
 
     // 展開コメント
-    renderComments(ai.comments);
+    commentTableBody.innerHTML = "";
+    aiComments.forEach(c => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td>${c.lane}</td><td>${c.comment}</td>`;
+      commentTableBody.appendChild(tr);
+    });
 
     // 順位予測
-    renderRanking(ai.ranks);
+    rankingTableBody.innerHTML = "";
+    (aiPred.ranks || []).forEach(r => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td>${r.rank}</td><td>${r.lane}</td><td>${r.name}</td><td>${(r.score||0).toFixed(2)}</td>`;
+      rankingTableBody.appendChild(tr);
+    });
 
-    logStatus("AI解析完了");
+    logStatus("AI 予測完了");
   } catch (e) {
-    logStatus("AI解析エラー: " + e.message);
+    logStatus("AI 予測エラー: " + e.message);
+    console.error(e);
   }
-}
-
-/* 表示補助 */
-function renderPrediction(id, data) {
-  const tbody = document.querySelector(`#${id} tbody`);
-  tbody.innerHTML = data?.length
-    ? data.map(x => `<tr><td>${x.combo}</td><td>${x.prob}%</td></tr>`).join("")
-    : `<tr><td colspan="2">データなし</td></tr>`;
-}
-function renderComments(data) {
-  commentTableBody.innerHTML = data?.length
-    ? data.map(c => `<tr><td>${c.lane}</td><td>${c.comment}</td></tr>`).join("")
-    : `<tr><td colspan="2">データなし</td></tr>`;
-}
-function renderRanking(data) {
-  rankingTableBody.innerHTML = data?.length
-    ? data.map(r => `<tr><td>${r.rank}</td><td>${r.lane}</td><td>${r.name}</td><td>${r.score?.toFixed(2) ?? "-"}</td></tr>`).join("")
-    : `<tr><td colspan="4">データなし</td></tr>`;
 }
 
 /* 的中率 */
@@ -266,7 +337,7 @@ function calcHitRateText(venueId) {
   return total ? `${Math.round(hit / total * 100)}%` : "0%";
 }
 
-/* イベント */
+/* イベント設定 */
 todayBtn.onclick = () => { CURRENT_MODE = "today"; todayBtn.classList.add("active"); yesterdayBtn.classList.remove("active"); renderVenues(); };
 yesterdayBtn.onclick = () => { CURRENT_MODE = "yesterday"; yesterdayBtn.classList.add("active"); todayBtn.classList.remove("active"); renderVenues(); };
 refreshBtn.onclick = () => loadData(true);
@@ -276,4 +347,8 @@ backToRacesBtn.onclick = () => showScreen("races");
 /* 起動 */
 loadData();
 
-window.addEventListener("error", ev => logStatus("エラー発生: " + (ev.error?.message || ev.message)));
+// グローバルエラーハンドラ（画面通知用）
+window.addEventListener("error", (ev) => {
+  console.error("Unhandled error:", ev.error || ev.message);
+  logStatus("ページエラー発生。コンソール確認");
+});
