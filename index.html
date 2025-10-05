@@ -22,6 +22,7 @@
     </div>
     <div class="header-right">
       <button id="refreshBtn" class="btn refresh">更新</button>
+      <div id="aiStatus" class="ai-status">AI学習中...</div>
     </div>
   </header>
 
@@ -106,6 +107,11 @@
           <tbody></tbody>
         </table>
       </div>
+
+      <!-- 🔽 AI 学習・自動生成連携セクション（hidden） -->
+      <section id="aiEngine" class="hidden">
+        <textarea id="aiLog" readonly></textarea>
+      </section>
 
     </section>
   </main>
