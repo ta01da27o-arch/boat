@@ -1,148 +1,112 @@
-// ai_engine.js — AI解析エンジン完全版
+// ai_engine.js — 競艇AI学習・予測・コメント生成エンジン
+// import対象: app.js（AI展開・順位・買い目を生成）
 
-/* ===========================================================
-    データ構造・目的
-    -----------------------------------------
-    app.js から呼び出されるAIロジック。
-    各レースの「選手データ」(players[]) を解析し、
-    以下を返す：
-     - main：AIメイン買い目
-     - sub：AIサブ買い目
-     - comments：展開コメント
-     - ranks：順位予測
-=========================================================== */
-
-/**
- * 基本スコア算出
- * 各選手の総合力を 0〜100 で評価。
- */
-function calcBaseScore(p) {
-  const local = p.local ?? 0;
-  const motor = p.motor ?? 0;
-  const course = p.course ?? 0;
-  const st = p.st ?? 0.20;
-  const klass = (p.klass || "").includes("A1") ? 1.15 :
-                 (p.klass || "").includes("A2") ? 1.05 :
-                 (p.klass || "").includes("B1") ? 0.95 : 0.90;
-
-  // スタートタイミングは小さいほど高評価
-  const stFactor = (0.25 - st) * 200;
-
-  let raw = (local * 0.4 + motor * 0.35 + course * 0.25) * klass + stFactor;
-  if (raw < 0) raw = 0;
-  return Math.min(Math.round(raw), 100);
+/* === 汎用ユーティリティ === */
+function normalize(v, min, max) {
+  if (v == null || isNaN(v)) return 0;
+  if (max === min) return 0;
+  return Math.max(0, Math.min(1, (v - min) / (max - min)));
+}
+function randPick(arr, n = 1) {
+  const shuffled = [...arr].sort(() => Math.random() - 0.5);
+  return shuffled.slice(0, n);
 }
 
-/**
- * AI展開コメント生成
- */
-function makeComments(players) {
-  const list = [];
-  players.forEach(p => {
-    let cmt = "";
-    if (p.st < 0.13) cmt = "トップスタートから主導権を握る";
-    else if (p.st < 0.17) cmt = "好スタートで展開を作る";
-    else if (p.st < 0.20) cmt = "平均的なスタートで中位争い";
-    else cmt = "出遅れ気味で展開待ち";
+/* === AIコメント生成 === */
+export async function generateAIComments(players, aiPred) {
+  const templates = {
+    start: [
+      "スリットで先行できそう",
+      "平均STが安定しており、トップスタートの可能性",
+      "立ち遅れ注意だが、ダッシュ一撃あり",
+      "行き足が良く、仕掛け次第で展開を作る",
+      "ターン巧者、差し有力",
+      "調整合えば一発狙いも"
+    ],
+    motor: [
+      "モーター気配上々",
+      "モーター出足良好",
+      "伸びが甘く調整課題あり",
+      "機力平凡だが操縦でカバー",
+      "パワー上位"
+    ],
+    local: [
+      "当地実績抜群",
+      "当地苦戦傾向",
+      "得意水面で安定走り",
+      "地元で意地を見せるか",
+      "外枠でも展開一つで"
+    ]
+  };
 
-    if (p.motor >= 80) cmt += "／モーター気配◎";
-    else if (p.motor >= 70) cmt += "／モーター良好";
-    else if (p.motor >= 60) cmt += "／普通";
-    else cmt += "／パワー不足";
-
-    if (p.local >= 80) cmt += "／当地実績高い";
-    else if (p.local <= 50) cmt += "／当地苦手傾向";
-
-    list.push({ lane: p.lane, comment: cmt });
-  });
-  return list;
-}
-
-/**
- * AI順位予測
- */
-function makeRanks(players) {
-  const ranked = players
-    .map(p => ({ ...p, score: calcBaseScore(p) }))
-    .sort((a, b) => b.score - a.score)
-    .map((p, i) => ({
-      rank: i + 1,
+  return players.map(p => {
+    const c1 = randPick(templates.start)[0];
+    const c2 = randPick(templates.motor)[0];
+    const c3 = randPick(templates.local)[0];
+    return {
       lane: p.lane,
-      name: p.name,
-      score: p.score
-    }));
-  return ranked;
+      comment: `${c1}・${c2}・${c3}`
+    };
+  });
 }
 
-/**
- * AI買い目生成
- * 上位スコアから自動的に3連単候補を作成
- */
-function makePredictions(ranks) {
-  if (ranks.length < 3) return { main: [], sub: [] };
-  const main = [];
-  const sub = [];
+/* === AI買い目生成 === */
+export async function generateAIPredictions(players) {
+  // スコア正規化
+  const scores = players.map(p => p.rawScore);
+  const min = Math.min(...scores);
+  const max = Math.max(...scores);
 
-  // 上位5人を対象にコンボ生成
-  for (let i = 0; i < Math.min(5, ranks.length); i++) {
-    for (let j = 0; j < Math.min(5, ranks.length); j++) {
-      for (let k = 0; k < Math.min(5, ranks.length); k++) {
-        if (i !== j && i !== k && j !== k) {
-          const combo = `${ranks[i].lane}-${ranks[j].lane}-${ranks[k].lane}`;
-          const prob = Math.max(10 - (i + j + k), 1) * 5; // 簡易確率
-          if (main.length < 5) main.push({ combo, prob });
-          else if (sub.length < 5) sub.push({ combo, prob });
-        }
-      }
-    }
+  const ranked = players.map(p => ({
+    ...p,
+    score: normalize(p.rawScore, min, max)
+  })).sort((a, b) => b.score - a.score);
+
+  // 順位予測
+  const ranks = ranked.map((p, i) => ({
+    rank: i + 1,
+    lane: p.lane,
+    name: p.name,
+    score: p.score
+  }));
+
+  // 本命買い目（上位3艇）
+  const mainCombos = [];
+  if (ranked.length >= 3) {
+    const [a, b, c] = ranked;
+    mainCombos.push({
+      combo: `${a.lane}-${b.lane}-${c.lane}`,
+      prob: Math.round((a.score + b.score + c.score) / 3 * 100)
+    });
   }
+  // 穴買い目（4～6位組み合わせ）
+  const subCombos = [];
+  ranked.slice(3, 6).forEach((p, idx) => {
+    subCombos.push({
+      combo: `${p.lane}-全-全`,
+      prob: Math.round(p.score * 100)
+    });
+  });
 
-  return { main, sub };
+  return {
+    main: mainCombos,
+    sub: subCombos,
+    ranks
+  };
 }
 
-/**
- * AI解析統合関数（app.jsから呼び出される）
- */
-export async function analyzeRace(players) {
-  try {
-    if (!Array.isArray(players) || !players.length) {
-      return { main: [], sub: [], comments: [], ranks: [] };
-    }
-
-    const ranks = makeRanks(players);
-    const { main, sub } = makePredictions(ranks);
-    const comments = makeComments(players);
-
-    return { main, sub, comments, ranks };
-  } catch (err) {
-    console.error("[AI解析エラー]", err);
-    return { main: [], sub: [], comments: [], ranks: [] };
+/* === AI学習（結果フィードバック） === */
+export async function learnFromResults(history) {
+  if (!history || typeof history !== "object") return;
+  // 簡易版: 学習結果をコンソール出力のみ
+  let count = 0;
+  for (const d in history) {
+    const res = history[d];
+    if (!res.results) continue;
+    res.results.forEach(r => {
+      const trif = r.payouts?.trifecta?.[0]?.combination;
+      if (trif) count++;
+    });
   }
-}
-
-/* ===========================================================
-    以下は拡張用（学習・履歴反映など）
-=========================================================== */
-
-/**
- * 過去データ学習
- * （現在はダミー。将来的にAIモデルを強化する場合に利用）
- */
-export async function learnFromResults(historyData) {
-  console.log("[AI] 履歴データ学習(簡易)完了", Object.keys(historyData || {}).length);
-}
-
-/**
- * レース単体コメント生成（旧互換API）
- */
-export function generateAIComments(players) {
-  return makeComments(players);
-}
-
-/**
- * レース単体買い目生成（旧互換API）
- */
-export function generateAIPredictions(players) {
-  const ranks = makeRanks(players);
-  return makePredictions(ranks);
+  console.log(`[AI_ENGINE] 学習済みデータ数: ${count}`);
 }
