@@ -1,93 +1,231 @@
+/* ==============================
+   style.css  (完全版・正式色対応)
+   ============================== */
+
+:root {
+  --bg-main: #f2f4f8;
+  --bg-card: #ffffff;
+  --text-main: #222;
+  --text-sub: #666;
+  --primary: #0078ff;
+  --accent: #e63946;
+  --border: #ddd;
+  --win: #ffefef;
+  --lose: #f8f8f8;
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
-  font-family: "Noto Sans JP", sans-serif;
-  background: #f7f7f7;
+  font-family: 'Segoe UI', 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
   margin: 0;
-  color: #222;
+  background: var(--bg-main);
+  color: var(--text-main);
 }
 
-header {
-  background: #004080;
-  color: white;
-  text-align: center;
-  padding: 10px;
+/* ====== ヘッダー ====== */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--primary);
+  color: #fff;
+  padding: 0.6em 1em;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
-.status { font-size: 13px; margin-top: 5px; }
+.app-title {
+  font-size: 1.3em;
+  font-weight: bold;
+  margin: 0;
+}
 
-.btn-row { margin: 10px 0; }
-button {
+.meta-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9em;
+}
+
+.tabs button {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.tabs .active {
   background: #fff;
-  border: 1px solid #ccc;
-  margin: 2px;
-  padding: 5px 10px;
-  border-radius: 5px;
-}
-button.active { background: #004080; color: #fff; }
-
-.grid {
-  display: grid;
-  gap: 6px;
-  justify-content: center;
+  color: var(--primary);
+  font-weight: bold;
 }
 
-/* 会場 24場（4x6固定） */
-#venuesGrid {
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(6, auto);
-  margin: 10px;
+.btn.refresh {
+  background: #fff;
+  color: var(--primary);
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
 }
-.venue-card {
-  text-align: center;
+
+.ai-status {
+  font-size: 0.9em;
+  color: #fff;
+  opacity: 0.9;
+}
+
+/* ====== MAIN VIEW ====== */
+.view {
+  padding: 0.8em;
+}
+
+.screen {
+  display: none;
+}
+
+.screen.active {
+  display: block;
+}
+
+.card {
+  background: var(--bg-card);
   border-radius: 10px;
-  padding: 10px;
-  background: #e9eef6;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 0.8em;
+  margin-bottom: 1em;
 }
-.venue-card.active { background: #b5d5ff; cursor: pointer; }
-.venue-card.disabled { opacity: 0.4; }
 
-/* レース画面（4x3固定） */
-#racesGrid {
+/* ====== 会場一覧（24場・4x6固定） ====== */
+.venues-grid {
+  display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(3, auto);
-  margin: 10px;
+  gap: 0.5em;
 }
-.race-card {
+
+.venue {
+  background: #e3f2fd;
+  color: #003366;
+  text-align: center;
+  padding: 0.6em 0.2em;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  border: 1px solid #bbdefb;
+}
+
+.venue:hover {
+  background: #bbdefb;
+}
+
+/* ====== レース番号画面（4x3） ====== */
+.races-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5em;
+}
+
+.race-btn {
+  background: #f1f8e9;
+  border: 1px solid #c5e1a5;
+  padding: 0.5em;
   text-align: center;
   border-radius: 8px;
-  padding: 12px;
-  background: #fff;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  cursor: pointer;
+  font-weight: bold;
 }
-.race-card.active { background: #cce4ff; cursor: pointer; }
-.race-card.disabled { opacity: 0.4; }
 
-/* 出走表・コメントテーブル */
-table { width: 95%; margin: 10px auto; border-collapse: collapse; font-size: 14px; }
-th, td { border: 1px solid #ccc; padding: 5px; text-align: center; }
-th { background: #eee; }
-
-/* コメント強弱 */
-.comment-row .comment-bar {
-  background: #ddd;
-  height: 6px;
-  border-radius: 3px;
-  overflow: hidden;
-  margin-top: 4px;
+.race-btn:hover {
+  background: #dcedc8;
 }
-.comment-row .bar-fill { height: 6px; transition: width 0.3s; }
 
-/* 強弱色分け */
-.comment-row.lvl-5 { background: #ffe1e1; color: #a00000; }
-.comment-row.lvl-5 .bar-fill { background: #ff3333; }
-.comment-row.lvl-4 { background: #fff1cc; color: #a35b00; }
-.comment-row.lvl-4 .bar-fill { background: #ff9900; }
-.comment-row.lvl-3 { background: #ffffe0; color: #4b4b00; }
-.comment-row.lvl-3 .bar-fill { background: #cccc00; }
-.comment-row.lvl-2 { background: #e0f0ff; color: #003366; }
-.comment-row.lvl-2 .bar-fill { background: #3399ff; }
-.comment-row.lvl-1 { background: #f0f0f0; color: #555; }
-.comment-row.lvl-1 .bar-fill { background: #999; }
+/* ====== 出走表 ====== */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.5em;
+  font-size: 0.9em;
+}
 
-/* レイアウト切替 */
-.screen { display: none; }
-.screen.active { display: block; }
+.table th {
+  background: #f0f0f0;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+  padding: 4px;
+}
+
+.table td {
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+  padding: 4px;
+}
+
+/* 枠ごとの背景色（正式仕様） */
+.table tr[data-lane="1"] td { background: #ffffff; }  /* 白 */
+.table tr[data-lane="2"] td { background: #f5f5f5; }  /* 薄いグレー */
+.table tr[data-lane="3"] td { background: #ffe6e6; }  /* 薄い赤 */
+.table tr[data-lane="4"] td { background: #e6f0ff; }  /* 薄い青 */
+.table tr[data-lane="5"] td { background: #fffbe6; }  /* 薄い黄 */
+.table tr[data-lane="6"] td { background: #e6ffe6; }  /* 薄い緑 */
+
+/* ====== AI予想ブロック ====== */
+.ai-block {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8em;
+}
+
+.ai-col {
+  flex: 1 1 45%;
+  background: #f9f9f9;
+  padding: 0.5em;
+  border-radius: 6px;
+}
+
+.ai-col .h3 {
+  font-size: 1.1em;
+  margin-bottom: 0.3em;
+  color: var(--primary);
+  font-weight: bold;
+}
+
+.prediction th {
+  background: #e0f7fa;
+  font-weight: bold;
+}
+
+/* ====== コメント強弱 ====== */
+.comment-strong { color: #d32f2f; font-weight: bold; }
+.comment-medium { color: #f57c00; }
+.comment-weak { color: #616161; opacity: 0.8; }
+
+/* ====== 順位表 ====== */
+#rankingTable th {
+  background: #fce4ec;
+}
+
+#rankingTable td:nth-child(1) {
+  font-weight: bold;
+}
+
+#rankingTable tr:first-child td {
+  background: #fffde7;
+  font-weight: bold;
+}
+
+/* ====== FOOTER ====== */
+.app-footer {
+  text-align: center;
+  font-size: 0.8em;
+  color: var(--text-sub);
+  padding: 1em 0;
+  background: #fafafa;
+  border-top: 1px solid #eee;
+}
