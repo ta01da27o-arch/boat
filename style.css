@@ -107,3 +107,61 @@ html,body{margin:0;padding:0;height:100%;font-family: "Noto Sans JP", system-ui,
   .race-btn{ font-size:15px; padding:10px; }
   .prediction td{ padding:8px 12px; }
 }
+
+/* ===============================
+   コメント強弱 表示スタイル追加
+   =============================== */
+.comment-weak {
+  background: #f9fafb;
+  color: #6b7280;
+  border-left: 4px solid #d1d5db;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+}
+.comment-normal {
+  background: #f0f9ff;
+  color: #0369a1;
+  border-left: 4px solid #38bdf8;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+}
+.comment-strong {
+  background: #fff1f2;
+  color: #be123c;
+  border-left: 4px solid #f43f5e;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 14px;
+}
+.comment-very-strong {
+  background: #fef2f2;
+  color: #b91c1c;
+  border-left: 5px solid #ef4444;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-weight: 800;
+  font-size: 14px;
+  box-shadow: 0 0 8px rgba(239,68,68,0.1);
+}
+
+/* コメントリストブロック */
+.comment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+/* 強弱見出し */
+.comment-title {
+  font-size: 15px;
+  font-weight: 900;
+  margin-top: 12px;
+  margin-bottom: 6px;
+  color: #012a45;
+  border-bottom: 2px solid #dbeffd;
+  padding-bottom: 4px;
+}
