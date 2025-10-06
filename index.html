@@ -19,13 +19,38 @@
   </header>
 
   <main>
-    <!-- 会場選択画面 -->
+    <!-- ① 会場選択画面 -->
     <section id="screen-venues" class="screen active">
-      <h2>開催会場</h2>
-      <div id="venuesGrid" class="grid"></div>
+      <h2>全国24場 一覧</h2>
+      <div id="venuesGrid" class="grid fixed-venues">
+        <button class="venue" data-venue="桐生">桐生</button>
+        <button class="venue" data-venue="戸田">戸田</button>
+        <button class="venue" data-venue="江戸川">江戸川</button>
+        <button class="venue" data-venue="平和島">平和島</button>
+        <button class="venue" data-venue="多摩川">多摩川</button>
+        <button class="venue" data-venue="浜名湖">浜名湖</button>
+        <button class="venue" data-venue="蒲郡">蒲郡</button>
+        <button class="venue" data-venue="常滑">常滑</button>
+        <button class="venue" data-venue="津">津</button>
+        <button class="venue" data-venue="三国">三国</button>
+        <button class="venue" data-venue="びわこ">びわこ</button>
+        <button class="venue" data-venue="住之江">住之江</button>
+        <button class="venue" data-venue="尼崎">尼崎</button>
+        <button class="venue" data-venue="鳴門">鳴門</button>
+        <button class="venue" data-venue="丸亀">丸亀</button>
+        <button class="venue" data-venue="児島">児島</button>
+        <button class="venue" data-venue="宮島">宮島</button>
+        <button class="venue" data-venue="徳山">徳山</button>
+        <button class="venue" data-venue="下関">下関</button>
+        <button class="venue" data-venue="若松">若松</button>
+        <button class="venue" data-venue="芦屋">芦屋</button>
+        <button class="venue" data-venue="福岡">福岡</button>
+        <button class="venue" data-venue="唐津">唐津</button>
+        <button class="venue" data-venue="大村">大村</button>
+      </div>
     </section>
 
-    <!-- レース選択画面 -->
+    <!-- ② レース選択画面 -->
     <section id="screen-races" class="screen">
       <div class="nav">
         <button id="backToVenues">← 会場一覧へ</button>
@@ -34,7 +59,7 @@
       <div id="racesGrid" class="grid"></div>
     </section>
 
-    <!-- レース詳細画面 -->
+    <!-- ③ レース詳細画面 -->
     <section id="screen-detail" class="screen">
       <div class="nav">
         <button id="backToRaces">← レース一覧へ</button>
@@ -42,10 +67,16 @@
       </div>
 
       <h3>出走表</h3>
-      <table id="entryTable">
+      <table id="entryTable" class="entry-table">
         <thead>
           <tr>
-            <th>枠</th><th>選手</th><th>階級</th><th>当地勝率</th><th>モーター</th><th>コース</th><th>評価</th>
+            <th>枠</th>
+            <th>選手名</th>
+            <th>階級</th>
+            <th>当地勝率</th>
+            <th>モーター勝率</th>
+            <th>コース勝率</th>
+            <th>評価</th>
           </tr>
         </thead>
         <tbody></tbody>
@@ -53,13 +84,13 @@
 
       <h3>AI買い目（メイン）</h3>
       <table id="aiMain">
-        <thead><tr><th>組合せ</th><th>確率</th></tr></thead>
+        <thead><tr><th>組合せ</th><th>確率(%)</th></tr></thead>
         <tbody></tbody>
       </table>
 
       <h3>AI買い目（サブ）</h3>
       <table id="aiSub">
-        <thead><tr><th>組合せ</th><th>確率</th></tr></thead>
+        <thead><tr><th>組合せ</th><th>確率(%)</th></tr></thead>
         <tbody></tbody>
       </table>
 
@@ -76,6 +107,10 @@
       </table>
     </section>
   </main>
+
+  <footer>
+    <p>© 2025 BoatRace AI Prediction System</p>
+  </footer>
 
   <script type="module" src="app.js"></script>
 </body>
