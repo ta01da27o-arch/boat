@@ -1,6 +1,5 @@
 // app.js — AI学習エンジン連携版（表示改善：階級表示＋勝率フォーマット）
-
-import { generateAIComments, generateAIPredictions, learnFromResults } from './ai_engine.js';
+import { generateAIComments, generateAIPredictions, learnFromResults, analyzeRace } from './ai_engine.js';
 
 const DATA_URL = "./data.json";
 const HISTORY_URL = "./history.json";
@@ -56,7 +55,6 @@ function logStatus(msg) { console.log("[APP]", msg); if (aiStatus) aiStatus.text
 
 /* 階級取得（数値→表示に対応） */
 function formatKlass(b) {
-  // 優先順にプロパティを読む（多様なデータソースに対応）
   if (b.racer_class) return String(b.racer_class);
   if (b.klass) return String(b.klass);
   if (b.racer_class_number != null) {
@@ -68,18 +66,23 @@ function formatKlass(b) {
   return "-";
 }
 
-/* 勝率フォーマット
-   - 入力例: 7.8 -> 表示 78%
-   - 0.78 -> 78%
-   - 78 -> 78%
-*/
+/* 勝率フォーマット（内部数値 -> 整数パーセント） */
 function formatRateRaw(v) {
   if (v == null || v === "" || isNaN(Number(v))) return null;
   const n = Number(v);
   if (n <= 1) return Math.round(n * 100);      // 0.78 -> 78
   if (n <= 10) return Math.round(n * 10);      // 7.8 -> 78
   if (n <= 100) return Math.round(n);          // 78 -> 78
-  return Math.round(n);                        // fallback
+  return Math.round(n);
+}
+
+/* 表示用フォーマット：78 -> "78% (7割8分)" */
+function formatRateDisplay(v) {
+  const pct = formatRateRaw(v);
+  if (pct == null) return "-";
+  const tens = Math.floor(pct / 10);
+  const units = pct % 10;
+  return `${pct}% (${tens}割${units}分)`;
 }
 
 /* データ読み込み（堅牢化） */
@@ -166,7 +169,7 @@ function parseCSV(text) {
   });
 }
 
-/* 会場一覧 */
+/* 会場一覧（横4×縦6 固定） */
 function renderVenues(){
   showScreen("venues");
   venuesGrid.innerHTML = "";
@@ -192,7 +195,7 @@ function renderVenues(){
   });
 }
 
-/* レース番号一覧 */
+/* レース番号一覧（横4×縦3 = 12） */
 function renderRaces(venueId) {
   showScreen("races");
   venueTitle.textContent = VENUE_NAMES[venueId - 1];
@@ -263,44 +266,47 @@ async function renderRaceDetail(venueId, raceNo) {
 
   players.forEach(p => {
     const tr = document.createElement("tr");
-    tr.classList.add(`row-${p.lane}`);
+    tr.classList.add(`row-${p.lane}`); // row-1..row-6 背景色は style.css 側で制御
+    const klassHtml = `<div class="klass">${p.klass}</div>`;
+    const nameHtml = `<div class="name">${p.name}</div>`;
+    const stHtml = `<div class="st">ST:${p.st != null ? p.st.toFixed(2) : "-"}</div>`;
     tr.innerHTML = `
       <td>${p.lane}</td>
       <td>
         <div class="entry-left">
-          <div class="klass">${p.klass}</div>
-          <div class="name">${p.name}</div>
-          <div class="st">ST:${p.st != null ? p.st.toFixed(2) : "-"}</div>
+          ${klassHtml}
+          ${nameHtml}
+          ${stHtml}
         </div>
       </td>
       <td>-</td>
-      <td>${p.local != null ? p.local + "%" : "-"}</td>
-      <td>${p.motor != null ? p.motor + "%" : "-"}</td>
-      <td>${p.course != null ? p.course + "%" : "-"}</td>
+      <td>${p.local != null ? formatRateDisplay(p.local) : "-"}</td>
+      <td>${p.motor != null ? formatRateDisplay(p.motor) : "-"}</td>
+      <td>${p.course != null ? formatRateDisplay(p.course) : "-"}</td>
       <td class="eval-mark">${p.mark}</td>
     `;
     entryTableBody.appendChild(tr);
   });
 
-  // AI 学習エンジン呼び出し
+  // AI 学習エンジン呼び出し（analyzeRace を使い、買い目・コメント・順位を整合）
   try {
     logStatus("AI 予測生成中...");
-    const aiPred = await generateAIPredictions(players);
-    const aiComments = await generateAIComments(players, aiPred);
+    // analyzeRace は players を受け取り、順序付き ranks・main・sub・comments を返します
+    const ai = await analyzeRace(players);
 
-    // AI買い目
+    // AI買い目（本命・穴）
     aiMainBody.innerHTML = "";
     aiSubBody.innerHTML = "";
-    const mainList = (aiPred.main || []).slice(0, 5);
-    const subList = (aiPred.sub || []).slice(0, 5);
+    const mainList = (ai.main || []).slice(0, 5);
+    const subList = (ai.sub || []).slice(0, 5);
     if (mainList.length) mainList.forEach(r => aiMainBody.innerHTML += `<tr><td>${r.combo}</td><td>${r.prob}%</td></tr>`);
     else aiMainBody.innerHTML = `<tr><td colspan="2">データなし</td></tr>`;
     if (subList.length) subList.forEach(r => aiSubBody.innerHTML += `<tr><td>${r.combo}</td><td>${r.prob}%</td></tr>`);
     else aiSubBody.innerHTML = `<tr><td colspan="2">データなし</td></tr>`;
 
-    // 展開コメント
+    // 展開コメント（新聞記者風、強弱あり）
     commentTableBody.innerHTML = "";
-    aiComments.forEach(c => {
+    (ai.comments || []).forEach(c => {
       const tr = document.createElement("tr");
       tr.innerHTML = `<td>${c.lane}</td><td>${c.comment}</td>`;
       commentTableBody.appendChild(tr);
@@ -308,9 +314,9 @@ async function renderRaceDetail(venueId, raceNo) {
 
     // 順位予測
     rankingTableBody.innerHTML = "";
-    (aiPred.ranks || []).forEach(r => {
+    (ai.ranks || []).forEach(r => {
       const tr = document.createElement("tr");
-      tr.innerHTML = `<td>${r.rank}</td><td>${r.lane}</td><td>${r.name}</td><td>${(r.score||0).toFixed(2)}</td>`;
+      tr.innerHTML = `<td>${r.rank}</td><td>${r.lane}</td><td>${r.name}</td><td>${(Number(r.score)||0).toFixed(2)}</td>`;
       rankingTableBody.appendChild(tr);
     });
 
