@@ -77,8 +77,24 @@ th {
   color: white;
 }
 
-td {
-  background: #f9fcff;
+/* 各枠の背景色 */
+.tr-1 td { background-color: #ffffff; }
+.tr-2 td { background-color: #f5f5f5; }
+.tr-3 td { background-color: #ffeaea; }
+.tr-4 td { background-color: #e8f1ff; }
+.tr-5 td { background-color: #fff9e0; }
+.tr-6 td { background-color: #e8ffe8; }
+
+/* 評価強弱 */
+.strength-high {
+  background: #ffb6b6;
+  font-weight: bold;
+}
+.strength-mid {
+  background: #ffe7a3;
+}
+.strength-low {
+  background: #d3ffd3;
 }
 
 .prediction-group {
