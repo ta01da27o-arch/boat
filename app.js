@@ -1,258 +1,136 @@
-// ==============================================
-//  app.js（完全統合版）①／③
-//  コメント強弱機能 + 既存構成維持 + 視覚効果対応
-// ==============================================
+// ====== AI競艇予想アプリ：完全統合版 ======
 
-const VIEW = document.getElementById('view');
-const todayLabel = document.getElementById('todayLabel');
-const globalHit = document.getElementById('globalHit');
-const refreshBtn = document.getElementById('refreshBtn');
+// 画面切り替え制御
+const screens = {
+  venues: document.getElementById("screen-venues"),
+  races: document.getElementById("screen-races"),
+  detail: document.getElementById("screen-detail")
+};
 
-const SCREEN_VENUES = document.getElementById('screen-venues');
-const SCREEN_RACES  = document.getElementById('screen-races');
-const SCREEN_RACE   = document.getElementById('screen-race');
-
-let jsonData = null;
-let raceData = null;
-
-// ====== 日付表示 ======
-function setToday() {
-  const now = new Date();
-  const y = now.getFullYear();
-  const m = String(now.getMonth() + 1).padStart(2, '0');
-  const d = String(now.getDate()).padStart(2, '0');
-  todayLabel.textContent = `${y}-${m}-${d}`;
-}
-setToday();
-
-// ====== JSONデータ取得 ======
-async function loadData() {
-  try {
-    const res = await fetch('data.json?_=' + new Date().getTime());
-    jsonData = await res.json();
-    console.log('✅ JSON読込成功', jsonData);
-    renderVenues();
-  } catch (err) {
-    console.error('❌ JSON読込失敗:', err);
-    VIEW.innerHTML = '<p class="error">データの読込に失敗しました。</p>';
-  }
+function showScreen(name) {
+  Object.values(screens).forEach(s => s.classList.remove("active"));
+  screens[name].classList.add("active");
 }
 
-// ====== 開催場リスト描画 ======
-function renderVenues() {
-  SCREEN_VENUES.style.display = 'block';
-  SCREEN_RACES.style.display = 'none';
-  SCREEN_RACE.style.display  = 'none';
-
-  const uniqueStadiums = [...new Set(jsonData.map(r => r.race_stadium_number))];
-  SCREEN_VENUES.innerHTML = '<h2>開催場一覧</h2>';
-
-  uniqueStadiums.forEach(staNum => {
-    const btn = document.createElement('button');
-    btn.textContent = `場コード ${staNum}`;
-    btn.className = 'venue-btn';
-    btn.onclick = () => renderRaces(staNum);
-    SCREEN_VENUES.appendChild(btn);
-  });
-}
-
-// ====== レース一覧 ======
-function renderRaces(stadiumNum) {
-  SCREEN_VENUES.style.display = 'none';
-  SCREEN_RACES.style.display = 'block';
-  SCREEN_RACE.style.display  = 'none';
-
-  const races = jsonData.filter(r => r.race_stadium_number === stadiumNum);
-  SCREEN_RACES.innerHTML = `<h2>場コード ${stadiumNum} のレース</h2>`;
-
-  races.forEach(race => {
-    const div = document.createElement('div');
-    div.className = 'race-card';
-    div.innerHTML = `
-      <h3>${race.race_number}R ${race.race_title}</h3>
-      <p>${race.race_subtitle}／距離: ${race.race_distance}m</p>
-      <button class="race-btn">出走表を見る</button>
-    `;
-    div.querySelector('button').onclick = () => showRaceDetail(race);
-    SCREEN_RACES.appendChild(div);
-  });
-}
-
-// ====== レース詳細表示 ======
-function showRaceDetail(race) {
-  SCREEN_VENUES.style.display = 'none';
-  SCREEN_RACES.style.display = 'none';
-  SCREEN_RACE.style.display  = 'block';
-
-  raceData = race;
-  SCREEN_RACE.innerHTML = `
-    <h2>${race.race_title}</h2>
-    <p>${race.race_subtitle}</p>
-    <p>締切時刻：${race.race_closed_at}</p>
-    <div id="boat-list"></div>
-    <div id="comment-section"></div>
-    <button id="backRaces">← 戻る</button>
-  `;
-  document.getElementById('backRaces').onclick = () => renderRaces(race.race_stadium_number);
-  renderBoats(race.boats);
-}
-// ==============================================
-//  app.js（完全統合版）②／③
-//  ボート一覧 + コメント強弱ロジック
-// ==============================================
-
-// ====== ボート一覧描画 ======
-function renderBoats(boats) {
-  const list = document.getElementById('boat-list');
-  list.innerHTML = '';
-
-  boats.forEach((b, i) => {
-    const row = document.createElement('div');
-    row.className = 'boat-row';
-    row.innerHTML = `
-      <div class="boat-no">${b.racer_boat_number}</div>
-      <div class="boat-name">${b.racer_name}</div>
-      <div class="boat-rate">平均ST:${b.racer_average_start_timing}</div>
-      <div class="boat-rate">全国1着:${b.racer_national_top_1_percent}%</div>
-      <div class="boat-rate">モーター2連:${b.racer_assigned_motor_top_2_percent}%</div>
-      <div class="boat-rate">ボート3連:${b.racer_assigned_boat_top_3_percent}%</div>
-      <div class="comment-box" id="comment-${i}"></div>
-    `;
-    list.appendChild(row);
-
-    // コメント生成
-    const comment = generateCommentStrength(b);
-    const box = document.getElementById(`comment-${i}`);
-    box.textContent = comment.text;
-    box.classList.add(comment.strength);
-  });
-}
-
-// ====== コメント強弱生成ロジック ======
-function generateCommentStrength(b) {
-  let score = 0;
-
-  // 成績と機力をスコア化
-  score += (50 - b.racer_average_start_timing * 100); // STが速いほど加点
-  score += b.racer_national_top_1_percent * 1.2;
-  score += b.racer_national_top_3_percent * 0.8;
-  score += b.racer_assigned_motor_top_3_percent;
-  score += b.racer_assigned_boat_top_3_percent;
-
-  // コメントパターン
-  const strongComments = [
-    "仕上がり上々！展開次第で突き抜けも十分！",
-    "スタート決まれば頭も狙える勢い！",
-    "舟足のまとまり良く、連争い有力！",
-    "モーター◎、出足抜群！",
-    "気配抜群、ここは主役候補！"
-  ];
-
-  const normalComments = [
-    "展開ひとつで浮上の余地あり。",
-    "乗り心地上向き、注意が必要。",
-    "足は悪くないが、相手次第。",
-    "ターンでの押し感はまずまず。",
-    "中堅上位クラス、展開次第。"
-  ];
-
-  const weakComments = [
-    "行き足に課題、厳しい戦いか。",
-    "舟足一息、上位は苦しい。",
-    "ターン流れ気味、調整必要。",
-    "足負け感あり、展開待ち。",
-    "リズム悪く見送り妥当。"
-  ];
-
-  let strength = '';
-  let commentText = '';
-
-  if (score > 220) {
-    strength = 'strong';
-    commentText = strongComments[Math.floor(Math.random() * strongComments.length)];
-  } else if (score > 170) {
-    strength = 'normal';
-    commentText = normalComments[Math.floor(Math.random() * normalComments.length)];
-  } else {
-    strength = 'weak';
-    commentText = weakComments[Math.floor(Math.random() * weakComments.length)];
-  }
-
-  return { text: commentText, strength };
-}
-// ==============================================
-//  app.js（完全統合版）③／③
-//  コメント強弱スタイル適用 + イベント制御
-// ==============================================
-
-// ====== コメント強弱に応じた色付け ======
-function applyCommentStyle() {
-  const comments = document.querySelectorAll('.comment-box');
-  comments.forEach(c => {
-    if (c.classList.contains('strong')) {
-      c.style.backgroundColor = 'rgba(255, 100, 100, 0.25)';
-      c.style.fontWeight = 'bold';
-    } else if (c.classList.contains('normal')) {
-      c.style.backgroundColor = 'rgba(255, 255, 150, 0.25)';
-    } else if (c.classList.contains('weak')) {
-      c.style.backgroundColor = 'rgba(200, 200, 200, 0.25)';
-      c.style.color = '#666';
-    }
-  });
-}
-
-// ====== AI買い目・展開予測連動 ======
-function renderAIPredictions(predictions) {
-  const aiArea = document.getElementById('ai-predictions');
-  if (!aiArea) return;
-  aiArea.innerHTML = '';
-
-  predictions.forEach((p, i) => {
-    const div = document.createElement('div');
-    div.className = 'ai-item';
-    div.innerHTML = `
-      <div class="ai-rank">${i + 1}位</div>
-      <div class="ai-combo">${p.combo}</div>
-      <div class="ai-comment">${p.comment}</div>
-    `;
-    aiArea.appendChild(div);
-  });
-}
-
-// ====== データロード＆画面生成 ======
-async function loadRaceData() {
-  try {
-    const res = await fetch('data.json');
-    const data = await res.json();
-    if (!data || !Array.isArray(data)) throw new Error('データ不明');
-
-    const race = data[0];
-    document.getElementById('race-title').textContent = race.race_title;
-    document.getElementById('race-subtitle').textContent = race.race_subtitle;
-
-    renderBoats(race.boats);
-    applyCommentStyle();
-
-    // 仮AI買い目生成（将来ai_engine.jsと連動）
-    const predictions = race.boats.slice(0, 3).map((b, i) => ({
-      combo: `${b.racer_boat_number}-全-${i + 1}`,
-      comment: `展開◎ ${b.racer_name}中心の攻め！`
-    }));
-    renderAIPredictions(predictions);
-  } catch (err) {
-    console.error('データ読み込み失敗:', err);
-  }
-}
-
-// ====== リロードボタン ======
-const refreshBtn = document.getElementById('refreshBtn');
-if (refreshBtn) {
-  refreshBtn.addEventListener('click', () => {
-    loadRaceData();
-  });
-}
-
-// ====== 初期ロード ======
-window.addEventListener('DOMContentLoaded', () => {
-  loadRaceData();
+// 初期ロード
+document.addEventListener("DOMContentLoaded", () => {
+  loadVenues();
+  document.getElementById("aiStatus").innerText = "AI初期化完了";
 });
+
+// ===== 会場一覧 =====
+function loadVenues() {
+  const venues = [
+    "桐生","戸田","江戸川","平和島","多摩川","浜名湖","蒲郡","常滑",
+    "津","三国","びわこ","住之江","尼崎","鳴門","丸亀","児島",
+    "宮島","徳山","下関","若松","芦屋","福岡","唐津","大村"
+  ];
+  const grid = document.getElementById("venuesGrid");
+  grid.innerHTML = "";
+  venues.forEach((v, i) => {
+    const btn = document.createElement("button");
+    btn.textContent = `${v}`;
+    btn.onclick = () => loadRaces(v, i+1);
+    grid.appendChild(btn);
+  });
+}
+
+// ===== レース一覧 =====
+function loadRaces(venueName, venueNo) {
+  showScreen("races");
+  document.getElementById("venueTitle").innerText = `${venueName}`;
+  const grid = document.getElementById("racesGrid");
+  grid.innerHTML = "";
+  for (let i=1;i<=12;i++) {
+    const btn = document.createElement("button");
+    btn.textContent = `${i}R`;
+    btn.onclick = () => loadDetail(venueName, venueNo, i);
+    grid.appendChild(btn);
+  }
+  document.getElementById("backToVenues").onclick = () => showScreen("venues");
+}
+
+// ===== レース詳細 =====
+async function loadDetail(venueName, venueNo, raceNo) {
+  showScreen("detail");
+  document.getElementById("raceTitle").innerText = `${venueName} 第${raceNo}R`;
+
+  const res = await fetch("data.json");
+  const data = await res.json();
+  const race = data.find(r => r.race_stadium_number === venueNo && r.race_number === raceNo);
+  if (!race) {
+    document.querySelector("#entryTable tbody").innerHTML = `<tr><td colspan='7'>データなし</td></tr>`;
+    return;
+  }
+
+  renderEntryTable(race);
+  renderAIBuy(race);
+  renderComments(race);
+  renderRanking(race);
+}
+
+function renderEntryTable(race) {
+  const tbody = document.querySelector("#entryTable tbody");
+  tbody.innerHTML = "";
+  race.boats.forEach(b => {
+    const tr = document.createElement("tr");
+    tr.classList.add(`waku${b.racer_boat_number}`);
+    tr.innerHTML = `
+      <td>${b.racer_boat_number}</td>
+      <td>${b.racer_name}</td>
+      <td>${["A1","A2","B1","B2"][b.racer_class_number-1]||"?"}</td>
+      <td>${b.racer_local_top_3_percent.toFixed(2)}%</td>
+      <td>${b.racer_assigned_motor_number}</td>
+      <td>${b.racer_average_start_timing.toFixed(2)}</td>
+      <td>${aiEval(b)}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+function aiEval(b) {
+  const s = b.racer_local_top_3_percent + b.racer_assigned_motor_top_3_percent;
+  if (s > 100) return "◎";
+  if (s > 80) return "○";
+  if (s > 60) return "△";
+  return "―";
+}
+
+function renderAIBuy(race) {
+  const main = document.querySelector("#aiMain tbody");
+  const sub = document.querySelector("#aiSub tbody");
+  main.innerHTML = `<tr><td>1-2-3</td><td>42%</td></tr>
+                    <tr><td>1-3-2</td><td>31%</td></tr>`;
+  sub.innerHTML = `<tr><td>2-1-3</td><td>12%</td></tr>
+                   <tr><td>3-1-2</td><td>9%</td></tr>`;
+}
+
+function renderComments(race) {
+  const tbody = document.querySelector("#commentTable tbody");
+  tbody.innerHTML = "";
+  race.boats.forEach(b => {
+    let cls="normal", text="展開次第で上位可";
+    const val=b.racer_local_top_3_percent;
+    if (val>60){cls="super";text="圧倒的展開！"}
+    else if (val>45){cls="strong";text="優勢な展開"}
+    else if (val>30){cls="normal";text="中位安定"}
+    else {cls="weak";text="厳しい展開";}
+    const tr=document.createElement("tr");
+    tr.classList.add(`waku${b.racer_boat_number}`);
+    tr.innerHTML=`<td>${b.racer_boat_number}</td><td class='${cls}'>${text}</td><td>${cls}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+function renderRanking(race) {
+  const tbody = document.querySelector("#rankingTable tbody");
+  tbody.innerHTML = "";
+  const sorted = [...race.boats].sort((a,b)=>b.racer_local_top_3_percent - a.racer_local_top_3_percent);
+  sorted.forEach((b,i)=>{
+    const tr=document.createElement("tr");
+    tr.classList.add(`waku${b.racer_boat_number}`);
+    tr.innerHTML=`<td>${i+1}</td><td>${b.racer_boat_number}</td><td>${b.racer_name}</td><td>${b.racer_local_top_3_percent.toFixed(2)}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+document.getElementById("backToRaces").onclick = () => showScreen("races");

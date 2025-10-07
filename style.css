@@ -1,220 +1,125 @@
-/* ===============================
-   AI競艇予想アプリ スタイル完全版
-   =============================== */
-
-/* ベース設定 */
 body {
+  font-family: "Segoe UI", "Hiragino Sans", sans-serif;
   margin: 0;
-  font-family: "Segoe UI", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
-  background: #f4f6f9;
-  color: #222;
-  transition: background 0.5s ease;
+  background-color: #f8f9fb;
+  color: #333;
 }
 
 header {
+  background: #0044cc;
+  color: white;
+  padding: 10px;
   text-align: center;
-  background: linear-gradient(to right, #007aff, #00c6ff);
-  color: #fff;
-  padding: 10px 0 15px;
   position: sticky;
   top: 0;
   z-index: 10;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
-header h1 {
-  margin: 0;
-  font-size: 1.5em;
-}
-
-#dateLabel {
-  margin-top: 4px;
-  font-size: 0.9em;
+h1 {
+  margin: 5px 0;
 }
 
 .btn-row {
-  margin-top: 10px;
-}
-
-.btn-row button {
-  border: none;
-  background: #fff;
-  color: #007aff;
-  padding: 6px 14px;
-  border-radius: 8px;
-  font-weight: bold;
-  margin: 0 4px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.btn-row button.active {
-  background: #007aff;
-  color: #fff;
-}
-
-.btn-row button:hover {
-  transform: scale(1.05);
-}
-
-.status {
   margin-top: 8px;
-  font-size: 0.85em;
-  color: #eee;
 }
 
-/* メインレイアウト */
+button {
+  background: white;
+  color: #0044cc;
+  border: 1px solid #0044cc;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  margin: 2px;
+}
+
+button.active {
+  background: #0044cc;
+  color: white;
+}
+
 main {
   padding: 10px;
 }
 
-/* 各画面 */
+.grid {
+  display: grid;
+  gap: 10px;
+}
+
+.venues-grid {
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+}
+
+.races-grid {
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+}
+
+.grid button {
+  font-size: 14px;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background: white;
+  transition: 0.2s;
+}
+
+.grid button:hover {
+  background: #e6f0ff;
+}
+
 .screen {
   display: none;
-  animation: fadeIn 0.5s ease forwards;
 }
 
 .screen.active {
   display: block;
 }
 
-/* グリッド：会場一覧（4×6固定） */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-gap: 8px;
-  margin-top: 12px;
-}
-
-.grid button {
-  padding: 12px 0;
-  border-radius: 10px;
-  border: none;
-  font-weight: bold;
-  font-size: 0.95em;
-  cursor: pointer;
-  background: #fff;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-  transition: all 0.2s ease;
-}
-
-.grid button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
-}
-
-/* レース一覧（4×3固定） */
-#racesGrid {
-  grid-template-columns: repeat(4, 1fr);
-  grid-gap: 8px;
-}
-
-/* 戻るボタン */
 .nav {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 10px;
+  justify-content: flex-start;
+  gap: 10px;
+  margin-bottom: 8px;
 }
 
-.nav button {
-  background: #007aff;
-  color: #fff;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-/* 表全般 */
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 10px;
-  background: #fff;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
 }
 
 th, td {
-  border-bottom: 1px solid #ddd;
-  padding: 6px 8px;
-  font-size: 0.9em;
+  border: 1px solid #ccc;
+  padding: 6px;
   text-align: center;
 }
 
-th {
-  background: #007aff;
-  color: #fff;
+tr:nth-child(even) {
+  background: #f9f9f9;
 }
 
-/* 出走表：枠ごとの背景色 */
-tr.lane-1 td { background-color: #ffffff; }   /* 白 */
-tr.lane-2 td { background-color: #f2f2f2; }   /* 薄いグレー */
-tr.lane-3 td { background-color: #ffe6e6; }   /* 薄い赤 */
-tr.lane-4 td { background-color: #e6f0ff; }   /* 薄い青 */
-tr.lane-5 td { background-color: #fff7cc; }   /* 薄い黄 */
-tr.lane-6 td { background-color: #e6ffe6; }   /* 薄い緑 */
+/* --- 枠番カラー --- */
+.waku1 { background-color: #ffffff; }
+.waku2 { background-color: #eeeeee; }
+.waku3 { background-color: #ffdddd; }
+.waku4 { background-color: #ddeeff; }
+.waku5 { background-color: #fff9cc; }
+.waku6 { background-color: #ddffdd; }
 
-/* コメント強弱連動 */
-.comment-strong {
-  background: #ffecec !important;
-  color: #d40000;
+/* --- コメント強弱カラー --- */
+.weak { color: #666; font-weight: normal; }
+.normal { color: #222; font-weight: 500; }
+.strong { color: #e60000; font-weight: bold; }
+.super { color: #b30000; font-weight: bold; text-decoration: underline; }
+
+/* --- ステータスラベル --- */
+.status {
+  margin-top: 5px;
+  font-size: 13px;
   font-weight: bold;
-}
-
-.comment-good {
-  background: #fff5e6 !important;
-  color: #e67e00;
-  font-weight: bold;
-}
-
-.comment-normal {
-  background: #f8f8f8 !important;
-  color: #444;
-}
-
-.comment-weak {
-  background: #eef5ff !important;
-  color: #007aff;
-}
-
-.comment-poor {
-  background: #f0f0f0 !important;
-  color: #888;
-}
-
-/* テーブル見出し */
-h3 {
-  margin-top: 18px;
-  font-size: 1em;
-  color: #007aff;
-  border-left: 5px solid #007aff;
-  padding-left: 6px;
-}
-
-/* フェードイン効果 */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.fade-in {
-  animation: fadeIn 0.6s ease;
-}
-
-/* スクロール調整 */
-html {
-  scroll-behavior: smooth;
-}
-
-@media (max-width: 600px) {
-  .grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  #racesGrid {
-    grid-template-columns: repeat(2, 1fr);
-  }
 }
