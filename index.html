@@ -27,14 +27,14 @@
   </header>
 
   <main class="view">
-    <!-- 24場一覧 -->
+    <!-- 24場一覧：横4 x 縦6 固定 -->
     <section id="screen-venues" class="screen active">
       <div class="card">
         <div id="venuesGrid" class="venues-grid" aria-live="polite"></div>
       </div>
     </section>
 
-    <!-- レース番号画面 -->
+    <!-- レース番号画面（4 x 3 = 12ボタン） -->
     <section id="screen-races" class="screen">
       <div class="card screen-top">
         <div class="screen-title" id="venueTitle">-</div>
@@ -108,11 +108,18 @@
           <tbody></tbody>
         </table>
       </div>
+
+      <!-- 🔽 AI 学習・自動生成連携セクション（hidden） -->
+      <section id="aiEngine" class="hidden">
+        <textarea id="aiLog" readonly></textarea>
+      </section>
+
     </section>
   </main>
 
   <footer class="app-footer">© 2025 BOAT AI</footer>
 
+  <!-- 必ず module で読み込む -->
   <script type="module" src="app.js"></script>
 </body>
 </html>
