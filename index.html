@@ -27,14 +27,14 @@
   </header>
 
   <main class="view">
-    <!-- 24場一覧：横4 x 縦6 固定 -->
+    <!-- 会場一覧 -->
     <section id="screen-venues" class="screen active">
       <div class="card">
-        <div id="venuesGrid" class="venues-grid" aria-live="polite"></div>
+        <div id="venuesGrid" class="venues-grid"></div>
       </div>
     </section>
 
-    <!-- レース番号画面 -->
+    <!-- レース番号選択 -->
     <section id="screen-races" class="screen">
       <div class="card screen-top">
         <div class="screen-title" id="venueTitle">-</div>
@@ -58,11 +58,11 @@
           <thead>
             <tr>
               <th>艇</th>
-              <th>級 / 選手名 / ST</th>
+              <th>選手名</th>
               <th>F</th>
               <th>全国</th>
               <th>当地</th>
-              <th>MT</th>
+              <th>モーター</th>
               <th>コース</th>
               <th>評価</th>
             </tr>
@@ -74,45 +74,45 @@
       <!-- AI予想 -->
       <div class="card ai-block">
         <div class="ai-col">
-          <div class="h3">AI 本命</div>
+          <div class="h3">AI 本命（5点）</div>
           <table class="table prediction" id="aiMain">
             <thead><tr><th>買い目</th><th>確率</th></tr></thead>
             <tbody></tbody>
           </table>
         </div>
         <div class="ai-col">
-          <div class="h3">AI 穴</div>
-          <table class="table prediction" id="aiSub">
+          <div class="h3">AI 中穴（5点）</div>
+          <table class="table prediction" id="aiMiddle">
+            <thead><tr><th>買い目</th><th>確率</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="ai-col">
+          <div class="h3">AI 大穴（5点）</div>
+          <table class="table prediction" id="aiBig">
             <thead><tr><th>買い目</th><th>確率</th></tr></thead>
             <tbody></tbody>
           </table>
         </div>
       </div>
 
-      <!-- コース別コメント -->
+      <!-- 展開コメント -->
       <div class="card">
-        <div class="h3">展開予想コメント（1～6コース）</div>
+        <div class="h3">展開予想コメント</div>
         <table class="table" id="commentTable">
           <thead><tr><th>コース</th><th>コメント</th></tr></thead>
           <tbody></tbody>
         </table>
       </div>
 
-      <!-- AI順位予測 -->
+      <!-- AI順位 -->
       <div class="card">
         <div class="h3">AI 順位予測</div>
         <table class="table" id="rankingTable">
-          <thead>
-            <tr><th>順位</th><th>艇</th><th>選手名</th><th>評価値</th></tr>
-          </thead>
+          <thead><tr><th>順位</th><th>艇</th><th>選手名</th><th>評価値</th></tr></thead>
           <tbody></tbody>
         </table>
       </div>
-
-      <!-- 🔽 AI学習ログ -->
-      <section id="aiEngine" class="hidden">
-        <textarea id="aiLog" readonly></textarea>
-      </section>
     </section>
   </main>
 
