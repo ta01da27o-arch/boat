@@ -3,96 +3,105 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>競艇AI予想 全国勝率データ版</title>
+  <title>競艇AI予想アプリ</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-  <header>
-    <h1>競艇AI予想 全国勝率データ</h1>
-    <div id="aiStatus">読込中...</div>
+  <header class="app-header">
+    <h1>競艇AI予想</h1>
+    <div class="day-buttons">
+      <button id="todayBtn" class="active">本日</button>
+      <button id="yesterdayBtn">前日</button>
+      <button id="refreshBtn">更新</button>
+    </div>
+    <div class="ai-status" id="aiStatus">初期化中...</div>
   </header>
 
-  <!-- ===================== 画面①：会場一覧 ===================== -->
-  <main id="screen-venues" class="screen active">
-    <h2>全国24場 一覧</h2>
-    <div id="venuesGrid" class="grid"></div>
-  </main>
-
-  <!-- ===================== 画面②：レース一覧 ===================== -->
-  <main id="screen-races" class="screen">
-    <div class="titlebar">
-      <button id="backToVenues" class="back">← 戻る</button>
-      <h2 id="venueTitle"></h2>
-    </div>
-    <div id="racesGrid" class="grid"></div>
-  </main>
-
-  <!-- ===================== 画面③：レース詳細 ===================== -->
-  <main id="screen-detail" class="screen">
-    <div class="titlebar">
-      <button id="backToRaces" class="back">← 戻る</button>
-      <h2 id="raceTitle"></h2>
-    </div>
-
-    <!-- 出走表 -->
-    <section class="box">
-      <h3>出走表</h3>
-      <table id="entryTable">
-        <thead>
-          <tr>
-            <th>艇</th>
-            <th>選手</th>
-            <th>F</th>
-            <th>当地勝率</th>
-            <th>M</th>
-            <th>進入</th>
-            <th>AI</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+  <main class="app-main">
+    <!-- ===== 画面① 会場一覧 ===== -->
+    <section id="screen-venues" class="screen active">
+      <h2>全国24会場</h2>
+      <div id="venuesGrid" class="venues-grid"></div>
     </section>
 
-    <!-- AI買い目 -->
-    <section class="box">
-      <h3>AI買い目予測</h3>
-      <div class="ai-box">
-        <div>
-          <h4>本線</h4>
-          <table id="aiMain">
-            <tbody></tbody>
-          </table>
-        </div>
-        <div>
-          <h4>穴目</h4>
-          <table id="aiSub">
-            <tbody></tbody>
-          </table>
+    <!-- ===== 画面② レース一覧 ===== -->
+    <section id="screen-races" class="screen">
+      <div class="screen-top">
+        <h2 id="venueTitle"></h2>
+        <button id="backToVenues" class="back-btn">戻る</button>
+      </div>
+      <div id="racesGrid" class="races-grid"></div>
+    </section>
+
+    <!-- ===== 画面③ 出走表 ===== -->
+    <section id="screen-detail" class="screen">
+      <div class="screen-top">
+        <h2 id="raceTitle"></h2>
+        <button id="backToRaces" class="back-btn">戻る</button>
+      </div>
+
+      <!-- 出走表 -->
+      <div class="card">
+        <h3>出走表</h3>
+        <table class="table" id="entryTable">
+          <thead>
+            <tr>
+              <th>艇</th>
+              <th>選手情報</th>
+              <th>F</th>
+              <th>全国勝率</th>
+              <th>当地勝率</th>
+              <th>モーター</th>
+              <th>ST</th>
+              <th>評価</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <!-- AI買い目 -->
+      <div class="card">
+        <h3>AI予想（本命・中穴・大穴）</h3>
+        <div class="ai-block">
+          <div class="ai-col">
+            <h4>◎ 本命</h4>
+            <table id="aiMain" class="table"><tbody></tbody></table>
+          </div>
+          <div class="ai-col">
+            <h4>○ 中穴</h4>
+            <table id="aiMiddle" class="table"><tbody></tbody></table>
+          </div>
+          <div class="ai-col">
+            <h4>▲ 大穴</h4>
+            <table id="aiBig" class="table"><tbody></tbody></table>
+          </div>
         </div>
       </div>
-    </section>
 
-    <!-- コメント -->
-    <section class="box">
-      <h3>AIコメント</h3>
-      <table id="commentTable">
-        <tbody></tbody>
-      </table>
-    </section>
+      <!-- 展開コメント -->
+      <div class="card">
+        <h3>AIコメント</h3>
+        <table id="commentTable" class="table">
+          <thead><tr><th>艇</th><th>展開予想コメント</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
 
-    <!-- AI順位予測 -->
-    <section class="box">
-      <h3>AI順位予測</h3>
-      <table id="rankingTable">
-        <thead>
-          <tr><th>順</th><th>艇</th><th>選手</th><th>勝率</th></tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+      <!-- 順位予測 -->
+      <div class="card">
+        <h3>AI順位予測</h3>
+        <table id="rankingTable" class="table">
+          <thead><tr><th>順位</th><th>艇</th><th>選手</th><th>全国勝率</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
     </section>
-
   </main>
+
+  <footer class="app-footer">
+    © 競艇AI予想システム
+  </footer>
 
   <script src="app.js"></script>
 </body>

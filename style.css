@@ -1,170 +1,233 @@
-/* ===== 全体レイアウト ===== */
+/* ======== 競艇AI予想：完全版スタイル ======== */
+
+/* 全体背景と基本設定 */
 body {
-  font-family: "Noto Sans JP", sans-serif;
   margin: 0;
   padding: 0;
-  background: white;
-  color: #111;
+  font-family: "メイリオ", sans-serif;
+  background-color: #f5faff; /* 白に近い淡い青 */
+  color: #222;
 }
 
-/* ===== ヘッダー ===== */
-header {
+/* ヘッダー */
+.app-header {
   background: deepskyblue;
-  color: #fff;
-  text-align: center;
-  padding: 10px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  color: white;
+  padding: 10px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-header h1 {
+.app-title {
   margin: 0;
   font-size: 1.4rem;
+  font-weight: bold;
 }
 
-#aiStatus {
+.meta-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.date-label {
+  background: white;
+  color: #333;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-weight: bold;
   font-size: 0.9rem;
-  color: #ffe;
 }
 
-/* ===== 画面切替 ===== */
+.tabs button {
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  color: #333;
+  font-size: 0.9rem;
+  margin-left: 4px;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.tabs button.active {
+  background: #ffcc00;
+  border-color: #e0b000;
+  color: #222;
+  font-weight: bold;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn.refresh {
+  background: white;
+  color: #007acc;
+  border: 2px solid #007acc;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn.refresh:hover {
+  background: #e6f5ff;
+}
+
+.ai-status {
+  font-size: 0.9rem;
+  color: #fff;
+}
+
+/* ===== メイン画面 ===== */
+
+.view {
+  padding: 10px;
+}
+
+/* 各スクリーン切替 */
 .screen {
   display: none;
-  padding: 10px;
-  min-height: 100vh;
-  box-sizing: border-box;
-  background: #f9f9f9;
 }
-
 .screen.active {
   display: block;
 }
 
-/* ===== タイトルバー ===== */
-.titlebar {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 10px;
-  background: #fff0f0;
-  border-bottom: 2px solid #f77;
-  padding: 5px 10px;
-  border-radius: 8px;
-}
-
-.titlebar h2 {
-  margin: 0;
-  color: #333;
-}
-
-.back {
-  background: #f55;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 10px;
-  cursor: pointer;
-}
-
-/* ===== グリッド（24場など） ===== */
-.grid {
+/* 24場グリッド */
+.venues-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  margin-top: 15px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-top: 12px;
 }
 
-.grid button {
-  background: white;
-  border: 2px solid deepskyblue;
-  border-radius: 14px;
-  box-shadow: 0 2px 3px rgba(0,0,0,0.15);
-  padding: 10px;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.2s;
-  height: 80px;
+/* 各場カード */
+.venues-grid button {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  font-weight: bold;
-}
-
-.grid button:hover {
-  background: #e6f7ff;
-}
-
-.grid button .venue-name {
-  font-size: 1rem;
-  color: #004;
-}
-
-.grid button .venue-status {
-  font-size: 0.85rem;
-  color: #d33;
-}
-
-.grid button .venue-rate {
-  font-size: 0.9rem;
-  color: #0077cc;
-}
-
-/* ===== 各セクション ===== */
-.box {
+  justify-content: space-between;
+  align-items: center;
   background: white;
+  border: 3px solid deepskyblue;
   border-radius: 14px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-  margin: 10px 0;
+  height: 90px;
+  padding: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.venues-grid button:hover {
+  background: #f0faff;
+  transform: scale(1.02);
+}
+
+.venues-grid .venue-name {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #007acc;
+}
+
+.venues-grid .venue-status {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.venues-grid .venue-rate {
+  font-size: 0.85rem;
+  color: #222;
+}
+
+/* ===== レース選択 ===== */
+.races-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
   padding: 10px;
 }
 
-.box h3 {
-  margin: 0 0 8px 0;
-  border-left: 5px solid deepskyblue;
-  padding-left: 6px;
+.races-grid button {
+  background: white;
+  border: 2px solid #aaa;
+  border-radius: 10px;
+  padding: 15px 0;
+  font-weight: bold;
   font-size: 1.1rem;
+  cursor: pointer;
+  transition: 0.2s;
 }
 
-/* ===== テーブル共通 ===== */
-table {
+.races-grid button:hover {
+  background: #f5faff;
+}
+
+/* ===== 出走表 ===== */
+.table {
   width: 100%;
   border-collapse: collapse;
+  margin-top: 8px;
+}
+
+.table th, .table td {
+  border: 1px solid #ddd;
+  padding: 6px;
   text-align: center;
+  font-size: 0.9rem;
 }
 
-th, td {
-  border: 1px solid #ccc;
-  padding: 4px;
-  font-size: 0.85rem;
-}
-
-th {
-  background: #e0f7ff;
+.table th {
+  background: #e6f2ff;
   font-weight: bold;
 }
 
-/* ===== 枠番カラー ===== */
-.waku1 td { background: #fff; color: #111; }
-.waku2 td { background: #fdf4f4; color: #222; }
-.waku3 td { background: #e4f3ff; color: #111; }
-.waku4 td { background: #fef7e0; color: #111; }
-.waku5 td { background: #f2f2f2; color: #111; }
-.waku6 td { background: #f0f9ff; color: #111; }
+/* 枠色 */
+.waku1 { background: #ffcccc; }
+.waku2 { background: #ccffff; }
+.waku3 { background: #ffffcc; }
+.waku4 { background: #ccffcc; }
+.waku5 { background: #ffccff; }
+.waku6 { background: #eeeeee; }
 
-/* ===== コメント強調色 ===== */
-.super { color: #d00; font-weight: bold; }
-.strong { color: #e85; }
-.normal { color: #333; }
-.weak { color: #777; }
-
-/* ===== AIボックス ===== */
-.ai-box {
+/* AI予想テーブル */
+.ai-block {
   display: flex;
   justify-content: space-around;
-  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
 }
 
-.ai-box h4 {
-  margin-bottom: 5px;
+.ai-col {
+  width: 48%;
+  background: #fff;
+  border-radius: 12px;
+  border: 2px solid #007acc;
+  padding: 8px;
+}
+
+.h3 {
+  background: #007acc;
+  color: white;
   text-align: center;
-  color: #007;
+  border-radius: 8px;
+  padding: 6px;
+  font-size: 1rem;
+}
+
+/* コメント色 */
+.super { color: red; font-weight: bold; }
+.strong { color: orange; }
+.normal { color: #333; }
+.weak { color: gray; }
+
+/* フッター */
+.app-footer {
+  text-align: center;
+  padding: 8px;
+  font-size: 0.8rem;
+  color: #555;
+  background: #fff;
+  border-top: 1px solid #ddd;
 }
