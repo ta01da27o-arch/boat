@@ -34,7 +34,7 @@
       </div>
     </section>
 
-    <!-- レース番号画面（4 x 3 = 12ボタン） -->
+    <!-- レース番号画面 -->
     <section id="screen-races" class="screen">
       <div class="card screen-top">
         <div class="screen-title" id="venueTitle">-</div>
@@ -60,6 +60,7 @@
               <th>艇</th>
               <th>級 / 選手名 / ST</th>
               <th>F</th>
+              <th>全国</th>
               <th>当地</th>
               <th>MT</th>
               <th>コース</th>
@@ -108,17 +109,15 @@
         </table>
       </div>
 
-      <!-- 🔽 AI 学習・自動生成連携セクション（hidden） -->
+      <!-- 🔽 AI学習ログ -->
       <section id="aiEngine" class="hidden">
         <textarea id="aiLog" readonly></textarea>
       </section>
-
     </section>
   </main>
 
   <footer class="app-footer">© 2025 BOAT AI</footer>
 
-  <!-- 必ず module で読み込む -->
   <script type="module" src="app.js"></script>
 </body>
 </html>
