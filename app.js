@@ -385,3 +385,129 @@ window.addEventListener("error", (ev) => {
   console.error("Unhandled error:", ev.error || ev.message);
   logStatus("ページエラー発生。コンソール確認");
 });
+// ==============================
+// 🔹 AI学習用データ管理（30日分）
+// ==============================
+async function manageHistoryData() {
+  try {
+    const response = await fetch('history.json');
+    let history = await response.json();
+
+    // 30日以上前のデータを削除
+    const today = new Date();
+    history = history.filter(item => {
+      const date = new Date(item.date);
+      const diffDays = (today - date) / (1000 * 60 * 60 * 24);
+      return diffDays <= 30;
+    });
+
+    // 最新data.jsonを取得し追加
+    const dataResponse = await fetch('data.json');
+    const todayData = await dataResponse.json();
+
+    if (!history.some(item => item.date === todayData.date)) {
+      history.push(todayData);
+    }
+
+    // 保存
+    await saveHistory(history);
+    renderHistorySummary(history);
+
+  } catch (err) {
+    console.error("History data management failed:", err);
+  }
+}
+
+// ==============================
+// 🔹 history.json 保存（GitHub Actionsで上書き）
+// ==============================
+async function saveHistory(history) {
+  const json = JSON.stringify(history, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'history.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// ==============================
+// 🔹 AI学習・統計表示
+// ==============================
+function renderHistorySummary(history) {
+  const summaryEl = document.getElementById('ai-summary');
+  if (!summaryEl) return;
+
+  const allResults = [];
+  history.forEach(day => {
+    day.races.forEach(race => {
+      allResults.push({
+        venue: race.venue,
+        hit: race.hitRate,
+        win: race.winRate
+      });
+    });
+  });
+
+  const grouped = {};
+  allResults.forEach(r => {
+    if (!grouped[r.venue]) grouped[r.venue] = { total: 0, hitSum: 0, winSum: 0 };
+    grouped[r.venue].total++;
+    grouped[r.venue].hitSum += r.hit;
+    grouped[r.venue].winSum += r.win;
+  });
+
+  summaryEl.innerHTML = Object.entries(grouped).map(([venue, data]) => {
+    const avgHit = (data.hitSum / data.total).toFixed(1);
+    const avgWin = (data.winSum / data.total).toFixed(1);
+    return `
+      <div class="ai-summary-card">
+        <div class="venue">${venue}</div>
+        <div class="hit">AI平均的中率: ${avgHit}%</div>
+        <div class="win">AI平均勝率: ${avgWin}%</div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ==============================
+// 🔹 ページ初期化
+// ==============================
+window.addEventListener('DOMContentLoaded', async () => {
+  await loadVenues();
+  await manageHistoryData();
+});
+
+// ==============================
+// 🔹 メイン表示関数
+// ==============================
+async function loadVenues() {
+  try {
+    const res = await fetch('data.json');
+    const data = await res.json();
+
+    const main = document.getElementById('venue-grid');
+    main.innerHTML = '';
+
+    data.venues.forEach(venue => {
+      const isActive = venue.status === '開催中';
+      const color = isActive ? 'bg-lightblue' : 'bg-gray';
+      const aiRate = venue.aiHitRate ? `${venue.aiHitRate}%` : 'ー';
+
+      const div = document.createElement('div');
+      div.className = `venue-card ${color}`;
+      div.innerHTML = `
+        <div class="venue-name">${venue.name}</div>
+        <div class="venue-status">${venue.status}</div>
+        <div class="venue-ai">AI的中率 ${aiRate}</div>
+      `;
+      main.appendChild(div);
+    });
+
+  } catch (err) {
+    console.error('Venue load failed:', err);
+  }
+}
