@@ -1,233 +1,109 @@
-/* ======== 競艇AI予想：完全版スタイル ======== */
-
-/* 全体背景と基本設定 */
-body {
-  margin: 0;
-  padding: 0;
-  font-family: "メイリオ", sans-serif;
-  background-color: #f5faff; /* 白に近い淡い青 */
-  color: #222;
+:root{
+  --deep-sky: deepskyblue;
+  --navy: #004aad;
+  --card:#ffffff;
+  --text:#0b1220;
+  --muted:#6b7280;
+  --accent:#e6f7ff;
+  --red:#e11d48;
 }
-
-/* ヘッダー */
-.app-header {
-  background: deepskyblue;
-  color: white;
-  padding: 10px 12px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;height:100%;font-family: "Noto Sans JP", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;color:var(--text);background:#ffffff}
+.app-header{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:10px 12px; background:var(--deep-sky); color:#fff;
+  position:sticky; top:0; z-index:40;
 }
+.title-wrap{ display:flex; flex-direction:column; gap:6px; }
+.app-title{ margin:0; font-weight:900; font-size:18px; }
+.meta-row{ display:flex; align-items:center; gap:8px; }
+.date-label{ font-weight:700; color:#003c6b; background:rgba(255,255,255,0.85); padding:6px 8px; border-radius:8px; color:#012a45; }
+.tabs{ display:flex; gap:6px; }
+.tab{ background:rgba(255,255,255,0.85); border:0; padding:6px 10px; border-radius:8px; font-weight:700; color:#003c6b; cursor:pointer; }
+.tab.active{ background:#012a45; color:#fff; }
 
-.app-title {
-  margin: 0;
-  font-size: 1.4rem;
-  font-weight: bold;
-}
+.header-right{ display:flex; align-items:center; gap:10px; }
+.btn{ background:#fff; color:var(--deep-sky); border:0; padding:8px 12px; border-radius:8px; font-weight:800; cursor:pointer; }
+.btn.refresh{ background:#fff; color:var(--navy); }
+.btn.back{ background:var(--navy); color:#fff; border-radius:8px; padding:8px 10px; }
 
-.meta-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
+/* main/card */
+.view{ padding:10px; max-width:980px; margin:0 auto; }
+.screen{ display:none; padding:0; }
+.screen.active{ display:block; }
+.card{ background:var(--card); border-radius:12px; padding:12px; box-shadow:0 8px 24px rgba(2,6,23,.06); margin-bottom:12px; }
 
-.date-label {
-  background: white;
-  color: #333;
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-weight: bold;
-  font-size: 0.9rem;
-}
-
-.tabs button {
-  background: white;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  color: #333;
-  font-size: 0.9rem;
-  margin-left: 4px;
-  padding: 6px 12px;
-  cursor: pointer;
-}
-
-.tabs button.active {
-  background: #ffcc00;
-  border-color: #e0b000;
-  color: #222;
-  font-weight: bold;
-}
-
-.header-right {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.btn.refresh {
-  background: white;
-  color: #007acc;
-  border: 2px solid #007acc;
-  border-radius: 8px;
-  padding: 6px 12px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.btn.refresh:hover {
-  background: #e6f5ff;
-}
-
-.ai-status {
-  font-size: 0.9rem;
-  color: #fff;
-}
-
-/* ===== メイン画面 ===== */
-
-.view {
-  padding: 10px;
-}
-
-/* 各スクリーン切替 */
-.screen {
-  display: none;
-}
-.screen.active {
-  display: block;
-}
-
-/* 24場グリッド */
-.venues-grid {
-  display: grid;
+/* 24場グリッド（4x6固定） */
+.venues-grid{
+  display:grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  margin-top: 12px;
+  grid-auto-rows: minmax(72px, auto);
+  gap:8px;
 }
-
-/* 各場カード */
-.venues-grid button {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  background: white;
-  border: 3px solid deepskyblue;
-  border-radius: 14px;
-  height: 90px;
-  padding: 6px;
-  cursor: pointer;
-  transition: 0.2s;
+.venue-card{
+  background:#ffffff; /* 全体白 */
+  border-radius:10px;
+  padding:8px;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;
+  border:1px solid rgba(0,0,0,0.06);
+  cursor:default;
 }
+.venue-card .v-name{ font-weight:900; font-size:15px; margin-bottom:6px; background:#e6f7ff; padding:6px 8px; border-radius:8px; width:100%; }
+.venue-card .v-status{ font-weight:800; font-size:13px; margin-bottom:6px; color:#0b74c9; }
+.venue-card .v-rate{ font-size:13px; color:var(--muted); }
 
-.venues-grid button:hover {
-  background: #f0faff;
-  transform: scale(1.02);
-}
+/* clickable / disabled */
+.venue-card.clickable{ cursor:pointer; border-color: rgba(30,144,255,0.22); box-shadow: 0 6px 18px rgba(30,144,255,0.06); }
+.venue-card.disabled{ opacity:.45; pointer-events:none; }
 
-.venues-grid .venue-name {
-  font-size: 1rem;
-  font-weight: bold;
-  color: #007acc;
-}
+/* races grid (4cols x 3rows) */
+.races-grid{ display:grid; grid-template-columns: repeat(4,1fr); gap:8px; margin-top:8px; }
+.race-btn{ background:#e6f7ff; padding:12px; border-radius:8px; font-weight:900; font-size:16px; cursor:pointer; border:1px solid #dbeffd; text-align:center; }
+.race-btn.disabled{ background:#f3f4f6; pointer-events:none; opacity:.6; }
 
-.venues-grid .venue-status {
-  font-size: 0.9rem;
-  color: #555;
-}
+/* table */
+.table{ width:100%; border-collapse:collapse; margin-top:8px; }
+.table thead th{ background:#dfeffd; color:var(--text); font-weight:800; padding:8px; border:1px solid #e6f3ff; text-align:center; font-size:13px; }
+.table td{ padding:8px; border:1px solid #eef6ff; text-align:center; vertical-align:middle; font-size:13px; }
 
-.venues-grid .venue-rate {
-  font-size: 0.85rem;
-  color: #222;
-}
+/* entry left block */
+.entry-left{ display:flex; flex-direction:column; gap:4px; align-items:center; }
+.entry-left .klass{ font-size:13px; color:var(--muted); }
+.entry-left .name{ font-weight:900; }
+.entry-left .st{ font-size:13px; color:#374151; }
 
-/* ===== レース選択 ===== */
-.races-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  padding: 10px;
-}
+/* metric cell */
+.metric-symbol{ display:block; font-weight:900; font-size:16px; }
+.metric-symbol.top{ color: var(--red); }  /* ◎は赤 */
+.metric-small{ font-size:12px; color:#222; }
 
-.races-grid button {
-  background: white;
-  border: 2px solid #aaa;
-  border-radius: 10px;
-  padding: 15px 0;
-  font-weight: bold;
-  font-size: 1.1rem;
-  cursor: pointer;
-  transition: 0.2s;
-}
+/* total evaluation style */
+.eval-mark{ font-weight:900; font-size:16px; }
 
-.races-grid button:hover {
-  background: #f5faff;
-}
+/* course row colors (1..6) */
+.row-1 td{ background: #ffffff; }
+.row-2 td{ background: #f7f7f9; }
+.row-3 td{ background: #fff6f6; }
+.row-4 td{ background: #eef8ff; }
+.row-5 td{ background: #fffdf0; }
+.row-6 td{ background: #f4fff7; }
 
-/* ===== 出走表 ===== */
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 8px;
-}
+/* ai block */
+.ai-block{ display:flex; gap:12px; margin-top:8px; align-items:flex-start; }
+.ai-col{ flex:1; min-width:140px; }
+.prediction td{ padding:8px 12px; text-align:left; }
 
-.table th, .table td {
-  border: 1px solid #ddd;
-  padding: 6px;
-  text-align: center;
-  font-size: 0.9rem;
-}
+/* comment table */
+.h2{ font-size:16px; font-weight:900; margin-bottom:8px; }
+.h3{ font-size:14px; font-weight:900; margin-bottom:6px; }
 
-.table th {
-  background: #e6f2ff;
-  font-weight: bold;
-}
+/* small */
+.mono{ font-family: monospace; }
 
-/* 枠色 */
-.waku1 { background: #ffcccc; }
-.waku2 { background: #ccffff; }
-.waku3 { background: #ffffcc; }
-.waku4 { background: #ccffcc; }
-.waku5 { background: #ffccff; }
-.waku6 { background: #eeeeee; }
-
-/* AI予想テーブル */
-.ai-block {
-  display: flex;
-  justify-content: space-around;
-  gap: 10px;
-  margin-top: 10px;
-}
-
-.ai-col {
-  width: 48%;
-  background: #fff;
-  border-radius: 12px;
-  border: 2px solid #007acc;
-  padding: 8px;
-}
-
-.h3 {
-  background: #007acc;
-  color: white;
-  text-align: center;
-  border-radius: 8px;
-  padding: 6px;
-  font-size: 1rem;
-}
-
-/* コメント色 */
-.super { color: red; font-weight: bold; }
-.strong { color: orange; }
-.normal { color: #333; }
-.weak { color: gray; }
-
-/* フッター */
-.app-footer {
-  text-align: center;
-  padding: 8px;
-  font-size: 0.8rem;
-  color: #555;
-  background: #fff;
-  border-top: 1px solid #ddd;
+/* responsive small tweaks keep 4 columns on narrow screens */
+@media (max-width:420px){
+  .venues-grid{ grid-template-columns: repeat(4, 1fr); gap:6px; }
+  .venue-card{ padding:6px; min-height:70px; }
+  .race-btn{ font-size:15px; padding:10px; }
+  .prediction td{ padding:8px 12px; }
 }
