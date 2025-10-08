@@ -27,14 +27,14 @@
   </header>
 
   <main class="view">
-    <!-- 24場一覧 -->
+    <!-- 24場一覧：4×6固定 -->
     <section id="screen-venues" class="screen active">
-      <div class="card venues-card">
+      <div class="card">
         <div id="venuesGrid" class="venues-grid" aria-live="polite"></div>
       </div>
     </section>
 
-    <!-- レース番号画面 -->
+    <!-- レース番号画面（3×4 = 12レース） -->
     <section id="screen-races" class="screen">
       <div class="card screen-top">
         <div class="screen-title" id="venueTitle">-</div>
@@ -45,7 +45,7 @@
       </div>
     </section>
 
-    <!-- 出走表 -->
+    <!-- 出走表詳細 -->
     <section id="screen-detail" class="screen">
       <div class="card screen-top">
         <div class="screen-title" id="raceTitle">-</div>
@@ -58,11 +58,11 @@
           <thead>
             <tr>
               <th>艇</th>
-              <th>級 / 選手名 / ST</th>
+              <th>階級 / 選手名 / ST</th>
               <th>F</th>
+              <th>全国</th>
               <th>当地</th>
-              <th>MT</th>
-              <th>コース</th>
+              <th>モーター</th>
               <th>評価</th>
             </tr>
           </thead>
@@ -108,7 +108,6 @@
         </table>
       </div>
 
-      <!-- AI学習・ログ -->
       <section id="aiEngine" class="hidden">
         <textarea id="aiLog" readonly></textarea>
       </section>
