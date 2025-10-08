@@ -1,217 +1,170 @@
-/* ===== 基本設定 ===== */
+/* ===== 全体レイアウト ===== */
 body {
-  margin: 0;
   font-family: "Noto Sans JP", sans-serif;
-  background: #101820;
-  color: #fff;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.app-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: linear-gradient(90deg, #003366, #004080);
-  padding: 10px 16px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
-}
-
-.app-title {
-  font-size: 1.4rem;
   margin: 0;
-  color: #fff;
-  letter-spacing: 0.05em;
+  padding: 0;
+  background: white;
+  color: #111;
 }
 
-.date-label {
+/* ===== ヘッダー ===== */
+header {
+  background: deepskyblue;
+  color: #fff;
+  text-align: center;
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+header h1 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+#aiStatus {
   font-size: 0.9rem;
-  color: #ccc;
-  margin-right: 8px;
+  color: #ffe;
 }
 
-.tabs {
-  display: flex;
-  gap: 6px;
-}
-
-.tab {
-  background: #222;
-  color: #fff;
-  border: 1px solid #555;
-  border-radius: 4px;
-  padding: 4px 10px;
-  cursor: pointer;
-}
-
-.tab.active {
-  background: #0af;
-  border-color: #0cf;
-  color: #000;
-  font-weight: bold;
-}
-
-.btn {
-  background: #0af;
-  border: none;
-  color: #fff;
-  border-radius: 4px;
-  padding: 6px 12px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.btn:hover {
-  background: #09f;
-}
-
-.btn.back {
-  background: #555;
-}
-
-.btn.refresh {
-  background: #0a8;
-}
-
-.hidden {
-  display: none;
-}
-/* ===== メインビュー ===== */
-.view {
-  padding: 12px;
-}
-
+/* ===== 画面切替 ===== */
 .screen {
   display: none;
-  animation: fadeIn 0.4s ease;
+  padding: 10px;
+  min-height: 100vh;
+  box-sizing: border-box;
+  background: #f9f9f9;
 }
 
 .screen.active {
   display: block;
 }
 
-.card {
-  background: #182430;
-  border-radius: 8px;
-  padding: 12px;
-  margin-bottom: 12px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
-}
-
-.screen-top {
+/* ===== タイトルバー ===== */
+.titlebar {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  background: #fff0f0;
+  border-bottom: 2px solid #f77;
+  padding: 5px 10px;
+  border-radius: 8px;
 }
 
-.screen-title {
-  font-size: 1.2rem;
+.titlebar h2 {
+  margin: 0;
+  color: #333;
+}
+
+.back {
+  background: #f55;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/* ===== グリッド（24場など） ===== */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 15px;
+}
+
+.grid button {
+  background: white;
+  border: 2px solid deepskyblue;
+  border-radius: 14px;
+  box-shadow: 0 2px 3px rgba(0,0,0,0.15);
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   font-weight: bold;
-  color: #fff;
 }
 
-/* ===== テーブル ===== */
-.table {
+.grid button:hover {
+  background: #e6f7ff;
+}
+
+.grid button .venue-name {
+  font-size: 1rem;
+  color: #004;
+}
+
+.grid button .venue-status {
+  font-size: 0.85rem;
+  color: #d33;
+}
+
+.grid button .venue-rate {
+  font-size: 0.9rem;
+  color: #0077cc;
+}
+
+/* ===== 各セクション ===== */
+.box {
+  background: white;
+  border-radius: 14px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  margin: 10px 0;
+  padding: 10px;
+}
+
+.box h3 {
+  margin: 0 0 8px 0;
+  border-left: 5px solid deepskyblue;
+  padding-left: 6px;
+  font-size: 1.1rem;
+}
+
+/* ===== テーブル共通 ===== */
+table {
   width: 100%;
   border-collapse: collapse;
-  background: #202b36;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.table th, .table td {
-  border: 1px solid #333;
-  padding: 6px 8px;
   text-align: center;
 }
 
-.table th {
-  background: #0a3b6b;
-  color: #fff;
+th, td {
+  border: 1px solid #ccc;
+  padding: 4px;
+  font-size: 0.85rem;
+}
+
+th {
+  background: #e0f7ff;
   font-weight: bold;
 }
 
-.table tr:nth-child(even) {
-  background: #1a2632;
-}
+/* ===== 枠番カラー ===== */
+.waku1 td { background: #fff; color: #111; }
+.waku2 td { background: #fdf4f4; color: #222; }
+.waku3 td { background: #e4f3ff; color: #111; }
+.waku4 td { background: #fef7e0; color: #111; }
+.waku5 td { background: #f2f2f2; color: #111; }
+.waku6 td { background: #f0f9ff; color: #111; }
 
-.table tr:hover {
-  background: #243447;
-}
+/* ===== コメント強調色 ===== */
+.super { color: #d00; font-weight: bold; }
+.strong { color: #e85; }
+.normal { color: #333; }
+.weak { color: #777; }
 
-/* 枠色（艇番） */
-.waku1 { background-color: rgba(255,255,255,0.1); }
-.waku2 { background-color: rgba(255,0,0,0.15); }
-.waku3 { background-color: rgba(255,255,0,0.15); }
-.waku4 { background-color: rgba(0,255,0,0.15); }
-.waku5 { background-color: rgba(0,128,255,0.15); }
-.waku6 { background-color: rgba(255,0,255,0.15); }
-
-/* ===== AI予想ブロック ===== */
-.ai-block {
+/* ===== AIボックス ===== */
+.ai-box {
   display: flex;
+  justify-content: space-around;
   flex-wrap: wrap;
-  gap: 12px;
 }
 
-.ai-col {
-  flex: 1;
-  min-width: 250px;
-}
-
-.h3 {
-  font-size: 1.1rem;
-  margin-bottom: 6px;
-  color: #0af;
-}
-
-/* ===== グリッド ===== */
-.venues-grid, .races-grid {
-  display: grid;
-  gap: 8px;
-}
-
-.venues-grid {
-  grid-template-columns: repeat(4, 1fr);
-}
-
-.races-grid {
-  grid-template-columns: repeat(4, 1fr);
-}
-
-.venues-grid button,
-.races-grid button {
-  background: #0a3b6b;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  padding: 10px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background 0.2s;
-}
-
-.venues-grid button:hover,
-.races-grid button:hover {
-  background: #0af;
-  color: #000;
-}
-
-/* ===== フッター ===== */
-.app-footer {
+.ai-box h4 {
+  margin-bottom: 5px;
   text-align: center;
-  padding: 8px;
-  background: #0a3b6b;
-  color: #fff;
-  font-size: 0.8rem;
-}
-
-.ai-status {
-  font-size: 0.9rem;
-  color: #0f0;
-  margin-left: 10px;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  color: #007;
 }
