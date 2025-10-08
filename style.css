@@ -1,215 +1,211 @@
-/* ===============================
-   基本レイアウト
-=============================== */
+/* ======== 基本設定 ======== */
 body {
-  font-family: "Noto Sans JP", sans-serif;
-  background: #f2f4f8;
-  margin: 0;
+  font-family: "Segoe UI", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+  background: white;
   color: #222;
-  user-select: none;
+  margin: 0;
+  padding: 0;
 }
 
 header {
-  background: #004aad;
-  color: white;
+  background: deepskyblue;
+  color: #fff;
+  padding: 10px 0;
   text-align: center;
-  padding: 10px;
-  font-size: 1.2rem;
-  font-weight: bold;
-  letter-spacing: 0.05em;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
 
-main {
-  padding: 10px;
+h1 {
+  margin: 0;
+  font-size: 1.6rem;
 }
 
-/* ===============================
-   各画面の切替表示
-=============================== */
+#todayLabel {
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+/* ======== 画面共通 ======== */
 .screen {
   display: none;
+  padding: 10px;
 }
 
 .screen.active {
   display: block;
 }
 
-/* ===============================
-   ボタン
-=============================== */
-button {
-  border: none;
-  border-radius: 6px;
-  padding: 6px 14px;
-  margin: 4px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: 0.2s;
-}
-
-button:hover {
-  opacity: 0.85;
-}
-
-button.active {
-  background: #004aad;
-  color: #fff;
-}
-
-#refreshBtn {
-  background: #2e8b57;
-  color: white;
-}
-
-.backBtn {
-  background: #555;
-  color: white;
-}
-
-/* ===============================
-   開催場リスト
-=============================== */
-#venuesList {
+.grid-container {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 6px;
+  gap: 10px;
 }
 
-.venue-btn {
-  background: white;
-  border: 1px solid #ccc;
-  padding: 10px;
-  border-radius: 8px;
-  font-weight: bold;
+/* ======== メイン画面 (全国24場) ======== */
+#screen-venues .grid-container {
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(6, auto);
+}
+
+.venue-card {
+  background: #f8faff;
+  border: 2px solid #2196f3;
+  border-radius: 10px;
   text-align: center;
+  padding: 6px;
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.2s;
+}
+
+.venue-card:hover {
+  transform: scale(1.03);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+}
+
+.venue-name {
+  font-weight: bold;
+  font-size: 1rem;
+  color: #004aad;
+}
+
+.venue-status {
   font-size: 0.9rem;
-  transition: 0.2s;
+  margin-top: 2px;
 }
 
-.venue-btn:hover {
-  background: #e0ecff;
+.venue-rate {
+  margin-top: 4px;
+  font-size: 0.85rem;
+  color: #555;
 }
 
-/* ===============================
-   レース一覧
-=============================== */
-#raceList {
-  display: grid;
+/* ======== レース番号画面 ======== */
+#screen-races .grid-container.races {
   grid-template-columns: repeat(3, 1fr);
-  gap: 6px;
+  grid-template-rows: repeat(4, auto);
 }
 
 .race-btn {
-  background: #fff;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 8px;
+  background: #e3f2fd;
+  border: 1px solid #2196f3;
+  color: #003c8f;
+  border-radius: 12px;
+  padding: 10px 0;
   text-align: center;
-  font-size: 0.85rem;
-  transition: 0.2s;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
 }
 
 .race-btn:hover {
-  background: #e7f2ff;
+  background: #bbdefb;
 }
 
-/* ===============================
-   出走表
-=============================== */
-#table-wrapper {
-  background: white;
-  border-radius: 12px;
-  padding: 10px;
-  margin-top: 10px;
-  box-shadow: 0 0 6px rgba(0,0,0,0.1);
-}
-
-table {
+/* ======== 出走表画面 ======== */
+#race-table {
+  width: 100%;
   border-collapse: collapse;
-  width: 100%;
-  font-size: 0.8rem;
-  text-align: center;
-}
-
-thead {
-  background: #004aad;
-  color: white;
-}
-
-th, td {
-  border: 1px solid #ddd;
-  padding: 6px;
-}
-
-/* ===============================
-   枠色（ボートカラー）
-=============================== */
-.waku1 { background: #fff; color: #000; }
-.waku2 { background: #87cefa; color: #000; }
-.waku3 { background: #ff6347; color: #000; }
-.waku4 { background: #ffff66; color: #000; }
-.waku5 { background: #00cc66; color: #000; }
-.waku6 { background: #999999; color: #fff; }
-
-/* ===============================
-   AI評価表
-=============================== */
-#rankingTable {
-  margin-top: 12px;
-  width: 100%;
-}
-
-#rankingTable thead {
-  background: #222;
-  color: white;
-}
-
-#rankingTable tbody tr:nth-child(odd) {
-  background: #f7f7f7;
-}
-
-/* ===============================
-   ステータス表示
-=============================== */
-#aiStatus {
   margin-top: 10px;
   font-size: 0.9rem;
-  color: #444;
 }
 
-/* ===============================
-   コメント枠
-=============================== */
-.comment-box {
-  margin-top: 12px;
-  background: #fff5e6;
-  border-left: 5px solid #ffa500;
-  padding: 10px;
-  border-radius: 8px;
-  font-size: 0.9rem;
-}
-
-/* ===============================
-   日付タブ
-=============================== */
-#dateTabs {
+#race-table th, #race-table td {
+  border: 1px solid #aaa;
   text-align: center;
+  padding: 5px;
+}
+
+/* 各艇の背景色 */
+tr.boat1 { background: #ffffff; }
+tr.boat2 { background: #f0f0f0; }
+tr.boat3 { background: #ffe5e5; }
+tr.boat4 { background: #e5f0ff; }
+tr.boat5 { background: #fff9e5; }
+tr.boat6 { background: #e5ffe5; }
+
+/* ======== 出走表下部 (予想/順位/コメント) ======== */
+#race-info {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+}
+
+#race-info h3 {
+  background: #2196f3;
+  color: white;
+  text-align: center;
+  margin: 0;
+  padding: 6px 0;
+  border-radius: 8px 8px 0 0;
+}
+
+#prediction, #rank-prediction, #comment-section {
+  background: #f7fbff;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  padding-bottom: 8px;
+}
+
+#buy-predictions, #rankings, #ai-comment {
+  padding: 6px 10px;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+/* ======== 戻るボタン・更新エリア ======== */
+.back-btn-area {
   margin-bottom: 10px;
 }
 
-/* ===============================
-   スマホ最適化
-=============================== */
-@media (max-width: 600px) {
-  #venuesList, #raceList {
-    grid-template-columns: repeat(2, 1fr);
-  }
+.back-btn {
+  background: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 5px 12px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
 
-  table {
-    font-size: 0.7rem;
-  }
+.back-btn:hover {
+  background: #1565c0;
+}
 
-  button {
-    font-size: 0.8rem;
-  }
+#update-info {
+  margin-top: 10px;
+  text-align: center;
+}
+
+#refreshBtn {
+  background: #03a9f4;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 16px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+#refreshBtn:hover {
+  background: #0288d1;
+}
+
+#update-status {
+  font-size: 0.85rem;
+  color: #555;
+}
+
+/* ======== フッター ======== */
+footer {
+  background: #f0f0f0;
+  padding: 10px;
+  text-align: center;
+  font-size: 0.9rem;
+  border-top: 1px solid #ccc;
+}
+
+#globalHit {
+  color: #333;
 }

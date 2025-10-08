@@ -1,121 +1,93 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>競艇AI予想</title>
-  <link rel="manifest" href="manifest.webmanifest" />
-  <link rel="icon" href="favicon.ico" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>競艇AI予想アプリ</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header class="app-header">
-    <div class="title-wrap">
-      <h1 class="app-title">競艇AI予想</h1>
-      <div class="meta-row">
-        <div id="dateLabel" class="date-label">--/--/----</div>
-        <div class="tabs">
-          <button id="todayBtn" class="tab active">本日</button>
-          <button id="yesterdayBtn" class="tab">前日</button>
-        </div>
-      </div>
-    </div>
-    <div class="header-right">
-      <button id="refreshBtn" class="btn refresh">更新</button>
-      <div id="aiStatus" class="ai-status">AI学習中...</div>
-    </div>
+  <header>
+    <h1>競艇AI予想アプリ</h1>
+    <div id="todayLabel"></div>
   </header>
 
-  <main class="view">
-    <!-- 24場一覧：4×6固定 -->
+  <main>
+    <!-- メイン画面：全国24場 -->
     <section id="screen-venues" class="screen active">
-      <div class="card">
-        <div id="venuesGrid" class="venues-grid" aria-live="polite"></div>
+      <div id="venues-grid" class="grid-container">
+        <!-- 各場データは app.js で自動生成 -->
       </div>
     </section>
 
-    <!-- レース番号画面（3×4 = 12レース） -->
+    <!-- レース番号選択画面 -->
     <section id="screen-races" class="screen">
-      <div class="card screen-top">
-        <div class="screen-title" id="venueTitle">-</div>
-        <button id="backToVenues" class="btn back">戻る</button>
+      <div class="back-btn-area">
+        <button id="backToVenues" class="back-btn">← 戻る</button>
       </div>
-      <div class="card">
-        <div id="racesGrid" class="races-grid"></div>
+      <h2 id="venue-title"></h2>
+      <div id="races-grid" class="grid-container races">
+        <!-- 各レース番号ボタンは app.js で自動生成 -->
       </div>
     </section>
 
-    <!-- 出走表詳細 -->
-    <section id="screen-detail" class="screen">
-      <div class="card screen-top">
-        <div class="screen-title" id="raceTitle">-</div>
-        <button id="backToRaces" class="btn back">戻る</button>
+    <!-- 出走表画面 -->
+    <section id="screen-race" class="screen">
+      <div class="back-btn-area">
+        <button id="backToRaces" class="back-btn">← 戻る</button>
       </div>
+      <h2 id="race-title"></h2>
 
-      <!-- 出走表 -->
-      <div class="card">
-        <table class="table" id="entryTable">
-          <thead>
-            <tr>
-              <th>艇</th>
-              <th>階級 / 選手名 / ST</th>
-              <th>F</th>
-              <th>全国</th>
-              <th>当地</th>
-              <th>モーター</th>
-              <th>評価</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
+      <table id="race-table">
+        <thead>
+          <tr>
+            <th>枠</th>
+            <th>階級</th>
+            <th>選手名</th>
+            <th>ST</th>
+            <th>F</th>
+            <th>全国勝率</th>
+            <th>当地勝率</th>
+            <th>モーター勝率</th>
+            <th>コース勝率</th>
+            <th>評価</th>
+          </tr>
+        </thead>
+        <tbody id="race-body">
+          <!-- app.js で自動生成（1〜6艇） -->
+        </tbody>
+      </table>
 
-      <!-- AI予想 -->
-      <div class="card ai-block">
-        <div class="ai-col">
-          <div class="h3">AI 本命</div>
-          <table class="table prediction" id="aiMain">
-            <thead><tr><th>買い目</th><th>確率</th></tr></thead>
-            <tbody></tbody>
-          </table>
+      <!-- 予想関連エリア -->
+      <div id="race-info">
+        <div id="prediction">
+          <h3>AI買い目予想</h3>
+          <div id="buy-predictions"></div>
         </div>
-        <div class="ai-col">
-          <div class="h3">AI 穴</div>
-          <table class="table prediction" id="aiSub">
-            <thead><tr><th>買い目</th><th>確率</th></tr></thead>
-            <tbody></tbody>
-          </table>
+
+        <div id="rank-prediction">
+          <h3>順位予測</h3>
+          <div id="rankings"></div>
+        </div>
+
+        <div id="comment-section">
+          <h3>AIコメント</h3>
+          <p id="ai-comment"></p>
         </div>
       </div>
 
-      <!-- コース別コメント -->
-      <div class="card">
-        <div class="h3">展開予想コメント（1～6コース）</div>
-        <table class="table" id="commentTable">
-          <thead><tr><th>コース</th><th>コメント</th></tr></thead>
-          <tbody></tbody>
-        </table>
+      <!-- 更新情報表示 -->
+      <div id="update-info">
+        <button id="refreshBtn">更新</button>
+        <span id="update-status">自動更新中（5分ごと）</span>
       </div>
-
-      <!-- AI順位予測 -->
-      <div class="card">
-        <div class="h3">AI 順位予測</div>
-        <table class="table" id="rankingTable">
-          <thead>
-            <tr><th>順位</th><th>艇</th><th>選手名</th><th>評価値</th></tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
-
-      <section id="aiEngine" class="hidden">
-        <textarea id="aiLog" readonly></textarea>
-      </section>
     </section>
   </main>
 
-  <footer class="app-footer">© 2025 BOAT AI</footer>
+  <footer>
+    <div id="globalHit">AI総合的中率：--%</div>
+  </footer>
 
-  <script type="module" src="app.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
