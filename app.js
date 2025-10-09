@@ -1,5 +1,5 @@
 // ======================================
-// 🏁 Boat Race AI App - Perfect Version
+// 🏁 Boat Race AI App - Perfect Version (history対応版)
 // ✅ history.json の ai_hit から的中率を自動算出表示
 // ======================================
 
@@ -124,17 +124,17 @@ function generateAIComment(entries) {
   if (!entries || entries.length === 0) return "データ不足";
 
   const leader = entries[0];
-  const randomTone = [
-    "今節はかなり好調で、展開を読み切れば首位争い濃厚。",
-    "安定したスタートで信頼度は高い。",
-    "攻める姿勢が光る。ここも期待できそう。",
-    "序盤は苦戦も、後半の修正力に注目。",
-    "調整次第で浮上の可能性あり。",
-    "出足が重く、やや厳しい展開になりそう。",
-    "波乱の要素も多く、過信は禁物。",
-    "ここは厳しい。流れが向かなければ苦戦必至。"
+  const toneList = [
+    "絶好調の走りで、この一戦も首位争い必至。",
+    "機力・スタートともに安定しており信頼度は高い。",
+    "展開を味方につければ好位置をキープできそう。",
+    "スタート巧者として存在感を発揮する可能性大。",
+    "調整の手応えがあり、上位進出の期待がかかる。",
+    "出足がやや甘く、序盤は厳しい展開も考えられる。",
+    "スタート遅れが不安要素。流れに乗れるかがカギ。",
+    "調子を欠いており、ここは苦戦か。"
   ];
-  const tone = randomTone[Math.floor(Math.random() * randomTone.length)];
+  const tone = toneList[Math.floor(Math.random() * toneList.length)];
   return `${leader.name}選手: ${tone}`;
 }
 
@@ -147,18 +147,23 @@ function getBgColor(num) {
 }
 
 // ======================================
-// 7. 的中率算出
+// 7. 的中率算出（history.json構造対応）
 // ======================================
 function calcHitRate(venueName) {
   if (!historyData || Object.keys(historyData).length === 0) return 0;
+
   let total = 0;
   let hits = 0;
 
   Object.values(historyData).forEach((day) => {
-    day?.races?.forEach((r) => {
-      if (r.venue === venueName) {
+    const results = day.result || day.races || []; // 柔軟対応
+    results.forEach((r) => {
+      const venue = r.venue || r.place || "";
+      if (venue === venueName) {
         total++;
-        if (r.ai_hit) hits++;
+        if (r.ai_hit === true || r.ai_hit === "true" || r.ai_hit === 1) {
+          hits++;
+        }
       }
     });
   });
