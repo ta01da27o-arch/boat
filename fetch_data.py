@@ -2,99 +2,124 @@ import requests
 import json
 import datetime
 from datetime import timedelta, timezone
-import os
+from bs4 import BeautifulSoup
+from pathlib import Path
 
-# ====== 設定 ======
-HISTORY_FILE = "history.json"
-OUTPUT_FILE = "data.json"
-API_PROGRAM = "https://boatraceopenapi.github.io/api/programs/v3"
-API_RESULT_CANDIDATES = [
-    "https://boatraceopenapi.github.io/api/results/v3",
-    "https://boatraceopenapi.github.io/results/v3",
-    "https://boatraceopenapi.github.io/api/results/v2",
-    "https://boatraceopenapi.github.io/results/v2"
-]
+# ===== 設定 =====
+DATA_FILE = Path("data.json")
+RESULTS_API = "https://boatraceopenapi.github.io/api/results/v2"
+PROGRAM_API = "https://boatraceopenapi.github.io/api/programs/v3"
+SCRAPE_BASE = "https://www.boatrace.jp/owpc/pc/race/racelist"
 
-# ====== JST（日本時間）設定 ======
 JST = timezone(timedelta(hours=9))
 today = datetime.datetime.now(JST).date()
-date_str = today.strftime("%Y%m%d")
-print(f"📅 出走表取得開始（JST基準）: {date_str}")
+today_str = today.strftime("%Y%m%d")
 
-# ====== 履歴ファイル読み込み ======
-if os.path.exists(HISTORY_FILE):
-    with open(HISTORY_FILE, "r", encoding="utf-8") as f:
-        history = json.load(f)
-else:
-    history = []
+print(f"📅 出走表取得開始: {today_str}")
 
-all_data = []
+# ====== JSON保存関数 ======
+def save_json(path, data):
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
 
-def fetch_json(url):
+# ====== 出走表APIから取得 ======
+def fetch_program_api(date_str):
+    url = f"{PROGRAM_API}/{date_str}.json"
     try:
         r = requests.get(url, timeout=10)
         if r.status_code == 200:
+            print(f"✅ API出走表取得成功: {date_str}")
             return r.json()
         else:
-            print(f"⚠️ 取得失敗 ({r.status_code}): {url}")
+            print(f"⚠️ API出走表取得失敗 ({r.status_code})")
             return None
     except Exception as e:
-        print(f"⚠️ 通信エラー: {url} → {e}")
+        print(f"⚠️ API通信エラー: {e}")
         return None
 
-# ====== 出走表 ======
-def fetch_program(date):
-    url = f"{API_PROGRAM}/{date}.json"
-    data = fetch_json(url)
-    if data:
-        print(f"✅ 出走表取得成功: {date}")
+# ====== 公式サイトスクレイピング ======
+def fetch_program_scrape(date_str):
+    """公式サイトから24場分の出走表をスクレイピング"""
+    print(f"🔍 スクレイピング開始: {date_str}")
+    all_races = {}
+    for stadium in range(1, 25):
+        url = f"{SCRAPE_BASE}?jcd={stadium:02d}&hd={date_str}"
+        try:
+            res = requests.get(url, timeout=10)
+            res.encoding = "utf-8"
+            if res.status_code != 200:
+                print(f"⚠️ {stadium:02d}場 取得失敗 ({res.status_code})")
+                continue
+
+            soup = BeautifulSoup(res.text, "lxml")
+            title_tag = soup.select_one(".raceTitle")
+            title = title_tag.get_text(strip=True) if title_tag else "タイトル不明"
+            race_items = soup.select(".table1 tbody tr")
+            race_list = []
+
+            for tr in race_items:
+                cols = [c.get_text(strip=True) for c in tr.find_all("td")]
+                if len(cols) < 5:
+                    continue
+                race_list.append({
+                    "艇": cols[0],
+                    "選手名": cols[1],
+                    "支部": cols[2],
+                    "級": cols[3],
+                    "F/L": cols[4],
+                })
+            all_races[f"{stadium:02d}"] = {
+                "title": title,
+                "races": race_list,
+            }
+            print(f"✅ {stadium:02d}場 取得成功 ({len(race_list)}行)")
+        except Exception as e:
+            print(f"⚠️ {stadium:02d}場 スクレイピング失敗: {e}")
+    return all_races
+
+# ====== 結果データAPI ======
+def fetch_results(days=30):
+    results = {}
+    for i in range(days):
+        date = today - timedelta(days=i)
+        date_str = date.strftime("%Y%m%d")
+        url = f"{RESULTS_API}/{date_str}.json"
+        try:
+            r = requests.get(url, timeout=10)
+            if r.status_code == 200:
+                results[date_str] = r.json()
+                print(f"✅ 結果取得成功: {date_str}")
+            else:
+                print(f"⚠️ 結果取得失敗 ({r.status_code}): {date_str}")
+        except Exception as e:
+            print(f"⚠️ 結果通信エラー: {e}")
+    return results
+
+# ====== メイン処理 ======
+def main():
+    # 1️⃣ 出走表（API or スクレイピング）
+    program_data = fetch_program_api(today_str)
+    if not program_data:
+        print("⚠️ APIから取得できないため、公式サイトからスクレイピングします。")
+        program_data = fetch_program_scrape(today_str)
     else:
-        print(f"⚠️ 出走表データなし: {date}")
-    return data
+        print("✅ 出走表をAPIから取得しました。")
 
-# ====== 結果 ======
-def fetch_result(date):
-    for base in API_RESULT_CANDIDATES:
-        url = f"{base}/{date}.json"
-        data = fetch_json(url)
-        if data:
-            print(f"✅ 結果データ取得成功: {url}")
-            return data
-    print(f"⚠️ 結果データが見つかりません: {date}")
-    return None
+    # 2️⃣ 過去30日分の結果
+    print("📊 過去30日分の結果データを取得中...")
+    results_data = fetch_results(30)
 
-# ====== 当日出走表 ======
-program_data = fetch_program(date_str)
+    # 3️⃣ 結合
+    combined = {
+        "date": today_str,
+        "program": program_data,
+        "results": results_data,
+    }
 
-if not program_data:
-    print("🔁 当日データなし → 前日を試行します")
-    prev_day = today - timedelta(days=1)
-    date_str = prev_day.strftime("%Y%m%d")
-    program_data = fetch_program(date_str)
+    # 4️⃣ 保存
+    save_json(DATA_FILE, combined)
+    print(f"💾 {DATA_FILE} に保存完了 ({today_str})")
 
-if program_data:
-    all_data.append({"date": date_str, "programs": program_data})
-else:
-    print("⚠️ 出走表データが取得できませんでした。")
-
-# ====== 過去30日分の結果 ======
-for i in range(30):
-    d = today - timedelta(days=i)
-    d_str = d.strftime("%Y%m%d")
-    result = fetch_result(d_str)
-    if result:
-        all_data.append({"date": d_str, "results": result})
-
-# ====== data.json 保存 ======
-with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-    json.dump(all_data, f, ensure_ascii=False, indent=2)
-print(f"💾 data.json に保存完了 ({len(all_data)}日分)")
-
-# ====== history.json 更新 ======
-if date_str not in history:
-    history.append(date_str)
-    with open(HISTORY_FILE, "w", encoding="utf-8") as f:
-        json.dump(history[-100:], f, ensure_ascii=False, indent=2)
-    print(f"🆕 history.json 更新: {date_str}")
-
-print("✅ 全処理完了。")
+# ====== 実行 ======
+if __name__ == "__main__":
+    main()
