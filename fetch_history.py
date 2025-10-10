@@ -27,8 +27,12 @@ def fetch_result_api(date_str):
 
 def load_existing_data():
     if DATA_FILE.exists():
-        with open(DATA_FILE, "r", encoding="utf-8") as f:
-            return json.load(f)
+        try:
+            with open(DATA_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception as e:
+            print(f"⚠️ JSON読み込みエラー: {e}")
+            return {}
     return {}
 
 def save_data(data):
@@ -36,7 +40,6 @@ def save_data(data):
         json.dump(data, f, ensure_ascii=False, indent=2)
 
 def mark_ai_hits(history, ai_data=None):
-    # 安全に構造を走査
     for date, day_data in history.items():
         if not isinstance(day_data, dict):
             continue
@@ -45,30 +48,33 @@ def mark_ai_hits(history, ai_data=None):
                 continue
             for i, r in enumerate(races):
                 if not isinstance(r, dict):
-                    continue  # ←ここで文字列などをスキップ
+                    continue
                 race_num = str(r.get("race_number", ""))
-                # AIデータがある場合の命中フラグ（簡略例）
                 if ai_data and race_num in ai_data.get(venue, {}):
                     r["ai_hit"] = ai_data[venue][race_num].get("hit", False)
     return history
 
-def fetch_and_update(days=60):
+def fetch_and_update(days=30):
     today = datetime.date.today()
     all_history = load_existing_data()
+    new_data = {}
+
+    # 古いデータを30日分に制限
     for i in range(days):
         date_str = (today - datetime.timedelta(days=i)).strftime("%Y%m%d")
         if date_str in all_history:
-            continue
-        print(f"処理中: {date_str}")
-        result = fetch_result_api(date_str)
-        if result:
-            all_history[date_str] = result
-    all_history = mark_ai_hits(all_history)
-    save_data(all_history)
-    print(f"✅ 過去{days}日分の履歴データを更新しました")
+            new_data[date_str] = all_history[date_str]
+        else:
+            print(f"🆕 新規取得: {date_str}")
+            result = fetch_result_api(date_str)
+            if result:
+                new_data[date_str] = result
+
+    # AI結果マーク（任意）
+    new_data = mark_ai_hits(new_data)
+
+    save_data(new_data)
+    print(f"✅ 過去{days}日分の履歴データを更新しました ({len(new_data)}日分保持)")
 
 if __name__ == "__main__":
-    if not DATA_FILE.exists():
-        fetch_and_update(60)
-    else:
-        fetch_and_update(7)
+    fetch_and_update(30)
