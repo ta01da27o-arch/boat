@@ -1,29 +1,26 @@
 // ======================================
-// 🏁 Boat Race AI App - data.json (race list形式)対応版
+// 競艇AI予想アプリ app.js（完全対応版）
 // ======================================
 
-const mainScreen = document.getElementById("mainScreen");
-const raceScreen = document.getElementById("raceScreen");
-const detailScreen = document.getElementById("detailScreen");
+// 画面要素
+const mainScreen = document.getElementById("screen-main");
+const raceScreen = document.getElementById("screen-races");
+const detailScreen = document.getElementById("screen-race");
 
-const backToMainBtn = document.getElementById("backToMain");
-const backToRaceBtn = document.getElementById("backToRace");
-
+// グローバル変数
 let groupedVenues = {};
 let historyData = {};
 
 // ======================================
-// JSON取得関数
+// JSON取得関数（共通）
 // ======================================
 async function fetchJSON(path) {
   try {
-    const base =
-      location.pathname.includes("/boat/") ? "/boat/" : "./";
-    const res = await fetch(base + path + "?t=" + new Date().getTime());
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const res = await fetch(path + `?v=${Date.now()}`); // キャッシュ回避
+    if (!res.ok) throw new Error(`${path} 読み込み失敗`);
     return await res.json();
-  } catch (e) {
-    console.error(`❌ ${path} 読込失敗:`, e);
+  } catch (err) {
+    console.error("fetchJSON error:", err);
     return null;
   }
 }
@@ -32,18 +29,20 @@ async function fetchJSON(path) {
 // メイン画面描画
 // ======================================
 async function renderMain() {
-  const data = await fetchJSON("data.json");
+  const rawData = await fetchJSON("data.json");
   const history = await fetchJSON("history.json");
 
-  if (!data || data.length === 0) {
-    mainScreen.innerHTML = `<p style="color:red;">data.jsonの中身が見つかりません。</p>`;
+  if (!rawData) {
+    mainScreen.innerHTML = `<p style="color:red;">data.jsonの読み込みに失敗しました。</p>`;
     return;
   }
+
+  // ✅ 配列でなければ配列に変換
+  const data = Array.isArray(rawData) ? rawData : [rawData];
 
   historyData = history || {};
   mainScreen.innerHTML = "";
 
-  // タイトル部分
   mainScreen.innerHTML += `
     <h1>🏁 AI競艇予想</h1>
     <div class="update-info">
@@ -52,7 +51,6 @@ async function renderMain() {
     </div>
   `;
 
-  // ✅ 場ごとにグループ化
   groupedVenues = {};
   data.forEach((race) => {
     const stadium = race.race_stadium_number || "不明";
@@ -66,7 +64,6 @@ async function renderMain() {
   Object.entries(groupedVenues).forEach(([stadium, races]) => {
     const div = document.createElement("div");
     div.className = "venue-card";
-
     const name = `第${stadium}場`;
     const hitRate = calcHitRate(name);
     div.innerHTML = `
@@ -74,13 +71,11 @@ async function renderMain() {
       <div class="venue-status">開催中</div>
       <div class="venue-hit">的中率: ${hitRate}%</div>
     `;
-
     div.onclick = () => showRaces(name, races);
     wrapper.appendChild(div);
   });
 
   mainScreen.appendChild(wrapper);
-
   document.getElementById("refreshBtn").onclick = () => renderMain();
   showScreen(mainScreen);
 }
@@ -90,126 +85,118 @@ async function renderMain() {
 // ======================================
 function showRaces(venueName, races) {
   raceScreen.innerHTML = `
-    <h2>${venueName}</h2>
-    <div class="race-grid"></div>
+    <button class="back-btn">← 戻る</button>
+    <h2>${venueName} のレース一覧</h2>
   `;
-  const grid = raceScreen.querySelector(".race-grid");
 
-  races.forEach((r) => {
-    const btn = document.createElement("button");
-    btn.className = "race-btn blue";
-    btn.textContent = `${r.race_number}R`;
-    btn.onclick = () => showDetails(venueName, r);
-    grid.appendChild(btn);
+  const list = document.createElement("div");
+  list.className = "race-list";
+
+  races.forEach((race) => {
+    const div = document.createElement("div");
+    div.className = "race-item";
+    const num = race.race_number || "?";
+    const title = race.race_title || "";
+    const sub = race.race_subtitle || "";
+    const grade = race.race_grade_number || "";
+    const time = race.race_closed_at
+      ? new Date(race.race_closed_at).toLocaleTimeString("ja-JP", {
+          hour: "2-digit",
+          minute: "2-digit",
+        })
+      : "--:--";
+
+    div.innerHTML = `
+      <div class="race-num">${num}R</div>
+      <div class="race-info">
+        <div>${title}</div>
+        <div class="race-sub">${sub}</div>
+      </div>
+      <div class="race-time">${time}</div>
+    `;
+    div.onclick = () => showRaceDetail(race);
+    list.appendChild(div);
   });
 
+  raceScreen.appendChild(list);
+  raceScreen.querySelector(".back-btn").onclick = () => showScreen(mainScreen);
   showScreen(raceScreen);
 }
 
 // ======================================
-// 出走表画面
+// レース詳細表示
 // ======================================
-function showDetails(venueName, race) {
+function showRaceDetail(race) {
   detailScreen.innerHTML = `
-    <h2>${venueName} ${race.race_number}R 出走表</h2>
-    <div class="table-container"></div>
-    <div id="aiComment" class="ai-comment"></div>
+    <button class="back-btn">← 戻る</button>
+    <h2>${race.race_title || "レース詳細"}</h2>
+    <p>${race.race_subtitle || ""}</p>
+    <p>距離: ${race.race_distance || 1800}m</p>
+    <p>締切時刻: ${
+      race.race_closed_at
+        ? new Date(race.race_closed_at).toLocaleTimeString("ja-JP", {
+            hour: "2-digit",
+            minute: "2-digit",
+          })
+        : "--:--"
+    }</p>
   `;
 
-  const table = detailScreen.querySelector(".table-container");
-  const boats = race.boats || [];
+  // 出走表
+  const table = document.createElement("table");
+  table.className = "boat-table";
+  table.innerHTML = `
+    <tr>
+      <th>艇</th><th>選手</th><th>登録番号</th><th>支部</th><th>級</th>
+    </tr>
+  `;
 
-  boats.forEach((b, i) => {
-    const row = document.createElement("div");
-    row.className = "entry-row";
-    row.style.backgroundColor = getBgColor(b.racer_boat_number);
-
-    row.innerHTML = `
-      <div class="entry-cell">${b.racer_boat_number}</div>
-      <div class="entry-cell">${b.racer_name}</div>
-      <div class="entry-cell">${b.racer_average_start_timing || "-"}</div>
-      <div class="entry-cell">${b.racer_flying_count || 0}F</div>
-      <div class="entry-cell">${b.racer_national_top_3_percent || 0}%</div>
-      <div class="entry-cell">${b.racer_local_top_3_percent || 0}%</div>
-      <div class="entry-cell">${b.racer_class_number || ""}級</div>
+  (race.boats || []).forEach((b) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${b.racer_boat_number}</td>
+      <td>${b.racer_name || ""}</td>
+      <td>${b.racer_number || ""}</td>
+      <td>${b.racer_branch_number || ""}</td>
+      <td>${b.racer_class_number || ""}</td>
     `;
-    table.appendChild(row);
+    table.appendChild(tr);
   });
 
-  const comment = generateAIComment(boats);
-  document.getElementById("aiComment").textContent = comment;
-
+  detailScreen.appendChild(table);
+  detailScreen.querySelector(".back-btn").onclick = () =>
+    showScreen(raceScreen);
   showScreen(detailScreen);
 }
 
 // ======================================
-// AIコメント生成
-// ======================================
-function generateAIComment(boats) {
-  if (!boats || boats.length === 0) return "データ不足";
-  const leader = boats[0];
-  const tones = [
-    "機力上位で首位争いへ。",
-    "スタート速く安定感抜群。",
-    "展開に乗ればチャンスあり。",
-    "コース取り巧者で注目。",
-    "スタート不安も地力でカバー。",
-    "調整成功なら一発あり。"
-  ];
-  const tone = tones[Math.floor(Math.random() * tones.length)];
-  return `${leader.racer_name}：${tone}`;
-}
-
-// ======================================
-// 的中率算出
+// 的中率計算（履歴から）
 // ======================================
 function calcHitRate(venueName) {
-  if (!historyData || Object.keys(historyData).length === 0) return 0;
-  let total = 0,
-    hits = 0;
+  if (!historyData || !Array.isArray(historyData)) return 0;
 
-  Object.values(historyData).forEach((d) => {
-    const list = d.result || d.races || [];
-    list.forEach((r) => {
-      const venue = r.venue || r.place || "";
-      if (venue.includes(venueName)) {
-        total++;
-        if (r.ai_hit === true || r.ai_hit === "true" || r.ai_hit === 1) hits++;
-      }
-    });
-  });
+  const records = historyData.filter(
+    (h) => h.race_stadium_name === venueName && h.result_hit === true
+  );
+  const total = historyData.filter(
+    (h) => h.race_stadium_name === venueName
+  ).length;
 
-  return total ? Math.round((hits / total) * 100) : 0;
+  return total > 0 ? Math.round((records.length / total) * 100) : 0;
 }
 
 // ======================================
-// 背景色設定
-// ======================================
-function getBgColor(num) {
-  const colors = [
-    "#ffffff",
-    "#e3f2fd",
-    "#fff3e0",
-    "#f3e5f5",
-    "#e8f5e9",
-    "#fbe9e7"
-  ];
-  return colors[num - 1] || "#fff";
-}
-
-// ======================================
-// 画面切替
+// 画面切り替え制御
 // ======================================
 function showScreen(screen) {
-  [mainScreen, raceScreen, detailScreen].forEach((s) => (s.style.display = "none"));
-  screen.style.display = "block";
+  [mainScreen, raceScreen, detailScreen].forEach((el) => {
+    el.style.display = el === screen ? "block" : "none";
+  });
 }
 
-backToMainBtn.onclick = () => showScreen(mainScreen);
-backToRaceBtn.onclick = () => showScreen(raceScreen);
-
 // ======================================
-// 自動更新
+// 初期化
 // ======================================
-setInterval(renderMain, 5 * 60 * 1000);
-renderMain();
+window.addEventListener("load", () => {
+  renderMain();
+});
