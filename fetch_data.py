@@ -7,8 +7,13 @@ import os
 # ====== 設定 ======
 HISTORY_FILE = "history.json"
 OUTPUT_FILE = "data.json"
-API_URL = "https://boatraceopenapi.github.io/api/programs/v3"
-RESULT_URL = "https://boatraceopenapi.github.io/api/results/v3"
+API_PROGRAM = "https://boatraceopenapi.github.io/api/programs/v3"
+API_RESULT_CANDIDATES = [
+    "https://boatraceopenapi.github.io/api/results/v3",
+    "https://boatraceopenapi.github.io/results/v3",
+    "https://boatraceopenapi.github.io/api/results/v2",
+    "https://boatraceopenapi.github.io/results/v2"
+]
 
 # ====== JST（日本時間）設定 ======
 JST = timezone(timedelta(hours=9))
@@ -23,70 +28,62 @@ if os.path.exists(HISTORY_FILE):
 else:
     history = []
 
-# ====== データ格納用 ======
 all_data = []
 
-# ====== APIから当日分を取得 ======
 def fetch_json(url):
     try:
-        r = requests.get(url)
+        r = requests.get(url, timeout=10)
         if r.status_code == 200:
             return r.json()
         else:
             print(f"⚠️ 取得失敗 ({r.status_code}): {url}")
             return None
     except Exception as e:
-        print(f"⚠️ 取得エラー: {e}")
+        print(f"⚠️ 通信エラー: {url} → {e}")
         return None
 
-
-def fetch_race_data(date_str):
-    url = f"{API_URL}/{date_str}.json"
+# ====== 出走表 ======
+def fetch_program(date):
+    url = f"{API_PROGRAM}/{date}.json"
     data = fetch_json(url)
     if data:
-        print(f"✅ 出走表取得成功: {date_str}")
+        print(f"✅ 出走表取得成功: {date}")
     else:
-        print(f"⚠️ 出走表データなし: {date_str}")
+        print(f"⚠️ 出走表データなし: {date}")
     return data
 
+# ====== 結果 ======
+def fetch_result(date):
+    for base in API_RESULT_CANDIDATES:
+        url = f"{base}/{date}.json"
+        data = fetch_json(url)
+        if data:
+            print(f"✅ 結果データ取得成功: {url}")
+            return data
+    print(f"⚠️ 結果データが見つかりません: {date}")
+    return None
 
-def fetch_result_data(date_str):
-    url = f"{RESULT_URL}/{date_str}.json"
-    data = fetch_json(url)
-    if data:
-        print(f"✅ 結果データ取得成功: {date_str}")
-    else:
-        print(f"⚠️ 結果データなし: {date_str}")
-    return data
+# ====== 当日出走表 ======
+program_data = fetch_program(date_str)
 
-
-# ====== 当日データ取得（JST基準） ======
-race_data = fetch_race_data(date_str)
-
-if not race_data:
-    print(f"🔁 当日データなし → 前日データを取得します")
+if not program_data:
+    print("🔁 当日データなし → 前日を試行します")
     prev_day = today - timedelta(days=1)
     date_str = prev_day.strftime("%Y%m%d")
-    race_data = fetch_race_data(date_str)
+    program_data = fetch_program(date_str)
 
-if race_data:
-    all_data.append({
-        "date": date_str,
-        "programs": race_data
-    })
+if program_data:
+    all_data.append({"date": date_str, "programs": program_data})
 else:
     print("⚠️ 出走表データが取得できませんでした。")
 
-# ====== 結果データも取得（過去30日分） ======
+# ====== 過去30日分の結果 ======
 for i in range(30):
     d = today - timedelta(days=i)
     d_str = d.strftime("%Y%m%d")
-    result_data = fetch_result_data(d_str)
-    if result_data:
-        all_data.append({
-            "date": d_str,
-            "results": result_data
-        })
+    result = fetch_result(d_str)
+    if result:
+        all_data.append({"date": d_str, "results": result})
 
 # ====== data.json 保存 ======
 with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
@@ -100,4 +97,4 @@ if date_str not in history:
         json.dump(history[-100:], f, ensure_ascii=False, indent=2)
     print(f"🆕 history.json 更新: {date_str}")
 
-print("✅ 全ての処理が完了しました。")
+print("✅ 全処理完了。")
