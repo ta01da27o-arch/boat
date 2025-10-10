@@ -1,5 +1,5 @@
 # =======================================
-# 🏁 fetch_data.py - 出走表自動取得 (v3対応最終版)
+# 🏁 fetch_data.py - 出走表自動取得 (最終安定版)
 # =======================================
 
 import os
@@ -8,15 +8,13 @@ import requests
 import datetime
 from pathlib import Path
 
-# === 保存ファイル ===
 DATA_FILE = Path("data.json")
 
-# === ベースURL ===
 PROGRAM_API_V3 = "https://boatraceopenapi.github.io/api/programs/v3"
 RACER_API      = "https://boatraceopenapi.github.io/racers/v2"
 
-# === 出走表データ取得（v3全体構造） ===
 def fetch_program_all(date_str: str):
+    """指定日付の出走表データを取得"""
     url = f"{PROGRAM_API_V3}/{date_str}.json"
     try:
         r = requests.get(url, timeout=10)
@@ -24,13 +22,13 @@ def fetch_program_all(date_str: str):
             print(f"✅ 出走表取得成功: {url}")
             return r.json()
         else:
-            print(f"⚠️ 出走表取得失敗: {r.status_code}")
+            print(f"⚠️ 出走表取得失敗 ({r.status_code}): {url}")
     except Exception as e:
         print(f"❌ 取得エラー: {e}")
-    return []
+    return None
 
-# === 選手データ取得 ===
 def fetch_racer_data(racer_num: int):
+    """選手データ取得"""
     url = f"{RACER_API}/{racer_num}.json"
     try:
         r = requests.get(url, timeout=10)
@@ -40,8 +38,8 @@ def fetch_racer_data(racer_num: int):
         pass
     return None
 
-# === 出走表を組み立て ===
 def build_race_data(programs, date_str):
+    """出走表をアプリ用フォーマットに整形"""
     result = []
     for race in programs:
         race_obj = {
@@ -56,7 +54,6 @@ def build_race_data(programs, date_str):
             "boats": [],
         }
 
-        # 出走表の各艇データ
         entries = race.get("entries") or []
         for e in entries:
             racer_number = e.get("racer_number")
@@ -87,19 +84,27 @@ def build_race_data(programs, date_str):
 
     return result
 
-# === メイン処理 ===
 def fetch_all_data():
+    """当日 or 前日データを自動取得"""
     today = datetime.date.today()
-    date_str = today.strftime("%Y%m%d")
+    date_str_today = today.strftime("%Y%m%d")
 
-    print(f"📅 出走表取得開始: {date_str}")
-    programs = fetch_program_all(date_str)
+    print(f"📅 出走表取得開始: {date_str_today}")
+    programs = fetch_program_all(date_str_today)
+
+    if not programs:
+        # 当日データが404なら、前日を再試行
+        prev_date = today - datetime.timedelta(days=1)
+        prev_str = prev_date.strftime("%Y%m%d")
+        print(f"🔁 当日データなし → 前日データを取得します ({prev_str})")
+        programs = fetch_program_all(prev_str)
+        date_str_today = prev_str  # 保存用も前日に切り替え
 
     if not programs:
         print("⚠️ 出走表データが取得できませんでした。")
         return
 
-    all_data = build_race_data(programs, date_str)
+    all_data = build_race_data(programs, date_str_today)
 
     if all_data:
         with open(DATA_FILE, "w", encoding="utf-8") as f:
@@ -108,6 +113,5 @@ def fetch_all_data():
     else:
         print("⚠️ 出走表データが空です。")
 
-# === 実行 ===
 if __name__ == "__main__":
     fetch_all_data()
