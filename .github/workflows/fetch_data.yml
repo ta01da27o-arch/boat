@@ -1,0 +1,48 @@
+name: レースデータ取得
+
+on:
+  schedule:
+    - cron: "0 23 * * *"  # JST 08:00 → 出走表
+    - cron: "0 14 * * *"  # JST 23:00 → 結果
+  workflow_dispatch:  # 手動実行可
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install requests beautifulsoup4 lxml
+
+      # 出走表取得
+      - name: Run fetch_data.py
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "[手動実行モード] 出走表を再取得します"
+            python fetch_data.py --force-program
+          else
+            python fetch_data.py
+          fi
+
+      # 結果データ・履歴取得
+      - name: Run fetch_history.py
+        run: |
+          echo "📘 過去30日分の履歴データを取得します"
+          python fetch_history.py
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          [ -f data.json ] && git add data.json
+          [ -f history.json ] && git add history.json
+          git diff --quiet && git diff --staged --quiet || git commit -m "Update data.json / history.json"
+          git push
