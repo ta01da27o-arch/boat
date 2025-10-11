@@ -1,124 +1,84 @@
 import requests
+from bs4 import BeautifulSoup
 import json
 import datetime
-from datetime import timedelta, timezone
-from bs4 import BeautifulSoup
 from pathlib import Path
+from datetime import timedelta, timezone
 
 # ===== 設定 =====
 DATA_FILE = Path("data.json")
-RESULTS_API = "https://boatraceopenapi.github.io/api/results/v2"
-PROGRAM_API = "https://boatraceopenapi.github.io/api/programs/v3"
 SCRAPE_BASE = "https://www.boatrace.jp/owpc/pc/race/racelist"
-
 JST = timezone(timedelta(hours=9))
 today = datetime.datetime.now(JST).date()
 today_str = today.strftime("%Y%m%d")
 
-print(f"📅 出走表取得開始: {today_str}")
+print(f"📅 本日({today_str})のレースデータをスクレイピング開始")
 
 # ====== JSON保存関数 ======
-def save_json(path, data):
-    with open(path, "w", encoding="utf-8") as f:
+def save_json(data):
+    with open(DATA_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
+    print(f"💾 保存完了: {DATA_FILE}")
 
-# ====== 出走表APIから取得 ======
-def fetch_program_api(date_str):
-    url = f"{PROGRAM_API}/{date_str}.json"
+# ====== 1会場のレースデータ取得 ======
+def fetch_venue_races(stadium_id, date_str):
+    url = f"{SCRAPE_BASE}?jcd={stadium_id:02d}&hd={date_str}"
     try:
-        r = requests.get(url, timeout=10)
-        if r.status_code == 200:
-            print(f"✅ API出走表取得成功: {date_str}")
-            return r.json()
-        else:
-            print(f"⚠️ API出走表取得失敗 ({r.status_code})")
+        res = requests.get(url, timeout=10)
+        res.encoding = "utf-8"
+        if res.status_code != 200:
+            print(f"⚠️ {stadium_id:02d}場 取得失敗 ({res.status_code})")
             return None
+
+        soup = BeautifulSoup(res.text, "lxml")
+        title_tag = soup.select_one(".main_race_title")
+        title = title_tag.get_text(strip=True) if title_tag else f"{stadium_id:02d}場"
+
+        race_cards = soup.select(".table1")
+        race_data = []
+
+        for r, table in enumerate(race_cards, start=1):
+            boats = []
+            rows = table.select("tbody tr")
+            for row in rows:
+                cols = [c.get_text(strip=True) for c in row.find_all("td")]
+                if len(cols) >= 6:
+                    boats.append({
+                        "racer_boat_number": len(boats) + 1,
+                        "racer_name": cols[1],
+                        "racer_class_number": cols[3],
+                        "racer_branch_number": cols[2],
+                        "racer_flying_count": cols[4],
+                        "racer_average_start_timing": cols[5] if len(cols) > 5 else "",
+                    })
+            race_data.append({
+                "race_date": date_str,
+                "race_stadium_number": stadium_id,
+                "race_number": r,
+                "race_title": title,
+                "boats": boats
+            })
+
+        print(f"✅ {stadium_id:02d}場 取得成功 ({len(race_data)}R)")
+        return race_data
     except Exception as e:
-        print(f"⚠️ API通信エラー: {e}")
+        print(f"⚠️ {stadium_id:02d}場 エラー: {e}")
         return None
 
-# ====== 公式サイトスクレイピング ======
-def fetch_program_scrape(date_str):
-    """公式サイトから24場分の出走表をスクレイピング"""
-    print(f"🔍 スクレイピング開始: {date_str}")
-    all_races = {}
-    for stadium in range(1, 25):
-        url = f"{SCRAPE_BASE}?jcd={stadium:02d}&hd={date_str}"
-        try:
-            res = requests.get(url, timeout=10)
-            res.encoding = "utf-8"
-            if res.status_code != 200:
-                print(f"⚠️ {stadium:02d}場 取得失敗 ({res.status_code})")
-                continue
-
-            soup = BeautifulSoup(res.text, "lxml")
-            title_tag = soup.select_one(".raceTitle")
-            title = title_tag.get_text(strip=True) if title_tag else "タイトル不明"
-            race_items = soup.select(".table1 tbody tr")
-            race_list = []
-
-            for tr in race_items:
-                cols = [c.get_text(strip=True) for c in tr.find_all("td")]
-                if len(cols) < 5:
-                    continue
-                race_list.append({
-                    "艇": cols[0],
-                    "選手名": cols[1],
-                    "支部": cols[2],
-                    "級": cols[3],
-                    "F/L": cols[4],
-                })
-            all_races[f"{stadium:02d}"] = {
-                "title": title,
-                "races": race_list,
-            }
-            print(f"✅ {stadium:02d}場 取得成功 ({len(race_list)}行)")
-        except Exception as e:
-            print(f"⚠️ {stadium:02d}場 スクレイピング失敗: {e}")
-    return all_races
-
-# ====== 結果データAPI ======
-def fetch_results(days=30):
-    results = {}
-    for i in range(days):
-        date = today - timedelta(days=i)
-        date_str = date.strftime("%Y%m%d")
-        url = f"{RESULTS_API}/{date_str}.json"
-        try:
-            r = requests.get(url, timeout=10)
-            if r.status_code == 200:
-                results[date_str] = r.json()
-                print(f"✅ 結果取得成功: {date_str}")
-            else:
-                print(f"⚠️ 結果取得失敗 ({r.status_code}): {date_str}")
-        except Exception as e:
-            print(f"⚠️ 結果通信エラー: {e}")
-    return results
-
-# ====== メイン処理 ======
+# ====== 全会場処理 ======
 def main():
-    # 1️⃣ 出走表（API or スクレイピング）
-    program_data = fetch_program_api(today_str)
-    if not program_data:
-        print("⚠️ APIから取得できないため、公式サイトからスクレイピングします。")
-        program_data = fetch_program_scrape(today_str)
-    else:
-        print("✅ 出走表をAPIから取得しました。")
+    all_data = []
+    for sid in range(1, 25):  # 24会場分
+        races = fetch_venue_races(sid, today_str)
+        if races:
+            all_data.extend(races)
 
-    # 2️⃣ 過去30日分の結果
-    print("📊 過去30日分の結果データを取得中...")
-    results_data = fetch_results(30)
+    if not all_data:
+        print("❌ 本日のレースデータが取得できませんでした。")
+        return
 
-    # 3️⃣ 結合
-    combined = {
-        "date": today_str,
-        "program": program_data,
-        "results": results_data,
-    }
-
-    # 4️⃣ 保存
-    save_json(DATA_FILE, combined)
-    print(f"💾 {DATA_FILE} に保存完了 ({today_str})")
+    save_json(all_data)
+    print(f"🎯 本日のレースデータ取得完了 ({len(all_data)}レース分)")
 
 # ====== 実行 ======
 if __name__ == "__main__":
