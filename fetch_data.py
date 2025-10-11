@@ -1,65 +1,82 @@
-import os
-import json
 import requests
+from bs4 import BeautifulSoup
 import datetime
+import json
 from pathlib import Path
 
-# === 設定 ===
+# === 定数設定 ===
+BASE_URL = "https://www.boatrace.jp"
 DATA_FILE = Path("data.json")
-PROGRAMS_API = "https://boatraceopenapi.github.io/api/programs/v3"
 
-# === 1日分の出走表データ取得 ===
-def fetch_program_api(date_str):
-    url = f"{PROGRAMS_API}/{date_str}.json"
-    try:
-        r = requests.get(url, timeout=10)
-        if r.status_code == 200:
-            data = r.json()
-            if isinstance(data, dict):
-                print(f"✅ {date_str} 出走表取得成功")
-                return data
-            else:
-                print(f"⚠️ {date_str} 出走表データ形式不正: {type(data)}")
-        else:
-            print(f"❌ {date_str} 出走表取得失敗: {r.status_code}")
-    except Exception as e:
-        print(f"⚠️ {date_str} 取得エラー: {e}")
-    return None
+# === 24場コード ===
+VENUES = {
+    "01": "桐生", "02": "戸田", "03": "江戸川", "04": "平和島", "05": "多摩川", "06": "浜名湖",
+    "07": "蒲郡", "08": "常滑", "09": "津", "10": "三国", "11": "びわこ", "12": "住之江",
+    "13": "尼崎", "14": "鳴門", "15": "丸亀", "16": "児島", "17": "宮島", "18": "徳山",
+    "19": "下関", "20": "若松", "21": "芦屋", "22": "福岡", "23": "唐津", "24": "大村"
+}
 
-# === JSON保存 ===
-def save_json(data):
+# === 今日の日付 ===
+today = datetime.date.today()
+date_str = today.strftime("%Y%m%d")
+
+# === 本日開催場を取得 ===
+def get_today_venues():
+    url = f"{BASE_URL}/owpc/pc/race/index"
+    res = requests.get(url, timeout=10)
+    soup = BeautifulSoup(res.text, "lxml")
+    links = soup.select("li.is-holding a")
+    venue_codes = []
+    for link in links:
+        href = link.get("href", "")
+        if "jcd=" in href:
+            code = href.split("jcd=")[1].split("&")[0]
+            if code in VENUES:
+                venue_codes.append(code)
+    print(f"✅ 開催場: {', '.join([VENUES[v] for v in venue_codes])}")
+    return venue_codes
+
+# === 各場のレース一覧を取得 ===
+def fetch_race_program(venue_code):
+    program = {"title": VENUES[venue_code], "races": []}
+    for rno in range(1, 13):
+        url = f"{BASE_URL}/owpc/pc/race/racelist?rno={rno}&jcd={venue_code}&hd={date_str}"
+        res = requests.get(url, timeout=10)
+        soup = BeautifulSoup(res.text, "lxml")
+
+        title = soup.select_one(".heading2_title")
+        race_name = title.text.strip() if title else f"{rno}R"
+        boats = [b.text.strip() for b in soup.select(".table1_boatImage1 .is-fs18")]
+        players = [p.text.strip() for p in soup.select(".table1_name")]
+
+        if not boats:
+            continue  # レース未開催または取得不可
+
+        race_info = {
+            "no": rno,
+            "name": race_name,
+            "boats": boats,
+            "players": players,
+        }
+        program["races"].append(race_info)
+
+    return program
+
+# === メイン ===
+def main():
+    all_data = {"date": date_str, "program": {}, "results": {}}
+
+    venues = get_today_venues()
+    for v in venues:
+        program = fetch_race_program(v)
+        all_data["program"][v] = program
+
+    # JSON保存
     with open(DATA_FILE, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
+        json.dump(all_data, f, ensure_ascii=False, indent=2)
 
-# === 既存データ読み込み ===
-def load_existing():
-    if DATA_FILE.exists():
-        try:
-            with open(DATA_FILE, "r", encoding="utf-8") as f:
-                return json.load(f)
-        except Exception as e:
-            print(f"⚠️ JSON読み込み失敗: {e}")
-    return {}
-
-# === メイン処理 ===
-def fetch_today_program():
-    today = datetime.date.today()
-    tomorrow = today + datetime.timedelta(days=1)
-    result_data = {}
-
-    for target_date in [today, tomorrow]:
-        date_str = target_date.strftime("%Y%m%d")
-        print(f"📅 出走表取得中: {date_str}")
-        data = fetch_program_api(date_str)
-        if data:
-            result_data[date_str] = data
-
-    if not result_data:
-        print("❌ 出走表データが取得できませんでした。")
-    else:
-        save_json(result_data)
-        print(f"✅ 出走表データ保存完了: {len(result_data)}日分")
+    print(f"✅ data.json を更新しました ({len(venues)}場)")
 
 # === 実行 ===
 if __name__ == "__main__":
-    fetch_today_program()
+    main()
