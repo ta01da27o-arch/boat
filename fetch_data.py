@@ -1,108 +1,125 @@
 # fetch_data.py
 import requests
-from bs4 import BeautifulSoup, XMLParsedAsHTMLWarning
 import json
-from datetime import datetime
-import time
-import warnings
+import os
+from datetime import datetime, timedelta
+from bs4 import BeautifulSoup
 
-warnings.filterwarnings("ignore", category=XMLParsedAsHTMLWarning)
+# === 設定 ===
+DATA_FILE = "data.json"
+HISTORY_FILE = "history.json"
+PROGRAM_API_TODAY = "https://boatraceopenapi.github.io/programs/v2/today.json"
+RESULTS_API_TODAY = "https://boatraceopenapi.github.io/results/v2/today.json"
+BASE_URL = "https://www.boatrace.jp/owpc/pc/race/index"
 
-BASE_URL = "https://www.boatrace.jp"
-INDEX_URL = f"{BASE_URL}/owpc/pc/race/index"
-OUTPUT_FILE = "data.json"
+# === 天気情報取得 ===
+def fetch_weather(jcd, date):
+    url = f"{BASE_URL}?jcd={jcd}&hd={date}"
+    print(f"[INFO] 天気情報取得中: {url}")
+    weather_data = {}
 
-# タイムアウトとリトライ設定
-TIMEOUT = 15
-RETRY_COUNT = 3
+    try:
+        resp = requests.get(url, timeout=15)
+        resp.raise_for_status()
+        soup = BeautifulSoup(resp.text, "lxml")
 
-def fetch_url(url):
-    """HTTPリクエスト（リトライ付き）"""
-    for i in range(RETRY_COUNT):
-        try:
-            res = requests.get(url, timeout=TIMEOUT)
-            res.raise_for_status()
-            return res
-        except requests.exceptions.RequestException as e:
-            print(f"⏳ retry {i+1}/{RETRY_COUNT}: {e}")
-            time.sleep(2)
-    return None
+        weather = soup.select_one(".weather1_bodyUnitLabel").get_text(strip=True)
+        wind = soup.select_one(".weather1_bodyUnitData").get_text(strip=True)
+        wave = soup.select(".weather1_bodyUnitData")[1].get_text(strip=True)
 
-def get_today_races():
-    """本日の全開催場を取得"""
-    print("🏁 本日の開催場一覧を取得中...")
-    res = fetch_url(INDEX_URL)
-    if not res:
-        print("❌ 開催場ページ取得失敗")
-        return []
+        weather_data = {"weather": weather, "wind": wind, "wave": wave}
+    except Exception as e:
+        print(f"[WARN] 天気情報取得失敗: {e}")
 
-    soup = BeautifulSoup(res.text, "lxml")
+    return weather_data
 
-    links = soup.select("a[href*='/owpc/pc/race/racelist']")
-    venues = []
+# === 出走表取得 ===
+def fetch_programs():
+    print("[INFO] 出走表データ取得中...")
+    resp = requests.get(PROGRAM_API_TODAY, timeout=20)
+    resp.raise_for_status()
+    data = resp.json()
 
-    for a in links:
-        href = a.get("href")
-        if href and "/owpc/pc/race/racelist" in href:
-            venue_url = BASE_URL + href
-            venue_name = a.text.strip()
-            venues.append({"name": venue_name, "url": venue_url})
+    # API構造が辞書型なので展開
+    programs = []
+    if isinstance(data, dict):
+        for v in data.values():
+            if isinstance(v, list):
+                programs.extend(v)
+    elif isinstance(data, list):
+        programs = data
 
-    if not venues:
-        print("⚠️ 開催場なし")
-    else:
-        print(f"✅ {len(venues)}場を検出")
+    print(f"[INFO] 出走表 {len(programs)} 件を取得しました。")
+    return programs
 
-    return venues
+# === 結果取得 ===
+def fetch_results():
+    print("[INFO] 結果データ取得中...")
+    resp = requests.get(RESULTS_API_TODAY, timeout=20)
+    resp.raise_for_status()
+    results = resp.json()
+    print(f"[INFO] 結果 {len(results)} 件を取得しました。")
+    return results
 
-def get_race_details(venue):
-    """各開催場のレース詳細を取得"""
-    res = fetch_url(venue["url"])
-    if not res:
-        print(f"❌ {venue['name']} データ取得失敗")
-        return []
+# === 天気マージ ===
+def merge_weather(programs):
+    today = datetime.now().strftime("%Y%m%d")
+    for race in programs:
+        if not isinstance(race, dict):
+            continue
+        jcd = race.get("jcd")
+        if jcd:
+            race["weather_info"] = fetch_weather(jcd, today)
+    return programs
 
-    soup = BeautifulSoup(res.text, "lxml")
-    race_links = soup.select("a[href*='/owpc/pc/race/racedata']")
-    races = []
+# === 保存 ===
+def save_json(data, file_path):
+    with open(file_path, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+    print(f"[INFO] 保存完了 → {file_path}")
 
-    for a in race_links:
-        href = a.get("href")
-        if href:
-            race_url = BASE_URL + href
-            race_name = a.text.strip()
-            races.append({"race": race_name, "url": race_url})
+# === メイン ===
+def main(force_program=False):
+    now_jst = datetime.utcnow() + timedelta(hours=9)
+    hour = now_jst.hour
+    print(f"[INFO] 現在の日本時間: {now_jst.strftime('%Y-%m-%d %H:%M:%S')}")
 
-    print(f"📦 {venue['name']} - {len(races)}レース取得")
-    return races
+    try:
+        if force_program:
+            # 手動実行（強制更新）
+            print("[INFO] 手動実行モード → 出走表を再生成")
+            programs = fetch_programs()
+            programs = merge_weather(programs)
+            save_json(programs, DATA_FILE)
+            return
 
-def main():
-    print("🚀 本日のレースデータ取得開始")
-    today = datetime.now().strftime("%Y/%m/%d")
+        # 朝（出走表）
+        if 5 <= hour < 10:
+            programs = fetch_programs()
+            programs = merge_weather(programs)
+            save_json(programs, DATA_FILE)
 
-    venues = get_today_races()
-    if not venues:
-        print("⚠️ 開催場なし - 空データを保存")
-        with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-            json.dump({"date": today, "venues": []}, f, ensure_ascii=False, indent=2)
-        print(f"✅ {OUTPUT_FILE} を更新しました (0場)")
-        return
+        # 夜（結果）
+        elif 22 <= hour or hour < 2:
+            results = fetch_results()
+            today = datetime.now().strftime("%Y%m%d")
 
-    all_data = {"date": today, "venues": []}
+            if os.path.exists(HISTORY_FILE):
+                with open(HISTORY_FILE, "r", encoding="utf-8") as f:
+                    history = json.load(f)
+            else:
+                history = {}
 
-    for v in venues:
-        venue_races = get_race_details(v)
-        all_data["venues"].append({
-            "name": v["name"],
-            "url": v["url"],
-            "races": venue_races
-        })
+            history[today] = {"results": results}
+            save_json(history, HISTORY_FILE)
 
-    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-        json.dump(all_data, f, ensure_ascii=False, indent=2)
+        else:
+            print("[INFO] 現在の時間帯では自動更新をスキップします。")
 
-    print(f"✅ {OUTPUT_FILE} を更新しました ({len(venues)}場)")
-    print("🎯 本日の全レースデータ取得完了！")
+    except Exception as e:
+        print(f"[ERROR] データ処理中にエラー発生: {e}")
 
 if __name__ == "__main__":
-    main()
+    import sys
+    force_flag = "--force-program" in sys.argv
+    main(force_flag)
