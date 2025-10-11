@@ -1,9 +1,13 @@
 import requests
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, XMLParsedAsHTMLWarning
 import datetime
 import json
 from pathlib import Path
 import time
+import warnings
+
+# === BeautifulSoup の警告を無視 ===
+warnings.filterwarnings("ignore", category=XMLParsedAsHTMLWarning)
 
 # === 定数設定 ===
 BASE_URL = "https://www.boatrace.jp"
@@ -43,8 +47,9 @@ def get_today_venues():
         print("❌ 開催場取得失敗")
         return []
 
-    soup = BeautifulSoup(res.text, "lxml")
-    links = soup.select("li.is-holding a")
+    soup = BeautifulSoup(res.text, "html.parser")  # ← 修正点
+    # HTML構造の変化にも対応
+    links = soup.select("li.is-holding a, li.hold a")
     venue_codes = []
     for link in links:
         href = link.get("href", "")
@@ -68,7 +73,7 @@ def fetch_race_program(venue_code):
         if not res:
             continue
 
-        soup = BeautifulSoup(res.text, "lxml")
+        soup = BeautifulSoup(res.text, "html.parser")  # ← 修正点
 
         title = soup.select_one(".heading2_title")
         race_name = title.text.strip() if title else f"{rno}R"
