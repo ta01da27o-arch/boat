@@ -1,85 +1,99 @@
 import requests
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, XMLParsedAsHTMLWarning
+import warnings
 import json
-import datetime
-from pathlib import Path
-from datetime import timedelta, timezone
+from datetime import datetime
 
-# ===== 設定 =====
-DATA_FILE = Path("data.json")
-SCRAPE_BASE = "https://www.boatrace.jp/owpc/pc/race/racelist"
-JST = timezone(timedelta(hours=9))
-today = datetime.datetime.now(JST).date()
-today_str = today.strftime("%Y%m%d")
+# 警告を非表示
+warnings.filterwarnings("ignore", category=XMLParsedAsHTMLWarning)
 
-print(f"📅 本日({today_str})のレースデータをスクレイピング開始")
+# 全国24場（01〜24）
+STADIUMS = {
+    "01": "桐生",
+    "02": "戸田",
+    "03": "江戸川",
+    "04": "平和島",
+    "05": "多摩川",
+    "06": "浜名湖",
+    "07": "蒲郡",
+    "08": "常滑",
+    "09": "津",
+    "10": "三国",
+    "11": "びわこ",
+    "12": "住之江",
+    "13": "尼崎",
+    "14": "鳴門",
+    "15": "丸亀",
+    "16": "児島",
+    "17": "宮島",
+    "18": "徳山",
+    "19": "下関",
+    "20": "若松",
+    "21": "芦屋",
+    "22": "福岡",
+    "23": "唐津",
+    "24": "大村"
+}
 
-# ====== JSON保存関数 ======
-def save_json(data):
-    with open(DATA_FILE, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
-    print(f"💾 保存完了: {DATA_FILE}")
+def fetch_race_data(jcd, name):
+    """指定されたレース場の本日出走表を取得"""
+    today = datetime.now().strftime("%Y%m%d")
+    url = f"https://www.boatrace.jp/owpc/pc/race/racelist?rno=1&jcd={jcd}&hd={today}"
 
-# ====== 1会場のレースデータ取得 ======
-def fetch_venue_races(stadium_id, date_str):
-    url = f"{SCRAPE_BASE}?jcd={stadium_id:02d}&hd={date_str}"
     try:
         res = requests.get(url, timeout=10)
-        res.encoding = "utf-8"
-        if res.status_code != 200:
-            print(f"⚠️ {stadium_id:02d}場 取得失敗 ({res.status_code})")
-            return None
-
-        soup = BeautifulSoup(res.text, "lxml")
-        title_tag = soup.select_one(".main_race_title")
-        title = title_tag.get_text(strip=True) if title_tag else f"{stadium_id:02d}場"
-
-        race_cards = soup.select(".table1")
-        race_data = []
-
-        for r, table in enumerate(race_cards, start=1):
-            boats = []
-            rows = table.select("tbody tr")
-            for row in rows:
-                cols = [c.get_text(strip=True) for c in row.find_all("td")]
-                if len(cols) >= 6:
-                    boats.append({
-                        "racer_boat_number": len(boats) + 1,
-                        "racer_name": cols[1],
-                        "racer_class_number": cols[3],
-                        "racer_branch_number": cols[2],
-                        "racer_flying_count": cols[4],
-                        "racer_average_start_timing": cols[5] if len(cols) > 5 else "",
-                    })
-            race_data.append({
-                "race_date": date_str,
-                "race_stadium_number": stadium_id,
-                "race_number": r,
-                "race_title": title,
-                "boats": boats
-            })
-
-        print(f"✅ {stadium_id:02d}場 取得成功 ({len(race_data)}R)")
-        return race_data
-    except Exception as e:
-        print(f"⚠️ {stadium_id:02d}場 エラー: {e}")
+        res.raise_for_status()
+    except requests.RequestException:
+        print(f"⚠️ {name}（{jcd}）取得失敗: 接続エラー")
         return None
 
-# ====== 全会場処理 ======
+    soup = BeautifulSoup(res.text, "lxml")
+
+    # 出走データ抽出
+    rows = soup.select(".is-fs12")
+    boats = []
+    for row in rows:
+        name_elem = row.select_one(".is-fs18")
+        num_elem = row.select_one(".is-fs11")
+        if name_elem:
+            boats.append({
+                "racer_name": name_elem.text.strip(),
+                "racer_number": num_elem.text.strip() if num_elem else ""
+            })
+
+    if not boats:
+        print(f"⚠️ {name}（{jcd}）: 出走表なし")
+        return None
+
+    race_info = {
+        "race_date": datetime.now().strftime("%Y-%m-%d"),
+        "race_stadium_name": name,
+        "race_stadium_number": int(jcd),
+        "race_number": 1,
+        "boats": boats
+    }
+
+    print(f"✅ {name}（{jcd}）: {len(boats)}件の出走データ取得")
+    return race_info
+
+
 def main():
     all_data = []
-    for sid in range(1, 25):  # 24会場分
-        races = fetch_venue_races(sid, today_str)
-        if races:
-            all_data.extend(races)
+    for jcd, name in STADIUMS.items():
+        data = fetch_race_data(jcd, name)
+        if data:
+            all_data.append(data)
 
     if not all_data:
-        print("❌ 本日のレースデータが取得できませんでした。")
+        print("❌ 1場も取得できませんでした。")
         return
 
-    save_json(all_data)
-    print(f"🎯 本日のレースデータ取得完了 ({len(all_data)}レース分)")
+    with open("data.json", "w", encoding="utf-8") as f:
+        json.dump(all_data, f, ensure_ascii=False, indent=2)
 
-# ====== 実行 ======
+    print(f"\n🏁 完了：{len(all_data)}場のデータを data.json に保存しました。")
+
+
 if __name__ == "__main__":
+    print("🚀 全国24場の本日出走表を取得開始")
     main()
