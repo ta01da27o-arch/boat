@@ -1,0 +1,32 @@
+name: Fetch Today Boat Race Results
+
+on:
+  schedule:
+    - cron: "0 22 * * *"   # JST 07:00 に自動実行
+  workflow_dispatch:        # 手動実行も可
+
+jobs:
+  fetch_results:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install requests
+
+      - name: Run fetch_results.py
+        run: python fetch_results.py   # ← ✅ s付きに修正！
+
+      - name: Commit and push results
+        run: |
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git add history.json
+          git diff --quiet && echo "No changes" || (git commit -m "Update today's race results" && git push)
