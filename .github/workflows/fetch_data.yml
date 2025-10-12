@@ -1,0 +1,43 @@
+name: Fetch Today Boat Race Data
+
+on:
+  schedule:
+    - cron: "0 22 * * *"   # JST 07:00 に自動実行 (UTC 22:00)
+  workflow_dispatch:        # 手動実行も可
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install requests beautifulsoup4 lxml
+
+      - name: Run fetch_data.py (強制出走表更新)
+        run: python fetch_data.py --force-program
+
+      - name: Show result preview
+        run: |
+          echo "=== data.json preview ==="
+          head -n 50 data.json || echo "data.json not found"
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git add data.json
+          if git diff --cached --quiet; then
+            echo "No changes detected — skipping commit."
+          else
+            git commit -m "Update today's data.json (forced program)"
+            git push
+          fi
