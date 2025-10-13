@@ -1,11 +1,15 @@
 import requests
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, XMLParsedAsHTMLWarning
 import json
 import datetime
 import pytz
 import re
 import os
 import sys
+import warnings
+
+# === 警告を非表示 ===
+warnings.filterwarnings("ignore", category=XMLParsedAsHTMLWarning)
 
 # === 日本時間設定 ===
 JST = pytz.timezone("Asia/Tokyo")
@@ -22,6 +26,13 @@ if os.path.exists(DATA_FILE):
     try:
         with open(DATA_FILE, "r", encoding="utf-8") as f:
             data = json.load(f)
+            # ✅ 万一 list 形式なら dict に変換
+            if isinstance(data, list):
+                new_data = {}
+                for item in data:
+                    if isinstance(item, dict):
+                        new_data.update(item)
+                data = new_data
     except json.JSONDecodeError:
         print("⚠ data.json の読み込みに失敗。新規作成します。")
         data = {}
@@ -102,13 +113,12 @@ def fetch_race_detail(url):
             # 勝率データを抽出
             raw_wr = re.findall(r"\d+\.\d", cols[7].text)
             if len(raw_wr) >= 3:
-                national = round(float(raw_wr[0]) * 10, 1)  # 全国勝率→%
-                local = round(float(raw_wr[1]) * 10, 1)     # 当地勝率→%
-                motor = round(float(raw_wr[2]) * 10, 1)     # モーター勝率→%
+                national = round(float(raw_wr[0]) * 10, 1)
+                local = round(float(raw_wr[1]) * 10, 1)
+                motor = round(float(raw_wr[2]) * 10, 1)
             else:
                 national = local = motor = 0.0
 
-            # AI評価 (簡易ロジック)
             if national >= 70:
                 ai_eval = "◎"
             elif national >= 60:
