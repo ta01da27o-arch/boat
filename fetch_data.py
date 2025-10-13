@@ -1,406 +1,283 @@
 #!/usr/bin/env python3
 # coding: utf-8
-"""
-fetch_data.py
-- JST基準で本日の出走表 / 結果を取得して data.json に保存
-- 取得したページの中身を検査し、指定日と異なる場合は前後1日を自動で試行
-- 警告抑止（BeautifulSoup の XMLParsedAsHTMLWarning）
-- 実行例:
-    python fetch_data.py --force-program
-    python fetch_data.py --force-result
-    python fetch_data.py --force-program --force-result
-"""
 
 import requests
 from bs4 import BeautifulSoup, XMLParsedAsHTMLWarning
 import json
-import datetime
+import time
+from datetime import datetime, timedelta
 import pytz
 import warnings
 import sys
 import os
-import time
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse, parse_qs
 
-# -------------------------
-# 設定
-# -------------------------
+# ------------------------
+# 設定・定数
+# ------------------------
 warnings.filterwarnings("ignore", category=XMLParsedAsHTMLWarning)
-BASE_SITE = "https://www.boatrace.jp"
+
+BASE = "https://www.boatrace.jp"
 DATA_FILE = "data.json"
-TIMEOUT = 15  # seconds for HTTP requests
+MAX_RETRY = 3
+RETRY_DELAY = 3600  # 秒（1時間）
+
 JST = pytz.timezone("Asia/Tokyo")
 
-# コマンドオプション
 force_program = "--force-program" in sys.argv
 force_result = "--force-result" in sys.argv
-# allow manual override date via --date=YYYYMMDD
+# Optional: 指定日取得オプション
 forced_date = None
 for arg in sys.argv:
     if arg.startswith("--date="):
         forced_date = arg.split("=", 1)[1]
 
-# -------------------------
-# ユーティリティ
-# -------------------------
+# ------------------------
+# ユーティリティ関数
+# ------------------------
 def now_jst_date():
-    return (datetime.datetime.utcnow().replace(tzinfo=pytz.utc).astimezone(JST)).date()
+    return datetime.now(pytz.utc).astimezone(JST).date()
 
-def to_ymd(dateobj):
-    return dateobj.strftime("%Y%m%d")
+def date_to_ymd(d):
+    return d.strftime("%Y%m%d")
 
 def safe_get_text(el):
     return el.get_text(strip=True) if el else ""
 
-def load_datafile():
+def load_json():
     if os.path.exists(DATA_FILE):
         try:
             with open(DATA_FILE, "r", encoding="utf-8") as f:
-                data = json.load(f)
-            # 過去に list で保存されている場合に dict に変換してマージ
-            if isinstance(data, list):
+                j = json.load(f)
+            if isinstance(j, list):
                 merged = {}
-                for it in data:
-                    if isinstance(it, dict):
-                        merged.update(it)
-                data = merged
-            if not isinstance(data, dict):
-                data = {}
-            return data
+                for item in j:
+                    if isinstance(item, dict):
+                        merged.update(item)
+                return merged
+            if isinstance(j, dict):
+                return j
         except Exception as e:
-            print(f"[WARN] {DATA_FILE} 読込失敗: {e} → 新規作成します")
-            return {}
+            print(f"[WARN] load_json failed: {e}")
     return {}
 
-def save_datafile(data):
+def save_json(d):
     with open(DATA_FILE, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
-    print(f"[INFO] 保存完了 → {DATA_FILE}")
+        json.dump(d, f, ensure_ascii=False, indent=2)
+    print("[INFO] Saved to", DATA_FILE)
 
-def http_get(url, **kwargs):
-    kwargs.setdefault("timeout", TIMEOUT)
-    headers = kwargs.pop("headers", {})
-    # 適度な User-Agent
-    headers.setdefault("User-Agent", "boat-fetcher/1.0 (+https://github.com)")
-    try:
-        r = requests.get(url, headers=headers, **kwargs)
-        r.raise_for_status()
-        # attempt encoding
-        if r.encoding is None:
-            r.encoding = r.apparent_encoding
-        return r
-    except Exception as e:
-        raise
+def http_get(url):
+    headers = {"User-Agent": "boat-fetcher/1.0"}
+    r = requests.get(url, headers=headers, timeout=15)
+    r.raise_for_status()
+    if r.encoding is None:
+        r.encoding = r.apparent_encoding
+    return r
 
-# -------------------------
-# ページ検査（ページ内に含まれる日付を推定して、targetと一致するか判定）
-# 戻り値: (matched_date_str or None, parsed_soup)
-# -------------------------
 def fetch_and_check(url, target_ymd):
-    """
-    url を取得、BeautifulSoupで解析し、ページ内から日付（race_date相当）を探して返す。
-    この関数は単一ページの検査に使う。見つからなければ None を返す。
-    """
     try:
-        r = http_get(url)
+        resp = http_get(url)
     except Exception as e:
-        print(f"[ERROR] HTTP 取得失敗: {url} -> {e}")
+        print(f"[ERROR] HTTP get failed: {url} -> {e}")
         return None, None
 
-    soup = BeautifulSoup(r.text, "lxml")
+    soup = BeautifulSoup(resp.text, "lxml")
 
-    # ページ内に YYYY-MM-DD や YYYY/MM/DD 形式の文字列があれば抽出
-    txt = soup.get_text(separator=" ", strip=True)
-    # 優先的に YYYY-MM-DD
+    txt = soup.get_text(" ", strip=True)
     import re
     m = re.search(r"(\d{4})[/-](\d{2})[/-](\d{2})", txt)
     if m:
         ym = f"{m.group(1)}{m.group(2)}{m.group(3)}"
         return ym, soup
 
-    # 代替: ページ内に race_date フィールドがあれば抽出
-    #  (サイトにより様々なのでオプション的に)
-    #  例: 'race_date":"2025-10-14' などが HTML 内に混ざる場合
-    m2 = re.search(r'race_date"\s*:\s*"(\d{8})"', r.text)
+    m2 = re.search(r'"race_date"\s*:\s*"(\d{8})"', resp.text)
     if m2:
         return m2.group(1), soup
 
-    # 見つからない
     return None, soup
 
-# -------------------------
-# 出走表取得ロジック（指定日で試行、日付不一致なら前後1日を試す）
-# - 戻り値: program_data (任意の構造)
-# -------------------------
-def fetch_program_for_date(target_date):
-    target_ymd = to_ymd(target_date)
-    print(f"[INFO] 出走表取得試行: {target_ymd}")
-
-    # 主要URL: レースINDEX（場別リンクを一覧するページ）
-    # 指定 hd パラで試す
-    base_index = f"{BASE_SITE}/owpc/pc/race/raceindex?hd={target_ymd}"
-
-    # try target
-    matched, soup = fetch_and_check(base_index, target_ymd)
+# ------------------------
+# 出走表取得ロジック
+# ------------------------
+def fetch_program_for_date(dt):
+    target_ymd = date_to_ymd(dt)
+    print(f"[INFO] Fetch program attempt: {target_ymd}")
+    url_idx = f"{BASE}/owpc/pc/race/raceindex?hd={target_ymd}"
+    matched, soup = fetch_and_check(url_idx, target_ymd)
     if matched == target_ymd:
-        print(f"[OK] index page reports date {matched} (matches target)")
-        program = parse_program_index(soup, target_date)
-        return program, matched
+        print(f"[OK] index reports date {matched}")
+        return parse_index(soup, dt), matched
 
-    # 不一致または日付不明 → 試行: 前日・翌日（順に）を試す
     for offset in (-1, 1):
-        cand_date = target_date + datetime.timedelta(days=offset)
-        cand_ymd = to_ymd(cand_date)
-        url = f"{BASE_SITE}/owpc/pc/race/raceindex?hd={cand_ymd}"
-        print(f"[INFO] 再試行: {cand_ymd}")
-        matched2, soup2 = fetch_and_check(url, cand_ymd)
-        if matched2 == cand_ymd:
-            print(f"[OK] index page reports date {matched2} → using {cand_ymd}")
-            program = parse_program_index(soup2, cand_date)
-            return program, matched2
+        dt2 = dt + timedelta(days=offset)
+        y2 = date_to_ymd(dt2)
+        url2 = f"{BASE}/owpc/pc/race/raceindex?hd={y2}"
+        m2, so2 = fetch_and_check(url2, y2)
+        if m2 == y2:
+            print(f"[OK] using offset date {y2}")
+            return parse_index(so2, dt2), m2
 
-    # どれもうまくいかない場合は target を解析して返す（最終手段）
-    print("[WARN] ページ内日付が見つからないか一致しません。ターゲットページを可能な範囲で解析します。")
-    # fetch without check and parse target page
+    print("[WARN] cannot confirm correct date in index, fallback parse target")
     try:
-        r = http_get(base_index)
-        soup = BeautifulSoup(r.text, "lxml")
-        program = parse_program_index(soup, target_date)
-        return program, None
+        resp = http_get(url_idx)
+        soup = BeautifulSoup(resp.text, "lxml")
+        return parse_index(soup, dt), None
     except Exception as e:
-        print(f"[ERROR] 最終解析に失敗: {e}")
+        print(f"[ERROR] fallback parse failed: {e}")
         return None, None
 
-# -------------------------
-# indexページから各場のリンクを抽出してプログラムを組み立てる
-# -------------------------
-def parse_program_index(soup, date_obj):
-    """
-    soup: raceindex ページの BeautifulSoup
-    戻り値: program_data dict: { stadium_id_or_name: { races: {no: {...}} } }
-    """
+def parse_index(soup, dt):
     program = {}
-    # ページごとにDOMが変わるので、柔軟にリンクを探す
-    # 典型: 各場のリンクが <ul class="tab01_01"> 内にあることが多い
-    venue_links = soup.select("ul.tab01_01 li a") or soup.select(".is-holding a") or soup.select("a[href*='race/raceinfo']")
+    venue_links = soup.select("ul.tab01_01 li a") or soup.select(".is-holding a") or soup.select("a[href*='raceinfo']")
     seen = set()
     for a in venue_links:
-        href = a.get("href")
         title = safe_get_text(a)
+        href = a.get("href")
         if not href or title in seen:
             continue
         seen.add(title)
-        # 完全URL化
-        url = href if href.startswith("http") else urljoin(BASE_SITE, href)
-        # 各場ページを取得して races を抜く
+        url = href if href.startswith("http") else urljoin(BASE, href)
         try:
-            r = http_get(url)
-            s = BeautifulSoup(r.text, "lxml")
-            # parse per-venue
-            venue_id = extract_venue_id_from_href(href) or title
-            program[venue_id] = parse_venue_page(s)
-            # 少し待って過剰アクセスを回避
+            resp = http_get(url)
+            so = BeautifulSoup(resp.text, "lxml")
+            vid = extract_venue_id(href) or title
+            program[vid] = parse_venue_page(so)
             time.sleep(0.2)
         except Exception as e:
-            print(f"[WARN] 施設ページ取得失敗 {title}: {e}")
+            print(f"[WARN] venue parse fail {title}: {e}")
     return program
 
-def extract_venue_id_from_href(href):
-    # try extract jcd= or place code
-    from urllib.parse import parse_qs, urlparse
+def extract_venue_id(href):
     try:
-        qs = urlparse(href).query
-        params = parse_qs(qs)
-        jcd = params.get("jcd")
+        qs = parse_qs(urlparse(href).query)
+        jcd = qs.get("jcd")
         if jcd:
             return jcd[0]
-    except Exception:
+    except:
         pass
     return None
 
-def parse_venue_page(soup):
-    """
-    施設ページから race list を解析して簡易的な races 情報を返す
-    戻り値: { race_no: {race_title:..., boats: [...] } }
-    """
+def parse_venue_page(so):
     races = {}
-    # race_card_btn 等からレース番号とリンクを抽出
-    links = soup.select(".race_card_btn a") or soup.select(".race_card_btn") or soup.select("a[href*='racelist']")
-    if not links:
-        # fallback: collect buttons that look like '1R' '2R'
-        links = soup.select("a")
+    links = so.select(".race_card_btn a") or so.select(".race_card_btn") or so.select("a[href*='racelist']")
     for a in links:
         txt = safe_get_text(a)
-        m = None
         import re
-        # '1R' '2R' のテキストをターゲットにする
         m = re.match(r"^(\d{1,2})R$", txt)
-        href = a.get("href") or a.get("data-href") or ""
+        href = a.get("href")
         if m and href:
             no = m.group(1)
-            url = href if href.startswith("http") else urljoin(BASE_SITE, href)
+            url = href if href.startswith("http") else urljoin(BASE, href)
             try:
-                r = http_get(url)
-                s = BeautifulSoup(r.text, "lxml")
-                # レース詳細解析
-                races[no] = parse_race_detail(s)
+                resp = http_get(url)
+                so2 = BeautifulSoup(resp.text, "lxml")
+                races[no] = parse_race_detail(so2)
                 time.sleep(0.15)
             except Exception as e:
-                # skip on fail
                 races[no] = {"error": str(e)}
-    # 最低限空でも返す
     return races
 
-def parse_race_detail(soup):
-    """
-    race detail page を解析して、boats（選手情報）を取り出す。
-    戻り値: { race_title: str, boats: [ {fields...} ] }
-    """
+def parse_race_detail(so):
     out = {"race_title": "", "boats": []}
-    title_el = soup.select_one(".heading2_title") or soup.select_one(".heading1_title") or soup.select_one("h2")
-    out["race_title"] = safe_get_text(title_el)
-    # テーブル内の各選手行を探す典型セレクタ
-    rows = soup.select(".table1 tbody tr") or soup.select(".is-fs14 tr") or soup.select(".table4 tr")
+    t0 = so.select_one(".heading1_title") or so.select_one("h2")
+    out["race_title"] = safe_get_text(t0)
+    rows = so.select(".table1 tbody tr") or so.select(".is-fs14 tr") or so.select(".table4 tr")
     for tr in rows:
         cols = tr.select("td")
-        if not cols or len(cols) < 4:
+        if len(cols) < 4:
             continue
         try:
-            # 適宜カラムを探して抽出（サイト差異に柔軟に対応）
-            lane = None
-            name = None
-            st = None
-            fcount = None
-            national = None
-            local = None
-            motor = None
-            # ランと名前を探す
-            # try by class names
-            lane_el = tr.select_one(".is-fs20") or tr.select_one(".boatNo") or tr.select_one("td:nth-of-type(1)")
-            name_el = tr.select_one(".table1_name") or tr.select_one("td:nth-of-type(2)")
-            st_el = tr.select_one(".table1_start") or tr.select_one("td:nth-of-type(6)") or tr.select_one(".startTiming")
-            f_el = tr.select_one(".f_count") or tr.select_one(".table1_f")
-            meta_el = tr.select_one(".table1_rate") or tr.select_one("td:nth-of-type(8)")
-
-            lane = safe_get_text(lane_el)[:2] if lane_el else None
-            name = safe_get_text(name_el)
-            st = safe_get_text(st_el)
-            fcount = safe_get_text(f_el) if f_el else None
-
-            # 勝率系は数値抽出
-            if meta_el:
-                meta_txt = meta_el.get_text(" ", strip=True)
-                import re
-                nums = re.findall(r"\d+\.\d+|\d+\.\d|\d+", meta_txt)
-                # heuristics: pick first three numbers as national/local/motor
-                if nums and len(nums) >= 3:
-                    try:
-                        national = float(nums[0])
-                        local = float(nums[1])
-                        motor = float(nums[2])
-                    except:
-                        pass
-
+            lane = safe_get_text(cols[0])
+            name = safe_get_text(cols[1]) if len(cols) > 1 else ""
+            st = safe_get_text(cols[5]) if len(cols) > 5 else ""
+            fcnt = safe_get_text(cols[4]) if len(cols) > 4 else "0"
+            meta = safe_get_text(cols[7]) if len(cols) > 7 else ""
+            import re
+            nums = re.findall(r"\d+\.\d+", meta)
+            nat = float(nums[0]) if len(nums) > 0 else 0.0
+            loc = float(nums[1]) if len(nums) > 1 else 0.0
+            mot = float(nums[2]) if len(nums) > 2 else 0.0
             out["boats"].append({
-                "racer_boat_number": int(lane) if lane and lane.isdigit() else lane,
-                "racer_name": name or "",
+                "racer_boat_number": int(lane) if lane.isdigit() else lane,
+                "racer_name": name,
                 "racer_average_start_timing": float(st) if st and st.replace(".", "").isdigit() else None,
-                "racer_flying_count": int(fcount) if fcount and fcount.isdigit() else 0,
-                "racer_national_top_1_percent": national,
-                "racer_local_top_1_percent": local,
-                "racer_assigned_motor_top_2_percent": motor
+                "racer_flying_count": int(fcnt) if fcnt.isdigit() else 0,
+                "racer_national_top_1_percent": nat,
+                "racer_local_top_1_percent": loc,
+                "racer_assigned_motor_top_2_percent": mot
             })
-        except Exception as e:
-            # ignore row parse errors
+        except Exception:
             continue
     return out
 
-# -------------------------
-# 結果取得ロジック（result page）
-# -------------------------
-def fetch_results_for_date(target_date):
-    target_ymd = to_ymd(target_date)
-    print(f"[INFO] 結果取得試行: {target_ymd}")
-    # race result all page
-    url = f"{BASE_SITE}/owpc/pc/race/raceresultall?hd={target_ymd}"
-    matched, soup = fetch_and_check(url, target_ymd)
-    if matched == target_ymd:
-        print(f"[OK] result page reports date {matched}")
-        results = parse_result_index(soup)
-        return results, matched
-
-    # try +/-1
+# ------------------------
+# 結果取得ロジック
+# ------------------------
+def fetch_result_for_date(dt):
+    ymd = date_to_ymd(dt)
+    url = f"{BASE}/owpc/pc/race/raceresultall?hd={ymd}"
+    matched, so = fetch_and_check(url, ymd)
+    if matched == ymd:
+        return parse_result_index(so), matched
     for offset in (-1, 1):
-        cand = target_date + datetime.timedelta(days=offset)
-        url2 = f"{BASE_SITE}/owpc/pc/race/raceresultall?hd={to_ymd(cand)}"
-        matched2, soup2 = fetch_and_check(url2, to_ymd(cand))
-        if matched2 == to_ymd(cand):
-            print(f"[OK] result page reports date {matched2} (use this)")
-            return parse_result_index(soup2), matched2
-
-    # fallback parse target page if possible
+        dt2 = dt + timedelta(days=offset)
+        y2 = date_to_ymd(dt2)
+        url2 = f"{BASE}/owpc/pc/race/raceresultall?hd={y2}"
+        m2, s2 = fetch_and_check(url2, y2)
+        if m2 == y2:
+            return parse_result_index(s2), m2
     try:
-        r = http_get(url)
-        s = BeautifulSoup(r.text, "lxml")
-        return parse_result_index(s), None
+        resp = http_get(url)
+        so2 = BeautifulSoup(resp.text, "lxml")
+        return parse_result_index(so2), None
     except Exception as e:
-        print(f"[ERROR] result fetch final fail: {e}")
+        print(f"[ERROR] fetch_result final fail: {e}")
         return None, None
 
-def parse_result_index(soup):
-    """
-    result index ページから venue->races->result を取り出す（簡易）
-    """
+def parse_result_index(so):
     out = {}
-    # 掲載リンクを拾う
-    # typical: table rows or anchor list
-    items = soup.select(".table1 a") or soup.select(".is-result a") or soup.select("a[href*='raceresult']")
+    items = so.select(".table1 a") or so.select("a[href*='raceresult']")
     for a in items:
-        name = safe_get_text(a)
+        nm = safe_get_text(a)
         href = a.get("href")
         if not href:
             continue
-        out[name] = urljoin(BASE_SITE, href)
+        out[nm] = urljoin(BASE, href)
     return out
 
-# -------------------------
-# Main
-# -------------------------
+# ------------------------
+# メイン処理
+# ------------------------
 def main():
-    today = now_jst_date() if forced_date is None else datetime.datetime.strptime(forced_date, "%Y%m%d").date()
-    data = load_datafile()
+    base_date = now_jst_date() if forced_date is None else datetime.strptime(forced_date, "%Y%m%d").date()
+    d_json = load_json()
 
-    # プログラム（出走表）
-    if force_program or (to_ymd(today) not in data):
-        program, matched = fetch_program_for_date(today)
-        key = matched or to_ymd(today)
-        if program is None:
-            print("[ERROR] 出走表の取得に失敗しました。")
-        else:
-            if key not in data:
-                data[key] = {}
-            data[key]["program"] = program
-            print(f"[INFO] 出走表を data.json に格納 (key={key})")
+    # 出走表取得
+    if force_program or date_to_ymd(base_date) not in d_json:
+        prog, matched = fetch_program_for_date(base_date)
+        key = matched or date_to_ymd(base_date)
+        if prog is not None:
+            if key not in d_json:
+                d_json[key] = {}
+            d_json[key]["program"] = prog
+            print(f"[INFO] Stored program under key {key}")
     else:
-        print("[INFO] 出走表は既に存在します。")
+        print("[INFO] Program already exists.")
 
-    # 結果（result）
-    if force_result or (to_ymd(today) not in data) or ("results" not in data.get(to_ymd(today), {})):
-        results, matched_r = fetch_results_for_date(today)
-        keyr = matched_r or to_ymd(today)
-        if results is None:
-            print("[WARN] 結果の取得に失敗／データなし.")
-        else:
-            if keyr not in data:
-                data[keyr] = {}
-            data[keyr]["results"] = results
-            print(f"[INFO] 結果を data.json に格納 (key={keyr})")
+    # 結果取得
+    if force_result or ("results" not in d_json.get(date_to_ymd(base_date), {})):
+        res, matched_r = fetch_result_for_date(base_date)
+        keyr = matched_r or date_to_ymd(base_date)
+        if res is not None:
+            if keyr not in d_json:
+                d_json[keyr] = {}
+            d_json[keyr]["results"] = res
+            print(f"[INFO] Stored results under key {keyr}")
     else:
-        print("[INFO] 結果は既に存在します。")
+        print("[INFO] Results already exist.")
 
-    # 保存
-    save_datafile(data)
-    print(f"[DONE] 終了 (基準日: {to_ymd(today)})")
+    save_json(d_json)
+    print(f"[DONE] Done. Base date = {date_to_ymd(base_date)}")
 
 if __name__ == "__main__":
     main()
