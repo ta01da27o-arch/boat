@@ -107,3 +107,59 @@ html,body{margin:0;padding:0;height:100%;font-family: "Noto Sans JP", system-ui,
   .race-btn{ font-size:15px; padding:10px; }
   .prediction td{ padding:8px 12px; }
 }
+
+/* ============================= */
+/* ▼ 追加：結果テーブル(history.json対応) */
+/* ============================= */
+
+.result-table {
+  width:100%;
+  border-collapse:collapse;
+  margin-top:14px;
+  font-size:13px;
+  border-radius:8px;
+  overflow:hidden;
+  box-shadow:0 4px 10px rgba(0,0,0,0.05);
+}
+.result-table th {
+  background:#003c6b;
+  color:#fff;
+  font-weight:800;
+  padding:8px;
+  text-align:center;
+  border:1px solid #004a7c;
+}
+.result-table td {
+  padding:8px;
+  text-align:center;
+  border:1px solid #e2e8f0;
+  font-weight:700;
+}
+.result-table .rank-1 td{ background:#fff5f5; font-weight:900; color:#d00000; }
+.result-table .rank-2 td{ background:#f7fafc; color:#374151; }
+.result-table .rank-3 td{ background:#fdfdf0; color:#555; }
+
+.result-table .course-1 td{ background:#ffffff; }
+.result-table .course-2 td{ background:#e5e5e5; }
+.result-table .course-3 td{ background:#ffeaea; }
+.result-table .course-4 td{ background:#e6f2ff; }
+.result-table .course-5 td{ background:#fffde6; }
+.result-table .course-6 td{ background:#e9fff1; }
+
+.result-table caption {
+  text-align:left;
+  font-weight:900;
+  font-size:15px;
+  margin-bottom:6px;
+  color:#012a45;
+}
+
+.no-result {
+  text-align:center;
+  font-weight:700;
+  padding:12px;
+  color:#6b7280;
+  background:#f8fafc;
+  border-radius:8px;
+  margin-top:8px;
+}
