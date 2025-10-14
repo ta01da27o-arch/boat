@@ -1,16 +1,12 @@
 import requests
-from bs4 import BeautifulSoup, XMLParsedAsHTMLWarning
+from bs4 import BeautifulSoup
 from datetime import datetime
 import pytz
 import json
-import warnings
-import time
-import sys
 import os
+import sys
 
-warnings.filterwarnings("ignore", category=XMLParsedAsHTMLWarning)
-
-# === 日本時間で今日の日付を取得 ===
+# === 日本時間設定 ===
 JST = pytz.timezone("Asia/Tokyo")
 today_jst = datetime.now(JST)
 today_str = today_jst.strftime("%Y%m%d")
@@ -18,28 +14,31 @@ today_str = today_jst.strftime("%Y%m%d")
 DATA_FILE = "data.json"
 
 def fetch_program(date_str):
-    """出走表データを取得"""
-    url = f"https://www.boatrace.jp/owpc/pc/race/raceindex?hd={date_str}"
-    print(f"🔍 出走表取得: {url}")
+    """本日の24場出走表を公式ページから取得"""
+    url = "https://www.boatrace.jp/owpc/pc/race/index"
+    print(f"🔍 出走表取得（24場）: {url}")
     res = requests.get(url)
     res.encoding = res.apparent_encoding
     soup = BeautifulSoup(res.text, "lxml")
 
     stadiums = []
-    for link in soup.select("div.raceIndex__info a"):
-        href = link.get("href")
-        if not href or "race/raceindex" not in href:
-            continue
-        name = link.text.strip()
-        stadiums.append({
-            "stadium_name": name,
-            "stadium_url": "https://www.boatrace.jp" + href
-        })
+    for item in soup.select(".contentsFrame1Inner table a"):
+        href = item.get("href")
+        name = item.text.strip()
+        if "raceindex" in href:
+            stadiums.append({
+                "stadium_name": name,
+                "stadium_url": "https://www.boatrace.jp" + href
+            })
+
+    if not stadiums:
+        print("⚠️ 出走表が見つかりません（休開催または構造変更の可能性）")
+
     return stadiums
 
 
 def fetch_results(date_str):
-    """レース結果データを取得"""
+    """当日の全結果を取得"""
     url = f"https://www.boatrace.jp/owpc/pc/race/raceresultall?hd={date_str}"
     print(f"🏁 結果取得: {url}")
     res = requests.get(url)
@@ -47,8 +46,8 @@ def fetch_results(date_str):
     soup = BeautifulSoup(res.text, "lxml")
 
     results = []
-    for item in soup.select(".table1 .is-fs11"):
-        txt = item.text.strip()
+    for race in soup.select(".table1 .is-fs11"):
+        txt = race.text.strip()
         if txt:
             results.append(txt)
     return results
@@ -76,29 +75,26 @@ def main():
 
     data = load_json()
 
-    # データの型がリストだった場合（旧→新変換時エラー防止）
     if isinstance(data, list):
         data = {}
 
     if force_program:
         print("📦 出走表を更新中...")
-        program_data = fetch_program(today_str)
-        if program_data:
-            data["programs"] = program_data
+        programs = fetch_program(today_str)
+        if programs:
+            data["programs"] = programs
         else:
-            print("⚠️ 出走表の取得に失敗しました。")
+            print("⚠️ 出走表取得失敗")
 
     if force_result:
         print("📦 結果を更新中...")
-        result_data = fetch_results(today_str)
-        if result_data:
-            data["results"] = result_data
+        results = fetch_results(today_str)
+        if results:
+            data["results"] = results
         else:
-            print("⚠️ 結果の取得に失敗しました。")
+            print("⚠️ 結果取得失敗")
 
-    # タイムスタンプ更新（app.js の参照互換）
     data["last_update"] = today_jst.strftime("%Y-%m-%d %H:%M:%S")
-
     save_json(data)
 
 
