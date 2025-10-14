@@ -1,0 +1,36 @@
+name: Fetch Boat Race Data
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "取得対象 (today or yesterday)"
+        required: true
+        default: "today"
+  schedule:
+    - cron: "0 23 * * *"  # JST8:00 に自動実行
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.11
+
+      - name: Install Dependencies
+        run: |
+          pip install requests beautifulsoup4 lxml
+
+      - name: Fetch Boat Race Data
+        run: |
+          python fetch_data.py ${{ github.event.inputs.mode }}
+
+      - name: Show JSON Preview
+        run: |
+          echo "=== data.json preview ==="
+          head -n 40 data.json
