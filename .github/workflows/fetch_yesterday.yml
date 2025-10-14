@@ -1,0 +1,32 @@
+name: Fetch Yesterday Data
+
+on:
+  schedule:
+    - cron: "0 0 * * *"  # JST 9:00 実行（前日最終反映）
+  workflow_dispatch:
+
+jobs:
+  fetch-yesterday:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🔹 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 📦 Install dependencies
+        run: |
+          pip install requests beautifulsoup4 lxml
+
+      - name: 🚀 Fetch yesterday's data
+        run: python fetch_data.py yesterday
+
+      - name: 📝 Commit & Push
+        run: |
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git add data.json
+          git diff --quiet || (git commit -m "Auto-update yesterday's data" && git push)

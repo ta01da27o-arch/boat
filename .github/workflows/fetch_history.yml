@@ -1,0 +1,32 @@
+name: Fetch & Update Race History
+
+on:
+  schedule:
+    - cron: "0 22 * * *"  # JST 7:00 に毎日実行
+  workflow_dispatch:
+
+jobs:
+  fetch-history:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🔹 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 📦 Install dependencies
+        run: |
+          pip install requests beautifulsoup4 lxml
+
+      - name: 🧠 Fetch last 30 days of data
+        run: python fetch_data.py history
+
+      - name: 📝 Commit & Push
+        run: |
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git add history.json
+          git diff --quiet || (git commit -m "Auto-update race history (30 days)" && git push)

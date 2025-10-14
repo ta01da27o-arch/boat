@@ -1,0 +1,32 @@
+name: Fetch Today Data
+
+on:
+  schedule:
+    - cron: "0 23 * * *"  # JST 8:00 実行
+  workflow_dispatch:
+
+jobs:
+  fetch-today:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🔹 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 📦 Install dependencies
+        run: |
+          pip install requests beautifulsoup4 lxml
+
+      - name: 🚀 Fetch today's data
+        run: python fetch_data.py today
+
+      - name: 📝 Commit & Push
+        run: |
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git add data.json
+          git diff --quiet || (git commit -m "Auto-update today's data" && git push)
