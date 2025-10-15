@@ -1,75 +1,65 @@
-import os
-import json
-import requests
-import datetime
-from pathlib import Path
+# fetch_history.py
+import json, requests, datetime, os
+from bs4 import BeautifulSoup
 
-# === 基本設定 ===
-DATA_FILE = Path("history.json")
-RESULTS_API = "https://boatraceopenapi.github.io/results/v2"
+HISTORY_FILE = "history.json"
+MAX_DAYS = 30
 
-# === 1日分の結果データ取得 ===
-def fetch_result_api(date_str):
-    url = f"{RESULTS_API}/{date_str[:4]}/{date_str}.json"
+def get_open_stadiums(target_date):
+    url = f"https://www.boatrace.jp/owpc/pc/race/index?hd={target_date}"
     try:
-        r = requests.get(url, timeout=10)
-        if r.status_code == 200:
-            data = r.json()
-            if isinstance(data, dict):
-                print(f"✅ {date_str} データ取得成功")
-                return data
-            else:
-                print(f"⚠️ {date_str} データ形式が不正: {type(data)}")
-        else:
-            print(f"❌ {date_str} 取得失敗: {r.status_code}")
-    except Exception as e:
-        print(f"⚠️ {date_str} エラー: {e}")
-    return None
+        res = requests.get(url, timeout=10)
+        res.raise_for_status()
+    except requests.RequestException:
+        return []
+    soup = BeautifulSoup(res.text, "lxml")
+    jcds = [a.get("href").split("jcd=")[1][:2] for a in soup.select(".table1 tbody tr a") if "jcd=" in a.get("href", "")]
+    return list(set(jcds))
 
-# === 既存データ読み込み ===
-def load_existing():
-    if DATA_FILE.exists():
+def fetch_race_data(date_str):
+    all_data = []
+    jcds = get_open_stadiums(date_str)
+    for jcd in jcds:
+        url = f"https://www.boatrace.jp/owpc/pc/race/raceresultall?jcd={jcd}&hd={date_str}"
         try:
-            with open(DATA_FILE, "r", encoding="utf-8") as f:
-                return json.load(f)
-        except Exception as e:
-            print(f"⚠️ JSON読み込み失敗: {e}")
-    return {}
+            res = requests.get(url, timeout=10)
+            if res.status_code == 200:
+                all_data.append({"date": date_str, "jcd": jcd, "html": res.text})
+        except requests.exceptions.Timeout:
+            print(f"⚠️ Timeout on {date_str}-{jcd}")
+    return all_data
 
-# === JSON保存 ===
-def save_json(data):
-    with open(DATA_FILE, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
-
-# === AI的中フラグ（仮） ===
-def mark_ai_hits(history):
-    for date, items in history.items():
-        if not isinstance(items, dict):
-            continue
-        for venue, races in items.items():
-            if not isinstance(races, list):
-                continue
-            for r in races:
-                if isinstance(r, dict) and "ai_hit" not in r:
-                    r["ai_hit"] = False  # 初期値として付与
-    return history
-
-# === メイン処理 ===
-def fetch_and_update(days=30):
+def main():
     today = datetime.date.today()
-    history = {}
+    all_dates = [(today - datetime.timedelta(days=i)).strftime("%Y%m%d") for i in range(MAX_DAYS)]
 
-    for i in range(days):
-        date_str = (today - datetime.timedelta(days=i)).strftime("%Y%m%d")
-        print(f"📅 処理中: {date_str}")
-        result = fetch_result_api(date_str)
-        if result:
-            history[date_str] = result
+    # 既存の履歴を読み込み
+    if os.path.exists(HISTORY_FILE):
+        with open(HISTORY_FILE, "r", encoding="utf-8") as f:
+            try:
+                history = json.load(f)
+            except json.JSONDecodeError:
+                history = []
+    else:
+        history = []
 
-    history = mark_ai_hits(history)
-    save_json(history)
-    print(f"✅ 過去{days}日分の履歴データを保存完了 ({len(history)}件)")
+    existing_dates = {d["date"] for d in history}
+    print(f"📦 過去{MAX_DAYS}日データ更新開始...")
 
-# === 実行 ===
+    for date_str in all_dates:
+        if date_str not in existing_dates:
+            print(f"🗓️ {date_str} のデータ取得中...")
+            data = fetch_race_data(date_str)
+            if data:
+                history.append({"date": date_str, "data": data})
+
+    # 最新30日分に整理
+    history = sorted(history, key=lambda x: x["date"], reverse=True)[:MAX_DAYS]
+
+    with open(HISTORY_FILE, "w", encoding="utf-8") as f:
+        json.dump(history, f, ensure_ascii=False, indent=2)
+
+    print(f"✅ history.json updated ({len(history)} days)")
+
 if __name__ == "__main__":
-    fetch_and_update(30)
+    main()
