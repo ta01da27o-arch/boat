@@ -1,9 +1,9 @@
-name: Train and Predict
+name: Train and Predict (Hybrid Fetch)
 
 on:
-  workflow_dispatch:      # 手動実行ボタンを追加
+  workflow_dispatch:
   schedule:
-    - cron: "0 0 * * *"   # 毎日0時（日本時間9時）に自動実行
+    - cron: "0 0 * * *"   # 毎日0時（日本時間9時）に実行
 
 jobs:
   build:
@@ -22,14 +22,20 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Fetch Data
-        run: python fetch_data.py
+      - name: Fetch today's data (scraping)
+        run: python fetch_data.py today
 
-      - name: Generate Features
+      - name: Fetch historical data (open API)
+        run: python fetch_data.py history
+
+      - name: Merge accumulated data
+        run: python merge_data.py
+
+      - name: Generate features
         run: python features.py
 
-      - name: Train Model
-        run: python train_model.py   # ここで model.pkl を作る
+      - name: Train model
+        run: python train_model.py
 
       - name: Save model
         uses: actions/upload-artifact@v4
