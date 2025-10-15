@@ -23,24 +23,27 @@ def fetch_today_data(date_str):
     venues = []
     for jcd in range(1, 25):  # 1〜24場
         url = f"{BASE_URL}?jcd={jcd:02d}&hd={date_str}"
-        res = requests.get(url)
-        if res.status_code != 200:
-            continue
+        try:
+            res = requests.get(url, timeout=10)
+            if res.status_code != 200:
+                continue
 
-        soup = BeautifulSoup(res.text, "html.parser")
-        title = soup.find("title")
-        if not title or "開催なし" in title.text:
-            continue
+            soup = BeautifulSoup(res.text, "html.parser")
+            title = soup.find("title")
+            if not title or "開催なし" in title.text:
+                continue
 
-        races = soup.select(".contentsFrame1Inner .table1")
-        if races:
-            venues.append({
-                "venue": jcd,
-                "date": date_str,
-                "race_count": len(races)
-            })
+            races = soup.select(".contentsFrame1Inner .table1")
+            if races:
+                venues.append({
+                    "venue": jcd,
+                    "date": date_str,
+                    "race_count": len(races)
+                })
+            time.sleep(0.3)
 
-        time.sleep(0.3)
+        except Exception as e:
+            print(f"⚠️ Error fetching jcd={jcd}: {e}")
 
     print(f"✅ 開催中場 ({date_str}): {[v['venue'] for v in venues]}")
     return venues
@@ -52,17 +55,27 @@ def save_data(filename, data):
 def load_json(filename):
     if not os.path.exists(filename):
         return []
-    with open(filename, "r", encoding="utf-8") as f:
-        return json.load(f)
+    try:
+        with open(filename, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        # フォーマット補正（dictのみ許可）
+        if isinstance(data, list):
+            data = [d for d in data if isinstance(d, dict) and "date" in d]
+        else:
+            data = []
+    except Exception:
+        data = []
+    return data
 
 def update_history(new_data, date_str):
     history = load_json(HISTORY_FILE)
 
     # 古いデータ削除 (30日分保持)
-    history = [d for d in history if d["date"] >= (datetime.now(JST) - timedelta(days=DAYS_TO_KEEP)).strftime("%Y%m%d")]
+    cutoff_date = (datetime.now(JST) - timedelta(days=DAYS_TO_KEEP)).strftime("%Y%m%d")
+    history = [d for d in history if d.get("date", "") >= cutoff_date]
 
-    # 同じ日付の重複削除して追加
-    history = [d for d in history if d["date"] != date_str] + new_data
+    # 同じ日付の重複削除 → 最新を追加
+    history = [d for d in history if d.get("date") != date_str] + new_data
 
     save_data(HISTORY_FILE, history)
     print(f"📘 history.json 更新完了 ({len(history)}日分保持)")
