@@ -2,36 +2,31 @@ name: Fetch Boat Race Data
 
 on:
   schedule:
-    - cron: "0 22 * * *"  # JST 7:00 に毎日実行
-  workflow_dispatch:      # 手動実行も可能
+    - cron: "0 22 * * *"  # JST翌日7:00に実行（時差補正）
+  workflow_dispatch:
 
 jobs:
-  fetch-data:
+  fetch:
     runs-on: ubuntu-latest
-
     steps:
-      - name: 🔹 リポジトリをチェックアウト
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: 🐍 Python セットアップ
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      - name: 📦 依存パッケージをインストール
-        run: |
-          python -m pip install --upgrade pip
-          pip install requests beautifulsoup4 lxml
+      - name: Install Dependencies
+        run: pip install requests beautifulsoup4
 
-      - name: 🏁 本日レースデータを取得
+      - name: Fetch Today Data
         run: python fetch_data.py today
 
-      - name: 📊 履歴データ(30日分)を更新
-        run: python fetch_history.py
-
-      - name: 📝 変更をGitにコミット・プッシュ
+      - name: Commit and Push Updated Data
         run: |
           git config --local user.name "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git add data.json history.json
-          git diff --quiet && echo "No changes" || (git commit -m "Auto-update race data & history" && git push)
+          git commit -m "Update race data: $(date +'%Y-%m-%d')" || echo "No changes"
+          git push
