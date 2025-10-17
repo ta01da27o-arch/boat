@@ -6,3 +6,4 @@ joblib
 requests
 pydantic
 python-dateutil
+scikit-learn
