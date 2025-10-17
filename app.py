@@ -1,12 +1,9 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import FileResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
-import json
-import os
-import datetime
-import joblib
-import pandas as pd
+import datetime, json, os, joblib, pandas as pd
 
 # -----------------------------
 # 🌍 設定
@@ -15,27 +12,21 @@ DATA_FILE = "data/data.json"
 HISTORY_FILE = "data/history.json"
 MODEL_FILE = "data/model.pkl"
 
-app = FastAPI(title="Boat Race AI Server", version="2.0")
+app = FastAPI(title="Boat Race AI Server", version="2.1")
 
-# -----------------------------
-# 🔓 CORS設定（どこからでもアクセス可能）
-# -----------------------------
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-# -----------------------------
-# 🌐 静的ファイル設定
-# -----------------------------
+# 静的ファイル (index.htmlなど)
 if os.path.exists("static"):
     app.mount("/", StaticFiles(directory="static", html=True), name="static")
 
+# CORS設定（外部アクセス許可）
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], allow_credentials=True,
+    allow_methods=["*"], allow_headers=["*"],
+)
+
 # -----------------------------
-# 📘 データ読み込み関数
+# 📘 JSONロード関数
 # -----------------------------
 def load_json(path):
     if not os.path.exists(path):
@@ -44,11 +35,11 @@ def load_json(path):
         with open(path, "r", encoding="utf-8") as f:
             return json.load(f)
     except Exception as e:
-        print(f"[ERROR] JSON load error ({path}): {e}")
+        print(f"[ERROR] JSON読み込み失敗: {e}")
         return []
 
 # -----------------------------
-# 📗 モデル読み込み関数
+# 📗 モデルロード関数
 # -----------------------------
 def load_model():
     if os.path.exists(MODEL_FILE):
@@ -59,7 +50,7 @@ def load_model():
     return None
 
 # -----------------------------
-# 🧠 予測用データ構造
+# 🧠 入力モデル
 # -----------------------------
 class RaceInput(BaseModel):
     race_wind: float = 0.0
@@ -71,40 +62,42 @@ class RaceInput(BaseModel):
     racer_start_timing: float = 0.1
 
 # -----------------------------
-# 📊 API: 最新データ取得
+# 📊 最新データ
 # -----------------------------
 @app.get("/api/data")
 def get_data():
-    data = load_json(DATA_FILE)
-    return {"count": len(data), "results": data}
+    if os.path.exists(DATA_FILE):
+        with open(DATA_FILE, "r", encoding="utf-8") as f:
+            return JSONResponse(content=json.load(f))
+    return {"error": "data.json not found"}
 
 # -----------------------------
-# 📜 API: 過去データ（学習用）取得
+# 📜 過去データ（学習用）
 # -----------------------------
 @app.get("/api/history")
 def get_history():
-    history = load_json(HISTORY_FILE)
-    return {"count": len(history), "results": history}
+    if os.path.exists(HISTORY_FILE):
+        with open(HISTORY_FILE, "r", encoding="utf-8") as f:
+            return JSONResponse(content=json.load(f))
+    return {"error": "history.json not found"}
 
 # -----------------------------
-# 🧩 API: 単体予測
+# 🧩 予測
 # -----------------------------
 @app.post("/api/predict")
 def predict(input_data: RaceInput):
     model = load_model()
     if not model:
-        raise HTTPException(status_code=400, detail="学習済みモデルが存在しません")
-
+        raise HTTPException(status_code=400, detail="学習済みモデルが存在しません。")
     df = pd.DataFrame([input_data.dict()])
     try:
         pred = model.predict(df)[0]
+        return {"prediction": float(pred)}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"予測エラー: {e}")
 
-    return {"prediction": float(pred)}
-
 # -----------------------------
-# 🕒 API: サーバー状態チェック
+# 🕒 サーバー状態
 # -----------------------------
 @app.get("/api/status")
 def status():
@@ -112,7 +105,7 @@ def status():
     return {"status": "ok", "time": now.strftime("%Y-%m-%d %H:%M:%S"), "tz": "Asia/Tokyo"}
 
 # -----------------------------
-# 🚀 ローカルテスト用（Renderでは不要）
+# 🚀 ローカル用
 # -----------------------------
 if __name__ == "__main__":
     import uvicorn

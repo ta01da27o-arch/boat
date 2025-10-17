@@ -1,41 +1,55 @@
-import json
+import json, os, requests
 from datetime import datetime, timedelta, timezone
 
 JST = timezone(timedelta(hours=9))
+DATA_PATH = "data/data.json"
+HISTORY_PATH = "data/history.json"
+DAYS_TO_KEEP = 7  # 保持日数
 
-def fetch_boat_data():
-    # ★デモ：ダミーデータを返す（後でAPIに差し替え可能）
-    today = datetime.now(JST).strftime("%Y%m%d")
-    return {
-        "date": today,
-        "races": [
-            {"stadium": "桐生", "race_no": 1, "comment": "逃げ有利"},
-            {"stadium": "戸田", "race_no": 2, "comment": "差し展開"},
-        ]
-    }
+# ダミーAPI例（後で実際のオープンAPIに変更可能）
+API_URL = "https://api.odds-api.example/boatrace/today"
 
-def save_json(data, filename):
-    with open(filename, "w", encoding="utf-8") as f:
+def load_json(path):
+    if not os.path.exists(path):
+        return []
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except:
+        return []
+
+def save_json(path, data):
+    with open(path, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
-    print(f"✅ {filename} を保存しました")
 
-def update_history(data):
-    history_file = "history.json"
-    history = []
+def fetch_today():
+    # 仮データ（後で実API置換）
+    return [{"race": i, "venue": "桐生", "wind": 2.0, "wave": 1.0} for i in range(1, 13)]
 
-    if os.path.exists(history_file):
-        with open(history_file, "r", encoding="utf-8") as f:
-            try:
-                history = json.load(f)
-            except json.JSONDecodeError:
-                history = []
+def update_history(new_data, date_str):
+    history = load_json(HISTORY_PATH)
+    if isinstance(history, dict):
+        history = list(history.values())
 
-    history.append(data)
-    # 30日分だけ保持
-    history = sorted(history, key=lambda x: x["date"])[-30:]
-    save_json(history, history_file)
+    # 古いデータ削除
+    cutoff = (datetime.now(JST) - timedelta(days=DAYS_TO_KEEP)).strftime("%Y%m%d")
+    history = [d for d in history if d.get("date", "") >= cutoff]
+
+    # 新しいデータ追加
+    for d in new_data:
+        d["date"] = date_str
+    history.extend(new_data)
+
+    save_json(HISTORY_PATH, history)
+
+def main():
+    today = datetime.now(JST).strftime("%Y%m%d")
+    print(f"📅 Fetching data for {today} ...")
+
+    data = fetch_today()
+    save_json(DATA_PATH, data)
+    update_history(data, today)
+    print(f"✅ Updated {len(data)} races.")
 
 if __name__ == "__main__":
-    data = fetch_boat_data()
-    save_json(data, "data.json")
-    update_history(data)
+    main()
