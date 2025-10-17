@@ -1,101 +1,41 @@
-import requests
-from bs4 import BeautifulSoup
-from datetime import datetime, timedelta, timezone
 import json
-import os
-import time
+from datetime import datetime, timedelta, timezone
 
 JST = timezone(timedelta(hours=9))
-BASE_URL = "https://www.boatrace.jp/owpc/pc/race/racelist"
-DATA_FILE = "data.json"
-HISTORY_FILE = "history.json"
-DAYS_TO_KEEP = 30
 
-def get_target_date(mode="today"):
-    now = datetime.now(JST)
-    if mode == "yesterday":
-        now -= timedelta(days=1)
-    return now.strftime("%Y%m%d")
+def fetch_boat_data():
+    # ★デモ：ダミーデータを返す（後でAPIに差し替え可能）
+    today = datetime.now(JST).strftime("%Y%m%d")
+    return {
+        "date": today,
+        "races": [
+            {"stadium": "桐生", "race_no": 1, "comment": "逃げ有利"},
+            {"stadium": "戸田", "race_no": 2, "comment": "差し展開"},
+        ]
+    }
 
-def fetch_today_data(date_str):
-    print(f"📦 {date_str} のレースデータを取得中...")
-
-    venues = []
-    for jcd in range(1, 25):  # 1〜24場
-        url = f"{BASE_URL}?jcd={jcd:02d}&hd={date_str}"
-        try:
-            res = requests.get(url, timeout=10)
-            if res.status_code != 200:
-                continue
-
-            soup = BeautifulSoup(res.text, "html.parser")
-            title = soup.find("title")
-            if not title or "開催なし" in title.text:
-                continue
-
-            races = soup.select(".contentsFrame1Inner .table1")
-            if races:
-                venues.append({
-                    "venue": jcd,
-                    "date": date_str,
-                    "race_count": len(races)
-                })
-            time.sleep(0.3)
-
-        except Exception as e:
-            print(f"⚠️ Error fetching jcd={jcd}: {e}")
-
-    print(f"✅ 開催中場 ({date_str}): {[v['venue'] for v in venues]}")
-    return venues
-
-def save_data(filename, data):
+def save_json(data, filename):
     with open(filename, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
+    print(f"✅ {filename} を保存しました")
 
-def load_json(filename):
-    if not os.path.exists(filename):
-        return []
-    try:
-        with open(filename, "r", encoding="utf-8") as f:
-            data = json.load(f)
-        # フォーマット補正（dictのみ許可）
-        if isinstance(data, list):
-            data = [d for d in data if isinstance(d, dict) and "date" in d]
-        else:
-            data = []
-    except Exception:
-        data = []
-    return data
+def update_history(data):
+    history_file = "history.json"
+    history = []
 
-def update_history(new_data, date_str):
-    history = load_json(HISTORY_FILE)
+    if os.path.exists(history_file):
+        with open(history_file, "r", encoding="utf-8") as f:
+            try:
+                history = json.load(f)
+            except json.JSONDecodeError:
+                history = []
 
-    # 古いデータ削除 (30日分保持)
-    cutoff_date = (datetime.now(JST) - timedelta(days=DAYS_TO_KEEP)).strftime("%Y%m%d")
-    history = [d for d in history if d.get("date", "") >= cutoff_date]
-
-    # 同じ日付の重複削除 → 最新を追加
-    history = [d for d in history if d.get("date") != date_str] + new_data
-
-    save_data(HISTORY_FILE, history)
-    print(f"📘 history.json 更新完了 ({len(history)}日分保持)")
-    return history
-
-def main():
-    import sys
-    if len(sys.argv) < 2 or sys.argv[1] not in ["today", "yesterday"]:
-        print("❌ Usage: python fetch_data.py [today|yesterday]")
-        return
-
-    mode = sys.argv[1]
-    date_str = get_target_date(mode)
-    print(f"📅 {mode} ({date_str}) のデータを取得します")
-
-    data = fetch_today_data(date_str)
-    save_data(DATA_FILE, data)
-    update_history(data, date_str)
-
-    print(f"✅ data.json 更新完了 ({len(data)}件)")
+    history.append(data)
+    # 30日分だけ保持
+    history = sorted(history, key=lambda x: x["date"])[-30:]
+    save_json(history, history_file)
 
 if __name__ == "__main__":
-    main()
+    data = fetch_boat_data()
+    save_json(data, "data.json")
+    update_history(data)
