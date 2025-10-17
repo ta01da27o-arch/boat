@@ -25,7 +25,7 @@ app.add_middleware(
 )
 
 # -----------------------------
-# 📦 静的ファイル (HTMLなど)
+# 📦 静的ファイル (index.htmlなど)
 # -----------------------------
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
@@ -59,7 +59,7 @@ def load_model():
     return None
 
 # -----------------------------
-# 🧠 入力モデル
+# 🧠 入力データ構造
 # -----------------------------
 class RaceInput(BaseModel):
     race_wind: float = 0.0
@@ -80,7 +80,7 @@ async def get_data():
     return JSONResponse(content={"status": "ok", "data": data})
 
 # -----------------------------
-# 📜 履歴データAPI
+# 📜 履歴データ取得API
 # -----------------------------
 @app.get("/history")
 async def get_history():
@@ -89,7 +89,7 @@ async def get_history():
     return JSONResponse(content={"history": hist})
 
 # -----------------------------
-# 🧩 予測API
+# 🧩 AI予測API
 # -----------------------------
 @app.post("/predict")
 async def predict(input_data: RaceInput):
@@ -105,7 +105,7 @@ async def predict(input_data: RaceInput):
         raise HTTPException(status_code=500, detail=f"予測エラー: {e}")
 
 # -----------------------------
-# 🕒 サーバーステータス
+# 🕒 サーバーステータスAPI
 # -----------------------------
 @app.get("/status")
 def status():
@@ -113,7 +113,7 @@ def status():
     return {"status": "ok", "time": now.strftime("%Y-%m-%d %H:%M:%S"), "tz": "Asia/Tokyo"}
 
 # -----------------------------
-# 🚀 ローカル実行時
+# 🚀 ローカル実行用
 # -----------------------------
 if __name__ == "__main__":
     import uvicorn
