@@ -1,60 +1,50 @@
-import pandas as pd
 import json
+import pandas as pd
 import os
 
-HISTORY_FILE = "history_data.json"
-TODAY_FILE = "data.json"
-FEATURES_FILE = "features.csv"
+HISTORY_PATH = "data/history.json"
+DATA_PATH = "data/data.json"
+FEATURES_PATH = "data/features.csv"
 
-def load_json(file_path):
-    if not os.path.exists(file_path):
-        print(f"[WARN] {file_path} が見つかりません。スキップします。")
+def load_json(path):
+    if not os.path.exists(path):
+        print(f"[WARN] {path} が見つかりません。スキップします。")
         return []
     try:
-        with open(file_path, "r", encoding="utf-8") as f:
-            data = json.load(f)
-            return data if isinstance(data, list) else []
+        with open(path, "r", encoding="utf-8") as f:
+            return json.load(f)
     except Exception as e:
-        print(f"[ERROR] {file_path} の読み込みに失敗: {e}")
+        print(f"[ERROR] {path} の読み込みに失敗: {e}")
         return []
 
-def make_features():
-    # 両方読み込む
-    history_data = load_json(HISTORY_FILE)
-    today_data = load_json(TODAY_FILE)
+def main():
+    print("🧩 Generating features...")
 
-    all_data = history_data + today_data
-    if not all_data:
+    # データ読み込み
+    history = load_json(HISTORY_PATH)
+    today = load_json(DATA_PATH)
+
+    # 両方空の場合
+    if not history and not today:
         print("[WARN] 履歴・本日データともに空です。")
-        all_data = []
+        dummy = [{"race": 1, "venue": "桐生", "wind": 2.0, "wave": 1.0, "date": "20250101"}]
+        df = pd.DataFrame(dummy)
+        df.to_csv(FEATURES_PATH, index=False)
+        print(f"[INFO] 特徴量CSV出力: {len(df)}件 → {FEATURES_PATH}")
+        return
 
-    records = []
-    for race in all_data:
-        for boat in race.get("boats", []):
-            records.append({
-                "race_date": race.get("race_date"),
-                "race_stadium_number": race.get("race_stadium_number"),
-                "race_number": race.get("race_number"),
-                "racer_boat_number": boat.get("racer_boat_number", 0),
-                "racer_start_timing": boat.get("racer_start_timing", 0.0),
-                "racer_place_number": boat.get("racer_place_number", 0)
-            })
+    # 結合
+    combined = history + today
+    df = pd.DataFrame(combined)
 
-    if not records:
-        # ダミーデータ1行（空対策）
-        print("[WARN] 有効なレコードがありません。ダミーデータを生成します。")
-        records = [{
-            "race_date": "0000-00-00",
-            "race_stadium_number": 0,
-            "race_number": 0,
-            "racer_boat_number": 0,
-            "racer_start_timing": 0.0,
-            "racer_place_number": 0
-        }]
+    # 余分な列の除外・特徴量生成（例）
+    if "date" in df.columns:
+        df["date"] = df["date"].astype(str)
+    df["wind_wave_ratio"] = df["wind"] / (df["wave"] + 0.1)
 
-    df = pd.DataFrame(records)
-    df.to_csv(FEATURES_FILE, index=False, encoding="utf-8-sig")
-    print(f"[INFO] 特徴量CSV出力: {len(df)}件 → {FEATURES_FILE}")
+    # CSV保存
+    df.to_csv(FEATURES_PATH, index=False)
+    print(f"[INFO] 特徴量CSV出力: {len(df)}件 → {FEATURES_PATH}")
 
 if __name__ == "__main__":
-    make_features()
+    main()
