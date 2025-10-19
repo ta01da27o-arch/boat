@@ -1,254 +1,5762 @@
 [
   {
+    "date": "20250821",
     "race": 1,
     "venue": "桐生",
-    "wind": 2.0,
-    "wave": 1.0,
-    "date": "20251019"
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
   },
   {
+    "date": "20250821",
     "race": 2,
     "venue": "桐生",
-    "wind": 2.0,
-    "wave": 1.0,
-    "date": "20251019"
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
   },
   {
+    "date": "20250821",
     "race": 3,
     "venue": "桐生",
-    "wind": 2.0,
-    "wave": 1.0,
-    "date": "20251019"
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
   },
   {
+    "date": "20250821",
     "race": 4,
     "venue": "桐生",
-    "wind": 2.0,
-    "wave": 1.0,
-    "date": "20251019"
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
   },
   {
+    "date": "20250821",
     "race": 5,
     "venue": "桐生",
-    "wind": 2.0,
+    "wind": 1.5,
     "wave": 1.0,
-    "date": "20251019"
+    "result": "仮データ"
   },
   {
+    "date": "20250821",
     "race": 6,
     "venue": "桐生",
-    "wind": 2.0,
-    "wave": 1.0,
-    "date": "20251019"
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
   },
   {
+    "date": "20250821",
     "race": 7,
     "venue": "桐生",
-    "wind": 2.0,
-    "wave": 1.0,
-    "date": "20251019"
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
   },
   {
+    "date": "20250821",
     "race": 8,
     "venue": "桐生",
-    "wind": 2.0,
-    "wave": 1.0,
-    "date": "20251019"
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
   },
   {
+    "date": "20250821",
     "race": 9,
     "venue": "桐生",
-    "wind": 2.0,
-    "wave": 1.0,
-    "date": "20251019"
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
   },
   {
+    "date": "20250821",
     "race": 10,
     "venue": "桐生",
     "wind": 2.0,
-    "wave": 1.0,
-    "date": "20251019"
+    "wave": 1.5,
+    "result": "仮データ"
   },
   {
+    "date": "20250821",
     "race": 11,
     "venue": "桐生",
-    "wind": 2.0,
-    "wave": 1.0,
-    "date": "20251019"
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
   },
   {
+    "date": "20250821",
     "race": 12,
     "venue": "桐生",
-    "wind": 2.0,
-    "wave": 1.0,
-    "date": "20251019"
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
   },
   {
+    "date": "20250822",
     "race": 1,
     "venue": "桐生",
-    "wind": 2.0,
-    "wave": 1.0,
-    "date": "20251019"
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
   },
   {
+    "date": "20250822",
     "race": 2,
     "venue": "桐生",
-    "wind": 2.0,
-    "wave": 1.0,
-    "date": "20251019"
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
   },
   {
+    "date": "20250822",
     "race": 3,
     "venue": "桐生",
-    "wind": 2.0,
-    "wave": 1.0,
-    "date": "20251019"
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
   },
   {
+    "date": "20250822",
     "race": 4,
     "venue": "桐生",
-    "wind": 2.0,
-    "wave": 1.0,
-    "date": "20251019"
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
   },
   {
+    "date": "20250822",
     "race": 5,
     "venue": "桐生",
-    "wind": 2.0,
+    "wind": 1.5,
     "wave": 1.0,
-    "date": "20251019"
+    "result": "仮データ"
   },
   {
+    "date": "20250822",
     "race": 6,
     "venue": "桐生",
-    "wind": 2.0,
-    "wave": 1.0,
-    "date": "20251019"
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
   },
   {
+    "date": "20250822",
     "race": 7,
     "venue": "桐生",
-    "wind": 2.0,
-    "wave": 1.0,
-    "date": "20251019"
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
   },
   {
+    "date": "20250822",
     "race": 8,
     "venue": "桐生",
-    "wind": 2.0,
-    "wave": 1.0,
-    "date": "20251019"
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
   },
   {
+    "date": "20250822",
     "race": 9,
     "venue": "桐生",
-    "wind": 2.0,
-    "wave": 1.0,
-    "date": "20251019"
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
   },
   {
+    "date": "20250822",
     "race": 10,
     "venue": "桐生",
     "wind": 2.0,
-    "wave": 1.0,
-    "date": "20251019"
+    "wave": 1.5,
+    "result": "仮データ"
   },
   {
+    "date": "20250822",
     "race": 11,
     "venue": "桐生",
-    "wind": 2.0,
-    "wave": 1.0,
-    "date": "20251019"
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
   },
   {
+    "date": "20250822",
     "race": 12,
     "venue": "桐生",
-    "wind": 2.0,
-    "wave": 1.0,
-    "date": "20251019"
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
   },
   {
+    "date": "20250823",
     "race": 1,
     "venue": "桐生",
-    "wind": 2.0,
-    "wave": 1.0,
-    "date": "20251019"
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
   },
   {
+    "date": "20250823",
     "race": 2,
     "venue": "桐生",
-    "wind": 2.0,
-    "wave": 1.0,
-    "date": "20251019"
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
   },
   {
+    "date": "20250823",
     "race": 3,
     "venue": "桐生",
-    "wind": 2.0,
-    "wave": 1.0,
-    "date": "20251019"
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
   },
   {
+    "date": "20250823",
     "race": 4,
     "venue": "桐生",
-    "wind": 2.0,
-    "wave": 1.0,
-    "date": "20251019"
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
   },
   {
+    "date": "20250823",
     "race": 5,
     "venue": "桐生",
-    "wind": 2.0,
+    "wind": 1.5,
     "wave": 1.0,
-    "date": "20251019"
+    "result": "仮データ"
   },
   {
+    "date": "20250823",
     "race": 6,
     "venue": "桐生",
-    "wind": 2.0,
-    "wave": 1.0,
-    "date": "20251019"
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
   },
   {
+    "date": "20250823",
     "race": 7,
     "venue": "桐生",
-    "wind": 2.0,
-    "wave": 1.0,
-    "date": "20251019"
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
   },
   {
+    "date": "20250823",
     "race": 8,
     "venue": "桐生",
-    "wind": 2.0,
-    "wave": 1.0,
-    "date": "20251019"
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
   },
   {
+    "date": "20250823",
     "race": 9,
     "venue": "桐生",
-    "wind": 2.0,
-    "wave": 1.0,
-    "date": "20251019"
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
   },
   {
+    "date": "20250823",
     "race": 10,
     "venue": "桐生",
     "wind": 2.0,
-    "wave": 1.0,
-    "date": "20251019"
+    "wave": 1.5,
+    "result": "仮データ"
   },
   {
+    "date": "20250823",
     "race": 11,
     "venue": "桐生",
-    "wind": 2.0,
-    "wave": 1.0,
-    "date": "20251019"
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
   },
   {
+    "date": "20250823",
     "race": 12,
     "venue": "桐生",
-    "wind": 2.0,
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250824",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250824",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250824",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250824",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250824",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
     "wave": 1.0,
-    "date": "20251019"
+    "result": "仮データ"
+  },
+  {
+    "date": "20250824",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250824",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250824",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250824",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250824",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250824",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250824",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250825",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250825",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250825",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250825",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250825",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250825",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250825",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250825",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250825",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250825",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250825",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250825",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250826",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250826",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250826",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250826",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250826",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250826",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250826",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250826",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250826",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250826",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250826",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250826",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250827",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250827",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250827",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250827",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250827",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250827",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250827",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250827",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250827",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250827",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250827",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250827",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250828",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250828",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250828",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250828",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250828",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250828",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250828",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250828",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250828",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250828",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250828",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250828",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250829",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250829",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250829",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250829",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250829",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250829",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250829",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250829",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250829",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250829",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250829",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250829",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250830",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250830",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250830",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250830",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250830",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250830",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250830",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250830",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250830",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250830",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250830",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250830",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250831",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250831",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250831",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250831",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250831",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250831",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250831",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250831",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250831",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250831",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250831",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250831",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250901",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250901",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250901",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250901",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250901",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250901",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250901",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250901",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250901",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250901",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250901",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250901",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250902",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250902",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250902",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250902",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250902",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250902",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250902",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250902",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250902",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250902",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250902",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250902",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250903",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250903",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250903",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250903",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250903",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250903",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250903",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250903",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250903",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250903",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250903",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250903",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250904",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250904",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250904",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250904",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250904",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250904",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250904",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250904",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250904",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250904",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250904",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250904",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250905",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250905",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250905",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250905",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250905",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250905",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250905",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250905",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250905",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250905",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250905",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250905",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250906",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250906",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250906",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250906",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250906",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250906",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250906",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250906",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250906",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250906",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250906",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250906",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250907",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250907",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250907",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250907",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250907",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250907",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250907",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250907",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250907",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250907",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250907",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250907",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250908",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250908",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250908",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250908",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250908",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250908",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250908",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250908",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250908",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250908",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250908",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250908",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250909",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250909",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250909",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250909",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250909",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250909",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250909",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250909",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250909",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250909",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250909",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250909",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250910",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250910",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250910",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250910",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250910",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250910",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250910",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250910",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250910",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250910",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250910",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250910",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250911",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250911",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250911",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250911",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250911",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250911",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250911",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250911",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250911",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250911",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250911",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250911",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250912",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250912",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250912",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250912",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250912",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250912",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250912",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250912",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250912",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250912",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250912",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250912",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250913",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250913",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250913",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250913",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250913",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250913",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250913",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250913",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250913",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250913",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250913",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250913",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250914",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250914",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250914",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250914",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250914",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250914",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250914",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250914",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250914",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250914",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250914",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250914",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250915",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250915",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250915",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250915",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250915",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250915",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250915",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250915",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250915",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250915",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250915",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250915",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250916",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250916",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250916",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250916",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250916",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250916",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250916",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250916",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250916",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250916",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250916",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250916",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250917",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250917",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250917",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250917",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250917",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250917",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250917",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250917",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250917",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250917",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250917",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250917",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250918",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250918",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250918",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250918",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250918",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250918",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250918",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250918",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250918",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250918",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250918",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250918",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250919",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250919",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250919",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250919",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250919",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250919",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250919",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250919",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250919",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250919",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250919",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250919",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250920",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250920",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250920",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250920",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250920",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250920",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250920",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250920",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250920",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250920",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250920",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250920",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250921",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250921",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250921",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250921",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250921",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250921",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250921",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250921",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250921",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250921",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250921",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250921",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250922",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250922",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250922",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250922",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250922",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250922",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250922",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250922",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250922",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250922",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250922",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250922",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250923",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250923",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250923",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250923",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250923",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250923",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250923",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250923",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250923",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250923",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250923",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250923",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250924",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250924",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250924",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250924",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250924",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250924",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250924",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250924",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250924",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250924",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250924",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250924",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250925",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250925",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250925",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250925",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250925",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250925",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250925",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250925",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250925",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250925",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250925",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250925",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250926",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250926",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250926",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250926",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250926",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250926",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250926",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250926",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250926",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250926",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250926",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250926",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250927",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250927",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250927",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250927",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250927",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250927",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250927",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250927",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250927",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250927",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250927",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250927",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250928",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250928",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250928",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250928",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250928",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250928",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250928",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250928",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250928",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250928",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250928",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250928",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250929",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250929",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250929",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250929",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250929",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250929",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250929",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250929",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250929",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250929",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250929",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250929",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250930",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250930",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250930",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250930",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250930",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250930",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250930",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250930",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250930",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250930",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250930",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20250930",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251001",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251001",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251001",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251001",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251001",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251001",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251001",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251001",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251001",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251001",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251001",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251001",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251002",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251002",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251002",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251002",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251002",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251002",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251002",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251002",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251002",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251002",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251002",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251002",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251003",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251003",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251003",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251003",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251003",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251003",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251003",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251003",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251003",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251003",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251003",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251003",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251004",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251004",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251004",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251004",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251004",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251004",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251004",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251004",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251004",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251004",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251004",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251004",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251005",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251005",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251005",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251005",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251005",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251005",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251005",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251005",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251005",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251005",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251005",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251005",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251006",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251006",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251006",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251006",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251006",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251006",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251006",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251006",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251006",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251006",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251006",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251006",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251007",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251007",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251007",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251007",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251007",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251007",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251007",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251007",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251007",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251007",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251007",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251007",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251008",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251008",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251008",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251008",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251008",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251008",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251008",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251008",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251008",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251008",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251008",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251008",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251009",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251009",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251009",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251009",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251009",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251009",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251009",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251009",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251009",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251009",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251009",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251009",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251010",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251010",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251010",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251010",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251010",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251010",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251010",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251010",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251010",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251010",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251010",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251010",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251011",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251011",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251011",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251011",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251011",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251011",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251011",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251011",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251011",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251011",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251011",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251011",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251012",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251012",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251012",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251012",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251012",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251012",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251012",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251012",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251012",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251012",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251012",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251012",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251013",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251013",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251013",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251013",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251013",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251013",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251013",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251013",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251013",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251013",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251013",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251013",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251014",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251014",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251014",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251014",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251014",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251014",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251014",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251014",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251014",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251014",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251014",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251014",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251015",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251015",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251015",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251015",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251015",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251015",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251015",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251015",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251015",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251015",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251015",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251015",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251016",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251016",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251016",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251016",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251016",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251016",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251016",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251016",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251016",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251016",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251016",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251016",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251017",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251017",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251017",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251017",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251017",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251017",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251017",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251017",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251017",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251017",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251017",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251017",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251018",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251018",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251018",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251018",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251018",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251018",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251018",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251018",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251018",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251018",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251018",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251018",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251019",
+    "race": 1,
+    "venue": "桐生",
+    "wind": 1.1,
+    "wave": 0.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251019",
+    "race": 2,
+    "venue": "桐生",
+    "wind": 1.2,
+    "wave": 0.7,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251019",
+    "race": 3,
+    "venue": "桐生",
+    "wind": 1.3,
+    "wave": 0.8,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251019",
+    "race": 4,
+    "venue": "桐生",
+    "wind": 1.4,
+    "wave": 0.9,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251019",
+    "race": 5,
+    "venue": "桐生",
+    "wind": 1.5,
+    "wave": 1.0,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251019",
+    "race": 6,
+    "venue": "桐生",
+    "wind": 1.6,
+    "wave": 1.1,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251019",
+    "race": 7,
+    "venue": "桐生",
+    "wind": 1.7,
+    "wave": 1.2,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251019",
+    "race": 8,
+    "venue": "桐生",
+    "wind": 1.8,
+    "wave": 1.3,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251019",
+    "race": 9,
+    "venue": "桐生",
+    "wind": 1.9,
+    "wave": 1.4,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251019",
+    "race": 10,
+    "venue": "桐生",
+    "wind": 2.0,
+    "wave": 1.5,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251019",
+    "race": 11,
+    "venue": "桐生",
+    "wind": 2.1,
+    "wave": 1.6,
+    "result": "仮データ"
+  },
+  {
+    "date": "20251019",
+    "race": 12,
+    "venue": "桐生",
+    "wind": 2.2,
+    "wave": 1.7,
+    "result": "仮データ"
   }
 ]
