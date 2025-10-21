@@ -1,114 +1,95 @@
 import requests
 from bs4 import BeautifulSoup
 import json
+import csv
 import datetime
-import time
 import os
 
-# ===============================
-# 競艇AI 自動データ収集スクリプト
-# ===============================
-
-# 出力フォルダ
-OUTPUT_DIR = "data"
-DATA_FILE = f"{OUTPUT_DIR}/data.json"
-HISTORY_FILE = f"{OUTPUT_DIR}/history.json"
-
-# 対象ボート場（24場）
+# ====== 会場リスト（2025年版）======
 VENUES = [
-    "桐生","戸田","江戸川","平和島","多摩川","浜名湖",
-    "蒲郡","常滑","津","三国","びわこ","住之江",
-    "尼崎","鳴門","丸亀","児島","宮島","徳山",
-    "下関","若松","芦屋","福岡","唐津","大村"
+    "桐生", "戸田", "江戸川", "平和島", "多摩川", "浜名湖",
+    "蒲郡", "常滑", "津", "三国", "びわこ", "住之江",
+    "尼崎", "鳴門", "丸亀", "児島", "宮島", "徳山",
+    "下関", "若松", "芦屋", "福岡", "唐津", "大村"
 ]
 
-# 日付（例：20251021）
-today = datetime.date.today().strftime("%Y%m%d")
+# ====== スクレイピングURL (例: boatrace.jp) ======
+BASE_URL = "https://boatrace.jp/owpc/pc/race/index?jcd={jcd}&rno=1"
 
-# 公式サイトのURLテンプレート
-BASE_URL = "https://www.boatrace.jp/owpc/pc/race/racelist"
+def fetch_today_races():
+    today = datetime.date.today().strftime("%Y%m%d")
+    races = []
 
-# ===============================
-# 1. 本日のレースデータをスクレイピング
-# ===============================
-def fetch_today_data():
-    all_data = []
-    for venue_id in range(1, 25):
+    for i, venue in enumerate(VENUES, start=1):
+        jcd = str(i).zfill(2)
+        url = BASE_URL.format(jcd=jcd)
+        print(f"Fetching {venue} ... {url}")
+
         try:
-            url = f"{BASE_URL}?jcd={venue_id:02d}&hd={today}"
             res = requests.get(url, timeout=10)
-            if res.status_code != 200:
-                print(f"[{VENUES[venue_id-1]}] スキップ: HTTP {res.status_code}")
-                continue
+            res.encoding = res.apparent_encoding
             soup = BeautifulSoup(res.text, "html.parser")
 
-            race_titles = soup.select(".title03")
-            if not race_titles:
-                print(f"[{VENUES[venue_id-1]}] 開催なし")
+            title = soup.select_one("h2.heading1_title")
+            if not title:
+                print(f"⚠️ {venue}: データなし")
                 continue
 
-            for i, race in enumerate(race_titles, start=1):
-                all_data.append({
-                    "date": today,
-                    "venue": VENUES[venue_id-1],
-                    "race": i,
-                    "status": "開催中",
-                    "comment": "",
-                    "data_source": "boatrace.jp"
-                })
-            print(f"✅ {VENUES[venue_id-1]} 取得完了 ({len(race_titles)}R)")
-            time.sleep(1)
+            race_title = title.text.strip()
+            races.append({
+                "date": today,
+                "venue": venue,
+                "race_title": race_title,
+                "url": url
+            })
 
         except Exception as e:
-            print(f"⚠️ {VENUES[venue_id-1]} エラー: {e}")
+            print(f"❌ {venue}: Error {e}")
             continue
 
-    return all_data
+    # 保存
+    with open("data.json", "w", encoding="utf-8") as f:
+        json.dump(races, f, ensure_ascii=False, indent=2)
+
+    print(f"✅ data.json updated ({len(races)} races)")
+    return races
 
 
-# ===============================
-# 2. 過去レースデータ（外部API）
-#    例：オープンAPI (架空デモ)
-# ===============================
-def fetch_history_data():
-    api_url = "https://api-boatrace-data.onrender.com/history"
-    try:
-        res = requests.get(api_url, timeout=10)
-        if res.status_code == 200:
-            return res.json()
-        else:
-            print("⚠️ 外部APIからの取得失敗")
-            return []
-    except Exception as e:
-        print("⚠️ API接続エラー:", e)
-        return []
+def fetch_past_races():
+    """外部API or JSONから過去60日分を更新（ダミー構造）"""
+    today = datetime.date.today()
+    past_data = []
+
+    for d in range(60):
+        date = (today - datetime.timedelta(days=d)).strftime("%Y%m%d")
+        for venue in VENUES:
+            past_data.append({
+                "date": date,
+                "venue": venue,
+                "result": "ダミーデータ"
+            })
+
+    with open("history.json", "w", encoding="utf-8") as f:
+        json.dump(past_data, f, ensure_ascii=False, indent=2)
+
+    print("✅ history.json updated (60 days)")
+    return past_data
 
 
-# ===============================
-# 3. JSONファイル保存
-# ===============================
-def save_json(path, data):
-    os.makedirs(OUTPUT_DIR, exist_ok=True)
-    with open(path, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
-    print(f"💾 保存完了: {path} ({len(data)}件)")
+def create_features_csv():
+    """特徴量データCSV（学習用）"""
+    filename = "features.csv"
+    with open(filename, "w", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        writer.writerow(["date", "venue", "feature1", "feature2", "feature3"])
+        for i in range(100):
+            writer.writerow([datetime.date.today(), "桐生", i, i*2, i*3])
+    print("✅ features.csv updated")
 
-
-# ===============================
-# メイン処理
-# ===============================
-def main():
-    print("=== ⛵ 競艇AIデータ更新開始 ===")
-
-    today_data = fetch_today_data()
-    history_data = fetch_history_data()
-
-    if today_data:
-        save_json(DATA_FILE, today_data)
-    if history_data:
-        save_json(HISTORY_FILE, history_data)
-
-    print("=== ✅ 全処理完了 ===")
 
 if __name__ == "__main__":
-    main()
+    os.makedirs(".", exist_ok=True)
+    fetch_today_races()
+    fetch_past_races()
+    create_features_csv()
+    print("🎯 Fetch completed.")
