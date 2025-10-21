@@ -1,9 +1,6 @@
 // app.js
 const DATA_URL = "https://raw.githubusercontent.com/ta01da27o-arch/boat/main/data/data.json";
 
-// ----------------------------
-// 📦 データ取得
-// ----------------------------
 async function fetchData() {
   const view = document.getElementById("view");
   view.innerHTML = `<div style="padding:1em; color:#666;">⏳ データを読み込んでいます...</div>`;
@@ -11,14 +8,11 @@ async function fetchData() {
   try {
     const res = await fetch(DATA_URL, { cache: "no-store" });
     if (!res.ok) throw new Error(`HTTPエラー: ${res.status}`);
-
     const data = await res.json();
 
-    if (!Array.isArray(data) || data.length === 0) {
-      throw new Error("データが空です");
-    }
+    if (!Array.isArray(data) || data.length === 0) throw new Error("データが空です");
 
-    renderData(data);
+    renderGrid(data);
   } catch (err) {
     console.error("❌ データ取得エラー:", err);
     view.innerHTML = `
@@ -30,47 +24,38 @@ async function fetchData() {
 }
 
 // ----------------------------
-// 🎨 データ描画
+// 🎨 24場グリッド表示
 // ----------------------------
-function renderData(data) {
+function renderGrid(data) {
   const view = document.getElementById("view");
   const today = formatDate(data[0]?.date || "");
 
-  // 会場ごとにまとめる
-  const grouped = {};
+  // 会場ごとにグループ化
+  const venues = {};
   data.forEach((r) => {
     const venue = r.venue || "不明会場";
-    if (!grouped[venue]) grouped[venue] = [];
-    grouped[venue].push(r);
+    if (!venues[venue]) venues[venue] = [];
+    venues[venue].push(r);
   });
 
-  // HTML生成
-  const html = Object.keys(grouped)
+  const gridHtml = Object.keys(venues)
     .map((venue) => {
-      const races = grouped[venue]
-        .map(
-          (r) => `
-        <li style="margin:4px 0; padding:6px 8px; border:1px solid #ccc; border-radius:6px; background:#fafafa;">
-          <b>${r.race}R</b>　
-          風:${r.wind ?? "-"}m／波:${r.wave ?? "-"}m　
-          <span style="color:#888;">(${r.result || "結果未登録"})</span>
-        </li>`
-        )
+      const races = venues[venue]
+        .map((r) => `<div>${r.race}R</div>`)
         .join("");
-
       return `
-        <section style="margin-bottom:1.2em;">
-          <h3 style="margin-bottom:6px; color:#036;">🏟 ${venue}</h3>
-          <ul style="list-style:none; padding-left:0;">${races}</ul>
-        </section>
+        <div class="venue-card">
+          <h3>${venue}</h3>
+          <div class="races">${races}</div>
+        </div>
       `;
     })
     .join("");
 
   view.innerHTML = `
     <div style="padding:1em;">
-      <h2 style="margin-bottom:0.5em;">🏁 ${today} のレース (${data.length}件)</h2>
-      ${html}
+      <h2 style="margin-bottom:1em;">🏁 ${today} レース一覧</h2>
+      <div class="venue-grid">${gridHtml}</div>
     </div>
   `;
 }
@@ -87,21 +72,44 @@ function formatDate(dateStr) {
 }
 
 // ----------------------------
-// 🔁 再読み込みボタン追加
+// 💄 グリッドスタイル
 // ----------------------------
-function addReloadButton() {
-  const btn = document.createElement("button");
-  btn.textContent = "🔄 最新データを再取得";
-  btn.style.cssText =
-    "display:block; margin:1em auto; padding:8px 16px; border:none; background:#007bff; color:white; border-radius:6px; cursor:pointer;";
-  btn.onclick = fetchData;
-  document.body.prepend(btn);
-}
+const style = document.createElement("style");
+style.textContent = `
+  .venue-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+  }
+  .venue-card {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background: #f9f9f9;
+    padding: 0.6em;
+    text-align: center;
+  }
+  .venue-card h3 {
+    margin-bottom: 0.4em;
+    font-size: 1.1em;
+    color: #036;
+  }
+  .venue-card .races {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 4px;
+  }
+  .venue-card .races div {
+    background: #007bff;
+    color: white;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 0.85em;
+  }
+`;
+document.head.appendChild(style);
 
 // ----------------------------
 // 🚀 実行
 // ----------------------------
-window.addEventListener("DOMContentLoaded", () => {
-  addReloadButton();
-  fetchData();
-});
+window.addEventListener("DOMContentLoaded", fetchData);
