@@ -136,7 +136,14 @@
 
   <footer class="app-footer">© 2025 BOAT AI</footer>
 
-  <!-- 必ず module で読み込む -->
-  <script type="module" src="app.js"></script>
+  <!-- ✅ データ取得先を正しく指定 -->
+  <script type="module">
+    // app.jsの代わりに、ここでパス指定を正しく設定
+    import './app.js';
+
+    // グローバル設定（データパスを正しく指定）
+    window.DATA_PATH = "../data/data.json";
+    window.HISTORY_PATH = "../data/history.json";
+  </script>
 </body>
 </html>
