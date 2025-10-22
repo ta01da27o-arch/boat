@@ -1,9 +1,9 @@
 // ======================================================
-// 競艇AI予想フロントエンド（GitHub Pages対応 / data/data.json + history.json 自動反映）
+// 競艇AI予想フロントエンド（2025完全対応版）
+// data/data.json + history.json 自動反映 + 出走表色分け対応
 // ======================================================
 
 // ===== パス自動判定 =====
-// static/ 下で動かしても /boat/ 直下でも動作するように調整
 const BASE_PATH = window.location.pathname.includes("/static/")
   ? "../data"
   : "./data";
@@ -13,8 +13,6 @@ const HISTORY_URL = `${BASE_PATH}/history.json`;
 
 // ===== DOM要素 =====
 const dateLabel = document.getElementById("dateLabel");
-const todayBtn = document.getElementById("todayBtn");
-const yesterdayBtn = document.getElementById("yesterdayBtn");
 const refreshBtn = document.getElementById("refreshBtn");
 const aiStatus = document.getElementById("aiStatus");
 
@@ -24,16 +22,15 @@ const screenDetail = document.getElementById("screen-detail");
 
 const venuesGrid = document.getElementById("venuesGrid");
 const racesGrid = document.getElementById("racesGrid");
-const entryTable = document.getElementById("entryTable").querySelector("tbody");
-const aiMain = document.getElementById("aiMain").querySelector("tbody");
-const aiSub = document.getElementById("aiSub").querySelector("tbody");
-const commentTable = document.getElementById("commentTable").querySelector("tbody");
-const rankingTable = document.getElementById("rankingTable").querySelector("tbody");
-const resultTable = document.getElementById("resultTable").querySelector("tbody");
+const entryTable = document.getElementById("entryTable")?.querySelector("tbody");
+const aiMain = document.getElementById("aiMain")?.querySelector("tbody");
+const aiSub = document.getElementById("aiSub")?.querySelector("tbody");
+const commentTable = document.getElementById("commentTable")?.querySelector("tbody");
+const rankingTable = document.getElementById("rankingTable")?.querySelector("tbody");
+const resultTable = document.getElementById("resultTable")?.querySelector("tbody");
 
 const raceTitle = document.getElementById("raceTitle");
 const venueTitle = document.getElementById("venueTitle");
-
 const backToVenues = document.getElementById("backToVenues");
 const backToRaces = document.getElementById("backToRaces");
 
@@ -44,7 +41,7 @@ let selectedVenue = null;
 let selectedRace = null;
 
 // ======================================================
-// 初期処理
+// 初期化処理
 // ======================================================
 init();
 
@@ -80,7 +77,7 @@ async function loadAllData() {
 }
 
 // ======================================================
-// 日付表示
+// 日付ラベル更新
 // ======================================================
 function updateDateLabel() {
   const now = new Date();
@@ -91,36 +88,32 @@ function updateDateLabel() {
 }
 
 // ======================================================
-// 24場一覧画面
+// 24場一覧
 // ======================================================
 function renderVenues() {
   venuesGrid.innerHTML = "";
 
-  // 🔹 fetch_data.pyの出力形式対応
   const dateKeys = Object.keys(globalData);
   if (dateKeys.length === 0) {
     venuesGrid.innerHTML = "<p>データがありません。</p>";
     return;
   }
 
-  // 最新日付のデータのみ使用
   const latestDate = dateKeys.sort().pop();
   const todayData = globalData[latestDate];
-
   if (!todayData) {
     venuesGrid.innerHTML = "<p>本日データなし。</p>";
     return;
   }
 
-  // 24場表示
   Object.keys(todayData).forEach((venueName) => {
     const venue = todayData[venueName];
     const card = document.createElement("div");
     card.className = "venue-card clickable";
     card.innerHTML = `
       <div class="v-name">${venueName}</div>
-      <div class="v-status">開催中</div>
-      <div class="v-rate">${venue?.races ? `${Object.keys(venue.races).length}R` : ""}</div>
+      <div class="v-status">${venue?.status || "開催中"}</div>
+      <div class="v-rate">${venue?.races ? Object.keys(venue.races).length + "R" : ""}</div>
     `;
     card.addEventListener("click", () => openVenue(latestDate, venueName));
     venuesGrid.appendChild(card);
@@ -128,7 +121,7 @@ function renderVenues() {
 }
 
 // ======================================================
-// レース一覧画面
+// レース一覧
 // ======================================================
 function openVenue(dateKey, venueName) {
   selectedVenue = venueName;
@@ -153,14 +146,13 @@ function renderRaces(dateKey, venueName) {
 }
 
 // ======================================================
-// 出走表詳細
+// 出走表画面
 // ======================================================
 function openRace(dateKey, venueName, raceNo) {
   selectedRace = raceNo;
   screenRaces.classList.remove("active");
   screenDetail.classList.add("active");
-
-  raceTitle.textContent = `${venueName} ${raceNo}R`;
+  raceTitle.textContent = `${venueName} ${raceNo}R 出走表`;
 
   const raceData = globalData[dateKey]?.[venueName]?.races?.find(r => r.race_no === raceNo);
   renderEntryTable(raceData);
@@ -171,14 +163,15 @@ function openRace(dateKey, venueName, raceNo) {
 }
 
 // ======================================================
-// 出走表
+// 出走表（色分け対応）
 // ======================================================
 function renderEntryTable(raceData) {
   entryTable.innerHTML = "";
   if (!raceData?.boats) return;
 
-  raceData.boats.forEach((b, i) => {
+  raceData.boats.forEach((b) => {
     const tr = document.createElement("tr");
+    tr.classList.add(`row-${b.racer_boat_number}`);
     tr.innerHTML = `
       <td>${b.racer_boat_number}</td>
       <td class="entry-left">
@@ -191,73 +184,55 @@ function renderEntryTable(raceData) {
       <td>${b.racer_local_win_rate}</td>
       <td>${b.racer_motor_win_rate}</td>
       <td>${b.racer_course_win_rate}</td>
-      <td class="eval-mark">-</td>
+      <td class="eval-mark">${b.eval || "-"}</td>
     `;
     entryTable.appendChild(tr);
   });
 }
 
 // ======================================================
-// AI予想（ダミー生成可）
+// AI予想・コメント・順位・結果
 // ======================================================
 function renderAIPredictions(raceData) {
   aiMain.innerHTML = "";
   aiSub.innerHTML = "";
+  if (!raceData?.predictions) return;
 
-  if (!raceData) return;
-
-  const dummyMain = [
-    { bet: "1-2-3", rate: 42 },
-    { bet: "1-3-2", rate: 21 },
-    { bet: "1-2-4", rate: 13 }
-  ];
-  const dummySub = [
-    { bet: "3-1-2", rate: 7 },
-    { bet: "4-1-2", rate: 5 }
-  ];
-
-  dummyMain.forEach((p) => {
+  raceData.predictions.main?.forEach((p) => {
     const tr = document.createElement("tr");
     tr.innerHTML = `<td>${p.bet}</td><td>${p.rate}%</td>`;
     aiMain.appendChild(tr);
   });
-  dummySub.forEach((p) => {
+
+  raceData.predictions.sub?.forEach((p) => {
     const tr = document.createElement("tr");
     tr.innerHTML = `<td>${p.bet}</td><td>${p.rate}%</td>`;
     aiSub.appendChild(tr);
   });
 }
 
-// ======================================================
-// 展開コメント
-// ======================================================
 function renderComments(raceData) {
   commentTable.innerHTML = "";
-  if (!raceData?.boats) return;
+  if (!raceData?.comments) return;
 
-  raceData.boats.forEach((_, i) => {
+  raceData.comments.forEach((c, i) => {
     const tr = document.createElement("tr");
-    tr.innerHTML = `<td>${i + 1}</td><td>展開予想コメント ${i + 1}</td>`;
+    tr.innerHTML = `<td>${i + 1}</td><td>${c}</td>`;
     commentTable.appendChild(tr);
   });
 }
 
-// ======================================================
-// AI順位予測（仮）
 function renderRanking(raceData) {
   rankingTable.innerHTML = "";
-  if (!raceData?.boats) return;
+  if (!raceData?.ranking) return;
 
-  raceData.boats.forEach((b, i) => {
+  raceData.ranking.forEach((r, i) => {
     const tr = document.createElement("tr");
-    tr.innerHTML = `<td>${i + 1}</td><td>${b.racer_boat_number}</td><td>${b.racer_name}</td><td>${(100 - i * 5).toFixed(1)}</td>`;
+    tr.innerHTML = `<td>${i + 1}</td><td>${r.boat}</td><td>${r.name}</td><td>${r.rate}%</td>`;
     rankingTable.appendChild(tr);
   });
 }
 
-// ======================================================
-// レース結果（history.json）
-// ======================================================
 function renderResult(venueName, raceNo) {
   resultTable.innerHTML = "";
   const results = historyData?.[venueName]?.[raceNo];
@@ -276,21 +251,19 @@ function renderResult(venueName, raceNo) {
 }
 
 // ======================================================
-// 戻るボタン
+// 戻る・更新ボタン
 // ======================================================
-backToVenues.addEventListener("click", () => {
+backToVenues?.addEventListener("click", () => {
   screenRaces.classList.remove("active");
   screenVenues.classList.add("active");
 });
-backToRaces.addEventListener("click", () => {
+
+backToRaces?.addEventListener("click", () => {
   screenDetail.classList.remove("active");
   screenRaces.classList.add("active");
 });
 
-// ======================================================
-// 更新ボタン
-// ======================================================
-refreshBtn.addEventListener("click", async () => {
+refreshBtn?.addEventListener("click", async () => {
   aiStatus.textContent = "🔄 再取得中...";
   await loadAllData();
   renderVenues();
