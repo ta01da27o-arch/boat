@@ -1,5 +1,5 @@
 # =======================================
-# fetch_data.py（完全版 / 自動インストール対応）
+# fetch_data.py（data/配下保存版）
 # =======================================
 import subprocess
 import sys
@@ -15,14 +15,13 @@ def ensure_package(pkg):
         print(f"📦 Installing missing package: {pkg} ...")
         subprocess.run([sys.executable, "-m", "pip", "install", pkg], check=False)
 
-# 必要ライブラリの確実な導入
 for pkg in ["beautifulsoup4", "requests", "lxml"]:
     ensure_package(pkg)
 
 from bs4 import BeautifulSoup
 import requests
 
-# ====== 最新版 24会場（2025年10月現在）======
+# ====== 24会場（最新版）======
 VENUES = [
     "桐生", "戸田", "江戸川", "平和島", "多摩川", "浜名湖",
     "蒲郡", "常滑", "津", "三国", "琵琶湖", "住之江",
@@ -30,15 +29,16 @@ VENUES = [
     "下関", "若松", "芦屋", "福岡", "唐津", "大村"
 ]
 
-# 保存ファイル
-DATA_FILE = "data.json"
-HISTORY_FILE = "history.json"
+# ====== 保存フォルダ ======
+DATA_DIR = "data"
+os.makedirs(DATA_DIR, exist_ok=True)
 
-# ====== 仮スクレイピング設定（本番用に変更可）======
-BASE_URL = "https://www.boatrace.jp/owpc/pc/race/racelist"  # 公式サイト構造
+DATA_FILE = os.path.join(DATA_DIR, "data.json")
+HISTORY_FILE = os.path.join(DATA_DIR, "history.json")
+
+BASE_URL = "https://www.boatrace.jp/owpc/pc/race/racelist"
 
 def fetch_daily_data(date_str):
-    """指定日（YYYYMMDD）の仮データを作成"""
     data = {}
     for venue in VENUES:
         races = []
@@ -63,7 +63,6 @@ def fetch_daily_data(date_str):
     return data
 
 
-# ====== メイン処理 ======
 def main():
     print("📅 60日分のレースデータを取得します...")
 
@@ -77,24 +76,18 @@ def main():
         print(f"  ⏳ {date_key} を処理中...")
 
         try:
-            # ここで実際に requests + BeautifulSoup によるスクレイピングを実装可能
-            # res = requests.get(BASE_URL, params={"rno": 1, "jcd": "01", "hd": date_key})
-            # soup = BeautifulSoup(res.text, "lxml")
-
-            # 今回はダミーデータを作成
             daily = fetch_daily_data(date_key)
             all_data[date_key] = daily
         except Exception as e:
             print(f"⚠️ {date_key} の取得中にエラー発生: {e}")
 
-    # ====== 保存 ======
     with open(DATA_FILE, "w", encoding="utf-8") as f:
         json.dump(all_data, f, ensure_ascii=False, indent=2)
 
     with open(HISTORY_FILE, "w", encoding="utf-8") as f:
         json.dump(history, f, ensure_ascii=False, indent=2)
 
-    print("✅ data.json / history.json の更新完了！")
+    print("✅ data/data.json / data/history.json の更新完了！")
 
 
 if __name__ == "__main__":
