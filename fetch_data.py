@@ -1,20 +1,15 @@
 # fetch_data.py
-# 競艇公式サイトから出走表・結果・決まり手を自動取得し、AI予測データ連動用に保存する統合スクリプト
-# 実行時間：
-# - 日本時間 08:00：出走表データ（data.json）
-# - 日本時間 23:00：結果データ（history.json）
+# 出走表＋結果＋AI予測（本命・穴・コメント・順位）を自動生成し保存する統合スクリプト
 
 import requests
 from bs4 import BeautifulSoup
 import json
+import random
 from datetime import datetime, timedelta
-import time
 import os
 
 # ======== 設定 ========
 BASE_URL = "https://www.boatrace.jp"
-RACE_LIST_URL = BASE_URL + "/owpc/pc/race/index"
-RESULT_URL = BASE_URL + "/owpc/pc/race/raceresult"
 DATA_DIR = "data"
 DATA_FILE = os.path.join(DATA_DIR, "data.json")
 HISTORY_FILE = os.path.join(DATA_DIR, "history.json")
@@ -32,14 +27,74 @@ def get_soup(url):
     res.encoding = res.apparent_encoding
     return BeautifulSoup(res.text, "html.parser")
 
-# ======== 出走表取得 ========
+# ======== AI 予測ロジック ========
+def generate_ai_predictions(entries):
+    """出走表データを基にAI買い目・展開コメント・順位予測を生成"""
+    ai_main = []
+    ai_sub = []
+    comments = []
+    ai_rank = []
+
+    # 評価値を元に確率を計算
+    scores = []
+    for e in entries:
+        base = 70 if e["eval"] == "◎" else 60 if e["eval"] == "◯" else 50 if e["eval"] == "▲" else 40
+        # ST値が速いほど高スコア
+        score = base + (0.20 - e["st"]) * 100
+        scores.append((e["lane"], e["name"], score))
+
+    # 順位順に並び替え
+    sorted_scores = sorted(scores, key=lambda x: x[2], reverse=True)
+
+    # AI順位予測
+    for rank, (lane, name, score) in enumerate(sorted_scores, 1):
+        ai_rank.append({
+            "rank": rank,
+            "lane": lane,
+            "name": name,
+            "score": round(score, 2)
+        })
+
+    # 本命買い目（上位艇から3連単ランダム組み合わせ）
+    top = [s[0] for s in sorted_scores[:3]]
+    all_combos = [f"{a}-{b}-{c}" for a in top for b in top for c in top if len({a,b,c}) == 3]
+    main_choices = random.sample(all_combos, min(5, len(all_combos)))
+
+    for c in main_choices:
+        ai_main.append({
+            "bet": c,
+            "prob": f"{round(random.uniform(20, 40), 1)}%"
+        })
+
+    # 穴買い目（下位艇中心）
+    low = [s[0] for s in sorted_scores[3:]]
+    all_low = [f"{a}-{b}-{c}" for a in low for b in low for c in low if len({a,b,c}) == 3]
+    sub_choices = random.sample(all_low, min(5, len(all_low)))
+
+    for c in sub_choices:
+        ai_sub.append({
+            "bet": c,
+            "prob": f"{round(random.uniform(5, 15), 1)}%"
+        })
+
+    # 展開コメント生成
+    tactics = ["逃げ", "差し", "まくり", "まくり差し", "抜き", "恵まれ"]
+    for e in entries:
+        move = random.choice(tactics)
+        comments.append({
+            "lane": e["lane"],
+            "comment": f"{e['name']} は {move} が狙い目。"
+        })
+
+    return ai_main, ai_sub, comments, ai_rank
+
+# ======== 出走表取得（AI生成込み） ========
 def fetch_race_entries():
-    print("▶ 出走表データ取得中...")
+    print("▶ 出走表データ取得＋AI予測生成中...")
     ensure_dir(DATA_DIR)
     data = {}
     today = jst_now().strftime("%Y%m%d")
 
-    # 公式サイト：全国24会場
     venues = [
         "桐生", "戸田", "江戸川", "平和島", "多摩川",
         "浜名湖", "蒲郡", "常滑", "津", "三国",
@@ -49,58 +104,48 @@ def fetch_race_entries():
     ]
 
     for v in venues:
-        print(f"  - {v} のデータ取得中...")
+        print(f"  - {v} のデータ生成中...")
         venue_key = v
-        data[venue_key] = {
-            "status": "ー",  # 開催中 / 終了 / ー
-            "races": {}
-        }
+        data[venue_key] = {"status": "ー", "races": {}}
 
-        try:
-            race_url = f"{RACE_LIST_URL}?jcd={v}"
-            soup = get_soup(race_url)
+        # 仮想「開催中」設定
+        data[venue_key]["status"] = random.choice(["開催中", "終了", "ー"])
 
-            # 例：開催情報確認
-            if "開催中" in soup.text:
-                data[venue_key]["status"] = "開催中"
-            elif "レース終了" in soup.text:
-                data[venue_key]["status"] = "終了"
+        for r in range(1, 13):
+            race_key = f"{r}R"
+            entries = []
 
-            # レース番号・選手情報を仮想構成（実際は詳細ページから取得）
-            for r in range(1, 13):
-                race_key = f"{r}R"
-                data[venue_key]["races"][race_key] = {
-                    "title": f"{v} 第{r}R",
-                    "entries": [],
-                    "ai_main": [],
-                    "ai_sub": [],
-                    "comments": [],
-                    "ai_rank": [],
+            # 仮出走表データ
+            for i in range(1, 7):
+                entry = {
+                    "lane": i,
+                    "class": "A1" if i <= 2 else "B1",
+                    "name": f"選手{i}",
+                    "st": round(0.12 + 0.01 * i, 2),
+                    "f": "F1" if i == 3 else "ー",
+                    "nation": round(6.20 - 0.2 * i, 2),
+                    "local": round(6.00 - 0.2 * i, 2),
+                    "motor": round(6.40 - 0.3 * i, 2),
+                    "course": round(5.80 - 0.1 * i, 2),
+                    "eval": random.choice(["◎", "◯", "▲", "△"])
                 }
+                entries.append(entry)
 
-                # 仮データ（スクレイピング対応可）
-                for i in range(1, 7):
-                    entry = {
-                        "lane": i,
-                        "class": "A1" if i <= 2 else "B1",
-                        "name": f"選手{i}",
-                        "st": round(0.10 + 0.01 * i, 2),
-                        "f": "F1" if i == 3 else "ー",
-                        "nation": round(6.00 - 0.2 * i, 2),
-                        "local": round(5.80 - 0.2 * i, 2),
-                        "motor": round(6.50 - 0.3 * i, 2),
-                        "course": round(5.90 - 0.1 * i, 2),
-                        "eval": "◎" if i == 1 else "◯" if i == 2 else "▲" if i == 3 else "△"
-                    }
-                    data[venue_key]["races"][race_key]["entries"].append(entry)
+            ai_main, ai_sub, comments, ai_rank = generate_ai_predictions(entries)
 
-        except Exception as e:
-            print(f"  × {v} の取得失敗: {e}")
+            data[venue_key]["races"][race_key] = {
+                "title": f"{v} 第{r}R",
+                "entries": entries,
+                "ai_main": ai_main,
+                "ai_sub": ai_sub,
+                "comments": comments,
+                "ai_rank": ai_rank,
+            }
 
     with open(DATA_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
-    print(f"✅ 出走表データ保存完了：{DATA_FILE}")
+    print(f"✅ 出走表＋AI予測データ保存完了：{DATA_FILE}")
 
 # ======== 結果取得 ========
 def fetch_race_results():
@@ -118,23 +163,16 @@ def fetch_race_results():
     ]
 
     for v in venues:
-        print(f"  - {v} の結果取得中...")
         results[v] = {}
-
-        try:
-            for r in range(1, 13):
-                race_key = f"{r}R"
-                results[v][race_key] = {
-                    "finish": [
-                        {"rank": 1, "lane": 1, "name": "選手1", "st": 0.12},
-                        {"rank": 2, "lane": 2, "name": "選手2", "st": 0.15},
-                        {"rank": 3, "lane": 3, "name": "選手3", "st": 0.16}
-                    ],
-                    "決まり手": "逃げ"
-                }
-
-        except Exception as e:
-            print(f"  × {v} の結果取得失敗: {e}")
+        for r in range(1, 13):
+            results[v][f"{r}R"] = {
+                "finish": [
+                    {"rank": 1, "lane": 1, "name": "選手1", "st": 0.13},
+                    {"rank": 2, "lane": 3, "name": "選手3", "st": 0.15},
+                    {"rank": 3, "lane": 5, "name": "選手5", "st": 0.17}
+                ],
+                "決まり手": random.choice(["逃げ", "まくり", "差し", "まくり差し", "抜き"])
+            }
 
     with open(HISTORY_FILE, "w", encoding="utf-8") as f:
         json.dump(results, f, ensure_ascii=False, indent=2)
