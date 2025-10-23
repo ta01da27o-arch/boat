@@ -1,16 +1,14 @@
-name: Train and Predict (Auto Daily)
+name: Train and Predict (Manual Run)
 
 on:
-  schedule:
-    - cron: "0 23 * * *"   # JST 08:00頃 (UTC 23:00)
   workflow_dispatch:
 
 jobs:
-  auto_train_predict:
+  fetch_and_train:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📦 リポジトリを取得
+      - name: 📦 リポジトリ取得
         uses: actions/checkout@v4
 
       - name: 🐍 Pythonセットアップ
@@ -22,19 +20,19 @@ jobs:
         run: |
           pip install requests beautifulsoup4 lxml pandas scikit-learn
 
-      - name: 📅 本日分データ取得
-        run: python fetch_data.py
+      - name: 📅 データ取得
+        run: |
+          echo "📅 Fetching today's race data..."
+          python fetch_data.py
 
-      - name: 🧠 AIモデルトレーニング
-        run: python train_model.py
+      - name: 🧠 AI学習
+        run: |
+          python train_model.py
 
-      - name: 🔮 AI予想生成
-        run: python predict_today.py
-
-      - name: 💾 コミット＆プッシュ
+      - name: 💾 コミット・プッシュ
         run: |
           git config --local user.email "actions@github.com"
           git config --local user.name "github-actions[bot]"
-          git add data/data.json data/history.json data/model.pkl data/predictions.json || echo "⚠️ ファイルなし"
-          git commit -m "🤖 Auto update: fetch, train, predict" || echo "✅ No changes to commit"
+          git add data/data.json data/history.json data/model.pkl || echo "⚠️ No data files"
+          git commit -m "🔄 Auto update & retrain" || echo "✅ No changes"
           git push origin main
