@@ -1,82 +1,150 @@
-import os, json, requests, datetime, time
+# fetch_data.py
+# 2025/10/23 統合版（出走表＋結果自動更新）
+
+import requests
 from bs4 import BeautifulSoup
+import json, os, datetime, time
+import pytz
 
-DATA_DIR = "data"
-DATA_FILE = os.path.join(DATA_DIR, "data.json")
-HISTORY_FILE = os.path.join(DATA_DIR, "history.json")
-
+DATA_PATH = "data/data.json"
+HISTORY_PATH = "data/history.json"
 VENUES = [
-    "桐生","戸田","江戸川","平和島","多摩川","浜名湖","蒲郡","常滑","津",
-    "三国","びわこ","住之江","尼崎","鳴門","丸亀","児島","宮島","徳山",
-    "下関","若松","芦屋","福岡","唐津","大村"
+    "桐生","戸田","江戸川","平和島","多摩川",
+    "浜名湖","蒲郡","常滑","津","三国",
+    "びわこ","住之江","尼崎","鳴門","丸亀",
+    "児島","宮島","徳山","下関","若松",
+    "芦屋","福岡","唐津","大村"
 ]
 
-def fetch_today_data():
-    today = datetime.date.today().strftime("%Y%m%d")
-    print(f"📅 {today} のレースデータを取得します...")
-    all_data = {}
+# ===== Utility =====
+def load_json(path):
+    if os.path.exists(path):
+        with open(path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return {}
 
-    for venue in VENUES:
-        try:
-            url = f"https://www.boatrace.jp/owpc/pc/race/racelist?jcd={VENUES.index(venue)+1:02d}&hd={today}"
+def save_json(path, data):
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+def jst_now():
+    tz = pytz.timezone("Asia/Tokyo")
+    return datetime.datetime.now(tz)
+
+# ===== 出走表スクレイピング =====
+def fetch_race_table(venue_id, venue_name, ymd):
+    base_url = f"https://www.boatrace.jp/owpc/pc/race/racelist"
+    params = {"jcd": f"{venue_id:02}", "hd": ymd}
+    try:
+        resp = requests.get(base_url, params=params, timeout=10)
+        soup = BeautifulSoup(resp.text, "lxml")
+
+        # 開催チェック
+        h2 = soup.find("h2", class_="heading2_title")
+        if not h2 or "開催なし" in h2.text:
+            return {"status": "ー", "races": []}
+
+        races = []
+        race_links = soup.select(".table1 .is-pc a")
+        race_nos = sorted(set([int(a["href"].split("rno=")[1].split("&")[0]) for a in race_links]))
+
+        for rno in race_nos:
+            url = f"https://www.boatrace.jp/owpc/pc/race/racedata?rno={rno}&jcd={venue_id:02}&hd={ymd}"
+            r = requests.get(url, timeout=10)
+            s = BeautifulSoup(r.text, "lxml")
+
+            entries = []
+            rows = s.select("table.is-tableFixed__3rdadd tr")
+            for tr in rows[1:]:
+                tds = tr.find_all("td")
+                if len(tds) < 10:
+                    continue
+                waku = tds[0].get_text(strip=True)
+                name = tds[2].get_text(strip=True)
+                klass = tds[1].get_text(strip=True)
+                st = tds[6].get_text(strip=True)
+                f_info = "ー"
+                if "F2" in tds[5].get_text(): f_info = "F2"
+                elif "F1" in tds[5].get_text(): f_info = "F1"
+                national = tds[7].get_text(strip=True)
+                local = tds[8].get_text(strip=True)
+                motor = tds[9].get_text(strip=True)
+                course = tds[10].get_text(strip=True)
+                entries.append({
+                    "waku": int(waku),
+                    "klass": klass,
+                    "name": name,
+                    "st": st,
+                    "f": f_info,
+                    "national": national,
+                    "local": local,
+                    "motor": motor,
+                    "course": course,
+                    "eval": "ー"
+                })
+            races.append({
+                "no": rno,
+                "entries": entries,
+                "ai_main": [],
+                "ai_ana": [],
+                "comment": "",
+                "prediction": []
+            })
+
+        return {"status": "開催中", "date": ymd, "races": races}
+
+    except Exception as e:
+        print(f"⚠️ {venue_name} 取得失敗: {e}")
+        return {"status": "ー", "races": []}
+
+# ===== 結果スクレイピング =====
+def fetch_results(venue_id, venue_name, ymd):
+    base = "https://www.boatrace.jp/owpc/pc/race/raceresult"
+    try:
+        hist_data = {}
+        for rno in range(1, 13):
+            url = f"{base}?rno={rno}&jcd={venue_id:02}&hd={ymd}"
             resp = requests.get(url, timeout=10)
             soup = BeautifulSoup(resp.text, "lxml")
-            races = {}
+            if not soup.select_one(".table1_boatImage1"):
+                continue
 
-            for i in range(1, 13):
-                entries = []
-                for tr in soup.select(f"#racecard_{i} tr"):
-                    tds = tr.find_all("td")
-                    if len(tds) < 6:
-                        continue
-                    entries.append({
-                        "name": tds[1].get_text(strip=True),
-                        "class": tds[2].get_text(strip=True),
-                        "f": tds[3].get_text(strip=True),
-                        "l": tds[4].get_text(strip=True),
-                        "tenji": tds[5].get_text(strip=True)
-                    })
-                if entries:
-                    races[str(i)] = {"entries": entries, "prediction": "未学習"}
-            all_data[venue] = {"date": today, "races": races}
+            result = [td.get_text(strip=True) for td in soup.select(".is-winner1 td")]
+            style = soup.select_one(".is-table__2ndadd tr:nth-of-type(2) td")
+            hist_data[str(rno)] = {
+                "result": result[:3],
+                "style": style.get_text(strip=True) if style else "-"
+            }
+        return hist_data
+    except Exception as e:
+        print(f"⚠️ {venue_name} 結果取得失敗: {e}")
+        return {}
 
-            print(f"✅ {venue} OK")
-            time.sleep(0.5)
-        except Exception as e:
-            print(f"⚠️ {venue} のデータ取得失敗:", e)
+# ===== メイン処理 =====
+def main():
+    today = jst_now().strftime("%Y%m%d")
+    hour = jst_now().hour
+    print(f"📅 {today} | JST {hour}:00 実行")
 
-    return all_data
+    data = load_json(DATA_PATH)
+    history = load_json(HISTORY_PATH)
 
+    for i, v in enumerate(VENUES, start=1):
+        print(f"⛵ {v} ...")
+        if hour < 12:  # 朝8時 → 出走表
+            data[v] = fetch_race_table(i, v, today)
+        else:          # 夜23時 → 結果
+            hist = fetch_results(i, v, today)
+            if v not in history:
+                history[v] = {}
+            history[v].update(hist)
+            if v in data:
+                data[v]["status"] = "終了"
 
-def update_history(today_data):
-    """履歴(60日)管理 + 古いデータ削除"""
-    if not os.path.exists(HISTORY_FILE):
-        history = {}
-    else:
-        with open(HISTORY_FILE, "r", encoding="utf-8") as f:
-            history = json.load(f)
-
-    today = datetime.date.today().strftime("%Y%m%d")
-    history[today] = today_data
-
-    # 60日分制限
-    if len(history) > 60:
-        oldest = sorted(history.keys())[0]
-        print(f"🧹 古いデータ削除: {oldest}")
-        del history[oldest]
-
-    with open(HISTORY_FILE, "w", encoding="utf-8") as f:
-        json.dump(history, f, ensure_ascii=False, indent=2)
-
-
-def save_today(today_data):
-    os.makedirs(DATA_DIR, exist_ok=True)
-    with open(DATA_FILE, "w", encoding="utf-8") as f:
-        json.dump(today_data, f, ensure_ascii=False, indent=2)
-
+    save_json(DATA_PATH, data)
+    save_json(HISTORY_PATH, history)
+    print("✅ 更新完了：data.json / history.json")
 
 if __name__ == "__main__":
-    today_data = fetch_today_data()
-    save_today(today_data)
-    update_history(today_data)
-    print("✅ 本日分データ更新完了！ data.json / history.json 保存済み。")
+    main()
