@@ -1,0 +1,25 @@
+name: Fetch Today Results (23:00 JST)
+
+on:
+  schedule:
+    - cron: "0 14 * * *"  # UTC14 = JST23
+  workflow_dispatch:
+
+jobs:
+  fetch_result:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - run: pip install requests beautifulsoup4 lxml
+      - name: 🏁 Run fetch_result.py
+        run: python fetch_result.py
+      - name: 💾 Commit and Push
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/history.json
+          git commit -m "🏁 Update race results"
+          git push origin main

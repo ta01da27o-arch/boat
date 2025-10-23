@@ -1,0 +1,25 @@
+name: Train AI Model (23:05 JST)
+
+on:
+  schedule:
+    - cron: "5 14 * * *"  # UTC14:05 = JST23:05
+  workflow_dispatch:
+
+jobs:
+  train_model:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - run: pip install numpy scikit-learn
+      - name: 🧠 Run train_model.py
+        run: python train_model.py
+      - name: 💾 Commit and Push
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/model.json
+          git commit -m "🧠 Update trained AI model"
+          git push origin main
