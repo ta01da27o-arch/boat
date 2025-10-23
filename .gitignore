@@ -1,0 +1,34 @@
+# Python キャッシュ
+__pycache__/
+*.py[cod]
+*$py.class
+
+# 仮想環境
+.venv/
+venv/
+ENV/
+env/
+
+# Jupyter Notebook チェックポイント
+.ipynb_checkpoints
+
+# OS 依存ファイル
+.DS_Store
+Thumbs.db
+
+# ログ & 一時ファイル
+*.log
+*.tmp
+*.swp
+
+# Python ビルド / 配布
+build/
+dist/
+*.egg-info/
+
+# VSCode 設定（必要なら残す）
+.vscode/
+
+# 生成物（成果物は残す場合はコメントアウト）
+# data.json
+# history.json
