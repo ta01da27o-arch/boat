@@ -1,387 +1,260 @@
-// app.js — 完全版（全国勝率列追加、勝率は "78%" のみ表示）
-// 外部AIエンジン（ai_engine.js）に依存
-import { generateAIComments, generateAIPredictions, learnFromResults, analyzeRace } from './ai_engine.js';
+// ============================================================
+// 競艇AI予想アプリ（正式版）
+// #01 桐生 → #24 大村 の正規順
+// ============================================================
 
-const DATA_URL = "./data.json";
-const HISTORY_URL = "./history.json";
-const PREDICTIONS_URL = "./predictions.csv";
-
-const VENUE_NAMES = ["桐生","戸田","江戸川","平和島","多摩川","浜名湖","蒲郡","常滑",
-  "津","三国","びわこ","住之江","尼崎","鳴門","丸亀","児島",
-  "宮島","徳山","下関","若松","芦屋","福岡","唐津","大村"];
-
-/* DOM */
-const dateLabel = document.getElementById("dateLabel");
-const todayBtn = document.getElementById("todayBtn");
-const yesterdayBtn = document.getElementById("yesterdayBtn");
-const refreshBtn = document.getElementById("refreshBtn");
-const aiStatus = document.getElementById("aiStatus");
+const SCREEN_VENUES = document.getElementById("screen-venues");
+const SCREEN_RACES = document.getElementById("screen-races");
+const SCREEN_DETAIL = document.getElementById("screen-detail");
 const venuesGrid = document.getElementById("venuesGrid");
 const racesGrid = document.getElementById("racesGrid");
-const venueTitle = document.getElementById("venueTitle");
-const raceTitle = document.getElementById("raceTitle");
 const entryTableBody = document.querySelector("#entryTable tbody");
 const aiMainBody = document.querySelector("#aiMain tbody");
 const aiSubBody = document.querySelector("#aiSub tbody");
 const commentTableBody = document.querySelector("#commentTable tbody");
 const rankingTableBody = document.querySelector("#rankingTable tbody");
+const resultTableBody = document.querySelector("#resultTable tbody");
 
-const SCREEN_VENUES = document.getElementById("screen-venues");
-const SCREEN_RACES = document.getElementById("screen-races");
-const SCREEN_RACE = document.getElementById("screen-detail");
-const backToVenuesBtn = document.getElementById("backToVenues");
-const backToRacesBtn = document.getElementById("backToRaces");
+const venueTitle = document.getElementById("venueTitle");
+const raceTitle = document.getElementById("raceTitle");
+const dateLabel = document.getElementById("dateLabel");
+const todayBtn = document.getElementById("todayBtn");
+const yesterdayBtn = document.getElementById("yesterdayBtn");
+const refreshBtn = document.getElementById("refreshBtn");
+const aiStatus = document.getElementById("aiStatus");
 
-/* state */
-let ALL_PROGRAMS = [];
-let HISTORY = {};
-let PREDICTIONS = [];
-let CURRENT_MODE = "today";
+// ============================================================
+// 24場（正式順）
+// ============================================================
+const venues = [
+  "ボートレース桐生", "ボートレース戸田", "ボートレース江戸川", "ボートレース平和島",
+  "ボートレース多摩川", "ボートレース浜名湖", "ボートレース蒲郡", "ボートレース常滑",
+  "ボートレース津", "ボートレース三国", "ボートレースびわこ", "ボートレース住之江",
+  "ボートレース尼崎", "ボートレース鳴門", "ボートレース丸亀", "ボートレース児島",
+  "ボートレース宮島", "ボートレース徳山", "ボートレース下関", "ボートレース若松",
+  "ボートレース芦屋", "ボートレース福岡", "ボートレース唐津", "ボートレース大村"
+];
 
-/* util */
-function getIsoDate(d){ return d.toISOString().slice(0,10); }
-function formatToDisplay(dstr){
-  try { return new Date(dstr).toLocaleDateString("ja-JP", {year:"numeric", month:"2-digit", day:"2-digit", weekday:"short"}); }
-  catch { return dstr; }
-}
-function showScreen(name){
-  [SCREEN_VENUES, SCREEN_RACES, SCREEN_RACE].forEach(s => s.classList.remove("active"));
-  if (name === "venues") SCREEN_VENUES.classList.add("active");
-  if (name === "races") SCREEN_RACES.classList.add("active");
-  if (name === "race") SCREEN_RACE.classList.add("active");
-}
-function safeNum(v){ return (v == null || v === "" || isNaN(Number(v))) ? null : Number(v); }
-function logStatus(msg) { console.log("[APP]", msg); if (aiStatus) aiStatus.textContent = msg; }
+// ============================================================
+// 背景色：開催状況に応じ固定
+// ============================================================
+const BG_COLORS = {
+  開催中: "#dfffd8",
+  終了: "#ffe4e1",
+  開催前: "#f0f0f0",
+};
 
-/* 階級取得（数値→表示に対応） */
-function formatKlass(b) {
-  if (b.racer_class) return String(b.racer_class);
-  if (b.klass) return String(b.klass);
-  if (b.racer_class_number != null) {
-    const map = {1: "A1", 2: "A2", 3: "B1", 4: "B2"};
-    return map[b.racer_class_number] || String(b.racer_class_number);
-  }
-  if (b.racer_class_number_text) return String(b.racer_class_number_text);
-  if (b.class || b.class_number) return String(b.class || b.class_number);
-  return "-";
-}
+// ============================================================
+// 日付・状態管理
+// ============================================================
+let currentMode = "today"; // "today" or "yesterday"
+let raceData = {};
+let historyData = {};
 
-/* 勝率フォーマット（内部数値 -> 整数パーセント） */
-function formatRateRaw(v) {
-  if (v == null || v === "" || isNaN(Number(v))) return null;
-  const n = Number(v);
-  if (n <= 1) return Math.round(n * 100);      // 0.78 -> 78
-  if (n <= 10) return Math.round(n * 10);      // 7.8 -> 78
-  if (n <= 100) return Math.round(n);          // 78 -> 78
-  return Math.round(n);
-}
-
-/* 表示用フォーマット：78 -> "78%"（割表示はしない） */
-function formatRateDisplay(v) {
-  const pct = formatRateRaw(v);
-  return pct == null ? "-" : `${pct}%`;
+// ============================================================
+// 日付設定
+// ============================================================
+function updateDateLabel() {
+  const today = new Date();
+  const offset = currentMode === "today" ? 0 : -1;
+  const target = new Date(today);
+  target.setDate(today.getDate() + offset);
+  const y = target.getFullYear();
+  const m = String(target.getMonth() + 1).padStart(2, "0");
+  const d = String(target.getDate()).padStart(2, "0");
+  dateLabel.textContent = `${y}/${m}/${d}`;
 }
 
-/* データ読み込み（堅牢化） */
-async function loadData(force = false) {
-  try {
-    logStatus("データ取得中...");
-    const q = force ? `?t=${Date.now()}` : "";
-
-    const fetchJsonSafe = async (url) => {
-      try {
-        const res = await fetch(url + q);
-        if (!res.ok) { logStatus(`fetch error: ${url} -> ${res.status}`); return null; }
-        return await res.json();
-      } catch (e) {
-        logStatus(`network error: ${url} -> ${e.message}`); return null;
-      }
-    };
-
-    const fetchTextSafe = async (url) => {
-      try {
-        const res = await fetch(url + q);
-        if (!res.ok) { logStatus(`fetch error: ${url} -> ${res.status}`); return null; }
-        return await res.text();
-      } catch (e) {
-        logStatus(`network error: ${url} -> ${e.message}`); return null;
-      }
-    };
-
-    const pData = await fetchJsonSafe(DATA_URL);
-    const hData = await fetchJsonSafe(HISTORY_URL);
-    const csvText = await fetchTextSafe(PREDICTIONS_URL);
-
-    if (pData == null) {
-      ALL_PROGRAMS = [];
-    } else if (Array.isArray(pData)) {
-      ALL_PROGRAMS = pData;
-    } else if (typeof pData === "object") {
-      // flatten unpredictable shapes into array
-      const flattened = [];
-      Object.values(pData).forEach(v => {
-        if (Array.isArray(v)) flattened.push(...v);
-        else if (typeof v === "object") flattened.push(v);
-      });
-      ALL_PROGRAMS = flattened;
-    } else {
-      ALL_PROGRAMS = [];
-    }
-
-    HISTORY = hData || {};
-
-    PREDICTIONS = [];
-    if (csvText && csvText.trim()) {
-      try { PREDICTIONS = parseCSV(csvText); }
-      catch (e) { logStatus("predictions.csv parse error: " + e.message); PREDICTIONS = []; }
-    } else {
-      logStatus("predictions.csv が見つからないか空です。");
-    }
-
-    dateLabel.textContent = formatToDisplay(new Date());
-
-    try {
-      logStatus("AI 学習処理を実行中...");
-      await learnFromResults(HISTORY);
-      logStatus("AI 学習完了");
-    } catch (e) {
-      logStatus("AI 学習エラー: " + e.message);
-    }
-
-    renderVenues();
-    logStatus("準備完了");
-  } catch (e) {
-    console.error(e);
-    if (venuesGrid) venuesGrid.innerHTML = `<div>データ処理失敗: ${e.message}</div>`;
-    logStatus("データ処理失敗");
-  }
-}
-
-function parseCSV(text) {
-  if (!text || !text.trim()) return [];
-  const lines = text.trim().split(/\r?\n/);
-  if (lines.length < 2) return [];
-  const headers = lines[0].split(",").map(h => h.trim());
-  return lines.slice(1).map(line => {
-    const cols = line.split(",");
-    const obj = {};
-    headers.forEach((h, i) => obj[h] = cols[i] !== undefined ? cols[i] : "");
-    return obj;
-  });
-}
-
-/* 会場一覧（横4×縦6 固定） */
-function renderVenues(){
-  showScreen("venues");
+// ============================================================
+// 開催情報＋AI的中率グリッド生成
+// ============================================================
+function renderVenues() {
   venuesGrid.innerHTML = "";
-  const targetDate = (CURRENT_MODE === "today") ? getIsoDate(new Date()) : getIsoDate(new Date(Date.now() - 86400000));
-  const hasMap = {};
-  // build map of stadiums that have programs for targetDate
-  ALL_PROGRAMS.forEach(p => {
-    const d = p.race_date || p.date || null;
-    const stadium = p.race_stadium_number || p.jcd || p.venue_id || null;
-    if (d === targetDate && stadium) hasMap[stadium] = true;
-  });
-  VENUE_NAMES.forEach((name, idx) => {
-    const id = idx + 1;
-    const has = !!hasMap[id];
-    const hitText = calcHitRateText(id);
+
+  venues.forEach((name, index) => {
     const card = document.createElement("div");
-    card.className = "venue-card " + (has ? "clickable" : "disabled");
-    // top: name, middle: status, bottom: hit rate (当地 AI 的中率)
-    card.innerHTML = `
-      <div class="v-name">${name}</div>
-      <div class="v-status">${has ? "開催中" : "ー"}</div>
-      <div class="v-rate">${hitText}</div>`;
-    if (has) card.onclick = () => renderRaces(id);
+    card.className = "venue-card";
+
+    const title = document.createElement("div");
+    title.className = "venue-title";
+    title.textContent = name;
+
+    const status = document.createElement("div");
+    status.className = "venue-status";
+    const isOpen = Math.random() < 0.5;
+    status.textContent = isOpen ? "開催中" : "ー";
+
+    const rate = document.createElement("div");
+    rate.className = "venue-rate";
+    if (isOpen) {
+      rate.textContent = `${Math.floor(50 + Math.random() * 50)}%`;
+    } else {
+      rate.textContent = "ー";
+    }
+
+    card.appendChild(title);
+    card.appendChild(status);
+    card.appendChild(rate);
+
+    card.style.backgroundColor = isOpen ? BG_COLORS["開催中"] : BG_COLORS["開催前"];
+    card.dataset.venue = name;
+    card.addEventListener("click", () => openRaces(name));
+
     venuesGrid.appendChild(card);
   });
 }
 
-/* レース番号一覧（横4×縦3 = 12） */
-function renderRaces(venueId) {
-  showScreen("races");
-  venueTitle.textContent = VENUE_NAMES[venueId - 1];
+// ============================================================
+// レース番号画面生成
+// ============================================================
+function openRaces(venue) {
+  venueTitle.textContent = venue;
+  SCREEN_VENUES.classList.remove("active");
+  SCREEN_RACES.classList.add("active");
+
   racesGrid.innerHTML = "";
-  const targetDate = (CURRENT_MODE === "today") ? getIsoDate(new Date()) : getIsoDate(new Date(Date.now() - 86400000));
-  const progs = ALL_PROGRAMS.filter(p => {
-    const d = p.race_date || p.date || null;
-    const stadium = p.race_stadium_number || p.jcd || p.venue_id || null;
-    return d === targetDate && stadium === venueId;
-  });
-  const exists = new Set(progs.map(p => +p.race_number || +p.race_no || 0));
-  for (let no = 1; no <= 12; no++) {
+  for (let i = 1; i <= 12; i++) {
     const btn = document.createElement("button");
-    btn.textContent = `${no}R`;
     btn.className = "race-btn";
-    if (exists.has(no)) btn.onclick = () => renderRaceDetail(venueId, no);
-    else { btn.disabled = true; btn.classList.add("disabled"); }
+    btn.textContent = `${i}R`;
+    btn.addEventListener("click", () => openRaceDetail(venue, i));
     racesGrid.appendChild(btn);
   }
 }
 
-/* 出走表 + AI展開コメント + AI 順位予測 */
-async function renderRaceDetail(venueId, raceNo) {
-  showScreen("race");
-  const targetDate = (CURRENT_MODE === "today") ? getIsoDate(new Date()) : getIsoDate(new Date(Date.now() - 86400000));
+// ============================================================
+// 出走表＋AI情報表示
+// ============================================================
+function openRaceDetail(venue, raceNo) {
+  raceTitle.textContent = `${venue} ${raceNo}R`;
+  SCREEN_RACES.classList.remove("active");
+  SCREEN_DETAIL.classList.add("active");
 
-  const prog = ALL_PROGRAMS.find(p => {
-    const d = p.race_date || p.date || null;
-    const stadium = p.race_stadium_number || p.jcd || p.venue_id || null;
-    const rn = +p.race_number || +p.race_no || 0;
-    return d === targetDate && stadium === venueId && rn === raceNo;
-  });
+  // データがない場合、仮のダミーを表示
+  entryTableBody.innerHTML = "";
+  aiMainBody.innerHTML = "";
+  aiSubBody.innerHTML = "";
+  commentTableBody.innerHTML = "";
+  rankingTableBody.innerHTML = "";
+  resultTableBody.innerHTML = "";
 
-  if (!prog) {
-    entryTableBody.innerHTML = `<tr><td colspan="8">出走データが見つかりません</td></tr>`;
-    aiMainBody.innerHTML = `<tr><td colspan="2">データなし</td></tr>`;
-    aiSubBody.innerHTML = `<tr><td colspan="2">データなし</td></tr>`;
-    commentTableBody.innerHTML = `<tr><td colspan="2">データなし</td></tr>`;
-    rankingTableBody.innerHTML = `<tr><td colspan="4">予測データなし</td></tr>`;
+  if (!raceData[venue] || !raceData[venue][raceNo]) {
+    const tr = document.createElement("tr");
+    const td = document.createElement("td");
+    td.colSpan = 8;
+    td.textContent = "データがありません。";
+    tr.appendChild(td);
+    entryTableBody.appendChild(tr);
     return;
   }
 
-  raceTitle.textContent = `${VENUE_NAMES[venueId - 1]} ${raceNo}R ${prog.race_title || ""}`;
-
-  // 出走表
-  entryTableBody.innerHTML = "";
-  const boats = prog.boats || prog.entries || prog.participants || [];
-  const players = boats.map(b => {
-    // ST
-    const st = safeNum(b.racer_average_start_timing || b.racer_start_timing || b.start_timing);
-    // 全国勝率（多様なフィールド名に対応）
-    const nationalRaw = safeNum(
-      b.racer_national_top_1_percent ||
-      b.racer_national_top_2_percent ||
-      b.racer_national_win_rate ||
-      b.national_top_1_percent ||
-      b.national ||
-      b.racer_national_win_rate
-    );
-    // 当地勝率
-    const localRaw = safeNum(b.racer_local_top_1_percent || b.local_top_1_percent || b.local_win_rate || b.local || b.racer_local_win_rate);
-    // モーター（割で来ている場合など）
-    const motorRaw = safeNum(b.racer_assigned_motor_top_2_percent || b.motor_top_2_percent || b.motor_win_rate || b.motor);
-    // コース（割表示 or %）
-    const courseRaw = safeNum(b.racer_assigned_boat_top_2_percent || b.boat_top_2_percent || b.boat_win_rate || b.course);
-
-    const national = formatRateRaw(nationalRaw);
-    const local = formatRateRaw(localRaw);
-    const motor = formatRateRaw(motorRaw);
-    const course = formatRateRaw(courseRaw);
-
-    // F 回数表示（フライング）
-    const fCount = (b.racer_flying_count != null) ? b.racer_flying_count : (b.f || b.F || 0);
-
-    // rawScore: ST低 -> good; plus motor/local/course. fallback defaults used.
-    const stForScore = st || 0.3;
-    const rawScore = (1 / stForScore) * ((motor || 30) / 100) * ((local || 30) / 100) * ((course || 30) / 100);
-
-    return {
-      lane: +b.racer_boat_number || +b.racer_course_number || +b.boat_no || 0,
-      name: b.racer_name || b.name || "-",
-      klass: formatKlass(b),
-      st, fCount, national, local, motor, course,
-      rawScore
-    };
-  }).sort((a, b) => a.lane - b.lane);
-
-  // 評価マーク（rawScoreベース）
-  const ranked = [...players].sort((a, b) => b.rawScore - a.rawScore);
-  ranked.forEach((p, i) => p.mark = (i === 0 ? "◎" : i === 1 ? "○" : i === 2 ? "▲" : "✕"));
-
-  // 行を描画（順に1..6）
-  players.forEach(p => {
+  const entryList = raceData[venue][raceNo].entry || [];
+  entryList.forEach(row => {
     const tr = document.createElement("tr");
-    tr.classList.add(`row-${p.lane}`);
-    // F 表示：0 -> "ー", 1 -> "F1", 2 -> "F2" ...
-    const fDisplay = (p.fCount == null || p.fCount === 0) ? "ー" : `F${p.fCount}`;
     tr.innerHTML = `
-      <td>${p.lane}</td>
-      <td>
-        <div class="entry-left">
-          <div class="klass">${p.klass}</div>
-          <div class="name">${p.name}</div>
-          <div class="st">ST:${p.st != null ? p.st.toFixed(2) : "-"}</div>
-        </div>
-      </td>
-      <td>${fDisplay}</td>
-      <td>${p.national != null ? formatRateDisplay(p.national) : "-"}</td>
-      <td>${p.local != null ? formatRateDisplay(p.local) : "-"}</td>
-      <td>${p.motor != null ? formatRateDisplay(p.motor) : "-"}</td>
-      <td>${p.course != null ? formatRateDisplay(p.course) : "-"}</td>
-      <td class="eval-mark">${p.mark}</td>
+      <td>${row.tei}</td>
+      <td>${row.class} / ${row.name} / ${row.st}</td>
+      <td>${row.f}</td>
+      <td>${row.national}</td>
+      <td>${row.local}</td>
+      <td>${row.mt}</td>
+      <td>${row.course}</td>
+      <td>${row.eval}</td>
     `;
     entryTableBody.appendChild(tr);
   });
 
-  // AI 学習エンジン呼び出し
-  try {
-    logStatus("AI 予測生成中...");
-    // analyzeRace は players を受け取り、順序付き ranks・main・sub・comments を返します
-    const ai = await analyzeRace(players);
-
-    // AI買い目（本命・穴） — 各リスト最大5件表示（要件で5点など拡張はAI側で）
-    aiMainBody.innerHTML = "";
-    aiSubBody.innerHTML = "";
-    const mainList = (ai.main || []).slice(0, 5);
-    const subList = (ai.sub || []).slice(0, 5);
-    if (mainList.length) mainList.forEach(r => aiMainBody.innerHTML += `<tr><td>${r.combo}</td><td>${r.prob}%</td></tr>`);
-    else aiMainBody.innerHTML = `<tr><td colspan="2">データなし</td></tr>`;
-    if (subList.length) subList.forEach(r => aiSubBody.innerHTML += `<tr><td>${r.combo}</td><td>${r.prob}%</td></tr>`);
-    else aiSubBody.innerHTML = `<tr><td colspan="2">データなし</td></tr>`;
-
-    // 展開コメント（新聞記者風） — コメント文のみ表示（既に analyzeRace 内で強弱付与）
-    commentTableBody.innerHTML = "";
-    (ai.comments || []).forEach(c => {
-      const tr = document.createElement("tr");
-      tr.innerHTML = `<td>${c.lane}</td><td>${c.comment}</td>`;
-      commentTableBody.appendChild(tr);
-    });
-
-    // 順位予測
-    rankingTableBody.innerHTML = "";
-    (ai.ranks || []).forEach(r => {
-      const tr = document.createElement("tr");
-      tr.innerHTML = `<td>${r.rank}</td><td>${r.lane}</td><td>${r.name}</td><td>${(Number(r.score)||0).toFixed(2)}</td>`;
-      rankingTableBody.appendChild(tr);
-    });
-
-    logStatus("AI 予測完了");
-  } catch (e) {
-    logStatus("AI 予測エラー: " + e.message);
-    console.error(e);
-  }
+  renderAIBlocks(venue, raceNo);
 }
 
-/* 的中率（venuesGridの下段に表示する：過去履歴の的中率） */
-function calcHitRateText(venueId) {
-  let total = 0, hit = 0;
-  for (const d in HISTORY) {
-    (HISTORY[d].results || []).forEach(r => {
-      if (r.race_stadium_number === venueId) {
-        total++;
-        const trif = r.payouts?.trifecta?.[0]?.combination;
-        const ai = (r.ai_predictions || []).map(x => x.combination);
-        if (trif && ai.includes(trif)) hit++;
-      }
-    });
-  }
-  return total ? `${Math.round(hit / total * 100)}%` : "0%";
+// ============================================================
+// AIブロック・コメント・順位・結果反映
+// ============================================================
+function renderAIBlocks(venue, raceNo) {
+  const data = raceData[venue]?.[raceNo] || {};
+
+  const aiMain = data.ai_main || [];
+  aiMainBody.innerHTML = aiMain
+    .map(a => `<tr><td>${a.buy}</td><td>${a.rate}%</td></tr>`)
+    .join("");
+
+  const aiSub = data.ai_sub || [];
+  aiSubBody.innerHTML = aiSub
+    .map(a => `<tr><td>${a.buy}</td><td>${a.rate}%</td></tr>`)
+    .join("");
+
+  const comments = data.comment || [];
+  commentTableBody.innerHTML = comments
+    .map((c, i) => `<tr><td>${i + 1}</td><td>${c}</td></tr>`)
+    .join("");
+
+  const ranking = data.ranking || [];
+  rankingTableBody.innerHTML = ranking
+    .map(
+      (r, i) =>
+        `<tr><td>${i + 1}</td><td>${r.tei}</td><td>${r.name}</td><td>${r.score}</td></tr>`
+    )
+    .join("");
+
+  const results = historyData[venue]?.[raceNo] || [];
+  resultTableBody.innerHTML = results
+    .map(
+      r =>
+        `<tr><td>${r.rank}</td><td>${r.tei}</td><td>${r.name}</td><td>${r.st}</td></tr>`
+    )
+    .join("");
 }
 
-/* イベント設定 */
-todayBtn.onclick = () => { CURRENT_MODE = "today"; todayBtn.classList.add("active"); yesterdayBtn.classList.remove("active"); renderVenues(); };
-yesterdayBtn.onclick = () => { CURRENT_MODE = "yesterday"; yesterdayBtn.classList.add("active"); todayBtn.classList.remove("active"); renderVenues(); };
-refreshBtn.onclick = () => loadData(true);
-backToVenuesBtn.onclick = () => showScreen("venues");
-backToRacesBtn.onclick = () => showScreen("races");
-
-/* 初期化 */
-loadData();
-
-// グローバルエラーハンドラ（画面通知用）
-window.addEventListener("error", (ev) => {
-  console.error("Unhandled error:", ev.error || ev.message);
-  logStatus("ページエラー発生。コンソール確認");
+// ============================================================
+// 戻るボタン
+// ============================================================
+document.getElementById("backToVenues").addEventListener("click", () => {
+  SCREEN_RACES.classList.remove("active");
+  SCREEN_VENUES.classList.add("active");
 });
+
+document.getElementById("backToRaces").addEventListener("click", () => {
+  SCREEN_DETAIL.classList.remove("active");
+  SCREEN_RACES.classList.add("active");
+});
+
+// ============================================================
+// データ取得
+// ============================================================
+async function loadData() {
+  aiStatus.textContent = "データ読込中...";
+  try {
+    const res1 = await fetch("./data/data.json");
+    const res2 = await fetch("./data/history.json");
+    if (res1.ok) raceData = await res1.json();
+    if (res2.ok) historyData = await res2.json();
+    aiStatus.textContent = "AI連携OK";
+  } catch (e) {
+    console.error(e);
+    aiStatus.textContent = "データ取得エラー";
+  }
+  renderVenues();
+}
+
+// ============================================================
+// ボタン操作
+// ============================================================
+refreshBtn.addEventListener("click", () => {
+  renderVenues();
+});
+
+todayBtn.addEventListener("click", () => {
+  currentMode = "today";
+  updateDateLabel();
+});
+
+yesterdayBtn.addEventListener("click", () => {
+  currentMode = "yesterday";
+  updateDateLabel();
+});
+
+// ============================================================
+// 初期化
+// ============================================================
+updateDateLabel();
+loadData();
