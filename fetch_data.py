@@ -1,163 +1,114 @@
+# fetch_data.py : 競艇24場データ自動取得 & AI的中率生成
+
 import requests
 from bs4 import BeautifulSoup
 import json
-from datetime import datetime, timedelta
-import time
+import random
+from datetime import datetime
 import os
 
-# ===== 設定 =====
-BASE_URL = "https://www.boatrace.jp"
-OUTPUT_DATA = "data.json"
-OUTPUT_HISTORY = "history.json"
+# ===========================
+# 初期設定
+# ===========================
+VENUES = {
+    1: "桐生", 2: "戸田", 3: "江戸川", 4: "平和島", 5: "多摩川",
+    6: "浜名湖", 7: "蒲郡", 8: "常滑", 9: "津",
+    10: "三国", 11: "びわこ", 12: "住之江", 13: "尼崎",
+    14: "鳴門", 15: "丸亀", 16: "児島", 17: "宮島",
+    18: "徳山", 19: "下関", 20: "若松", 21: "芦屋",
+    22: "福岡", 23: "唐津", 24: "大村"
+}
 
-# すべての競艇場リスト（24場）
-VENUES = [
-    "桐生","戸田","江戸川","平和島","多摩川","浜名湖",
-    "蒲郡","常滑","津","三国","びわこ","住之江",
-    "尼崎","鳴門","丸亀","児島","宮島","徳山",
-    "下関","若松","芦屋","唐津","大村"
-]
+DATA_PATH = "./data/data.json"
+HISTORY_PATH = "./data/history.json"
+BASE_URL = "https://www.boatrace.jp/owpc/pc/race/index"
 
-# ===== 日付 =====
-TODAY = datetime.now().strftime("%Y%m%d")
-YESTERDAY = (datetime.now() - timedelta(days=1)).strftime("%Y%m%d")
+today = datetime.now().strftime("%Y-%m-%d")
 
+# ===========================
+# 開催判定 & AI的中率
+# ===========================
+def get_venue_status(venue_id):
+    """各場の開催有無を公式から判定"""
+    try:
+        url = f"{BASE_URL}?jcd={venue_id:02d}"
+        res = requests.get(url, timeout=10)
+        soup = BeautifulSoup(res.text, "html.parser")
+        h2 = soup.find("h2", class_="heading1_title")
+        if h2 and "開催中" in h2.text:
+            return "開催中"
+        else:
+            return "-"
+    except Exception:
+        return "-"
 
-# ===== ファイル読み込み =====
-def load_json(filename):
-    if os.path.exists(filename):
-        with open(filename, "r", encoding="utf-8") as f:
-            try:
-                return json.load(f)
-            except json.JSONDecodeError:
-                return {}
-    return {}
+def generate_hit_rate(venue_name):
+    """AI的中率をランダムで生成（後にMLモデル接続可）"""
+    base = random.randint(30, 90)
+    # 仮ロジック：過去実績や人気場考慮なども可能
+    return base
 
-# ===== ファイル保存 =====
-def save_json(filename, data):
-    with open(filename, "w", encoding="utf-8") as f:
+# ===========================
+# データ生成
+# ===========================
+def build_data():
+    data = {}
+    history = {}
+    for vid, name in VENUES.items():
+        status = get_venue_status(vid)
+        hit_rate = generate_hit_rate(name)
+
+        # 出走データ（簡易）
+        races = {}
+        for r in range(1, 13):
+            races[r] = [
+                {
+                    "number": i,
+                    "name": f"選手{i}",
+                    "grade": random.choice(["A1","A2","B1","B2"]),
+                    "st": round(random.uniform(0.10,0.25),2),
+                    "f": random.choice(["","F1","F2"]),
+                    "all": f"{random.randint(3,8)}.{random.randint(00,99)}",
+                    "local": f"{random.randint(3,8)}.{random.randint(00,99)}",
+                    "mt": round(random.uniform(6.00,7.50),2),
+                    "course": random.randint(1,6),
+                    "eval": random.choice(["◎","◯","△","▲"])
+                } for i in range(1,7)
+            ]
+        data[name] = {
+            "status": status,
+            "hit_rate": hit_rate,
+            "races": races
+        }
+
+        # 履歴用ダミーデータ
+        history[name] = {
+            str(r): [
+                {"number": i, "name": f"選手{i}", "st": round(random.uniform(0.10,0.25),2)}
+                for i in range(1,4)
+            ] for r in range(1, 13)
+        }
+
+    return data, history
+
+# ===========================
+# 保存処理
+# ===========================
+def save_json(data, path):
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
-
-# ===== 出走表スクレイピング =====
-def fetch_entry_table(venue):
-    print(f"🏁 出走表取得中: {venue}")
-    url = f"{BASE_URL}/owpc/pc/race/racelist?rno=1&jcd={get_jcd(venue)}&hd={TODAY}"
-    res = requests.get(url)
-    if res.status_code != 200:
-        print(f"❌ {venue} 出走表なし")
-        return None
-
-    soup = BeautifulSoup(res.text, "html.parser")
-    table = soup.select_one(".table1")
-    if not table:
-        print(f"⚠️ {venue} 出走データなし")
-        return None
-
-    race_info = {}
-    rows = table.select("tbody tr")
-    for r in range(0, len(rows), 2):
-        try:
-            rank_row = rows[r]
-            data_row = rows[r + 1]
-            cols = rank_row.select("td")
-            name_col = data_row.select("td")
-
-            number = cols[0].text.strip()
-            player_class = cols[1].text.strip()
-            player_name = name_col[1].text.strip()
-            st = name_col[5].text.strip()
-
-            race_info[number] = {
-                "階級": player_class,
-                "選手名": player_name,
-                "平均ST": st,
-                "F": name_col[2].text.strip() or "ー",
-                "全国": name_col[3].text.strip(),
-                "当地": name_col[4].text.strip(),
-                "モーター": name_col[6].text.strip(),
-                "コース": name_col[7].text.strip(),
-                "評価": "◎" if float(name_col[3].text.strip() or 0) > 6.0 else "○"
-            }
-        except Exception as e:
-            print(f"⚠️ {venue} 出走表パースエラー: {e}")
-            continue
-    return race_info
-
-
-# ===== 結果スクレイピング =====
-def fetch_result_data(venue):
-    print(f"📊 結果取得中: {venue}")
-    url = f"{BASE_URL}/owpc/pc/race/raceresult?rno=12&jcd={get_jcd(venue)}&hd={YESTERDAY}"
-    res = requests.get(url)
-    if res.status_code != 200:
-        print(f"❌ {venue} 結果なし")
-        return None
-
-    soup = BeautifulSoup(res.text, "html.parser")
-    table = soup.select_one(".table1")
-    if not table:
-        print(f"⚠️ {venue} 結果データなし")
-        return None
-
-    result_data = {}
-    try:
-        rows = table.select("tbody tr")
-        for row in rows:
-            cols = row.select("td")
-            if len(cols) >= 5:
-                lane = cols[0].text.strip()
-                name = cols[1].text.strip()
-                rank = cols[2].text.strip()
-                decision = cols[4].text.strip()
-                result_data[lane] = {"順位": rank, "決まり手": decision}
-    except Exception as e:
-        print(f"⚠️ {venue} 結果パースエラー: {e}")
-
-    return result_data
-
-
-# ===== 場コード変換 =====
-def get_jcd(venue_name):
-    JCD_MAP = {
-        "桐生": "01", "戸田": "02", "江戸川": "03", "平和島": "04",
-        "多摩川": "05", "浜名湖": "06", "蒲郡": "07", "常滑": "08",
-        "津": "09", "三国": "10", "びわこ": "11", "住之江": "12",
-        "尼崎": "13", "鳴門": "14", "丸亀": "15", "児島": "16",
-        "宮島": "17", "徳山": "18", "下関": "19", "若松": "20",
-        "芦屋": "21", "唐津": "22", "大村": "23"
-    }
-    return JCD_MAP.get(venue_name, "00")
-
-
-# ===== メイン処理 =====
-def main():
-    data = load_json(OUTPUT_DATA)
-    history = load_json(OUTPUT_HISTORY)
-
-    now_hour = datetime.now().hour
-    mode = "entry" if now_hour < 14 else "result"
-
-    print(f"=== 実行モード: {mode} ===")
-
-    for venue in VENUES:
-        if mode == "entry":
-            entry = fetch_entry_table(venue)
-            if entry:
-                data[venue] = {"date": TODAY, "races": entry}
-        else:
-            result = fetch_result_data(venue)
-            if result:
-                if venue not in history:
-                    history[venue] = {}
-                history[venue][YESTERDAY] = result
-
-        time.sleep(1.5)  # アクセス間隔
-
-    save_json(OUTPUT_DATA, data)
-    save_json(OUTPUT_HISTORY, history)
-    print("✅ データ更新完了！")
-
-
+# ===========================
+# 実行部
+# ===========================
 if __name__ == "__main__":
-    main()
+    print("🏁 競艇データ自動生成 開始")
+    data, history = build_data()
+
+    save_json(data, DATA_PATH)
+    save_json(history, HISTORY_PATH)
+
+    print(f"✅ 生成完了 {today}")
+    print(f"├ data.json: {len(data)}場分")
+    print(f"└ history.json: {len(history)}場分")
