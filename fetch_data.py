@@ -1,5 +1,3 @@
-# fetch_data.py : 競艇24場データ自動取得 & AI的中率生成
-
 import requests
 from bs4 import BeautifulSoup
 import json
@@ -38,15 +36,13 @@ def get_venue_status(venue_id):
         if h2 and "開催中" in h2.text:
             return "開催中"
         else:
-            return "-"
+            return "ー"
     except Exception:
-        return "-"
+        return "ー"
 
 def generate_hit_rate(venue_name):
-    """AI的中率をランダムで生成（後にMLモデル接続可）"""
-    base = random.randint(30, 90)
-    # 仮ロジック：過去実績や人気場考慮なども可能
-    return base
+    """AI的中率をランダムで生成"""
+    return random.randint(40, 95)
 
 # ===========================
 # データ生成
@@ -54,27 +50,29 @@ def generate_hit_rate(venue_name):
 def build_data():
     data = {}
     history = {}
+
     for vid, name in VENUES.items():
         status = get_venue_status(vid)
         hit_rate = generate_hit_rate(name)
 
-        # 出走データ（簡易）
+        # 出走表データ（キーを文字列に変換）
         races = {}
         for r in range(1, 13):
-            races[r] = [
+            races[str(r)] = [
                 {
                     "number": i,
                     "name": f"選手{i}",
-                    "grade": random.choice(["A1","A2","B1","B2"]),
-                    "st": round(random.uniform(0.10,0.25),2),
-                    "f": random.choice(["","F1","F2"]),
-                    "all": f"{random.randint(3,8)}.{random.randint(00,99)}",
-                    "local": f"{random.randint(3,8)}.{random.randint(00,99)}",
-                    "mt": round(random.uniform(6.00,7.50),2),
-                    "course": random.randint(1,6),
-                    "eval": random.choice(["◎","◯","△","▲"])
-                } for i in range(1,7)
+                    "grade": random.choice(["A1", "A2", "B1", "B2"]),
+                    "st": round(random.uniform(0.10, 0.25), 2),
+                    "f": random.choice(["", "F1", "F2"]),
+                    "all": round(random.uniform(4.00, 7.50), 2),
+                    "local": round(random.uniform(4.00, 7.50), 2),
+                    "mt": round(random.uniform(6.00, 7.50), 2),
+                    "course": random.randint(1, 6),
+                    "eval": random.choice(["◎", "◯", "△", "▲"])
+                } for i in range(1, 7)
             ]
+
         data[name] = {
             "status": status,
             "hit_rate": hit_rate,
@@ -84,8 +82,8 @@ def build_data():
         # 履歴用ダミーデータ
         history[name] = {
             str(r): [
-                {"number": i, "name": f"選手{i}", "st": round(random.uniform(0.10,0.25),2)}
-                for i in range(1,4)
+                {"number": i, "name": f"選手{i}", "st": round(random.uniform(0.10, 0.25), 2)}
+                for i in range(1, 4)
             ] for r in range(1, 13)
         }
 
