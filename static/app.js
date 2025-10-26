@@ -1,11 +1,12 @@
 // ==========================
-// /静的/app.js — 本番完全版
+// /静的/app.js — 改善版（index.htmlそのまま）
 // ==========================
 
 import { analyzeRace, generateAIComments, generateAIPredictions, learnFromResults } from './ai_engine.js';
 
-const DATA_URL = "../data/data.json";
-const HISTORY_URL = "../data/history.json";
+// index.html の window.DATA_PATH を優先。なければデフォルトを使う
+const DATA_URL = window.DATA_PATH || "../data/data.json";
+const HISTORY_URL = window.HISTORY_PATH || "../data/history.json";
 
 const VENUE_NAMES = [
   "桐生","戸田","江戸川","平和島","多摩川","浜名湖","蒲郡","常滑",
@@ -41,9 +42,7 @@ let CURRENT_MODE = "today";
 
 function showScreen(name) {
   [SCREEN_VENUES, SCREEN_RACES, SCREEN_RACE].forEach(s => s.classList.remove("active"));
-  if (name === "venues") SCREEN_VENUES.classList.add("active");
-  if (name === "races") SCREEN_RACES.classList.add("active");
-  if (name === "race") SCREEN_RACE.classList.add("active");
+  document.getElementById(`screen-${name}`).classList.add("active");
 }
 
 function logStatus(msg) {
@@ -63,14 +62,14 @@ function formatRateDisplay(v) {
 
 async function loadData(force = false) {
   try {
+    const cacheBuster = `?v=${Date.now()}`; // キャッシュ無効化
     logStatus("データ取得中...");
-    const q = force ? `?t=${Date.now()}` : "";
-    const res = await fetch(DATA_URL + q);
-    if (!res.ok) throw new Error("data.json取得失敗");
+    const res = await fetch(DATA_URL + (force ? cacheBuster : ""));
+    if (!res.ok) throw new Error(`data.json取得失敗: ${res.status}`);
     ALL_DATA = await res.json();
 
     try {
-      const h = await fetch(HISTORY_URL + q);
+      const h = await fetch(HISTORY_URL + (force ? cacheBuster : ""));
       if (h.ok) HISTORY = await h.json();
     } catch { HISTORY = {}; }
 
@@ -78,8 +77,8 @@ async function loadData(force = false) {
     renderVenues();
     logStatus("準備完了");
   } catch (e) {
-    logStatus("データ読み込み失敗");
     console.error(e);
+    logStatus("データ読み込み失敗");
   }
 }
 
@@ -89,18 +88,18 @@ function renderVenues() {
 
   VENUE_NAMES.forEach(name => {
     const v = ALL_DATA[name];
-    const hasRace = v && v.status !== "-" && v.races && Object.keys(v.races).length > 0;
+    const isAvailable = v && v.status && v.status !== "ー" && v.races && Object.keys(v.races).length > 0;
 
     const card = document.createElement("div");
     card.className = "venue-card";
-    if (!hasRace) card.classList.add("disabled"); // タップ不可＋半透明
+    if (!isAvailable) card.classList.add("disabled");
 
     card.innerHTML = `
       <div class="v-name">${name}</div>
       <div class="v-status">${v ? (v.status || "ー") : "ー"}</div>
       <div class="v-rate">${v ? `${v.hit_rate ?? 0}%` : "0%"}</div>
     `;
-    if (hasRace) card.onclick = () => renderRaces(name);
+    if (isAvailable) card.onclick = () => renderRaces(name);
     venuesGrid.appendChild(card);
   });
 }
@@ -139,11 +138,10 @@ async function renderRaceDetail(venueName, raceNo) {
   entryTableBody.innerHTML = "";
   race.forEach(p => {
     const tr = document.createElement("tr");
-    const f = p.f ? p.f : "ー";
     tr.innerHTML = `
       <td>${p.number}</td>
-      <td>${p.grade}</td>
-      <td>${p.name}</td>
+      <td>${p.grade || "-"}</td>
+      <td>${p.name || "-"}</td>
       <td>${p.st ?? "-"}</td>
       <td>${p.all ? formatRateDisplay(p.all) : "-"}</td>
       <td>${p.local ? formatRateDisplay(p.local) : "-"}</td>
@@ -174,7 +172,7 @@ backToVenuesBtn.onclick = () => showScreen("venues");
 backToRacesBtn.onclick = () => showScreen("races");
 
 // 初期実行
-loadData();
+window.addEventListener("load", () => loadData());
 window.addEventListener("error", e => {
   console.error(e);
   logStatus("アプリエラー");
