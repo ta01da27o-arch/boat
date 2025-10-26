@@ -1,32 +1,51 @@
 name: Fetch Boat Race Data
 
 on:
+  workflow_dispatch:  # 手動実行
   schedule:
-    - cron: "0 23 * * *"  # 毎日 08:00 JST 実行
-  workflow_dispatch:
+    - cron: "0 23 * * *"  # JST毎日08:00（UTC23:00）
 
 jobs:
-  build:
+  update:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
 
-      - name: Set up Python
+    steps:
+      - name: 🧩 リポジトリをチェックアウト
+        uses: actions/checkout@v4
+
+      - name: 🐍 Pythonセットアップ
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      - name: Install dependencies
+      - name: 📦 依存関係インストール
         run: |
-          pip install requests beautifulsoup4
+          python -m pip install --upgrade pip
+          pip install requests
 
-      - name: Run fetch_data.py
-        run: python fetch_data.py
-
-      - name: Commit and push changes
+      - name: 🚀 データ更新スクリプト実行
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPO: ${{ github.repository }}
+          GITHUB_BRANCH: ${{ github.ref_name }}
+          GITHUB_USER: github-actions[bot]
         run: |
+          echo "🚀 自動更新スクリプト開始"
+          python fetch_data.py
+
+      - name: 📡 変更がある場合のみコミット
+        run: |
+          git config --local user.email "actions@github.com"
           git config --local user.name "github-actions[bot]"
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git add ./data/*.json
-          git commit -m "Auto update race data: $(date '+%Y-%m-%d %H:%M')"
-          git push
+          git add data/data.json data/history.json || true
+          if git diff --cached --quiet; then
+            echo "✅ 変更なし（スキップ）"
+          else
+            git commit -m "Auto update: $(date '+%Y-%m-%d %H:%M:%S')" || true
+            git push origin ${{ github.ref_name }}
+            echo "✅ GitHub反映完了"
+          fi
+
+      - name: 🏁 完了ログ
+        run: |
+          echo "🎯 処理完了 $(date '+%Y-%m-%d %H:%M:%S')"
