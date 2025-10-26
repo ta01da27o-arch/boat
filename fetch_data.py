@@ -1,103 +1,120 @@
+import os
 import json
 import datetime
-import os
 import requests
-from bs4 import BeautifulSoup
+from pathlib import Path
 
-DATA_DIR = "data"
-DATA_PATH = os.path.join(DATA_DIR, "data.json")
-HISTORY_PATH = os.path.join(DATA_DIR, "history.json")
+# ====== ファイル設定 ======
+DATA_FILE = Path("data/data.json")
+HISTORY_FILE = Path("data/history.json")
 
+# ====== 全国24場リスト ======
 VENUES = [
-    "桐生", "戸田", "江戸川", "平和島", "多摩川",
-    "浜名湖", "蒲郡", "常滑", "津", "三国", "びわこ",
-    "住之江", "尼崎", "鳴門", "丸亀", "児島", "宮島",
-    "徳山", "下関", "若松", "芦屋", "福岡", "唐津", "大村"
+    "桐生", "戸田", "江戸川", "平和島", "多摩川", "浜名湖",
+    "蒲郡", "常滑", "津", "三国", "びわこ", "住之江", "尼崎",
+    "鳴門", "丸亀", "児島", "宮島", "徳山", "下関", "若松",
+    "芦屋", "福岡", "唐津", "大村"
 ]
 
-# -------------------------
-# 仮スクレイピング関数（後で本実装予定）
-# -------------------------
+# ====== 仮スクレイピング関数 ======
 def fetch_today_data():
+    """
+    本日の全レースデータを取得（仮実装）
+    実際は公式サイトからスクレイピングして返す構造に変更予定
+    """
+    today_str = datetime.date.today().strftime("%Y%m%d")
     today_data = {}
-    today = datetime.date.today().isoformat()  # ← "2025-10-27" 形式
 
     for venue in VENUES:
-        try:
-            # ★後でスクレイピング実装
-            today_data[venue] = {
-                "status": "ー",
-                "hit_rate": 0,
-                "races": {}
-            }
-        except Exception as e:
-            today_data[venue] = {"status": f"error: {e}", "races": {}}
-    return today, today_data
-
-
-# -------------------------
-# 履歴更新処理
-# -------------------------
-def update_history(today, today_data):
-    # 既存読み込み
-    if os.path.exists(HISTORY_PATH):
-        with open(HISTORY_PATH, "r", encoding="utf-8") as f:
-            try:
-                history = json.load(f)
-            except json.JSONDecodeError:
-                history = {}
-    else:
-        history = {}
-
-    # 🔧 キー統一: "YYYY-MM-DD"
-    history[today] = {}
-    for venue, info in today_data.items():
-        history[today][venue] = {
-            "date": today,
-            "status": info.get("status", "ー"),
-            "hit_rate": info.get("hit_rate", 0),
-            "results": info.get("races", {})
+        today_data[venue] = {
+            "date": today_str,
+            "status": "開催中",
+            "results": [],
         }
+    return today_data
 
-    # 🧹 古いデータ削除（60日より前のもの）
-    cutoff = datetime.date.today() - datetime.timedelta(days=60)
-    valid_history = {}
-    for key, val in history.items():
+
+# ====== JSON読み書き ======
+def load_json(path):
+    if not path.exists():
+        return {}
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except json.JSONDecodeError:
+        print(f"⚠️ JSON 読み込みエラー: {path}")
+        return {}
+
+
+def save_json(path, data):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+
+# ====== メイン更新処理 ======
+def update_data():
+    print("🚀 Render 自動更新スクリプト開始")
+
+    data = load_json(DATA_FILE)
+    history = load_json(HISTORY_FILE)
+
+    today = datetime.date.today()
+    today_str = today.strftime("%Y%m%d")
+    cutoff = today - datetime.timedelta(days=60)
+
+    # ==============================
+    # ① 今日の全レースデータ取得
+    # ==============================
+    today_races = fetch_today_data()
+    print(f"📅 本日データ: {today_str} ({len(today_races)}場)")
+
+    # ==============================
+    # ② history.json に追加 or 更新
+    # ==============================
+    if today_str not in history:
+        history[today_str] = today_races
+        print(f"🧩 {today_str} のデータを追加しました")
+    else:
+        print(f"🔁 {today_str} は既に存在 → 更新スキップ")
+
+    # ==============================
+    # ③ 古い日付データ削除（60日保持）
+    # ==============================
+    for key in list(history.keys()):
+        # 日付形式以外（例: "桐生"）を除外
+        if not key.isdigit():
+            continue
         try:
-            date_obj = datetime.date.fromisoformat(key)
-            if date_obj >= cutoff:
-                valid_history[key] = val
+            key_date = datetime.datetime.strptime(key, "%Y%m%d").date()
         except ValueError:
             continue
+        if key_date < cutoff:
+            del history[key]
+            print(f"🧹 古いデータ削除: {key}")
+
+    # ==============================
+    # ④ data.json 更新（最新状態）
+    # ==============================
+    for venue in VENUES:
+        if venue not in data:
+            data[venue] = {"status": "ー", "hit_rate": 0, "races": {}}
+
+        if venue in today_races:
+            data[venue]["status"] = today_races[venue]["status"]
+            data[venue]["races"] = today_races[venue]
+        else:
+            data[venue]["status"] = "ー"
+            data[venue]["races"] = {}
 
     # 保存
-    with open(HISTORY_PATH, "w", encoding="utf-8") as f:
-        json.dump(valid_history, f, ensure_ascii=False, indent=2)
+    save_json(DATA_FILE, data)
+    save_json(HISTORY_FILE, history)
+
+    print("✅ 自動更新完了")
+    print(f"🧠 現在保持中: {len(history.keys())}日分")
+    print(f"📦 data.json: {len(data.keys())}場")
 
 
-# -------------------------
-# 最新data.json更新
-# -------------------------
-def update_data():
-    today, today_data = fetch_today_data()
-
-    os.makedirs(DATA_DIR, exist_ok=True)
-
-    # data.json 保存
-    with open(DATA_PATH, "w", encoding="utf-8") as f:
-        json.dump(today_data, f, ensure_ascii=False, indent=2)
-
-    # history.json 更新
-    update_history(today, today_data)
-
-    print(f"✅ 完了: {today}")
-    print(f"├ data.json: {len(today_data)}場分")
-    print(f"└ history.json: 最新 + 過去60日維持")
-
-
-# -------------------------
-# 実行
-# -------------------------
 if __name__ == "__main__":
-    print("🚀 Render 自動更新スクリプト開始")
     update_data()
