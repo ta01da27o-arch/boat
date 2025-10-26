@@ -1,76 +1,53 @@
-name: Fetch Boat Race Data
+name: Fetch Boat Race Data (24場対応版)
 
 on:
-  workflow_dispatch:        # 手動実行
   schedule:
-    - cron: "0 23 * * *"    # JST 08:00 (GitHubはUTC基準で23:00実行)
+    # 毎日23:00(JST) に自動実行（UTC 14:00）
+    - cron: "0 14 * * *"
+  workflow_dispatch:  # 手動実行も可能
 
 jobs:
-  fetch:
+  update:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
 
     steps:
-      # ------------------------------
-      # ① GitHubリポジトリを取得
-      # ------------------------------
-      - name: Checkout repository
+      - name: 📦 リポジトリ取得
         uses: actions/checkout@v4
 
-      # ------------------------------
-      # ② Pythonセットアップ
-      # ------------------------------
-      - name: Set up Python 3.11
+      - name: 🐍 Pythonセットアップ
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
-      # ------------------------------
-      # ③ 依存パッケージをインストール
-      # ------------------------------
-      - name: Install dependencies
+      - name: 🔧 依存パッケージのインストール
         run: |
           python -m pip install --upgrade pip
-          pip install requests beautifulsoup4
+          pip install requests
 
-      # ------------------------------
-      # ④ 自動更新スクリプト実行
-      # ------------------------------
-      - name: Run fetch_data.py
+      - name: 🚀 自動更新スクリプト開始
         run: |
           echo "🚀 Render 自動更新スクリプト開始"
-          python fetch_data.py || exit 1
+          python fetch_data.py
 
-      # ------------------------------
-      # ⑤ 実行結果を確認
-      # ------------------------------
-      - name: Check generated files
+      - name: 🧩 出力確認
         run: |
           echo "🧩 data.json:"
-          head -n 20 data/data.json || true
+          cat data/data.json | head -n 40 || true
           echo "🧠 history.json:"
-          head -n 20 data/history.json || true
+          cat data/history.json | head -n 40 || true
 
-      # ------------------------------
-      # ⑥ GitHubにコミット＆プッシュ
-      # ------------------------------
-      - name: Commit and push if changed
+      - name: 🪄 Git 設定
         run: |
           git config --local user.name "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
 
-          git add data/data.json data/history.json || true
-          if git diff --cached --quiet; then
-            echo "✅ 変更なし。コミットスキップ。"
-          else
-            git commit -m "Auto Update: $(date '+%Y-%m-%d %H:%M')"
-            git push
-            echo "📤 data.json, history.json を更新しました。"
-          fi
-
-      # ------------------------------
-      # ⑦ 実行完了ログ
-      # ------------------------------
-      - name: Finish log
+      - name: 📤 変更をGitHubへ反映
         run: |
-          echo "🎯 完了日時: $(date '+%Y-%m-%d %H:%M:%S')"
+          git add data/*.json || true
+          if git diff --cached --quiet; then
+            echo "✅ 変更なし。コミットをスキップ。"
+          else
+            git commit -m "🔁 Auto Update: $(date '+%Y-%m-%d %H:%M:%S')"
+            git push origin main
+            echo "📡 GitHubへ自動Push完了"
+          fi
