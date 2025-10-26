@@ -1,122 +1,218 @@
 {
   "桐生": {
-    "status": "ー",
+    "status": "開催中",
     "hit_rate": 0,
-    "races": {}
+    "races": {
+      "date": "20251026",
+      "status": "開催中",
+      "results": []
+    }
   },
   "戸田": {
-    "status": "ー",
+    "status": "開催中",
     "hit_rate": 0,
-    "races": {}
+    "races": {
+      "date": "20251026",
+      "status": "開催中",
+      "results": []
+    }
   },
   "江戸川": {
-    "status": "ー",
+    "status": "開催中",
     "hit_rate": 0,
-    "races": {}
+    "races": {
+      "date": "20251026",
+      "status": "開催中",
+      "results": []
+    }
   },
   "平和島": {
-    "status": "ー",
+    "status": "開催中",
     "hit_rate": 0,
-    "races": {}
+    "races": {
+      "date": "20251026",
+      "status": "開催中",
+      "results": []
+    }
   },
   "多摩川": {
-    "status": "ー",
+    "status": "開催中",
     "hit_rate": 0,
-    "races": {}
+    "races": {
+      "date": "20251026",
+      "status": "開催中",
+      "results": []
+    }
   },
   "浜名湖": {
-    "status": "ー",
+    "status": "開催中",
     "hit_rate": 0,
-    "races": {}
+    "races": {
+      "date": "20251026",
+      "status": "開催中",
+      "results": []
+    }
   },
   "蒲郡": {
-    "status": "ー",
+    "status": "開催中",
     "hit_rate": 0,
-    "races": {}
+    "races": {
+      "date": "20251026",
+      "status": "開催中",
+      "results": []
+    }
   },
   "常滑": {
-    "status": "ー",
+    "status": "開催中",
     "hit_rate": 0,
-    "races": {}
+    "races": {
+      "date": "20251026",
+      "status": "開催中",
+      "results": []
+    }
   },
   "津": {
-    "status": "ー",
+    "status": "開催中",
     "hit_rate": 0,
-    "races": {}
+    "races": {
+      "date": "20251026",
+      "status": "開催中",
+      "results": []
+    }
   },
   "三国": {
-    "status": "ー",
+    "status": "開催中",
     "hit_rate": 0,
-    "races": {}
+    "races": {
+      "date": "20251026",
+      "status": "開催中",
+      "results": []
+    }
   },
   "びわこ": {
-    "status": "ー",
+    "status": "開催中",
     "hit_rate": 0,
-    "races": {}
+    "races": {
+      "date": "20251026",
+      "status": "開催中",
+      "results": []
+    }
   },
   "住之江": {
-    "status": "ー",
+    "status": "開催中",
     "hit_rate": 0,
-    "races": {}
+    "races": {
+      "date": "20251026",
+      "status": "開催中",
+      "results": []
+    }
   },
   "尼崎": {
-    "status": "ー",
+    "status": "開催中",
     "hit_rate": 0,
-    "races": {}
+    "races": {
+      "date": "20251026",
+      "status": "開催中",
+      "results": []
+    }
   },
   "鳴門": {
-    "status": "ー",
+    "status": "開催中",
     "hit_rate": 0,
-    "races": {}
+    "races": {
+      "date": "20251026",
+      "status": "開催中",
+      "results": []
+    }
   },
   "丸亀": {
-    "status": "ー",
+    "status": "開催中",
     "hit_rate": 0,
-    "races": {}
+    "races": {
+      "date": "20251026",
+      "status": "開催中",
+      "results": []
+    }
   },
   "児島": {
-    "status": "ー",
+    "status": "開催中",
     "hit_rate": 0,
-    "races": {}
+    "races": {
+      "date": "20251026",
+      "status": "開催中",
+      "results": []
+    }
   },
   "宮島": {
-    "status": "ー",
+    "status": "開催中",
     "hit_rate": 0,
-    "races": {}
+    "races": {
+      "date": "20251026",
+      "status": "開催中",
+      "results": []
+    }
   },
   "徳山": {
-    "status": "ー",
+    "status": "開催中",
     "hit_rate": 0,
-    "races": {}
+    "races": {
+      "date": "20251026",
+      "status": "開催中",
+      "results": []
+    }
   },
   "下関": {
-    "status": "ー",
+    "status": "開催中",
     "hit_rate": 0,
-    "races": {}
+    "races": {
+      "date": "20251026",
+      "status": "開催中",
+      "results": []
+    }
   },
   "若松": {
-    "status": "ー",
+    "status": "開催中",
     "hit_rate": 0,
-    "races": {}
+    "races": {
+      "date": "20251026",
+      "status": "開催中",
+      "results": []
+    }
   },
   "芦屋": {
-    "status": "ー",
+    "status": "開催中",
     "hit_rate": 0,
-    "races": {}
+    "races": {
+      "date": "20251026",
+      "status": "開催中",
+      "results": []
+    }
   },
   "福岡": {
-    "status": "ー",
+    "status": "開催中",
     "hit_rate": 0,
-    "races": {}
+    "races": {
+      "date": "20251026",
+      "status": "開催中",
+      "results": []
+    }
   },
   "唐津": {
-    "status": "ー",
+    "status": "開催中",
     "hit_rate": 0,
-    "races": {}
+    "races": {
+      "date": "20251026",
+      "status": "開催中",
+      "results": []
+    }
   },
   "大村": {
-    "status": "ー",
+    "status": "開催中",
     "hit_rate": 0,
-    "races": {}
+    "races": {
+      "date": "20251026",
+      "status": "開催中",
+      "results": []
+    }
   }
 }
