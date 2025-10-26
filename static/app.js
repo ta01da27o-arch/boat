@@ -1,14 +1,11 @@
 // ============================
-// 競艇AI予想アプリ（フロント版）
+// 競艇AI予想アプリ（フロント版・修正版）
 // ============================
 
-// ✅ データパス設定（index.html の <script> 内で指定される）
 const DATA_URL = window.DATA_PATH || "../data/data.json";
 const HISTORY_URL = window.HISTORY_PATH || "../data/history.json";
 
-// ============================
 // 要素取得
-// ============================
 const screenVenues = document.getElementById("screen-venues");
 const screenRaces = document.getElementById("screen-races");
 const screenDetail = document.getElementById("screen-detail");
@@ -34,21 +31,29 @@ const backToRaces = document.getElementById("backToRaces");
 const venueTitle = document.getElementById("venueTitle");
 const raceTitle = document.getElementById("raceTitle");
 
-// ============================
-// グローバル変数
-// ============================
 let globalData = {};
 let globalHistory = {};
 let currentVenue = null;
 let currentRace = null;
 
 // ============================
+// 日付操作ユーティリティ
+// ============================
+let viewDate = new Date();
+
+function formatDate(d) {
+  return `${d.getFullYear()}/${String(d.getMonth() + 1).padStart(2, "0")}/${String(d.getDate()).padStart(2, "0")}`;
+}
+
+function setDateLabel() {
+  dateLabel.textContent = formatDate(viewDate);
+}
+
+// ============================
 // 初期化
 // ============================
 window.addEventListener("DOMContentLoaded", async () => {
-  const now = new Date();
-  dateLabel.textContent = `${now.getFullYear()}/${now.getMonth() + 1}/${now.getDate()}`;
-
+  setDateLabel();
   await loadData();
   renderVenues();
 });
@@ -76,7 +81,7 @@ async function loadData() {
 }
 
 // ============================
-// 画面遷移制御
+// 画面切替
 // ============================
 function showScreen(screen) {
   [screenVenues, screenRaces, screenDetail].forEach(s => s.classList.remove("active"));
@@ -89,34 +94,34 @@ function showScreen(screen) {
 function renderVenues() {
   venuesGrid.innerHTML = "";
 
-  const venues = Object.keys(globalData);
-  venues.forEach(name => {
+  Object.keys(globalData).forEach(name => {
     const info = globalData[name];
     const status = info?.status || "ー";
-    const hitRate = info?.hit_rate || 0;
+    const hitRate = info?.hit_rate ?? 0;
 
     const card = document.createElement("button");
     card.className = "venue-card";
 
-    // ✅ 開催中と非開催（ー）でスタイルを変える
+    // 開催状況による制御
     if (status === "開催中") {
       card.classList.add("active");
+      card.disabled = false;
+      card.style.opacity = "1";
     } else {
       card.classList.add("inactive");
-      card.disabled = true; // タップ不可
+      card.disabled = true;
       card.style.opacity = "0.5";
     }
 
+    // ✅ デザイン整理：場名・開催状況・的中率
     card.innerHTML = `
       <div class="venue-name">${name}</div>
-      <div class="venue-meta">
-        <span class="status">${status}</span>
-        <span class="hit">的中率: ${hitRate}%</span>
-      </div>
+      <div class="venue-status">${status}</div>
+      <div class="venue-hit">${hitRate}%</div>
     `;
 
     card.addEventListener("click", () => {
-      if (status !== "ー") {
+      if (status === "開催中") {
         currentVenue = name;
         renderRaces();
         showScreen(screenRaces);
@@ -148,20 +153,20 @@ function renderRaces() {
 }
 
 // ============================
-// 出走表詳細画面
+// 出走表詳細
 // ============================
 function renderRaceDetail() {
   const venueData = globalData[currentVenue];
   const raceData = venueData?.races?.[currentRace] || [];
   raceTitle.textContent = `${currentVenue} ${currentRace}R`;
 
-  // 出走表
   entryTable.innerHTML = "";
   raceData.forEach(r => {
     const tr = document.createElement("tr");
     tr.innerHTML = `
       <td>${r.number}</td>
-      <td>${r.grade} / ${r.name} / ${r.st}</td>
+      <td>${r.grade} / ${r.name}</td>
+      <td>${r.st}</td>
       <td>${r.f}</td>
       <td>${r.all}</td>
       <td>${r.local}</td>
@@ -172,34 +177,33 @@ function renderRaceDetail() {
     entryTable.appendChild(tr);
   });
 
-  // AI本命・穴（ダミー生成）
+  // AI情報仮表示
   aiMainTable.innerHTML = "";
   aiSubTable.innerHTML = "";
-  for (let i = 0; i < 3; i++) {
-    aiMainTable.innerHTML += `<tr><td>${raceData[i]?.number || "-"}</td><td>${Math.floor(Math.random() * 90)}%</td></tr>`;
-    aiSubTable.innerHTML += `<tr><td>${raceData[i + 3]?.number || "-"}</td><td>${Math.floor(Math.random() * 60)}%</td></tr>`;
-  }
-
-  // 展開コメント（例: コース別コメントをランダム生成）
-  commentTable.innerHTML = "";
-  for (let i = 1; i <= 6; i++) {
-    const cmt = generateComment(i);
-    commentTable.innerHTML += `<tr><td>${i}</td><td>${cmt}</td></tr>`;
-  }
-
-  // 順位予測（ランダム例）
-  rankingTable.innerHTML = "";
-  const sorted = [...raceData].sort(() => Math.random() - 0.5);
-  sorted.forEach((r, idx) => {
-    rankingTable.innerHTML += `<tr><td>${idx + 1}</td><td>${r.number}</td><td>${r.name}</td><td>${(Math.random() * 10).toFixed(2)}</td></tr>`;
+  raceData.slice(0, 3).forEach(r => {
+    aiMainTable.innerHTML += `<tr><td>${r.number}</td><td>${Math.floor(Math.random() * 90)}%</td></tr>`;
+  });
+  raceData.slice(3, 6).forEach(r => {
+    aiSubTable.innerHTML += `<tr><td>${r.number}</td><td>${Math.floor(Math.random() * 60)}%</td></tr>`;
   });
 
-  // 最新レース結果（history.json）
+  // コメント
+  commentTable.innerHTML = "";
+  for (let i = 1; i <= 6; i++) {
+    commentTable.innerHTML += `<tr><td>${i}</td><td>${generateComment(i)}</td></tr>`;
+  }
+
+  // 順位予測
+  rankingTable.innerHTML = "";
+  [...raceData].sort(() => Math.random() - 0.5).forEach((r, idx) => {
+    rankingTable.innerHTML += `<tr><td>${idx + 1}</td><td>${r.number}</td><td>${r.name}</td></tr>`;
+  });
+
   renderResult();
 }
 
 // ============================
-// 最新レース結果
+// 結果表示
 // ============================
 function renderResult() {
   resultTable.innerHTML = "";
@@ -207,39 +211,34 @@ function renderResult() {
   const raceHist = venueHist?.[currentRace];
 
   if (!raceHist) {
-    resultNote.textContent = "※ レース結果はまだありません。";
+    resultNote.textContent = "※ レース結果なし";
     return;
   }
 
   raceHist.forEach((r, idx) => {
-    resultTable.innerHTML += `<tr>
-      <td>${idx + 1}</td>
-      <td>${r.number}</td>
-      <td>${r.name}</td>
-      <td>${r.st}</td>
-    </tr>`;
+    resultTable.innerHTML += `<tr><td>${idx + 1}</td><td>${r.number}</td><td>${r.name}</td><td>${r.st}</td></tr>`;
   });
 
-  resultNote.textContent = "※ 前日または本日終了レースを自動反映";
+  resultNote.textContent = "※ 最新レース結果を表示";
 }
 
 // ============================
-// コメント自動生成（ダミー）
+// コメント生成（簡易版）
 // ============================
 function generateComment(course) {
   const patterns = [
-    "スタート決めて逃げ切り狙い",
-    "差し一閃の構え",
-    "カドから一撃狙い",
-    "展開ついて内差し",
-    "外から強襲あり",
-    "冷静に展開待ち"
+    "スタート決めて逃げ切り",
+    "差し構え",
+    "まくり勝負",
+    "展開ついて差し",
+    "外から強襲",
+    "冷静に様子見"
   ];
   return patterns[(course - 1) % patterns.length];
 }
 
 // ============================
-// イベントリスナー
+// イベント
 // ============================
 backToVenues.addEventListener("click", () => showScreen(screenVenues));
 backToRaces.addEventListener("click", () => showScreen(screenRaces));
@@ -248,12 +247,17 @@ refreshBtn.addEventListener("click", async () => {
   renderVenues();
 });
 
-// 前日・本日ボタンは暫定
 todayBtn.addEventListener("click", () => {
+  viewDate = new Date();
+  setDateLabel();
   todayBtn.classList.add("active");
   yesterdayBtn.classList.remove("active");
 });
+
 yesterdayBtn.addEventListener("click", () => {
+  viewDate = new Date();
+  viewDate.setDate(viewDate.getDate() - 1);
+  setDateLabel();
   yesterdayBtn.classList.add("active");
   todayBtn.classList.remove("active");
 });
