@@ -16,16 +16,15 @@ VENUES = [
 ]
 
 # -------------------------
-# 仮スクレイピング関数
+# 仮スクレイピング関数（後で本実装予定）
 # -------------------------
 def fetch_today_data():
     today_data = {}
-    today = datetime.date.today().isoformat()
+    today = datetime.date.today().isoformat()  # ← "2025-10-27" 形式
 
     for venue in VENUES:
         try:
-            # ↓ここで公式サイトからスクレイピングを実装予定
-            # 例: url = f"https://www.boatrace.jp/owpc/pc/race/index?jcd={code}"
+            # ★後でスクレイピング実装
             today_data[venue] = {
                 "status": "ー",
                 "hit_rate": 0,
@@ -40,17 +39,27 @@ def fetch_today_data():
 # 履歴更新処理
 # -------------------------
 def update_history(today, today_data):
-    # history.json 読み込み
+    # 既存読み込み
     if os.path.exists(HISTORY_PATH):
         with open(HISTORY_PATH, "r", encoding="utf-8") as f:
-            history = json.load(f)
+            try:
+                history = json.load(f)
+            except json.JSONDecodeError:
+                history = {}
     else:
         history = {}
 
-    # 本日データを追加
-    history[today] = today_data
+    # 🔧 キー統一: "YYYY-MM-DD"
+    history[today] = {}
+    for venue, info in today_data.items():
+        history[today][venue] = {
+            "date": today,
+            "status": info.get("status", "ー"),
+            "hit_rate": info.get("hit_rate", 0),
+            "results": info.get("races", {})
+        }
 
-    # 60日より古い日付を削除
+    # 🧹 古いデータ削除（60日より前のもの）
     cutoff = datetime.date.today() - datetime.timedelta(days=60)
     valid_history = {}
     for key, val in history.items():
@@ -59,7 +68,6 @@ def update_history(today, today_data):
             if date_obj >= cutoff:
                 valid_history[key] = val
         except ValueError:
-            # 古い構造（"桐生"など）をスキップ
             continue
 
     # 保存
@@ -75,7 +83,7 @@ def update_data():
 
     os.makedirs(DATA_DIR, exist_ok=True)
 
-    # data.json 更新
+    # data.json 保存
     with open(DATA_PATH, "w", encoding="utf-8") as f:
         json.dump(today_data, f, ensure_ascii=False, indent=2)
 
