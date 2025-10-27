@@ -48,16 +48,26 @@ def save_json(path, data):
         json.dump(data, f, ensure_ascii=False, indent=2)
 
 def safe_request(url, retries=2, timeout=20):
-    """タイムアウト・接続エラーを再試行"""
+    """タイムアウト・bot検知回避付きGET"""
+    headers = {
+        "User-Agent": (
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+            "AppleWebKit/537.36 (KHTML, like Gecko) "
+            "Chrome/127.0.0.1 Safari/537.36"
+        ),
+        "Referer": "https://www.boatrace.jp/",
+        "Accept-Language": "ja,en-US;q=0.9,en;q=0.8",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    }
+
     for i in range(retries + 1):
         try:
-            res = requests.get(url, timeout=timeout)
-            if res.status_code == 200:
+            res = requests.get(url, headers=headers, timeout=timeout)
+            if res.status_code == 200 and "不正" not in res.text:
                 return res
-        except requests.RequestException as e:
-            if i == retries:
-                raise e
-            sleep(2)
+        except requests.RequestException:
+            pass
+        sleep(2)
     return None
 
 # ======================================================
@@ -75,7 +85,8 @@ def fetch_today_data():
         try:
             res = safe_request(url)
             if not res:
-                raise Exception("接続エラー")
+                raise Exception("接続エラー or 拒否応答")
+
             res.encoding = res.apparent_encoding
             soup = BeautifulSoup(res.text, "html.parser")
 
@@ -87,7 +98,10 @@ def fetch_today_data():
             race_links = soup.select("a.btn--number, a.table1__raceNumberLink")
             for link in race_links:
                 rno = link.text.strip().replace("R", "")
-                race_url = f"https://www.boatrace.jp{link.get('href')}"
+                href = link.get("href")
+                if not href:
+                    continue
+                race_url = f"https://www.boatrace.jp{href}"
 
                 race_res = safe_request(race_url)
                 if not race_res:
@@ -117,7 +131,7 @@ def fetch_today_data():
             }
 
             print(f"✅ {venue} 完了 ({len(races)}R 取得)")
-            sleep(1.2)  # アクセス制限回避
+            sleep(1.5)  # アクセス制限回避
 
         except Exception as e:
             print(f"⚠️ {venue} 取得エラー: {e}")
@@ -137,8 +151,10 @@ def update_history():
     history[today] = {v: {"date": today, "results": d.get("races", {})} for v, d in data.items()}
 
     cutoff = datetime.date.today() - datetime.timedelta(days=60)
-    history = {k: v for k, v in history.items()
-               if datetime.date.fromisoformat(k[:4]+"-"+k[4:6]+"-"+k[6:8]) >= cutoff}
+    history = {
+        k: v for k, v in history.items()
+        if datetime.date.fromisoformat(f"{k[:4]}-{k[4:6]}-{k[6:8]}") >= cutoff
+    }
 
     save_json(HISTORY_PATH, history)
     print(f"🧠 history.json 更新完了 ({len(history)}日分保持)")
