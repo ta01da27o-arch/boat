@@ -1,0 +1,18 @@
+# --- Web Framework / API ---
+fastapi
+uvicorn
+gunicorn
+
+# --- Data Handling / Machine Learning ---
+pandas
+joblib
+scikit-learn
+pydantic
+python-dateutil
+
+# --- Web Access / Scraping ---
+requests
+beautifulsoup4
+
+# --- その他（自動更新・学習・予測系で使用） ---
+lxml
