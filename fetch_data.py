@@ -5,15 +5,14 @@ import requests
 from bs4 import BeautifulSoup
 from time import sleep
 
-# ======================================================
+# ==============================
 # 設定
-# ======================================================
+# ==============================
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(BASE_DIR, "data")
 os.makedirs(DATA_DIR, exist_ok=True)
 
 DATA_PATH = os.path.join(DATA_DIR, "data.json")
-HISTORY_PATH = os.path.join(DATA_DIR, "history.json")
 
 VENUES = {
     "桐生": "01", "戸田": "02", "江戸川": "03", "平和島": "04", "多摩川": "05",
@@ -29,79 +28,80 @@ HEADERS = {
         "AppleWebKit/537.36 (KHTML, like Gecko) "
         "Chrome/121.0.0.0 Safari/537.36"
     ),
-    "Accept-Language": "ja,en-US;q=0.9,en;q=0.8",
     "Referer": "https://www.boatrace.jp/",
+    "Accept-Language": "ja,en-US;q=0.9,en;q=0.8",
 }
 
-# ======================================================
+# ==============================
 # 共通関数
-# ======================================================
+# ==============================
 def safe_get(url, retries=2, timeout=15):
     for i in range(retries + 1):
         try:
-            res = requests.get(url, headers=HEADERS, timeout=timeout)
-            if res.status_code == 200:
-                return res
-        except requests.RequestException:
+            r = requests.get(url, headers=HEADERS, timeout=timeout)
+            if r.status_code == 200:
+                return r
+        except Exception:
             if i == retries:
-                raise
-            sleep(2)
+                return None
+            sleep(1.5)
     return None
 
-# ======================================================
-# 出走表スクレイピング
-# ======================================================
-def fetch_today_data():
-    print("🚀 出走表スクレイピング開始")
+# ==============================
+# 出走表取得
+# ==============================
+def fetch_today():
     today = datetime.date.today().strftime("%Y%m%d")
+    print("🚀 出走表スクレイピング開始")
     data = {}
 
     for venue, code in VENUES.items():
         url = f"https://www.boatrace.jp/owpc/pc/race/racelist?jcd={code}&hd={today}"
+        print(f"📡 {venue} 取得中...")
         try:
             res = safe_get(url)
             if not res:
-                raise Exception("接続エラー or 拒否応答")
+                raise Exception("接続エラー")
 
             soup = BeautifulSoup(res.text, "html.parser")
-
-            # 開催中 or 非開催
-            title = soup.select_one(".heading2_title, .hdg__2")
-            status = "開催中" if title and "開催" in title.text else "ー"
-
             races = {}
-            for link in soup.select("a.btn--number, a.table1__raceNumberLink"):
+
+            # R番号リンク（どちらの構造にも対応）
+            links = soup.select("a.table1__raceNumberLink, a.btn--number")
+            for link in links:
+                href = link.get("href")
+                if not href or "raceresult" in href:
+                    continue
                 rno = link.text.strip().replace("R", "")
-                race_url = "https://www.boatrace.jp" + link.get("href")
+                race_url = "https://www.boatrace.jp" + href
 
                 race_res = safe_get(race_url)
                 if not race_res:
                     continue
-                race_soup = BeautifulSoup(race_res.text, "html.parser")
+                rsoup = BeautifulSoup(race_res.text, "html.parser")
 
+                # 出走表テーブルを抽出（複数の可能性対応）
+                rows = rsoup.select("table.is-tableFixed__3rdadd tbody tr, table.table1 tbody tr")
                 entries = []
-                for row in race_soup.select("table.is-tableFixed__3rdadd tbody tr, table.table1 tbody tr"):
+                for row in rows:
                     cols = [td.get_text(strip=True) for td in row.select("td")]
-                    if len(cols) >= 5:
+                    if len(cols) >= 5 and cols[0].isdigit():
                         entries.append({
                             "艇番": cols[0],
                             "選手名": cols[1],
                             "支部": cols[2],
                             "級": cols[3],
-                            "F": cols[4],
+                            "F": cols[4] if len(cols) > 4 else ""
                         })
 
                 if entries:
                     races[rno] = {"entries": entries}
 
-            data[venue] = {
-                "date": today,
-                "status": status,
-                "races": races
-            }
+            status = "開催中" if races else "ー"
+            data[venue] = {"date": today, "status": status, "races": races}
 
             print(f"✅ {venue} 完了 ({len(races)}R 取得)")
-            sleep(1.0)
+            sleep(1)
         except Exception as e:
             print(f"⚠️ {venue} 取得エラー: {e}")
             data[venue] = {"date": today, "status": "ー", "races": {}}
@@ -110,11 +110,9 @@ def fetch_today_data():
         json.dump(data, f, ensure_ascii=False, indent=2)
 
     print(f"✅ data.json 更新完了 ({len(data)}場)")
+    print("🎯 完了:", today)
 
-# ======================================================
-# メイン
-# ======================================================
+# ==============================
 if __name__ == "__main__":
     print("🚀 GitHub Actions 自動更新スクリプト開始")
-    fetch_today_data()
-    print("🎯 完了:", datetime.date.today())
+    fetch_today()
