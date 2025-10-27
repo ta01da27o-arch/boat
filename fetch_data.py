@@ -3,6 +3,7 @@ import json
 import datetime
 import requests
 from bs4 import BeautifulSoup
+from time import sleep
 
 # ======================================================
 # 基本設定
@@ -46,51 +47,67 @@ def save_json(path, data):
     with open(path, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
+def safe_request(url, retries=2, timeout=20):
+    """タイムアウト・接続エラーを再試行"""
+    for i in range(retries + 1):
+        try:
+            res = requests.get(url, timeout=timeout)
+            if res.status_code == 200:
+                return res
+        except requests.RequestException as e:
+            if i == retries:
+                raise e
+            sleep(2)
+    return None
+
 # ======================================================
 # 出走表スクレイピング
 # ======================================================
 def fetch_today_data():
-    """ボートレース公式サイトから本日の出走表を取得"""
     print("🚀 出走表スクレイピング開始")
     today = datetime.date.today().strftime("%Y%m%d")
-
     data = {}
+
     for venue in VENUES:
         venue_code = VENUE_CODES[venue]
         url = f"https://www.boatrace.jp/owpc/pc/race/racelist?jcd={venue_code}&hd={today}"
 
         try:
-            res = requests.get(url, timeout=10)
+            res = safe_request(url)
+            if not res:
+                raise Exception("接続エラー")
             res.encoding = res.apparent_encoding
             soup = BeautifulSoup(res.text, "html.parser")
 
-            # 開催中判定（ヘッダーに「開催中」が含まれる場合）
-            title = soup.select_one(".hdg__2")
-            status = "開催中" if title and "中" in title.text else "ー"
+            # 開催判定
+            title = soup.select_one(".heading2_title, .hdg__2")
+            status = "開催中" if title and any(x in title.text for x in ["開催", "中"]) else "ー"
 
             races = {}
-            race_links = soup.select("a.btn--number")
-            if race_links:
-                for link in race_links:
-                    rno = link.text.strip().replace("R", "")
-                    race_url = f"https://www.boatrace.jp{link.get('href')}"
-                    race_res = requests.get(race_url, timeout=10)
-                    race_soup = BeautifulSoup(race_res.text, "html.parser")
+            race_links = soup.select("a.btn--number, a.table1__raceNumberLink")
+            for link in race_links:
+                rno = link.text.strip().replace("R", "")
+                race_url = f"https://www.boatrace.jp{link.get('href')}"
 
-                    entries = []
-                    rows = race_soup.select("table.is-tableFixed__3rdadd tbody tr")
-                    for row in rows:
-                        cols = [td.get_text(strip=True) for td in row.select("td")]
-                        if len(cols) >= 6:
-                            entries.append({
-                                "艇番": cols[0],
-                                "選手名": cols[1],
-                                "支部": cols[2],
-                                "級": cols[3],
-                                "F": cols[4],
-                                "L": cols[5],
-                            })
+                race_res = safe_request(race_url)
+                if not race_res:
+                    continue
 
+                race_soup = BeautifulSoup(race_res.text, "html.parser")
+                entries = []
+                rows = race_soup.select("table.is-tableFixed__3rdadd tbody tr, table.table1 tbody tr")
+                for row in rows:
+                    cols = [td.get_text(strip=True) for td in row.select("td")]
+                    if len(cols) >= 5:
+                        entries.append({
+                            "艇番": cols[0],
+                            "選手名": cols[1],
+                            "支部": cols[2],
+                            "級": cols[3],
+                            "F": cols[4] if len(cols) > 4 else "",
+                        })
+
+                if entries:
                     races[rno] = {"entries": entries}
 
             data[venue] = {
@@ -100,6 +117,7 @@ def fetch_today_data():
             }
 
             print(f"✅ {venue} 完了 ({len(races)}R 取得)")
+            sleep(1.2)  # アクセス制限回避
 
         except Exception as e:
             print(f"⚠️ {venue} 取得エラー: {e}")
@@ -109,29 +127,24 @@ def fetch_today_data():
     print(f"✅ data.json 更新完了 ({len(data)}場)")
 
 # ======================================================
-# 履歴更新処理
+# 履歴更新
 # ======================================================
 def update_history():
     history = load_json(HISTORY_PATH)
     today = datetime.date.today().strftime("%Y%m%d")
     data = load_json(DATA_PATH)
 
-    history[today] = {
-        v: {"date": today, "results": d.get("races", {})}
-        for v, d in data.items()
-    }
+    history[today] = {v: {"date": today, "results": d.get("races", {})} for v, d in data.items()}
 
     cutoff = datetime.date.today() - datetime.timedelta(days=60)
-    history = {
-        k: v for k, v in history.items()
-        if datetime.date.fromisoformat(k[:4]+"-"+k[4:6]+"-"+k[6:8]) >= cutoff
-    }
+    history = {k: v for k, v in history.items()
+               if datetime.date.fromisoformat(k[:4]+"-"+k[4:6]+"-"+k[6:8]) >= cutoff}
 
     save_json(HISTORY_PATH, history)
     print(f"🧠 history.json 更新完了 ({len(history)}日分保持)")
 
 # ======================================================
-# メイン実行
+# メイン
 # ======================================================
 if __name__ == "__main__":
     print("🚀 Render 自動更新スクリプト開始")
