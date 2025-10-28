@@ -16,3 +16,4 @@ beautifulsoup4
 
 # --- その他（自動更新・学習・予測系で使用） ---
 lxml
+playwright
