@@ -1,5 +1,5 @@
 // ===============================
-//  app.js（最新版）
+//  app.js（最終完成版）
 // ===============================
 
 // --- HTML要素取得 ---
@@ -17,7 +17,7 @@ todayLabel.textContent = `${y}/${m}/${d}`;
 // --- JSONデータ取得 ---
 async function loadRaceData() {
   try {
-    const response = await fetch('data/data.json?_=' + Date.now()); // キャッシュ防止
+    const response = await fetch('../data/data.json?_=' + Date.now()); // ✅ 相対パス修正
     if (!response.ok) throw new Error('データ取得失敗');
     const data = await response.json();
     renderVenues(data);
@@ -35,7 +35,7 @@ function renderVenues(data) {
     const div = document.createElement('div');
     div.className = 'venue-card';
 
-    // 開催中判定（出走表が存在すれば開催中）
+    // 開催中判定
     const isOpen = item.races && item.races.length > 0;
     const status = isOpen ? '開催中' : 'ー';
 
@@ -48,7 +48,6 @@ function renderVenues(data) {
       <div class="venue-hit">${hitRate}</div>
     `;
 
-    // クリック時のイベント（レース詳細画面へ）
     div.addEventListener('click', () => {
       if (isOpen) showRaces(item);
     });
@@ -80,7 +79,6 @@ function showRaces(item) {
 
   VIEW.appendChild(list);
 
-  // 戻るボタン
   document.getElementById('backBtn').addEventListener('click', () => loadRaceData());
 }
 
