@@ -1,49 +1,97 @@
 [
   {
+    "venue": "桐生",
+    "code": "01",
+    "date": "20251029",
+    "hit_rate": 39,
+    "races": [
+      {
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
+      },
+      {
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
+      },
+      {
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
+      },
+      {
+        "racer": "最終Ｒ発売終了",
+        "mark": ""
+      },
+      {
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
+      },
+      {
+        "racer": "最終Ｒ発売終了",
+        "mark": ""
+      },
+      {
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
+      },
+      {
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
+      },
+      {
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
+      },
+      {
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
+      }
+    ]
+  },
+  {
     "venue": "戸田",
     "code": "02",
     "date": "20251029",
-    "hit_rate": 37,
+    "hit_rate": 34,
     "races": [
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
       },
       {
-        "racer": "7R以降\n発売中",
-        "mark": "7R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
       },
       {
-        "racer": "9R以降\n発売中",
-        "mark": "9R"
+        "racer": "最終Ｒ発売終了",
+        "mark": ""
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       },
       {
-        "racer": "10R以降\n発売中",
-        "mark": "10R"
+        "racer": "最終Ｒ発売終了",
+        "mark": ""
       },
       {
-        "racer": "7R以降\n発売中",
-        "mark": "7R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       },
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       }
     ]
   },
@@ -51,47 +99,47 @@
     "venue": "江戸川",
     "code": "03",
     "date": "20251029",
-    "hit_rate": 33,
+    "hit_rate": 34,
     "races": [
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
       },
       {
-        "racer": "7R以降\n発売中",
-        "mark": "7R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
       },
       {
-        "racer": "9R以降\n発売中",
-        "mark": "9R"
+        "racer": "最終Ｒ発売終了",
+        "mark": ""
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       },
       {
-        "racer": "10R以降\n発売中",
-        "mark": "10R"
+        "racer": "最終Ｒ発売終了",
+        "mark": ""
       },
       {
-        "racer": "7R以降\n発売中",
-        "mark": "7R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       },
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       }
     ]
   },
@@ -99,47 +147,47 @@
     "venue": "平和島",
     "code": "04",
     "date": "20251029",
-    "hit_rate": 24,
+    "hit_rate": 23,
     "races": [
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
       },
       {
-        "racer": "7R以降\n発売中",
-        "mark": "7R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
       },
       {
-        "racer": "9R以降\n発売中",
-        "mark": "9R"
+        "racer": "最終Ｒ発売終了",
+        "mark": ""
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       },
       {
-        "racer": "10R以降\n発売中",
-        "mark": "10R"
+        "racer": "最終Ｒ発売終了",
+        "mark": ""
       },
       {
-        "racer": "7R以降\n発売中",
-        "mark": "7R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       },
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       }
     ]
   },
@@ -147,47 +195,47 @@
     "venue": "多摩川",
     "code": "05",
     "date": "20251029",
-    "hit_rate": 29,
+    "hit_rate": 32,
     "races": [
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
       },
       {
-        "racer": "7R以降\n発売中",
-        "mark": "7R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
       },
       {
-        "racer": "9R以降\n発売中",
-        "mark": "9R"
+        "racer": "最終Ｒ発売終了",
+        "mark": ""
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       },
       {
-        "racer": "10R以降\n発売中",
-        "mark": "10R"
+        "racer": "最終Ｒ発売終了",
+        "mark": ""
       },
       {
-        "racer": "7R以降\n発売中",
-        "mark": "7R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       },
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       }
     ]
   },
@@ -195,47 +243,47 @@
     "venue": "浜名湖",
     "code": "06",
     "date": "20251029",
-    "hit_rate": 36,
+    "hit_rate": 35,
     "races": [
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "7R以降\n発売中",
-        "mark": "7R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
       },
       {
-        "racer": "9R以降\n発売中",
-        "mark": "9R"
+        "racer": "最終Ｒ発売終了",
+        "mark": ""
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       },
       {
-        "racer": "10R以降\n発売中",
-        "mark": "10R"
+        "racer": "最終Ｒ発売終了",
+        "mark": ""
       },
       {
-        "racer": "7R以降\n発売中",
-        "mark": "7R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       },
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       }
     ]
   },
@@ -243,47 +291,47 @@
     "venue": "蒲郡",
     "code": "07",
     "date": "20251029",
-    "hit_rate": 28,
+    "hit_rate": 29,
     "races": [
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "7R以降\n発売中",
-        "mark": "7R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
       },
       {
-        "racer": "9R以降\n発売中",
-        "mark": "9R"
+        "racer": "最終Ｒ発売終了",
+        "mark": ""
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       },
       {
-        "racer": "10R以降\n発売中",
-        "mark": "10R"
+        "racer": "最終Ｒ発売終了",
+        "mark": ""
       },
       {
-        "racer": "7R以降\n発売中",
-        "mark": "7R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       },
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       }
     ]
   },
@@ -291,47 +339,47 @@
     "venue": "常滑",
     "code": "08",
     "date": "20251029",
-    "hit_rate": 27,
+    "hit_rate": 28,
     "races": [
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "7R以降\n発売中",
-        "mark": "7R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
       },
       {
-        "racer": "9R以降\n発売中",
-        "mark": "9R"
+        "racer": "最終Ｒ発売終了",
+        "mark": ""
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       },
       {
-        "racer": "10R以降\n発売中",
-        "mark": "10R"
+        "racer": "最終Ｒ発売終了",
+        "mark": ""
       },
       {
-        "racer": "7R以降\n発売中",
-        "mark": "7R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       },
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       }
     ]
   },
@@ -339,47 +387,47 @@
     "venue": "津",
     "code": "09",
     "date": "20251029",
-    "hit_rate": 25,
+    "hit_rate": 28,
     "races": [
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "7R以降\n発売中",
-        "mark": "7R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
       },
       {
-        "racer": "9R以降\n発売中",
-        "mark": "9R"
+        "racer": "最終Ｒ発売終了",
+        "mark": ""
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       },
       {
-        "racer": "10R以降\n発売中",
-        "mark": "10R"
+        "racer": "最終Ｒ発売終了",
+        "mark": ""
       },
       {
-        "racer": "7R以降\n発売中",
-        "mark": "7R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       },
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       }
     ]
   },
@@ -387,47 +435,47 @@
     "venue": "三国",
     "code": "10",
     "date": "20251029",
-    "hit_rate": 23,
+    "hit_rate": 25,
     "races": [
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "7R以降\n発売中",
-        "mark": "7R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
       },
       {
-        "racer": "9R以降\n発売中",
-        "mark": "9R"
+        "racer": "最終Ｒ発売終了",
+        "mark": ""
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       },
       {
-        "racer": "10R以降\n発売中",
-        "mark": "10R"
+        "racer": "最終Ｒ発売終了",
+        "mark": ""
       },
       {
-        "racer": "7R以降\n発売中",
-        "mark": "7R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       },
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       }
     ]
   },
@@ -435,47 +483,47 @@
     "venue": "びわこ",
     "code": "11",
     "date": "20251029",
-    "hit_rate": 25,
+    "hit_rate": 28,
     "races": [
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "7R以降\n発売中",
-        "mark": "7R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
       },
       {
-        "racer": "9R以降\n発売中",
-        "mark": "9R"
+        "racer": "最終Ｒ発売終了",
+        "mark": ""
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       },
       {
-        "racer": "10R以降\n発売中",
-        "mark": "10R"
+        "racer": "最終Ｒ発売終了",
+        "mark": ""
       },
       {
-        "racer": "7R以降\n発売中",
-        "mark": "7R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       },
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       }
     ]
   },
@@ -483,47 +531,47 @@
     "venue": "住之江",
     "code": "12",
     "date": "20251029",
-    "hit_rate": 38,
+    "hit_rate": 35,
     "races": [
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "7R以降\n発売中",
-        "mark": "7R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
       },
       {
-        "racer": "9R以降\n発売中",
-        "mark": "9R"
+        "racer": "最終Ｒ発売終了",
+        "mark": ""
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       },
       {
-        "racer": "10R以降\n発売中",
-        "mark": "10R"
+        "racer": "最終Ｒ発売終了",
+        "mark": ""
       },
       {
-        "racer": "7R以降\n発売中",
-        "mark": "7R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       },
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       }
     ]
   },
@@ -531,47 +579,47 @@
     "venue": "尼崎",
     "code": "13",
     "date": "20251029",
-    "hit_rate": 25,
+    "hit_rate": 26,
     "races": [
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "7R以降\n発売中",
-        "mark": "7R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
       },
       {
-        "racer": "9R以降\n発売中",
-        "mark": "9R"
+        "racer": "最終Ｒ発売終了",
+        "mark": ""
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       },
       {
-        "racer": "10R以降\n発売中",
-        "mark": "10R"
+        "racer": "最終Ｒ発売終了",
+        "mark": ""
       },
       {
-        "racer": "7R以降\n発売中",
-        "mark": "7R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       },
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       }
     ]
   },
@@ -579,47 +627,47 @@
     "venue": "鳴門",
     "code": "14",
     "date": "20251029",
-    "hit_rate": 30,
+    "hit_rate": 27,
     "races": [
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "7R以降\n発売中",
-        "mark": "7R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
       },
       {
-        "racer": "9R以降\n発売中",
-        "mark": "9R"
+        "racer": "最終Ｒ発売終了",
+        "mark": ""
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       },
       {
-        "racer": "10R以降\n発売中",
-        "mark": "10R"
+        "racer": "最終Ｒ発売終了",
+        "mark": ""
       },
       {
-        "racer": "7R以降\n発売中",
-        "mark": "7R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       },
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       }
     ]
   },
@@ -627,47 +675,47 @@
     "venue": "丸亀",
     "code": "15",
     "date": "20251029",
-    "hit_rate": 20,
+    "hit_rate": 21,
     "races": [
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "7R以降\n発売中",
-        "mark": "7R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
       },
       {
-        "racer": "9R以降\n発売中",
-        "mark": "9R"
+        "racer": "最終Ｒ発売終了",
+        "mark": ""
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       },
       {
-        "racer": "10R以降\n発売中",
-        "mark": "10R"
+        "racer": "最終Ｒ発売終了",
+        "mark": ""
       },
       {
-        "racer": "7R以降\n発売中",
-        "mark": "7R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       },
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       }
     ]
   },
@@ -675,47 +723,47 @@
     "venue": "児島",
     "code": "16",
     "date": "20251029",
-    "hit_rate": 32,
+    "hit_rate": 31,
     "races": [
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "7R以降\n発売中",
-        "mark": "7R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
       },
       {
-        "racer": "10R以降\n発売中",
-        "mark": "10R"
+        "racer": "最終Ｒ発売終了",
+        "mark": ""
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       },
       {
-        "racer": "10R以降\n発売中",
-        "mark": "10R"
+        "racer": "最終Ｒ発売終了",
+        "mark": ""
       },
       {
-        "racer": "7R以降\n発売中",
-        "mark": "7R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       },
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       }
     ]
   },
@@ -723,47 +771,47 @@
     "venue": "宮島",
     "code": "17",
     "date": "20251029",
-    "hit_rate": 24,
+    "hit_rate": 23,
     "races": [
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "7R以降\n発売中",
-        "mark": "7R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
       },
       {
-        "racer": "10R以降\n発売中",
-        "mark": "10R"
+        "racer": "最終Ｒ発売終了",
+        "mark": ""
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       },
       {
-        "racer": "10R以降\n発売中",
-        "mark": "10R"
+        "racer": "最終Ｒ発売終了",
+        "mark": ""
       },
       {
-        "racer": "7R以降\n発売中",
-        "mark": "7R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       },
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       }
     ]
   },
@@ -771,47 +819,47 @@
     "venue": "徳山",
     "code": "18",
     "date": "20251029",
-    "hit_rate": 22,
+    "hit_rate": 19,
     "races": [
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "7R以降\n発売中",
-        "mark": "7R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
       },
       {
-        "racer": "10R以降\n発売中",
-        "mark": "10R"
+        "racer": "最終Ｒ発売終了",
+        "mark": ""
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       },
       {
-        "racer": "10R以降\n発売中",
-        "mark": "10R"
+        "racer": "最終Ｒ発売終了",
+        "mark": ""
       },
       {
-        "racer": "7R以降\n発売中",
-        "mark": "7R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       },
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       }
     ]
   },
@@ -819,47 +867,47 @@
     "venue": "下関",
     "code": "19",
     "date": "20251029",
-    "hit_rate": 24,
+    "hit_rate": 22,
     "races": [
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "7R以降\n発売中",
-        "mark": "7R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
       },
       {
-        "racer": "10R以降\n発売中",
-        "mark": "10R"
+        "racer": "最終Ｒ発売終了",
+        "mark": ""
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       },
       {
-        "racer": "10R以降\n発売中",
-        "mark": "10R"
+        "racer": "最終Ｒ発売終了",
+        "mark": ""
       },
       {
-        "racer": "7R以降\n発売中",
-        "mark": "7R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       },
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       }
     ]
   },
@@ -867,47 +915,47 @@
     "venue": "若松",
     "code": "20",
     "date": "20251029",
-    "hit_rate": 22,
+    "hit_rate": 21,
     "races": [
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "7R以降\n発売中",
-        "mark": "7R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
       },
       {
-        "racer": "10R以降\n発売中",
-        "mark": "10R"
+        "racer": "最終Ｒ発売終了",
+        "mark": ""
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       },
       {
-        "racer": "10R以降\n発売中",
-        "mark": "10R"
+        "racer": "最終Ｒ発売終了",
+        "mark": ""
       },
       {
-        "racer": "7R以降\n発売中",
-        "mark": "7R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       },
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       }
     ]
   },
@@ -915,47 +963,47 @@
     "venue": "芦屋",
     "code": "21",
     "date": "20251029",
-    "hit_rate": 36,
+    "hit_rate": 33,
     "races": [
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "7R以降\n発売中",
-        "mark": "7R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
       },
       {
-        "racer": "10R以降\n発売中",
-        "mark": "10R"
+        "racer": "最終Ｒ発売終了",
+        "mark": ""
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       },
       {
-        "racer": "10R以降\n発売中",
-        "mark": "10R"
+        "racer": "最終Ｒ発売終了",
+        "mark": ""
       },
       {
-        "racer": "7R以降\n発売中",
-        "mark": "7R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       },
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       }
     ]
   },
@@ -963,47 +1011,47 @@
     "venue": "福岡",
     "code": "22",
     "date": "20251029",
-    "hit_rate": 24,
+    "hit_rate": 21,
     "races": [
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "7R以降\n発売中",
-        "mark": "7R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
       },
       {
-        "racer": "10R以降\n発売中",
-        "mark": "10R"
+        "racer": "最終Ｒ発売終了",
+        "mark": ""
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       },
       {
-        "racer": "10R以降\n発売中",
-        "mark": "10R"
+        "racer": "最終Ｒ発売終了",
+        "mark": ""
       },
       {
-        "racer": "7R以降\n発売中",
-        "mark": "7R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       },
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       }
     ]
   },
@@ -1011,47 +1059,47 @@
     "venue": "唐津",
     "code": "23",
     "date": "20251029",
-    "hit_rate": 33,
+    "hit_rate": 36,
     "races": [
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "7R以降\n発売中",
-        "mark": "7R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
       },
       {
-        "racer": "10R以降\n発売中",
-        "mark": "10R"
+        "racer": "最終Ｒ発売終了",
+        "mark": ""
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       },
       {
-        "racer": "10R以降\n発売中",
-        "mark": "10R"
+        "racer": "最終Ｒ発売終了",
+        "mark": ""
       },
       {
-        "racer": "7R以降\n発売中",
-        "mark": "7R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       },
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       }
     ]
   },
@@ -1059,47 +1107,47 @@
     "venue": "大村",
     "code": "24",
     "date": "20251029",
-    "hit_rate": 31,
+    "hit_rate": 29,
     "races": [
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "7R以降\n発売中",
-        "mark": "7R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
       },
       {
-        "racer": "10R以降\n発売中",
-        "mark": "10R"
+        "racer": "最終Ｒ発売終了",
+        "mark": ""
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       },
       {
-        "racer": "10R以降\n発売中",
-        "mark": "10R"
+        "racer": "最終Ｒ発売終了",
+        "mark": ""
       },
       {
-        "racer": "7R以降\n発売中",
-        "mark": "7R"
+        "racer": "12R以降\n発売中",
+        "mark": "12R"
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       },
       {
-        "racer": "5R以降\n発売中",
-        "mark": "5R"
+        "racer": "11R以降\n発売中",
+        "mark": "11R"
       },
       {
-        "racer": "1R以降\n発売中",
-        "mark": "1R"
+        "racer": "2R以降\n発売中",
+        "mark": "2R"
       }
     ]
   }
