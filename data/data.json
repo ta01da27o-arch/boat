@@ -2,8 +2,8 @@
   {
     "venue": "戸田",
     "code": "02",
-    "date": "20251101",
-    "hit_rate": 45,
+    "date": "20251102",
+    "hit_rate": 43,
     "races": [
       {
         "racer": "-",
@@ -62,8 +62,8 @@
   {
     "venue": "江戸川",
     "code": "03",
-    "date": "20251101",
-    "hit_rate": 31,
+    "date": "20251102",
+    "hit_rate": 29,
     "races": [
       {
         "racer": "-",
@@ -122,8 +122,8 @@
   {
     "venue": "平和島",
     "code": "04",
-    "date": "20251101",
-    "hit_rate": 27,
+    "date": "20251102",
+    "hit_rate": 30,
     "races": [
       {
         "racer": "-",
@@ -182,8 +182,8 @@
   {
     "venue": "多摩川",
     "code": "05",
-    "date": "20251101",
-    "hit_rate": 35,
+    "date": "20251102",
+    "hit_rate": 38,
     "races": [
       {
         "racer": "-",
@@ -242,8 +242,8 @@
   {
     "venue": "浜名湖",
     "code": "06",
-    "date": "20251101",
-    "hit_rate": 40,
+    "date": "20251102",
+    "hit_rate": 39,
     "races": [
       {
         "racer": "-",
@@ -302,8 +302,8 @@
   {
     "venue": "蒲郡",
     "code": "07",
-    "date": "20251101",
-    "hit_rate": 34,
+    "date": "20251102",
+    "hit_rate": 33,
     "races": [
       {
         "racer": "-",
@@ -362,8 +362,8 @@
   {
     "venue": "常滑",
     "code": "08",
-    "date": "20251101",
-    "hit_rate": 18,
+    "date": "20251102",
+    "hit_rate": 19,
     "races": [
       {
         "racer": "-",
@@ -422,8 +422,8 @@
   {
     "venue": "津",
     "code": "09",
-    "date": "20251101",
-    "hit_rate": 22,
+    "date": "20251102",
+    "hit_rate": 21,
     "races": [
       {
         "racer": "-",
@@ -482,8 +482,8 @@
   {
     "venue": "三国",
     "code": "10",
-    "date": "20251101",
-    "hit_rate": 31,
+    "date": "20251102",
+    "hit_rate": 29,
     "races": [
       {
         "racer": "-",
@@ -542,8 +542,8 @@
   {
     "venue": "びわこ",
     "code": "11",
-    "date": "20251101",
-    "hit_rate": 36,
+    "date": "20251102",
+    "hit_rate": 35,
     "races": [
       {
         "racer": "-",
@@ -602,8 +602,8 @@
   {
     "venue": "住之江",
     "code": "12",
-    "date": "20251101",
-    "hit_rate": 32,
+    "date": "20251102",
+    "hit_rate": 35,
     "races": [
       {
         "racer": "-",
@@ -662,7 +662,7 @@
   {
     "venue": "尼崎",
     "code": "13",
-    "date": "20251101",
+    "date": "20251102",
     "hit_rate": 24,
     "races": [
       {
@@ -722,8 +722,8 @@
   {
     "venue": "鳴門",
     "code": "14",
-    "date": "20251101",
-    "hit_rate": 37,
+    "date": "20251102",
+    "hit_rate": 39,
     "races": [
       {
         "racer": "-",
@@ -782,8 +782,8 @@
   {
     "venue": "丸亀",
     "code": "15",
-    "date": "20251101",
-    "hit_rate": 23,
+    "date": "20251102",
+    "hit_rate": 26,
     "races": [
       {
         "racer": "-",
@@ -842,8 +842,8 @@
   {
     "venue": "児島",
     "code": "16",
-    "date": "20251101",
-    "hit_rate": 33,
+    "date": "20251102",
+    "hit_rate": 30,
     "races": [
       {
         "racer": "-",
@@ -902,8 +902,8 @@
   {
     "venue": "宮島",
     "code": "17",
-    "date": "20251101",
-    "hit_rate": 21,
+    "date": "20251102",
+    "hit_rate": 22,
     "races": [
       {
         "racer": "-",
@@ -962,7 +962,7 @@
   {
     "venue": "徳山",
     "code": "18",
-    "date": "20251101",
+    "date": "20251102",
     "hit_rate": 21,
     "races": [
       {
@@ -1022,8 +1022,8 @@
   {
     "venue": "下関",
     "code": "19",
-    "date": "20251101",
-    "hit_rate": 32,
+    "date": "20251102",
+    "hit_rate": 35,
     "races": [
       {
         "racer": "-",
@@ -1082,8 +1082,8 @@
   {
     "venue": "若松",
     "code": "20",
-    "date": "20251101",
-    "hit_rate": 21,
+    "date": "20251102",
+    "hit_rate": 22,
     "races": [
       {
         "racer": "-",
@@ -1142,8 +1142,8 @@
   {
     "venue": "芦屋",
     "code": "21",
-    "date": "20251101",
-    "hit_rate": 35,
+    "date": "20251102",
+    "hit_rate": 36,
     "races": [
       {
         "racer": "-",
@@ -1202,7 +1202,7 @@
   {
     "venue": "福岡",
     "code": "22",
-    "date": "20251101",
+    "date": "20251102",
     "hit_rate": 16,
     "races": [
       {
@@ -1262,8 +1262,8 @@
   {
     "venue": "唐津",
     "code": "23",
-    "date": "20251101",
-    "hit_rate": 34,
+    "date": "20251102",
+    "hit_rate": 33,
     "races": [
       {
         "racer": "-",
@@ -1322,7 +1322,7 @@
   {
     "venue": "大村",
     "code": "24",
-    "date": "20251101",
+    "date": "20251102",
     "hit_rate": 21,
     "races": [
       {
