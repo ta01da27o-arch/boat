@@ -1,94 +1,10 @@
 [
   {
-    "venue": "桐生",
-    "code": "01",
-    "date": "20251231",
-    "hit_rate": 30,
-    "races": [
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      }
-    ]
-  },
-  {
     "venue": "戸田",
     "code": "02",
-    "date": "20251231",
-    "hit_rate": 57,
+    "date": "20260101",
+    "hit_rate": 60,
     "races": [
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
       {
         "racer": "-",
         "mark": ""
@@ -146,21 +62,9 @@
   {
     "venue": "江戸川",
     "code": "03",
-    "date": "20251231",
-    "hit_rate": 11,
+    "date": "20260101",
+    "hit_rate": 10,
     "races": [
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
       {
         "racer": "-",
         "mark": ""
@@ -218,21 +122,9 @@
   {
     "venue": "平和島",
     "code": "04",
-    "date": "20251231",
-    "hit_rate": 12,
+    "date": "20260101",
+    "hit_rate": 10,
     "races": [
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
       {
         "racer": "-",
         "mark": ""
@@ -290,21 +182,9 @@
   {
     "venue": "多摩川",
     "code": "05",
-    "date": "20251231",
-    "hit_rate": 53,
+    "date": "20260101",
+    "hit_rate": 52,
     "races": [
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
       {
         "racer": "-",
         "mark": ""
@@ -362,21 +242,9 @@
   {
     "venue": "浜名湖",
     "code": "06",
-    "date": "20251231",
-    "hit_rate": 46,
+    "date": "20260101",
+    "hit_rate": 49,
     "races": [
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
       {
         "racer": "-",
         "mark": ""
@@ -434,21 +302,9 @@
   {
     "venue": "蒲郡",
     "code": "07",
-    "date": "20251231",
-    "hit_rate": 39,
+    "date": "20260101",
+    "hit_rate": 42,
     "races": [
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
       {
         "racer": "-",
         "mark": ""
@@ -506,21 +362,9 @@
   {
     "venue": "常滑",
     "code": "08",
-    "date": "20251231",
-    "hit_rate": 55,
+    "date": "20260101",
+    "hit_rate": 52,
     "races": [
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
       {
         "racer": "-",
         "mark": ""
@@ -578,21 +422,9 @@
   {
     "venue": "津",
     "code": "09",
-    "date": "20251231",
-    "hit_rate": 29,
+    "date": "20260101",
+    "hit_rate": 31,
     "races": [
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
       {
         "racer": "-",
         "mark": ""
@@ -650,21 +482,9 @@
   {
     "venue": "三国",
     "code": "10",
-    "date": "20251231",
+    "date": "20260101",
     "hit_rate": 10,
     "races": [
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
       {
         "racer": "-",
         "mark": ""
@@ -722,21 +542,9 @@
   {
     "venue": "びわこ",
     "code": "11",
-    "date": "20251231",
+    "date": "20260101",
     "hit_rate": 45,
     "races": [
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
       {
         "racer": "-",
         "mark": ""
@@ -794,21 +602,9 @@
   {
     "venue": "住之江",
     "code": "12",
-    "date": "20251231",
-    "hit_rate": 25,
+    "date": "20260101",
+    "hit_rate": 28,
     "races": [
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
       {
         "racer": "-",
         "mark": ""
@@ -866,21 +662,9 @@
   {
     "venue": "尼崎",
     "code": "13",
-    "date": "20251231",
-    "hit_rate": 35,
+    "date": "20260101",
+    "hit_rate": 32,
     "races": [
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
       {
         "racer": "-",
         "mark": ""
@@ -938,21 +722,9 @@
   {
     "venue": "鳴門",
     "code": "14",
-    "date": "20251231",
-    "hit_rate": 14,
+    "date": "20260101",
+    "hit_rate": 16,
     "races": [
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
       {
         "racer": "-",
         "mark": ""
@@ -1010,21 +782,9 @@
   {
     "venue": "丸亀",
     "code": "15",
-    "date": "20251231",
-    "hit_rate": 24,
+    "date": "20260101",
+    "hit_rate": 21,
     "races": [
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
       {
         "racer": "-",
         "mark": ""
@@ -1082,21 +842,9 @@
   {
     "venue": "児島",
     "code": "16",
-    "date": "20251231",
-    "hit_rate": 39,
+    "date": "20260101",
+    "hit_rate": 41,
     "races": [
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
       {
         "racer": "-",
         "mark": ""
@@ -1154,21 +902,9 @@
   {
     "venue": "宮島",
     "code": "17",
-    "date": "20251231",
-    "hit_rate": 16,
+    "date": "20260101",
+    "hit_rate": 18,
     "races": [
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
       {
         "racer": "-",
         "mark": ""
@@ -1226,21 +962,9 @@
   {
     "venue": "徳山",
     "code": "18",
-    "date": "20251231",
+    "date": "20260101",
     "hit_rate": 34,
     "races": [
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
       {
         "racer": "-",
         "mark": ""
@@ -1298,21 +1022,9 @@
   {
     "venue": "下関",
     "code": "19",
-    "date": "20251231",
-    "hit_rate": 50,
+    "date": "20260101",
+    "hit_rate": 47,
     "races": [
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
       {
         "racer": "-",
         "mark": ""
@@ -1370,21 +1082,9 @@
   {
     "venue": "若松",
     "code": "20",
-    "date": "20251231",
-    "hit_rate": 15,
+    "date": "20260101",
+    "hit_rate": 13,
     "races": [
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
       {
         "racer": "-",
         "mark": ""
@@ -1442,21 +1142,9 @@
   {
     "venue": "芦屋",
     "code": "21",
-    "date": "20251231",
-    "hit_rate": 41,
+    "date": "20260101",
+    "hit_rate": 40,
     "races": [
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
       {
         "racer": "-",
         "mark": ""
@@ -1514,21 +1202,9 @@
   {
     "venue": "福岡",
     "code": "22",
-    "date": "20251231",
+    "date": "20260101",
     "hit_rate": 10,
     "races": [
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
       {
         "racer": "-",
         "mark": ""
@@ -1586,21 +1262,9 @@
   {
     "venue": "唐津",
     "code": "23",
-    "date": "20251231",
-    "hit_rate": 37,
+    "date": "20260101",
+    "hit_rate": 35,
     "races": [
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
       {
         "racer": "-",
         "mark": ""
@@ -1658,21 +1322,9 @@
   {
     "venue": "大村",
     "code": "24",
-    "date": "20251231",
-    "hit_rate": 18,
+    "date": "20260101",
+    "hit_rate": 17,
     "races": [
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
-      {
-        "racer": "-",
-        "mark": ""
-      },
       {
         "racer": "-",
         "mark": ""
